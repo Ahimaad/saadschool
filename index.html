@@ -13,68 +13,77 @@
     <style>
         :root { --royal-blue: #1a3c71; --gold: #d4af37; --dark-blue: #0d2546; --light-bg: #f8f9fa; }
         body { font-family: 'Cairo', sans-serif; background-color: var(--light-bg); color: var(--dark-blue); margin: 0; padding: 0; overflow-x: hidden; }
+        
+        /* شريط الأخبار العلوي */
         .top-ticker { background: #000; color: var(--gold); padding: 10px 0; font-weight: bold; border-bottom: 2px solid var(--gold); }
+        
+        /* الهيدر الرئيسي */
         .main-header { background: linear-gradient(135deg, var(--dark-blue) 0%, var(--royal-blue) 100%); color: white; padding: 40px 0; border-bottom: 5px solid var(--gold); text-align: center; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .school-logo { width: 110px; height: 110px; border-radius: 50%; border: 3px solid var(--gold); background: white; padding: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); object-fit: contain; }
-        .side-menu .btn-portal { background: white; margin-bottom: 15px; border-radius: 20px; padding: 22px 20px; display: flex; align-items: center; color: var(--dark-blue); font-weight: 900; transition: all 0.4s; border: none; border-right: 10px solid var(--royal-blue); box-shadow: 0 8px 15px rgba(0,0,0,0.05); width: 100%; text-align: right; }
+
+        /* القائمة الجانبية */
+        .side-menu .btn-portal { background: white; margin-bottom: 15px; border-radius: 20px; padding: 22px 20px; display: flex; align-items: center; color: var(--dark-blue); font-weight: 900; transition: 0.3s; border: none; border-right: 10px solid var(--royal-blue); box-shadow: 0 8px 15px rgba(0,0,0,0.05); width: 100%; text-align: right; }
         .side-menu .btn-portal:hover { transform: translateX(-10px); background: var(--royal-blue); color: var(--gold); border-right-color: var(--gold); }
         .side-menu i { font-size: 1.8rem; margin-left: 15px; }
-        .news-slider-container { border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 4px solid white; min-height: 450px; }
-        .carousel-item img { height: 450px; object-fit: cover; }
+
+        /* السلايدر */
+        .news-slider-container { border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 4px solid white; height: 450px; background: #eee; }
+        .news-slider-container img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* المودال (النافذة المنبثقة) */
         .modal-content { border-radius: 25px; border: 4px solid var(--gold); overflow: hidden; }
         .modal-header { background: var(--royal-blue); color: white; border-bottom: 3px solid var(--gold); }
+        
+        /* كروت المحتوى */
+        .data-card { border-radius: 15px; border: none; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.05); overflow: hidden; }
+        .data-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+        
         footer { background: var(--dark-blue); color: white; padding: 25px 0; margin-top: 40px; }
     </style>
 </head>
 <body>
 
 <div class="top-ticker">
-    <marquee direction="right">🌟 أهلاً بكم في البوابة الرقمية لمدرسة سعد بن أبي وقاص الرسمية للغات .. 🎓 تابعوا أحدث نتائج الامتحانات والمراجعات حصرياً هنا ..</marquee>
+    <marquee direction="right">🌟 أهلاً بكم في البوابة الرقمية لمدرسة سعد بن أبي وقاص الرسمية للغات .. تصفحوا النتائج وأحدث الأنشطة المدرسية 🎓</marquee>
 </div>
 
 <header class="main-header animate__animated animate__fadeInDown">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-2 d-none d-md-block"><img src="logo.jpg" class="school-logo" onerror="this.src='https://via.placeholder.com/110?text=LOGO'"></div>
-            <div class="col-md-8">
-                <h5 class="fw-bold mb-1" style="color: var(--gold);">محافظة بني سويف - إدارة الفشن التعليمية</h5>
-                <h1 class="fw-black mb-0 display-6">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
-                <p class="lead mt-2">روضة - ابتدائي - إعدادي - ثانوي</p>
-            </div>
-            <div class="col-md-2 d-none d-md-block"><img src="https://via.placeholder.com/110?text=Egypt" class="school-logo"></div>
-        </div>
+    <div class="container text-center">
+        <h5 class="fw-bold mb-1" style="color: var(--gold);">محافظة بني سويف - إدارة الفشن التعليمية</h5>
+        <h1 class="fw-black mb-0 display-6">بوابة مدرسة سعد بن أبي وقاص الرسمية</h1>
+        <p class="lead mt-2">نحو مستقبل تعليمي رقمي متطور</p>
     </div>
 </header>
 
 <main class="container mt-5">
     <div class="row g-4">
         <div class="col-lg-4 side-menu animate__animated animate__fadeInRight">
-            <button class="btn-portal" onclick="showSection('student')"><i class="fas fa-user-graduate text-primary"></i><span>ركن الطالب والنتائج</span></button>
-            <button class="btn-portal" onclick="showSection('press')"><i class="fas fa-newspaper text-success"></i><span>ركن الصحافة</span></button>
-            <button class="btn-portal" onclick="showSection('arts')"><i class="fas fa-palette text-danger"></i><span>ركن التربية الفنية</span></button>
-            <button class="btn-portal" onclick="showSection('radio')"><i class="fas fa-microphone-alt text-warning"></i><span>الإذاعة والموهوبين</span></button>
-            <button class="btn-portal" onclick="showSection('library')"><i class="fas fa-trophy text-info"></i><span>المكتبة والنشاط الرياضي</span></button>
+            <button class="btn-portal" onclick="showPortal('student')"><i class="fas fa-user-graduate text-primary"></i><span>ركن الطالب والنتائج</span></button>
+            <button class="btn-portal" onclick="showPortal('press')"><i class="fas fa-newspaper text-success"></i><span>ركن الصحافة والأخبار</span></button>
+            <button class="btn-portal" onclick="showPortal('arts')"><i class="fas fa-palette text-danger"></i><span>ركن التربية الفنية</span></button>
+            <button class="btn-portal" onclick="showPortal('radio')"><i class="fas fa-microphone-alt text-warning"></i><span>الإذاعة والموهوبين</span></button>
+            <button class="btn-portal" onclick="showPortal('library')"><i class="fas fa-trophy text-info"></i><span>المكتبة والنشاط الرياضي</span></button>
         </div>
+
         <div class="col-lg-8 animate__animated animate__fadeInLeft">
-            <div id="schoolSlider" class="carousel slide news-slider-container" data-bs-ride="carousel">
-                <div class="carousel-inner h-100">
-                    <div class="carousel-item active">
-                        <img src="https://via.placeholder.com/1200x800/1a3c71/ffffff?text=مدرسة+سعد+بن+أبي+وقاص" class="d-block w-100">
-                    </div>
-                </div>
+            <div class="news-slider-container">
+                <img src="https://via.placeholder.com/1200x800/1a3c71/ffffff?text=مدرسة+سعد+بن+أبي+وقاص+2026" alt="School Image">
             </div>
         </div>
     </div>
 </main>
 
-<div class="modal fade" id="portalModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-xl modal-dialog-centered">
+<div class="modal fade" id="mainModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold" id="modalTitle"></h5>
+                <h5 class="modal-title fw-bold text-white" id="mTitle"></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
             </div>
-            <div class="modal-body p-4" id="modalBody"></div>
+            <div class="modal-body p-4" id="mBody"></div>
+            <div class="modal-footer bg-light p-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+            </div>
         </div>
     </div>
 </div>
@@ -82,7 +91,7 @@
 <footer>
     <div class="container text-center">
         <p class="mb-1">مدرسة سعد بن أبي وقاص الرسمية للغات - الفشن</p>
-        <p class="small opacity-75">تصميم وإشراف م/ أحمد صابر &copy; 2026</p>
+        <p class="small opacity-75">إشراف وتصميم م/ أحمد صابر &copy; 2026</p>
     </div>
 </footer>
 
@@ -91,6 +100,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // إعدادات Firebase الخاصة بك
     const firebaseConfig = {
         apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
         authDomain: "saad-school-portal.firebaseapp.com",
@@ -102,65 +112,105 @@
     };
 
     if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
-    const database = firebase.database();
-    const portalModal = new bootstrap.Modal(document.getElementById('portalModal'));
+    const db = firebase.database();
+    const bModal = new bootstrap.Modal(document.getElementById('mainModal'));
 
-    function showSection(type) {
-        const title = document.getElementById('modalTitle');
-        const body = document.getElementById('modalBody');
+    function showPortal(type) {
+        const title = document.getElementById('mTitle');
+        const body = document.getElementById('mBody');
         
         if(type === 'student') {
-            title.innerText = '🎓 نتائج الطلاب';
+            title.innerText = '🎓 استعلام عن النتائج';
             body.innerHTML = `
-                <div class="text-center">
-                    <div class="mb-3 w-75 mx-auto text-end">
+                <div class="text-center p-3">
+                    <div class="mb-4 w-75 mx-auto text-end">
                         <label class="fw-bold mb-2">اختر الصف الدراسي:</label>
-                        <select id="gradeSel" class="form-select form-select-lg">
-                            <option value="p3">الثالث الابتدائي</option><option value="p4">الرابع الابتدائي</option>
-                            <option value="p5">الخامس الابتدائي</option><option value="p6">السادس الابتدائي</option>
-                            <option value="m1">الأول الإعدادي</option><option value="m2">الثاني الإعدادي</option>
-                            <option value="m3">الثالث الإعدادي</option><option value="s1">الأول الثانوي</option>
-                            <option value="s2">الثاني الثانوي</option><option value="s3">الثالث الثانوي</option>
+                        <select id="gS" class="form-select form-select-lg border-primary">
+                            <option value="p3">الصف الثالث الابتدائي</option><option value="p4">الصف الرابع الابتدائي</option>
+                            <option value="p5">الصف الخامس الابتدائي</option><option value="p6">الصف السادس الابتدائي</option>
+                            <option value="m1">الصف الأول الإعدادي</option><option value="m2">الصف الثاني الإعدادي</option>
+                            <option value="m3">الصف الثالث الإعدادي</option><option value="s1">الصف الأول الثانوي</option>
+                            <option value="s2">الصف الثاني الثانوي</option><option value="s3">الصف الثالث الثانوي</option>
                         </select>
                     </div>
-                    <div class="input-group mb-3 w-75 mx-auto">
-                        <input type="text" id="stuId" class="form-control form-control-lg text-center" placeholder="رقم الجلوس">
-                        <button class="btn btn-primary px-4 fw-bold" onclick="startSearch()">بـحـث</button>
+                    <div class="input-group w-75 mx-auto mb-3">
+                        <input type="text" id="sI" class="form-control form-control-lg text-center" placeholder="أدخل رقم الجلوس">
+                        <button class="btn btn-primary px-5 fw-bold" onclick="doSearch()">بحث</button>
                     </div>
-                    <div id="resArea" class="mt-4"></div>
-                </div>`;
-        } else if(type === 'arts') {
-            title.innerText = '🎨 معرض التربية الفنية';
-            body.innerHTML = `
-                <div class="row g-3">
-                    <div class="col-md-4"><img src="art1.jpg" class="img-fluid rounded border shadow-sm" onerror="this.src='https://via.placeholder.com/400x300?text=Work+1'"></div>
-                    <div class="col-md-4"><img src="art2.jpg" class="img-fluid rounded border shadow-sm" onerror="this.src='https://via.placeholder.com/400x300?text=Work+2'"></div>
-                    <div class="col-md-4"><img src="art3.jpg" class="img-fluid rounded border shadow-sm" onerror="this.src='https://via.placeholder.com/400x300?text=Work+3'"></div>
-                    <div class="col-12 mt-3"><div class="ratio ratio-16x9 shadow rounded overflow-hidden"><iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe></div></div>
+                    <div id="rA" class="mt-4"></div>
                 </div>`;
         } else {
-            title.innerText = 'قريباً';
-            body.innerHTML = '<div class="alert alert-info text-center">جاري تجهيز هذا القسم..</div>';
+            const config = {
+                'arts': {t: '🎨 معرض التربية الفنية', path: 'sections/arts'},
+                'press': {t: '📰 ركن الصحافة والأخبار', path: 'sections/press'},
+                'radio': {t: '🎙️ الإذاعة والموهوبين', path: 'sections/radio'},
+                'library': {t: '🏆 المكتبة والنشاط الرياضي', path: 'sections/library'}
+            };
+            title.innerText = config[type].t;
+            body.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div><p class="mt-2">جاري تحميل المحتوى من Firebase...</p></div>';
+            loadDynamicSection(config[type].path, body);
         }
-        portalModal.show();
+        bModal.show();
     }
 
-    function startSearch() {
-        const grade = document.getElementById('gradeSel').value;
-        const id = document.getElementById('stuId').value;
-        const resArea = document.getElementById('resArea');
+    function loadDynamicSection(path, container) {
+        db.ref(path).once('value').then(snap => {
+            if(!snap.exists()) {
+                container.innerHTML = '<div class="alert alert-info text-center">لا توجد بيانات حالياً في هذا القسم. قم بإضافتها من Firebase.</div>';
+                return;
+            }
+            container.innerHTML = '<div class="row g-4" id="gridBox"></div>';
+            const grid = document.getElementById('gridBox');
+            
+            snap.forEach(child => {
+                const item = child.val();
+                let media = '';
+                if(item.type === 'video') {
+                    media = `<div class="ratio ratio-16x9 mb-2 shadow-sm rounded overflow-hidden">
+                                <iframe src="https://www.youtube.com/embed/${item.link}" allowfullscreen></iframe>
+                             </div>`;
+                } else {
+                    media = `<img src="${item.link}" class="img-fluid rounded mb-2 shadow-sm" style="height:200px; width:100%; object-fit:cover;" onclick="window.open('${item.link}', '_blank')">`;
+                }
+                
+                grid.innerHTML += `
+                    <div class="col-md-4 col-sm-6 animate__animated animate__fadeInUp">
+                        <div class="card data-card p-2 h-100 bg-white">
+                            ${media}
+                            <div class="card-body p-1 text-center">
+                                <h6 class="fw-bold mb-1 text-primary">${item.title}</h6>
+                                <p class="small text-muted mb-0">${item.desc || ''}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+        }).catch(e => { container.innerHTML = '<div class="alert alert-danger">خطأ في الاتصال بقاعدة البيانات</div>'; });
+    }
+
+    function doSearch() {
+        const grade = document.getElementById('gS').value;
+        const id = document.getElementById('sI').value;
+        const area = document.getElementById('rA');
+        
         if(!id) { alert("أدخل رقم الجلوس"); return; }
-        resArea.innerHTML = "جاري البحث...";
-        database.ref('results/' + grade + '/' + id).once('value').then(snap => {
-            if(snap.exists()) {
-                const d = snap.val();
-                resArea.innerHTML = `<div class="alert alert-success animate__animated animate__zoomIn p-4 shadow">
-                    <h3 class="fw-bold text-success mb-3">🎊 مبروك النجاح!</h3>
-                    <div class="text-end">
-                        <p>الاسم: <b>${d.name}</b></p><p>الحالة: <b>${d.status}</b></p>
-                        <p class="fs-3 text-danger">المجموع: ${d.total}</p>
-                    </div></div>`;
-            } else { resArea.innerHTML = '<div class="alert alert-danger">رقم الجلوس غير موجود بالصف المختار</div>'; }
+        
+        area.innerHTML = '<div class="spinner-border spinner-border-sm text-primary"></div> جاري البحث...';
+        
+        db.ref('results/' + grade + '/' + id).once('value').then(s => {
+            if(s.exists()){
+                const d = s.val();
+                area.innerHTML = `
+                    <div class="alert alert-success animate__animated animate__zoomIn p-4 border-3 shadow" style="border-style: dashed; border-color: #d4af37;">
+                        <h3 class="fw-bold text-success mb-3">🎊 نبارك للطالب النجاح 🎊</h3>
+                        <div class="text-end">
+                            <p class="fs-5">الاسم: <b class="text-primary">${d.name}</b></p>
+                            <p class="fs-5">الحالة: <span class="badge bg-success">${d.status}</span></p>
+                            <p class="fs-2 text-danger fw-black mt-3 text-center">المجموع: ${d.total}</p>
+                        </div>
+                    </div>`;
+            } else {
+                area.innerHTML = `<div class="alert alert-danger animate__animated animate__shakeX">عفواً.. رقم الجلوس ${id} غير موجود في نتائج هذا الصف.</div>`;
+            }
         });
     }
 </script>
