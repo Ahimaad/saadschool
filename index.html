@@ -48,7 +48,6 @@
         .loading { display: inline-block; width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @media print { .no-print { display: none; } }
-        .pointer { cursor: pointer; }
     </style>
 </head>
 <body>
@@ -71,7 +70,7 @@
 </header>
 
 <div class="container my-5">
-    <!-- القائمة الجانبية + السلايدر في صف واحد -->
+    <!-- القائمة الجانبية + السلايدر -->
     <div class="row g-4 mb-5">
         <div class="col-lg-4" data-aos="fade-left">
             <div class="glass-card">
@@ -83,12 +82,12 @@
         </div>
         <div class="col-lg-8" data-aos="fade-right">
             <div id="carouselNews" class="carousel slide glass-card p-0 overflow-hidden" data-bs-ride="carousel">
-                <div class="carousel-inner" id="newsCarousel">
+                <div class="carousel-inner">
                     <div class="carousel-item active">
                         <img src="https://picsum.photos/id/20/800/400" class="d-block w-100" alt="...">
                         <div class="carousel-caption">
                             <h5>🎉 حفل تكريم المتفوقين</h5>
-                            <p>بحضور مدير الإدارة التعليمية ومدير المدرسة</p>
+                            <p>بحضور مدير الإدارة التعليمية</p>
                         </div>
                     </div>
                     <div class="carousel-item">
@@ -101,8 +100,8 @@
                     <div class="carousel-item">
                         <img src="https://picsum.photos/id/26/800/400" class="d-block w-100" alt="...">
                         <div class="carousel-caption">
-                            <h5>🎨 معرض الفنون والمواهب</h5>
-                            <p>إبداعات طلابنا في التربية الفنية</p>
+                            <h5>🎨 معرض الفنون</h5>
+                            <p>إبداعات طلابنا</p>
                         </div>
                     </div>
                 </div>
@@ -162,12 +161,12 @@
         </div>
     </div>
 
-    <!-- آخر المستجدات + المحتوى الديناميكي -->
+    <!-- آخر المستجدات + المحتوى -->
     <div class="row g-4">
         <div class="col-lg-4">
             <div class="glass-card">
                 <h5><i class="fas fa-bell"></i> 📰 آخر المستجدات</h5>
-                <div id="latestNews">
+                <div>
                     <div class="news-item" onclick="openSection('results')">
                         <i class="fas fa-calendar-alt text-primary"></i>
                         <strong>نتائج الامتحانات</strong>
@@ -176,12 +175,12 @@
                     <div class="news-item" onclick="openSubSection('sports')">
                         <i class="fas fa-trophy text-warning"></i>
                         <strong>مسابقة الروبوتيك</strong>
-                        <small class="d-block text-muted">فوز فريق المدرسة بالمركز الأول على مستوى المحافظة</small>
+                        <small class="d-block text-muted">فوز فريق المدرسة بالمركز الأول</small>
                     </div>
                     <div class="news-item" onclick="openSubSection('arts')">
                         <i class="fas fa-palette text-danger"></i>
                         <strong>معرض الفنون</strong>
-                        <small class="d-block text-muted">افتتاح معرض التربية الفنية الخميس القادم</small>
+                        <small class="d-block text-muted">افتتاح المعرض الخميس القادم</small>
                     </div>
                     <div class="news-item" onclick="openSubSection('radio')">
                         <i class="fas fa-microphone-alt text-success"></i>
@@ -246,35 +245,35 @@
         { code: "s2", name: "الصف الثاني الثانوي" }
     ];
 
-    // الدوال الرئيسية
-    function openSection(section) {
+    // ============= الدوال الرئيسية =============
+    window.openSection = function(section) {
         const container = document.getElementById('dynamicContent');
         
         if (section === 'results') {
             let options = '';
-            gradesList.forEach(g => {
-                options += `<option value="${g.code}">${g.name}</option>`;
-            });
+            for(let i = 0; i < gradesList.length; i++) {
+                options += `<option value="${gradesList[i].code}">${gradesList[i].name}</option>`;
+            }
             container.innerHTML = `
                 <h4 class="mb-3"><i class="fas fa-search"></i> استعلام النتيجة المفصلة</h4>
                 <select id="gradeSelect" class="form-select mb-2">${options}</select>
                 <input type="text" id="seatNumber" class="form-control mb-2" placeholder="رقم الجلوس">
-                <button class="btn btn-primary w-100" onclick="fetchResult()"><i class="fas fa-search"></i> بحث</button>
+                <button class="btn btn-primary w-100" onclick="window.fetchResult()"><i class="fas fa-search"></i> بحث</button>
                 <div id="resultArea" class="mt-4"></div>
             `;
         }
         else if (section === 'gallery') {
             container.innerHTML = `<h4>🖼️ المعارض والمقالات</h4><div id="galleryGrid" class="row mt-3"></div>`;
-            loadGallery();
+            window.loadGallery();
         }
         else if (section === 'stats') {
             container.innerHTML = `<h4>📈 إحصائيات المدرسة</h4><div id="statsBox"></div>`;
-            loadStats();
+            window.loadStats();
         }
         else if (section === 'contact') {
             container.innerHTML = `
                 <h4>✉️ تواصل مع المدرسة</h4>
-                <form onsubmit="sendMessage(event)">
+                <form onsubmit="window.sendMessage(event)">
                     <input type="text" id="contactName" class="form-control mb-2" placeholder="الاسم" required>
                     <input type="email" id="contactEmail" class="form-control mb-2" placeholder="البريد الإلكتروني" required>
                     <textarea id="contactMsg" class="form-control mb-2" rows="3" placeholder="رسالتك" required></textarea>
@@ -282,9 +281,9 @@
                 </form>
             `;
         }
-    }
+    };
 
-    function openSubSection(sub) {
+    window.openSubSection = function(sub) {
         const container = document.getElementById('dynamicContent');
         const titles = {
             arts: '🎨 التربية الفنية - معارض ولوحات طلابية',
@@ -295,9 +294,8 @@
             sports: '⚽ النشاط الرياضي - بطولات ومسابقات'
         };
         
-        container.innerHTML = `<h4>${titles[sub]}</h4><div id="subContent" class="row mt-3"><div class="col-12 text-center"><div class="loading"></div> جاري التحميل...</div></div>`;
+        container.innerHTML = `<h4>${titles[sub] || 'القسم'}</h4><div id="subContent" class="row mt-3"><div class="col-12 text-center"><div class="loading"></div> جاري التحميل...</div></div>`;
         
-        // بيانات تجريبية للأقسام الفرعية
         const demoData = {
             arts: [
                 { title: 'لوحة الحصاد', description: 'لوحة زيتية تعبر عن موسم الحصاد', student: 'فاطمة الزهراء', grade: 'الأول الثانوي', image: 'https://picsum.photos/id/30/400/300' },
@@ -307,7 +305,7 @@
                 { title: 'نشرة أخبار المدرسة', description: 'أحدث أخبار المدرسة لهذا الأسبوع', student: 'فريق الصحافة', grade: '', image: 'https://picsum.photos/id/0/400/300' }
             ],
             talents: [
-                { title: 'الطالب المثالي', description: 'تكريم الطالب أحمد محمد لحصوله على المركز الأول', student: 'أحمد محمد', grade: 'الثالث الإعدادي', image: 'https://picsum.photos/id/91/400/300' }
+                { title: 'الطالب المثالي', description: 'تكريم الطالب أحمد محمد', student: 'أحمد محمد', grade: 'الثالث الإعدادي', image: 'https://picsum.photos/id/91/400/300' }
             ],
             library: [
                 { title: 'مكتبة المدرسة', description: 'أحدث الكتب المتاحة', student: '', grade: '', image: 'https://picsum.photos/id/24/400/300' }
@@ -320,32 +318,33 @@
             ]
         };
         
-        const grid = document.getElementById('subContent');
-        const data = demoData[sub] || [];
-        
-        if (data.length === 0) {
-            grid.innerHTML = '<div class="alert alert-info">لا توجد بيانات حالياً في هذا القسم</div>';
-            return;
-        }
-        
-        grid.innerHTML = '';
-        data.forEach(item => {
-            grid.innerHTML += `
-                <div class="col-md-6 mb-3">
-                    <div class="card h-100">
-                        <img src="${item.image}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                        <div class="card-body">
-                            <h6>${item.title}</h6>
-                            <p class="small text-muted">${item.description || ''}</p>
-                            ${item.student ? `<small><i class="fas fa-user"></i> ${item.student} ${item.grade ? '- ' + item.grade : ''}</small>` : ''}
+        setTimeout(() => {
+            const grid = document.getElementById('subContent');
+            const data = demoData[sub] || [];
+            if (data.length === 0) {
+                grid.innerHTML = '<div class="alert alert-info">لا توجد بيانات حالياً</div>';
+                return;
+            }
+            grid.innerHTML = '';
+            for(let i = 0; i < data.length; i++) {
+                const item = data[i];
+                grid.innerHTML += `
+                    <div class="col-md-6 mb-3">
+                        <div class="card h-100">
+                            <img src="${item.image}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                            <div class="card-body">
+                                <h6>${item.title}</h6>
+                                <p class="small text-muted">${item.description || ''}</p>
+                                ${item.student ? `<small><i class="fas fa-user"></i> ${item.student} ${item.grade ? '- ' + item.grade : ''}</small>` : ''}
+                            </div>
                         </div>
                     </div>
-                </div>
-            `;
-        });
-    }
+                `;
+            }
+        }, 100);
+    };
 
-    function fetchResult() {
+    window.fetchResult = function() {
         const grade = document.getElementById('gradeSelect').value;
         const seat = document.getElementById('seatNumber').value;
         const area = document.getElementById('resultArea');
@@ -357,83 +356,59 @@
         
         area.innerHTML = '<div class="loading"></div> جاري البحث...';
         
-        // بيانات تجريبية للنتائج
-        const demoResult = {
-            name: "أحمد محمد علي",
-            class: "الصف الثاني الإعدادي",
-            subjects: {
-                "اللغة العربية": 85,
-                "اللغة الإنجليزية": 78,
-                "الرياضيات": 92,
-                "العلوم": 88,
-                "الدراسات الاجتماعية": 84,
-                "التربية الفنية": 90,
-                "الحاسب الآلي": 86,
-                "التربية الدينية": 95
-            },
-            total: 698,
-            percentage: 87.25,
-            grade: "جيد جداً"
-        };
-        
+        // بيانات تجريبية
         setTimeout(() => {
+            const demoResult = {
+                name: "أحمد محمد علي",
+                class: "الصف الثاني الإعدادي",
+                subjects: {
+                    "اللغة العربية": 85, "اللغة الإنجليزية": 78, "الرياضيات": 92,
+                    "العلوم": 88, "الدراسات الاجتماعية": 84, "التربية الفنية": 90,
+                    "الحاسب الآلي": 86, "التربية الدينية": 95
+                },
+                total: 698, percentage: 87.25, grade: "جيد جداً"
+            };
             const d = demoResult;
             let subjectsHtml = '';
             let subjectNames = [], subjectScores = [];
-            
-            for (let [sub, score] of Object.entries(d.subjects)) {
-                subjectsHtml += `<div class="subject-item"><span>📘 ${sub}</span><span><strong>${score} درجة</strong></span></div>`;
+            for (let sub in d.subjects) {
+                subjectsHtml += `<div class="subject-item"><span>📘 ${sub}</span><span><strong>${d.subjects[sub]} درجة</strong></span></div>`;
                 subjectNames.push(sub);
-                subjectScores.push(score);
+                subjectScores.push(d.subjects[sub]);
             }
-            
             area.innerHTML = `
                 <div class="result-card">
-                    <div class="text-center">
-                        <img src="logo.jpg" style="width:60px" onerror="this.src='https://via.placeholder.com/60'">
-                        <h5 class="mt-2">${d.name}</h5>
-                        <p>${d.class} - رقم الجلوس: ${seat}</p>
-                    </div>
-                    <hr>
-                    ${subjectsHtml}
-                    <hr>
+                    <div class="text-center"><img src="logo.jpg" style="width:60px"><h5 class="mt-2">${d.name}</h5><p>${d.class} - رقم الجلوس: ${seat}</p></div>
+                    <hr>${subjectsHtml}<hr>
                     <div class="row text-center">
-                        <div class="col-4"><strong>المجموع الكلي</strong><br><span class="fs-5">${d.total}/800</span></div>
+                        <div class="col-4"><strong>المجموع</strong><br><span class="fs-5">${d.total}/800</span></div>
                         <div class="col-4"><strong>النسبة</strong><br><span class="fs-5">${d.percentage}%</span></div>
-                        <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success fs-6">${d.grade}</span></div>
+                        <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success">${d.grade}</span></div>
                     </div>
                     <canvas id="subChart" class="mt-3"></canvas>
-                    <div class="mt-3 text-center no-print">
-                        <button class="btn btn-success btn-sm" onclick="shareWhatsApp('${d.name}',${d.total})"><i class="fab fa-whatsapp"></i> مشاركة</button>
+                    <div class="mt-3 text-center">
+                        <button class="btn btn-success btn-sm" onclick="window.shareWhatsApp('${d.name}',${d.total})"><i class="fab fa-whatsapp"></i> مشاركة</button>
                         <button class="btn btn-secondary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
                     </div>
                 </div>
             `;
-            
             if (subjectNames.length) {
-                const ctx = document.getElementById('subChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: { labels: subjectNames, datasets: [{ label: 'الدرجات', data: subjectScores, backgroundColor: '#d4af37', borderRadius: 10 }] },
-                    options: { responsive: true, maintainAspectRatio: true }
-                });
+                new Chart(document.getElementById('subChart'), { type: 'bar', data: { labels: subjectNames, datasets: [{ label: 'الدرجات', data: subjectScores, backgroundColor: '#d4af37' }] } });
             }
-        }, 500);
-    }
+        }, 300);
+    };
 
-    function loadGallery() {
+    window.loadGallery = function() {
         const container = document.getElementById('galleryGrid');
         container.innerHTML = '<div class="text-center"><div class="loading"></div></div>';
-        
         const demoPosts = [
-            { title: 'معرض الفنون', url: 'https://picsum.photos/id/20/400/300', description: 'لوحات فنية رائعة من إبداع طلابنا', student: 'فاطمة الزهراء', grade: 'الأول الثانوي' },
-            { title: 'الابتكارات العلمية', url: 'https://picsum.photos/id/100/400/300', description: 'مشروع الطاقة الشمسية', student: 'عمر خالد', grade: 'الثالث الإعدادي' },
-            { title: 'يوم التفوق', url: 'https://picsum.photos/id/26/400/300', description: 'تكريم أوائل الطلاب', student: 'إدارة المدرسة', grade: '' }
+            { title: 'معرض الفنون', url: 'https://picsum.photos/id/20/400/300', description: 'لوحات فنية رائعة', student: 'فاطمة الزهراء', grade: 'الأول الثانوي' },
+            { title: 'الابتكارات العلمية', url: 'https://picsum.photos/id/100/400/300', description: 'مشروع الطاقة الشمسية', student: 'عمر خالد', grade: 'الثالث الإعدادي' }
         ];
-        
         setTimeout(() => {
             container.innerHTML = '';
-            demoPosts.forEach(p => {
+            for(let i = 0; i < demoPosts.length; i++) {
+                const p = demoPosts[i];
                 container.innerHTML += `
                     <div class="col-md-6 mb-3">
                         <div class="card h-100">
@@ -441,19 +416,18 @@
                             <div class="card-body">
                                 <h6>${p.title}</h6>
                                 <p class="small">${p.description}</p>
-                                ${p.student ? `<small class="text-muted"><i class="fas fa-user"></i> ${p.student} ${p.grade ? '- ' + p.grade : ''}</small>` : ''}
+                                <small class="text-muted"><i class="fas fa-user"></i> ${p.student} ${p.grade ? '- ' + p.grade : ''}</small>
                             </div>
                         </div>
                     </div>
                 `;
-            });
-        }, 500);
-    }
+            }
+        }, 300);
+    };
 
-    function loadStats() {
+    window.loadStats = function() {
         const container = document.getElementById('statsBox');
         container.innerHTML = '<div class="loading"></div>';
-        
         setTimeout(() => {
             container.innerHTML = `
                 <div class="row">
@@ -463,54 +437,41 @@
                 </div>
                 <canvas id="statsChart" height="150"></canvas>
             `;
-            const ctx = document.getElementById('statsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: { labels: ['المنشورات', 'الرسائل', 'نسبة النجاح'], datasets: [{ label: 'الإحصائيات', data: [15, 8, 94], backgroundColor: '#d4af37' }] }
-            });
-        }, 500);
-    }
+            new Chart(document.getElementById('statsChart'), { type: 'bar', data: { labels: ['المنشورات', 'الرسائل', 'نسبة النجاح'], datasets: [{ label: 'الإحصائيات', data: [15, 8, 94], backgroundColor: '#d4af37' }] } });
+        }, 300);
+    };
 
-    function sendMessage(e) {
+    window.sendMessage = function(e) {
         e.preventDefault();
         Swal.fire('✅ تم الإرسال', 'سيتم الرد عليك قريباً', 'success');
         e.target.reset();
-    }
+    };
 
-    function shareWhatsApp(name, total) {
-        window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total} درجة من مدرسة سعد بن أبي وقاص`, '_blank');
-    }
+    window.shareWhatsApp = function(name, total) {
+        window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total} درجة`, '_blank');
+    };
 
-    function showAdminLogin() {
+    window.showAdminLogin = function() {
         Swal.fire({
             title: 'دخول المشرف',
             input: 'password',
             inputLabel: 'كلمة السر',
-            inputPlaceholder: 'أدخل كلمة السر',
             showCancelButton: true,
             confirmButtonText: 'دخول',
             cancelButtonText: 'إلغاء'
         }).then(res => {
             if (res.value === ADMIN_PASSWORD) {
                 isAdmin = true;
-                Swal.fire('مرحباً مشرف', 'تم الدخول بنجاح', 'success');
-                openSection('gallery');
+                Swal.fire('مرحباً مشرف', '', 'success');
+                window.openSection('gallery');
             } else if (res.value) {
                 Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
             }
         });
-    }
+    };
 
-    // تعريف الدوال في النطاق العام
-    window.openSection = openSection;
-    window.openSubSection = openSubSection;
-    window.fetchResult = fetchResult;
-    window.showAdminLogin = showAdminLogin;
-    window.shareWhatsApp = shareWhatsApp;
-    window.sendMessage = sendMessage;
-    
     // فتح القسم الافتراضي
-    openSection('results');
+    window.openSection('results');
 </script>
 </body>
 </html>
