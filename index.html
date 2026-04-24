@@ -4,94 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>بوابة سعد بن أبي وقاص - النظام المتكامل</title>
-    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        :root { --main-blue: #0a2b4e; --gold: #d4af37; --danger: #dc3545; }
-        body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); overflow-x: hidden; }
-        .main-header { background: linear-gradient(135deg, var(--main-blue), #1e4a76); color: white; padding: 20px 0; border-bottom: 5px solid var(--gold); box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
-        .school-logo { width: 80px; height: 80px; object-fit: contain; border-radius: 50%; border: 3px solid var(--gold); background: white; padding: 5px; transition: 0.3s; }
-        .school-logo:hover { transform: scale(1.05) rotate(5deg); }
-        .glass-card { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 20px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transition: 0.3s; }
-        .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
-        .btn-side { background: white; border: none; border-radius: 15px; padding: 18px; margin-bottom: 15px; width: 100%; text-align: right; font-weight: bold; transition: 0.3s; border-right: 5px solid var(--gold); }
-        .btn-side:hover { background: var(--main-blue); color: var(--gold); transform: translateX(-8px); }
-        .result-card, .post-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        :root { --main-blue: #0a2b4e; --gold: #d4af37; }
+        body { font-family: 'Cairo', sans-serif; background: #f0f4f8; direction: rtl; }
+        .main-header { background: var(--main-blue); color: white; padding: 20px; border-bottom: 5px solid var(--gold); }
+        .school-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gold); background: white; }
+        .glass-card { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .btn-side { background: #f8f9fa; border-radius: 15px; padding: 15px; margin-bottom: 12px; width: 100%; text-align: right; font-weight: bold; border-right: 5px solid var(--gold); transition: 0.3s; }
+        .btn-side:hover { background: var(--main-blue); color: var(--gold); transform: translateX(-5px); }
         .subject-item { background: #f8f9fa; margin: 8px 0; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; }
-        .comment-item { background: #f8f9fa; padding: 12px; border-radius: 12px; margin-top: 10px; border-right: 3px solid var(--gold); position: relative; }
-        .delete-comment { color: var(--danger); cursor: pointer; float: left; font-size: 12px; opacity: 0.6; }
-        .delete-comment:hover { opacity: 1; }
-        .admin-badge { background: var(--gold); color: var(--main-blue); padding: 5px 10px; border-radius: 20px; font-size: 12px; }
-        .gallery-img { cursor: pointer; transition: 0.3s; height: 200px; object-fit: cover; border-radius: 15px; width: 100%; }
-        .gallery-img:hover { transform: scale(1.03); }
-        .btn-gold { background: var(--gold); color: var(--main-blue); font-weight: bold; border: none; }
-        footer { background: var(--main-blue); color: white; padding: 20px; margin-top: 40px; }
-        .loading { display: inline-block; width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media print { .no-print { display: none; } }
+        footer { background: var(--main-blue); color: white; padding: 15px; margin-top: 30px; text-align: center; }
     </style>
 </head>
 <body>
 
 <header class="main-header">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-auto">
-                <img src="logo.jpg" alt="شعار المدرسة" class="school-logo" onerror="this.src='https://via.placeholder.com/80?text=Logo'">
-            </div>
-            <div class="col">
-                <h1 class="display-5 fw-bold mb-0">🏫 مدرسة سعد بن أبي وقاص</h1>
-                <p class="lead mb-0">بوابتك الرقمية المتكاملة - نتائج - أنشطة - تواصل</p>
-            </div>
-            <div class="col-auto">
-                <button class="btn btn-outline-light" onclick="showAdminLogin()"><i class="fas fa-user-shield"></i> المشرف</button>
-            </div>
+    <div class="container d-flex align-items-center gap-3">
+        <img src="logo.jpg" class="school-logo" onerror="this.src='https://via.placeholder.com/80'">
+        <div>
+            <h1 class="fs-3 fw-bold">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
+            <p>نظام النتائج المتكامل - ابتدائي / إعدادي / ثانوي</p>
         </div>
+        <button class="btn btn-outline-light ms-auto" onclick="showAdminLogin()">🔐 مشرف</button>
     </div>
 </header>
 
-<div class="container my-5">
-    <div class="row g-4">
-        <div class="col-lg-4" data-aos="fade-left">
+<div class="container my-4">
+    <div class="row">
+        <div class="col-lg-4">
             <div class="glass-card">
-                <button class="btn-side" onclick="openSection('results')"><i class="fas fa-chart-line fa-fw ms-2"></i> 📊 النتائج المفصلة</button>
-                <button class="btn-side" onclick="openSection('gallery')"><i class="fas fa-images fa-fw ms-2"></i> 🖼️ المعارض والمقالات</button>
-                <button class="btn-side" onclick="openSection('activities')"><i class="fas fa-calendar-alt fa-fw ms-2"></i> 🎪 الأنشطة والفعاليات</button>
-                <button class="btn-side" onclick="openSection('stats')"><i class="fas fa-chart-pie fa-fw ms-2"></i> 📈 الإحصائيات العامة</button>
-                <button class="btn-side" onclick="openSection('contact')"><i class="fas fa-envelope fa-fw ms-2"></i> 📞 تواصل مع المدرسة</button>
+                <button class="btn-side" onclick="openSection('results')">📊 النتائج المفصلة</button>
+                <button class="btn-side" onclick="openSection('gallery')">🖼️ المعارض والمقالات</button>
+                <button class="btn-side" onclick="openSection('stats')">📈 الإحصائيات العامة</button>
+                <button class="btn-side" onclick="openSection('contact')">📞 تواصل مع المدرسة</button>
             </div>
         </div>
-        <div class="col-lg-8" data-aos="fade-right">
-            <div id="dynamicContent" class="glass-card text-center p-5">
-                <div class="loading"></div>
-                <h4 class="mt-3">جاري تحميل البوابة...</h4>
+        <div class="col-lg-8">
+            <div id="dynamicContent" class="glass-card text-center p-4">
+                <i class="fas fa-hand-point-right fa-3x text-primary mb-3"></i>
+                <h5>اختر أحد الأقسام من القائمة الجانبية</h5>
             </div>
         </div>
     </div>
 </div>
 
-<footer class="text-center">
-    <p>© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات - نظام إدارة متكامل على Firebase</p>
+<footer>
+    <p>© 2026 مدرسة سعد بن أبي وقاص - جميع الحقوق محفوظة</p>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-<!-- Firebase Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
 <script>
-    AOS.init();
-
-    // ============= ضع هنا إعدادات Firebase الخاصة بك =============
+    // --------------------- Firebase Config ---------------------
     const firebaseConfig = {
         apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
         authDomain: "saad-school-portal.firebaseapp.com",
@@ -101,457 +73,134 @@
         messagingSenderId: "1085838136773",
         appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
     };
-    
-    // تهيئة Firebase
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    const database = firebase.database();
-    const auth = firebase.auth();
-    
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     let isAdmin = false;
     const ADMIN_PASSWORD = "admin123";
-    
-    // ============= دوال رئيسية =============
-    function showAdminLogin() {
-        Swal.fire({
-            title: 'دخول المشرف',
-            input: 'password',
-            inputLabel: 'كلمة السر',
-            inputPlaceholder: 'أدخل كلمة السر',
-            showCancelButton: true,
-            confirmButtonText: 'دخول',
-            cancelButtonText: 'إلغاء'
-        }).then(res => {
-            if (res.value === ADMIN_PASSWORD) {
-                isAdmin = true;
-                Swal.fire('مرحباً مشرف', 'تم الدخول بنجاح، تظهر لك الآن أزرار الإدارة', 'success');
-                openSection('gallery');
-            } else if (res.value) {
-                Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
-            }
-        });
-    }
-    
+
+    // قائمة الصفوف مع كودها واسمها
+    const gradesList = [
+        { code: "p3", name: "الصف الثالث الابتدائي" }, { code: "p4", name: "الصف الرابع الابتدائي" },
+        { code: "p5", name: "الصف الخامس الابتدائي" }, { code: "p6", name: "الصف السادس الابتدائي" },
+        { code: "m1", name: "الصف الأول الإعدادي" }, { code: "m2", name: "الصف الثاني الإعدادي" },
+        { code: "m3", name: "الصف الثالث الإعدادي" }, { code: "s1", name: "الصف الأول الثانوي" },
+        { code: "s2", name: "الصف الثاني الثانوي" }
+    ];
+
     function openSection(section) {
         const container = document.getElementById('dynamicContent');
-        
         if (section === 'results') {
+            let options = '';
+            gradesList.forEach(g => options += `<option value="${g.code}">${g.name}</option>`);
             container.innerHTML = `
-                <h3 class="mb-4"><i class="fas fa-search"></i> استعلام النتائج المفصلة</h3>
-                <select id="classSelect" class="form-select mb-3">
-                    <option value="p6">الصف السادس الابتدائي</option>
-                    <option value="m3">الصف الثالث الإعدادي</option>
-                    <option value="s3">الصف الثالث الثانوي</option>
-                </select>
-                <input type="text" id="seatNumber" class="form-control mb-3" placeholder="رقم الجلوس">
-                <button class="btn btn-primary mb-4" onclick="searchResult()"><i class="fas fa-search"></i> بحث</button>
-                <div id="resultDetails"></div>
+                <h4 class="mb-3"><i class="fa fa-search"></i> استعلام النتيجة المفصلة</h4>
+                <select id="gradeSelect" class="form-select mb-2">${options}</select>
+                <input type="text" id="seatNum" class="form-control mb-2" placeholder="رقم الجلوس">
+                <button class="btn btn-primary w-100" onclick="fetchResult()">بحث</button>
+                <div id="resultBox" class="mt-4"></div>
             `;
-        } 
-        else if (section === 'gallery') {
-            container.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3><i class="fas fa-camera"></i> المعارض والمقالات</h3>
-                    ${isAdmin ? '<button class="btn btn-gold" onclick="addNewPost()"><i class="fas fa-plus"></i> إضافة منشور</button>' : ''}
-                </div>
-                <div id="postsGrid" class="row"></div>
-            `;
-            loadPosts();
         }
-        else if (section === 'activities') {
-            container.innerHTML = `<h3>📅 الأنشطة القادمة</h3><div id="activitiesList" class="list-group"></div>`;
-            loadActivities();
+        else if (section === 'gallery') {
+            container.innerHTML = `<h4>🖼️ معرض الصور والمقالات</h4><div id="galleryGrid" class="row mt-3"></div>`;
+            loadGallery();
         }
         else if (section === 'stats') {
-            container.innerHTML = `<h3><i class="fas fa-chart-line"></i> إحصائيات المدرسة</h3><div id="statsContainer"></div>`;
+            container.innerHTML = `<h4>📈 إحصائيات المدرسة</h4><div id="statsBox"></div>`;
             loadStats();
         }
         else if (section === 'contact') {
             container.innerHTML = `
-                <h3>✉️ أرسل استفسارك</h3>
-                <form onsubmit="sendMessage(event)">
-                    <input type="text" id="contactName" class="form-control mb-2" placeholder="الاسم" required>
-                    <input type="email" id="contactEmail" class="form-control mb-2" placeholder="البريد الإلكتروني" required>
-                    <textarea id="contactMsg" class="form-control mb-2" rows="4" placeholder="رسالتك..." required></textarea>
-                    <button type="submit" class="btn btn-success"><i class="fas fa-paper-plane"></i> إرسال</button>
-                </form>
+                <h4>✉️ تواصل مع المدرسة</h4>
+                <form onsubmit="sendMessage(event)"><input type="text" id="cName" class="form-control mb-2" placeholder="الاسم" required>
+                <input type="email" id="cEmail" class="form-control mb-2" placeholder="البريد الإلكتروني" required>
+                <textarea id="cMsg" class="form-control mb-2" rows="3" placeholder="رسالتك" required></textarea>
+                <button class="btn btn-success">إرسال</button></form>
             `;
         }
     }
-    
-    // ============= البحث عن النتائج =============
-    function searchResult() {
-        const grade = document.getElementById('classSelect').value;
-        const seat = document.getElementById('seatNumber').value;
-        const container = document.getElementById('resultDetails');
-        
-        if (!seat) {
-            Swal.fire('تنبيه', 'الرجاء إدخال رقم الجلوس', 'warning');
-            return;
-        }
-        
-        container.innerHTML = '<div class="loading"></div> جاري البحث...';
-        
-        database.ref(`results/${grade}/${seat}`).once('value').then(snapshot => {
-            if (snapshot.exists()) {
-                const result = snapshot.val();
-                let subjectsHtml = '';
-                let subjectScores = [];
-                let subjectNames = [];
-                
-                if (result.subjects) {
-                    for (let [subject, score] of Object.entries(result.subjects)) {
-                        subjectsHtml += `<div class='subject-item'><span><i class='fas fa-book-open'></i> ${subject}</span><span class='fw-bold'>${score} درجة</span></div>`;
-                        subjectNames.push(subject);
-                        subjectScores.push(score);
-                    }
-                }
-                
-                container.innerHTML = `
-                    <div class='result-card' id='printArea'>
-                        <div class='text-center mb-3'>
-                            <img src='logo.jpg' style='width:60px;' onerror="this.src='https://via.placeholder.com/60'">
-                            <h4 class='mt-2'>مدرسة سعد بن أبي وقاص</h4>
-                        </div>
-                        <h3 class='text-primary'>👨‍🎓 ${result.name}</h3>
-                        <p><strong>الصف:</strong> ${result.class}</p>
-                        <p><strong>رقم الجلوس:</strong> ${seat}</p>
-                        <hr>
-                        ${subjectsHtml}
-                        <hr>
-                        <div class='row text-center'>
-                            <div class='col-md-4'><strong>المجموع الكلي:</strong><br><span class='fs-4'>${result.total}/1000</span></div>
-                            <div class='col-md-4'><strong>النسبة المئوية:</strong><br><span class='fs-4'>${result.percentage || (result.total/10)}%</span></div>
-                            <div class='col-md-4'><strong>التقدير العام:</strong><br><span class='badge bg-success fs-6'>${result.grade || 'جيد جداً'}</span></div>
-                        </div>
-                        <canvas id='subjectChart' class='mt-4' style='max-height: 300px;'></canvas>
-                        <div class='no-print mt-4 text-center'>
-                            <button class='btn btn-success mx-1' onclick='shareWhatsApp("${result.name}",${result.total})'><i class='fab fa-whatsapp'></i> واتساب</button>
-                            <button class='btn btn-primary mx-1' onclick='shareFacebook()'><i class='fab fa-facebook'></i> فيسبوك</button>
-                            <button class='btn btn-secondary mx-1' onclick='window.print()'><i class='fas fa-print'></i> طباعة</button>
-                        </div>
+
+    // عرض النتيجة بالمفصل - كل المواد حسب الصف
+    function fetchResult() {
+        const grade = document.getElementById('gradeSelect').value;
+        const seat = document.getElementById('seatNum').value;
+        const box = document.getElementById('resultBox');
+        if (!seat) { Swal.fire('تنبيه', 'أدخل رقم الجلوس', 'warning'); return; }
+        box.innerHTML = '<div class="spinner-border text-primary"></div> جاري البحث...';
+
+        db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
+            if (!snap.exists()) { box.innerHTML = '<div class="alert alert-danger">❌ لا توجد نتيجة لهذا الرقم</div>'; return; }
+            const d = snap.val();
+            let subjectsHtml = '';
+            let subjectsNames = [];
+            let subjectsScores = [];
+
+            for (let [sub, score] of Object.entries(d.subjects || {})) {
+                subjectsHtml += `<div class="subject-item"><span>📘 ${sub}</span><span><strong>${score} درجة</strong></span></div>`;
+                subjectsNames.push(sub);
+                subjectsScores.push(score);
+            }
+
+            box.innerHTML = `
+                <div class="result-card p-3 border rounded">
+                    <div class="text-center"><img src="logo.jpg" style="width:60px"><h5>${d.name}</h5><p>${d.class} - رقم الجلوس: ${seat}</p></div>
+                    <hr>${subjectsHtml}<hr>
+                    <div class="row text-center">
+                        <div class="col-4"><strong>المجموع الكلي</strong><br>${d.total}</div>
+                        <div class="col-4"><strong>النسبة المئوية</strong><br>${d.percentage || (d.total/10)}%</div>
+                        <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success">${d.grade || 'جيد جدا'}</span></div>
                     </div>
-                `;
-                
-                if (subjectNames.length > 0) {
-                    const ctx = document.getElementById('subjectChart').getContext('2d');
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: { labels: subjectNames, datasets: [{ label: 'الدرجات', data: subjectScores, backgroundColor: '#d4af37', borderRadius: 10 }] },
-                        options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'top' } } }
-                    });
-                }
-            } else {
-                container.innerHTML = `<div class='alert alert-danger text-center'>❌ عذراً، لا توجد نتائج لرقم الجلوس ${seat}</div>`;
-            }
-        }).catch(error => {
-            console.error(error);
-            container.innerHTML = `<div class='alert alert-danger'>حدث خطأ في الاتصال بقاعدة البيانات</div>`;
-        });
-    }
-    
-    // ============= تحميل المنشورات =============
-    function loadPosts() {
-        const container = document.getElementById('postsGrid');
-        if (!container) return;
-        
-        container.innerHTML = '<div class="text-center"><div class="loading"></div> جاري التحميل...</div>';
-        
-        database.ref('posts').once('value').then(snapshot => {
-            container.innerHTML = '';
-            if (!snapshot.exists()) {
-                container.innerHTML = '<div class="alert alert-info">لا توجد منشورات حالياً</div>';
-                return;
-            }
-            
-            const posts = [];
-            snapshot.forEach(child => { posts.push({ id: child.key, ...child.val() }); });
-            posts.reverse(); // الأحدث أولاً
-            
-            posts.forEach(post => {
-                const commentsHtml = (post.comments || []).map(c => `
-                    <div class='comment-item'>
-                        <strong><i class='fas fa-user-circle'></i> ${c.name || 'زائر'}</strong>
-                        <small class='text-muted float-start'>${c.date || ''}</small>
-                        <p class='mt-2 mb-1'>${c.text}</p>
-                        ${isAdmin ? `<span class='delete-comment' onclick='deleteComment("${post.id}", "${c.id}")'><i class='fas fa-trash-alt'></i> حذف</span>` : ''}
-                    </div>
-                `).join('');
-                
-                if (post.type === 'image') {
-                    container.innerHTML += `
-                        <div class='col-md-6 mb-4' data-aos='fade-up'>
-                            <div class='card h-100 shadow-sm border-0'>
-                                <img src='${post.url}' class='gallery-img' onclick='Swal.fire({imageUrl:"${post.url}", imageAlt:"${post.title}"})'>
-                                <div class='card-body'>
-                                    <h5 class='card-title'>${post.title}</h5>
-                                    <p class='card-text text-muted'>${post.description || ''}</p>
-                                    <small class='text-muted'><i class='fas fa-user-graduate'></i> ${post.student || 'طالب'} - ${post.grade || 'عام'}</small>
-                                    ${post.article ? `<button class='btn btn-sm btn-link' onclick='Swal.fire({title:"المقال", html:"<p>${post.article}</p>"})'><i class='fas fa-newspaper'></i> اقرأ المقال</button>` : ''}
-                                    <hr>
-                                    <div class='comments-section'>
-                                        <strong><i class='fas fa-comments'></i> التعليقات (${post.comments?.length || 0})</strong>
-                                        ${commentsHtml}
-                                        <textarea id='comment-${post.id}' class='form-control mt-2' rows='2' placeholder='اكتب تعليقك...'></textarea>
-                                        <button class='btn btn-sm btn-gold mt-2' onclick='addComment("${post.id}")'><i class='fas fa-paper-plane'></i> أضف تعليقاً</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else if (post.type === 'article') {
-                    container.innerHTML += `
-                        <div class='col-12 mb-4' data-aos='fade-up'>
-                            <div class='card shadow-sm border-0'>
-                                <div class='row g-0'>
-                                    <div class='col-md-3'>
-                                        <img src='${post.image}' class='img-fluid rounded-start' style='height: 180px; width: 100%; object-fit: cover;'>
-                                    </div>
-                                    <div class='col-md-9'>
-                                        <div class='card-body'>
-                                            <h5 class='card-title'>${post.title}</h5>
-                                            <p class='card-text'>${post.content?.substring(0, 200) || ''}...</p>
-                                            <button class='btn btn-outline-primary btn-sm' onclick='Swal.fire({title:"${post.title}", html:"<div class=text-right>${post.content}</div>"})'>اقرأ المزيد</button>
-                                            <hr>
-                                            <div class='comments-section'>
-                                                <strong><i class='fas fa-comments'></i> التعليقات (${post.comments?.length || 0})</strong>
-                                                ${commentsHtml}
-                                                <textarea id='comment-${post.id}' class='form-control mt-2' rows='2' placeholder='اكتب تعليقك...'></textarea>
-                                                <button class='btn btn-sm btn-gold mt-2' onclick='addComment("${post.id}")'><i class='fas fa-paper-plane'></i> أضف تعليقاً</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-        }).catch(error => {
-            console.error(error);
-            container.innerHTML = '<div class="alert alert-danger">خطأ في تحميل المنشورات</div>';
-        });
-    }
-    
-    function addComment(postId) {
-        const textarea = document.getElementById(`comment-${postId}`);
-        const text = textarea.value.trim();
-        
-        if (!text) {
-            Swal.fire('تنبيه', 'الرجاء كتابة تعليق أولاً', 'warning');
-            return;
-        }
-        
-        const newComment = {
-            id: Date.now().toString(),
-            name: 'زائر',
-            text: text,
-            date: new Date().toLocaleString('ar-EG')
-        };
-        
-        database.ref(`posts/${postId}/comments`).push(newComment).then(() => {
-            textarea.value = '';
-            Swal.fire('تم', 'تم إضافة تعليقك بنجاح', 'success');
-            loadPosts();
-        }).catch(error => {
-            Swal.fire('خطأ', 'حدث خطأ في إضافة التعليق', 'error');
-        });
-    }
-    
-    function deleteComment(postId, commentId) {
-        Swal.fire({
-            title: 'تأكيد الحذف',
-            text: 'هل أنت متأكد من حذف هذا التعليق؟',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'نعم، احذف',
-            cancelButtonText: 'إلغاء'
-        }).then(result => {
-            if (result.isConfirmed) {
-                database.ref(`posts/${postId}/comments/${commentId}`).remove().then(() => {
-                    Swal.fire('تم الحذف', '', 'success');
-                    loadPosts();
-                }).catch(error => {
-                    Swal.fire('خطأ', 'حدث خطأ في الحذف', 'error');
-                });
-            }
-        });
-    }
-    
-    function addNewPost() {
-        Swal.fire({
-            title: 'إضافة منشور جديد',
-            html: `
-                <select id="postType" class="swal2-select mb-2">
-                    <option value="image">📷 صورة</option>
-                    <option value="article">📝 مقال</option>
-                </select>
-                <input id="postTitle" class="swal2-input" placeholder="العنوان" required>
-                <textarea id="postContent" class="swal2-textarea" placeholder="الوصف أو المحتوى"></textarea>
-                <input id="postUrl" class="swal2-input" placeholder="رابط الصورة">
-            `,
-            showCancelButton: true,
-            confirmButtonText: 'نشر',
-            cancelButtonText: 'إلغاء',
-            preConfirm: () => {
-                const type = document.getElementById('postType').value;
-                const newPost = {
-                    type: type,
-                    title: document.getElementById('postTitle').value,
-                    comments: [],
-                    date: new Date().toISOString()
-                };
-                
-                if (type === 'image') {
-                    newPost.url = document.getElementById('postUrl').value;
-                    newPost.description = document.getElementById('postContent').value;
-                    newPost.student = 'طالب';
-                    newPost.grade = 'عام';
-                } else {
-                    newPost.content = document.getElementById('postContent').value;
-                    newPost.image = document.getElementById('postUrl').value;
-                }
-                
-                if (!newPost.title) {
-                    Swal.showValidationMessage('الرجاء إدخال العنوان');
-                    return false;
-                }
-                
-                return database.ref('posts').push(newPost).then(() => {
-                    Swal.fire('تم النشر', 'تم إضافة المنشور بنجاح', 'success');
-                    loadPosts();
-                }).catch(error => {
-                    Swal.showValidationMessage('خطأ في النشر');
-                });
-            }
-        });
-    }
-    
-    function loadActivities() {
-        const container = document.getElementById('activitiesList');
-        container.innerHTML = '<div class="loading"></div>';
-        
-        database.ref('activities').once('value').then(snapshot => {
-            container.innerHTML = '';
-            if (!snapshot.exists()) {
-                container.innerHTML = '<div class="alert alert-info">لا توجد أنشطة حالياً</div>';
-                return;
-            }
-            
-            snapshot.forEach(child => {
-                const act = child.val();
-                container.innerHTML += `<li class='list-group-item'><i class='fas fa-calendar-day text-primary'></i> ${act.title} - ${act.date || ''}</li>`;
-            });
-        }).catch(() => {
-            container.innerHTML = '<div class="alert alert-info">🏃 يوم الرياضيات: 10 أبريل<br>🎙️ مسابقة القرآن: 15 أبريل<br>🤖 معرض التكنولوجيا: 20 أبريل</div>';
-        });
-    }
-    
-    function loadStats() {
-        const container = document.getElementById('statsContainer');
-        container.innerHTML = '<div class="loading"></div>';
-        
-        Promise.all([
-            database.ref('posts').once('value'),
-            database.ref('messages').once('value'),
-            database.ref('results').once('value')
-        ]).then(([postsSnap, messagesSnap, resultsSnap]) => {
-            const postsCount = postsSnap.numChildren();
-            let commentsCount = 0;
-            postsSnap.forEach(post => { commentsCount += (post.val().comments?.length || 0); });
-            const messagesCount = messagesSnap.numChildren();
-            
-            container.innerHTML = `
-                <div class="row">
-                    <div class="col-md-4 mb-3"><div class="card text-center p-3 border-0 shadow-sm"><h2 class="text-primary">${postsCount}</h2><p>المنشورات</p></div></div>
-                    <div class="col-md-4 mb-3"><div class="card text-center p-3 border-0 shadow-sm"><h2 class="text-success">${commentsCount}</h2><p>التعليقات</p></div></div>
-                    <div class="col-md-4 mb-3"><div class="card text-center p-3 border-0 shadow-sm"><h2 class="text-warning">${messagesCount}</h2><p>الرسائل</p></div></div>
+                    <canvas id="subChart" class="mt-3"></canvas>
+                    <div class="mt-3 text-center"><button class="btn btn-success btn-sm" onclick="window.print()">🖨️ طباعة</button></div>
                 </div>
-                <canvas id="statsChart"></canvas>
-                <div class="alert alert-info mt-3 text-center">📊 نسبة النجاح الإجمالية: <strong>94.5%</strong></div>
             `;
-            
-            const ctx = document.getElementById('statsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: { labels: ['المنشورات', 'التعليقات', 'الرسائل'], datasets: [{ label: 'الإحصائيات', data: [postsCount, commentsCount, messagesCount], backgroundColor: '#d4af37' }] },
-                options: { responsive: true }
-            });
-        }).catch(() => {
-            container.innerHTML = '<div class="alert alert-info text-center">عدد الطلاب: 1250+<br>نسبة النجاح: 94.5%<br>الفائزون بالمسابقات: 45 طالباً</div>';
+            if (subjectsNames.length) {
+                new Chart(document.getElementById('subChart'), { type: 'bar', data: { labels: subjectsNames, datasets: [{ label: 'الدرجات', data: subjectsScores, backgroundColor: '#d4af37' }] } });
+            }
         });
     }
-    
+
+    function loadGallery() {
+        const container = document.getElementById('galleryGrid');
+        container.innerHTML = '<div class="spinner-border"></div>';
+        db.ref('posts').once('value').then(snap => {
+            container.innerHTML = '';
+            if (!snap.exists()) { container.innerHTML = '<div class="alert alert-info">لا توجد صور أو مقالات بعد</div>'; return; }
+            snap.forEach(child => {
+                let p = child.val();
+                container.innerHTML += `<div class="col-md-6 mb-3"><div class="card"><img src="${p.url || p.image}" class="card-img-top" style="height:180px; object-fit:cover"><div class="card-body"><h6>${p.title}</h6><p>${p.description || p.content?.substring(0,80)}</p><small class="text-muted">👤 ${p.student || 'طالب'} - ${p.grade || 'عام'}</small></div></div></div>`;
+            });
+        });
+    }
+
+    function loadStats() {
+        const container = document.getElementById('statsBox');
+        container.innerHTML = '<div class="spinner-border"></div>';
+        Promise.all([db.ref('posts').once('value'), db.ref('messages').once('value')]).then(([postsSnap, msgSnap]) => {
+            container.innerHTML = `<div class="row"><div class="col-md-6"><div class="alert alert-primary">📄 المنشورات: ${postsSnap.numChildren()}</div></div><div class="col-md-6"><div class="alert alert-success">💬 الرسائل: ${msgSnap.numChildren()}</div></div></div><div class="alert alert-warning">📊 نسبة النجاح الإجمالية: 94%</div>`;
+        });
+    }
+
     function sendMessage(e) {
         e.preventDefault();
-        const name = document.getElementById('contactName').value;
-        const email = document.getElementById('contactEmail').value;
-        const message = document.getElementById('contactMsg').value;
-        
-        const msgData = { name, email, message, date: new Date().toLocaleString('ar-EG') };
-        
-        database.ref('messages').push(msgData).then(() => {
-            Swal.fire('✅ تم الإرسال', 'سيتم الرد عليك قريباً', 'success');
-            e.target.reset();
-        }).catch(() => {
-            Swal.fire('تم الإرسال', 'شكراً لتواصلك مع المدرسة', 'success');
-            e.target.reset();
+        db.ref('messages').push({ name: document.getElementById('cName').value, email: document.getElementById('cEmail').value, message: document.getElementById('cMsg').value, date: new Date().toLocaleString() });
+        Swal.fire('✅ تم الإرسال', 'سيتم الرد عليك قريباً', 'success');
+        e.target.reset();
+    }
+
+    function showAdminLogin() {
+        Swal.fire({ title: 'دخول المشرف', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true }).then(res => {
+            if (res.value === ADMIN_PASSWORD) { isAdmin = true; Swal.fire('مرحباً مشرف', '', 'success'); openSection('gallery'); }
+            else if (res.value) Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
         });
     }
-    
-    function shareWhatsApp(name, total) {
-        window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total}/1000 درجة من مدرسة سعد بن أبي وقاص`, '_blank');
-    }
-    
-    function shareFacebook() {
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`, '_blank');
-    }
-    
-    // ============= تحميل البيانات الافتراضية إذا كانت قاعدة البيانات فارغة =============
-    function initializeDefaultData() {
-        database.ref('posts').once('value').then(snapshot => {
-            if (!snapshot.exists()) {
-                const defaultPosts = [
-                    { type: 'image', title: 'معرض الفنون', url: 'https://picsum.photos/id/20/400/300', description: 'لوحات فنية رائعة من إبداع طلابنا', student: 'فاطمة الزهراء', grade: 'الأول الثانوي', article: 'أبدع طلاب الموهوبين في معرض الفنون السنوي', comments: [], date: new Date().toISOString() },
-                    { type: 'image', title: 'الابتكارات العلمية', url: 'https://picsum.photos/id/100/400/300', description: 'مشروع الطاقة الشمسية', student: 'عمر خالد', grade: 'الثالث الإعدادي', article: 'فاز مشروع الطاقة الشمسية بالمركز الأول', comments: [], date: new Date().toISOString() },
-                    { type: 'article', title: 'يوم التفوق العلمي', content: 'تم تكريم 50 طالباً من المتفوقين بحضور مدير الإدارة التعليمية ومدير المدرسة. وقد أعرب الحضور عن سعادتهم بهذا الإنجاز.', image: 'https://picsum.photos/id/26/400/300', comments: [], date: new Date().toISOString() }
-                ];
-                defaultPosts.forEach(post => database.ref('posts').push(post));
-            }
-        });
-        
-        database.ref('results/p6/2024001').once('value').then(snapshot => {
-            if (!snapshot.exists()) {
-                const defaultResult = {
-                    name: 'أحمد سمير',
-                    class: 'الصف السادس الابتدائي',
-                    subjects: { 'اللغة العربية': 85, 'اللغة الإنجليزية': 78, 'الرياضيات': 92, 'العلوم': 88, 'الدراسات': 84 },
-                    total: 427,
-                    percentage: 85.4,
-                    grade: 'جيد جداً'
-                };
-                database.ref('results/p6/2024001').set(defaultResult);
-            }
-        });
-    }
-    
-    // بدء التطبيق
-    setTimeout(() => {
-        initializeDefaultData();
-        openSection('gallery');
-    }, 500);
-    
+
     window.openSection = openSection;
-    window.searchResult = searchResult;
-    window.addComment = addComment;
-    window.deleteComment = deleteComment;
-    window.addNewPost = addNewPost;
+    window.fetchResult = fetchResult;
     window.showAdminLogin = showAdminLogin;
-    window.shareWhatsApp = shareWhatsApp;
-    window.shareFacebook = shareFacebook;
     window.sendMessage = sendMessage;
-    window.loadPosts = loadPosts;
+
+    openSection('results');
 </script>
 </body>
 </html>
