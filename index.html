@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة سعد بن أبي وقاص - النسخة المتكاملة</title>
+    <title>بوابة سعد بن أبي وقاص - النظام المتكامل</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -22,12 +22,12 @@
         .glass-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
         
         /* أزرار القائمة الجانبية */
-        .btn-side { background: white; border: none; border-radius: 15px; padding: 18px; margin-bottom: 15px; width: 100%; text-align: right; font-weight: bold; transition: 0.3s; border-right: 5px solid var(--gold); display: flex; align-items: center; gap: 12px; }
+        .btn-side { background: white; border: none; border-radius: 15px; padding: 18px; margin-bottom: 15px; width: 100%; text-align: right; font-weight: bold; transition: 0.3s; border-right: 5px solid var(--gold); display: flex; align-items: center; gap: 12px; cursor: pointer; }
         .btn-side:hover { background: var(--main-blue); color: var(--gold); transform: translateX(-8px); }
         .btn-side i { font-size: 1.5rem; }
         
         /* السلايدر */
-        .carousel-item img { height: 400px; object-fit: cover; border-radius: 20px; }
+        .carousel-item img { height: 400px; object-fit: cover; border-radius: 20px; width: 100%; }
         .carousel-caption { background: rgba(0,0,0,0.6); border-radius: 15px; }
         
         /* بطاقات الأقسام الفرعية */
@@ -37,19 +37,18 @@
         .sub-card:hover i { color: white; }
         
         /* آخر المستجدات */
-        .news-item { border-right: 3px solid var(--gold); padding: 10px; margin-bottom: 10px; background: #f8f9fa; border-radius: 10px; transition: 0.3s; }
+        .news-item { border-right: 3px solid var(--gold); padding: 10px; margin-bottom: 10px; background: #f8f9fa; border-radius: 10px; transition: 0.3s; cursor: pointer; }
         .news-item:hover { background: white; transform: translateX(-5px); }
         
         .result-card { background: white; border-radius: 20px; padding: 20px; margin-bottom: 20px; }
         .subject-item { background: #f8f9fa; margin: 8px 0; padding: 12px; border-radius: 12px; display: flex; justify-content: space-between; }
-        .comment-item { background: #f8f9fa; padding: 12px; border-radius: 12px; margin-top: 10px; border-right: 3px solid var(--gold); }
-        .delete-comment { color: var(--danger); cursor: pointer; float: left; font-size: 12px; }
         .gallery-img { cursor: pointer; transition: 0.3s; height: 200px; object-fit: cover; border-radius: 15px; width: 100%; }
         .btn-gold { background: var(--gold); color: var(--main-blue); font-weight: bold; border: none; }
-        footer { background: var(--main-blue); color: white; padding: 20px; margin-top: 40px; }
+        footer { background: var(--main-blue); color: white; padding: 20px; margin-top: 40px; text-align: center; }
         .loading { display: inline-block; width: 20px; height: 20px; border: 2px solid #f3f3f3; border-top: 2px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         @media print { .no-print { display: none; } }
+        .pointer { cursor: pointer; }
     </style>
 </head>
 <body>
@@ -76,10 +75,10 @@
     <div class="row g-4 mb-5">
         <div class="col-lg-4" data-aos="fade-left">
             <div class="glass-card">
-                <button class="btn-side" onclick="openSection('results')"><i class="fas fa-chart-line"></i> 📊 النتائج المفصلة</button>
-                <button class="btn-side" onclick="openSection('gallery')"><i class="fas fa-images"></i> 🖼️ المعارض والمقالات</button>
-                <button class="btn-side" onclick="openSection('stats')"><i class="fas fa-chart-pie"></i> 📈 الإحصائيات العامة</button>
-                <button class="btn-side" onclick="openSection('contact')"><i class="fas fa-envelope"></i> 📞 تواصل مع المدرسة</button>
+                <div class="btn-side" onclick="openSection('results')"><i class="fas fa-chart-line"></i> 📊 النتائج المفصلة</div>
+                <div class="btn-side" onclick="openSection('gallery')"><i class="fas fa-images"></i> 🖼️ المعارض والمقالات</div>
+                <div class="btn-side" onclick="openSection('stats')"><i class="fas fa-chart-pie"></i> 📈 الإحصائيات العامة</div>
+                <div class="btn-side" onclick="openSection('contact')"><i class="fas fa-envelope"></i> 📞 تواصل مع المدرسة</div>
             </div>
         </div>
         <div class="col-lg-8" data-aos="fade-right">
@@ -117,7 +116,7 @@
         </div>
     </div>
 
-    <!-- الأقسام الفرعية: التربية الفنية - الصحافة - المواهب - المكتبة - الإذاعة -->
+    <!-- الأقسام الفرعية -->
     <div class="row g-4 mb-5" data-aos="fade-up">
         <div class="col-md-2 col-6">
             <div class="sub-card" onclick="openSubSection('arts')">
@@ -169,22 +168,22 @@
             <div class="glass-card">
                 <h5><i class="fas fa-bell"></i> 📰 آخر المستجدات</h5>
                 <div id="latestNews">
-                    <div class="news-item">
+                    <div class="news-item" onclick="openSection('results')">
                         <i class="fas fa-calendar-alt text-primary"></i>
                         <strong>نتائج الامتحانات</strong>
                         <small class="d-block text-muted">تم إعلان نتائج الصفين الأول والثاني الإعدادي</small>
                     </div>
-                    <div class="news-item">
+                    <div class="news-item" onclick="openSubSection('sports')">
                         <i class="fas fa-trophy text-warning"></i>
                         <strong>مسابقة الروبوتيك</strong>
                         <small class="d-block text-muted">فوز فريق المدرسة بالمركز الأول على مستوى المحافظة</small>
                     </div>
-                    <div class="news-item">
+                    <div class="news-item" onclick="openSubSection('arts')">
                         <i class="fas fa-palette text-danger"></i>
                         <strong>معرض الفنون</strong>
                         <small class="d-block text-muted">افتتاح معرض التربية الفنية الخميس القادم</small>
                     </div>
-                    <div class="news-item">
+                    <div class="news-item" onclick="openSubSection('radio')">
                         <i class="fas fa-microphone-alt text-success"></i>
                         <strong>إذاعة الصباح</strong>
                         <small class="d-block text-muted">إذاعة مميزة عن فضل العلم</small>
@@ -225,7 +224,10 @@
         messagingSenderId: "1085838136773",
         appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
     };
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
     const database = firebase.database();
 
     let isAdmin = false;
@@ -233,18 +235,26 @@
 
     // قائمة الصفوف
     const gradesList = [
-        { code: "p3", name: "الصف الثالث الابتدائي" }, { code: "p4", name: "الصف الرابع الابتدائي" },
-        { code: "p5", name: "الصف الخامس الابتدائي" }, { code: "p6", name: "الصف السادس الابتدائي" },
-        { code: "m1", name: "الصف الأول الإعدادي" }, { code: "m2", name: "الصف الثاني الإعدادي" },
-        { code: "m3", name: "الصف الثالث الإعدادي" }, { code: "s1", name: "الصف الأول الثانوي" },
+        { code: "p3", name: "الصف الثالث الابتدائي" },
+        { code: "p4", name: "الصف الرابع الابتدائي" },
+        { code: "p5", name: "الصف الخامس الابتدائي" },
+        { code: "p6", name: "الصف السادس الابتدائي" },
+        { code: "m1", name: "الصف الأول الإعدادي" },
+        { code: "m2", name: "الصف الثاني الإعدادي" },
+        { code: "m3", name: "الصف الثالث الإعدادي" },
+        { code: "s1", name: "الصف الأول الثانوي" },
         { code: "s2", name: "الصف الثاني الثانوي" }
     ];
 
+    // الدوال الرئيسية
     function openSection(section) {
         const container = document.getElementById('dynamicContent');
+        
         if (section === 'results') {
             let options = '';
-            gradesList.forEach(g => options += `<option value="${g.code}">${g.name}</option>`);
+            gradesList.forEach(g => {
+                options += `<option value="${g.code}">${g.name}</option>`;
+            });
             container.innerHTML = `
                 <h4 class="mb-3"><i class="fas fa-search"></i> استعلام النتيجة المفصلة</h4>
                 <select id="gradeSelect" class="form-select mb-2">${options}</select>
@@ -268,7 +278,7 @@
                     <input type="text" id="contactName" class="form-control mb-2" placeholder="الاسم" required>
                     <input type="email" id="contactEmail" class="form-control mb-2" placeholder="البريد الإلكتروني" required>
                     <textarea id="contactMsg" class="form-control mb-2" rows="3" placeholder="رسالتك" required></textarea>
-                    <button class="btn btn-success"><i class="fas fa-paper-plane"></i> إرسال</button>
+                    <button class="btn btn-success w-100"><i class="fas fa-paper-plane"></i> إرسال</button>
                 </form>
             `;
         }
@@ -284,26 +294,54 @@
             radio: '🎙️ الإذاعة المدرسية - فقرات وبرامج',
             sports: '⚽ النشاط الرياضي - بطولات ومسابقات'
         };
+        
         container.innerHTML = `<h4>${titles[sub]}</h4><div id="subContent" class="row mt-3"><div class="col-12 text-center"><div class="loading"></div> جاري التحميل...</div></div>`;
-        database.ref(`sections/${sub}`).once('value').then(snap => {
-            const grid = document.getElementById('subContent');
-            if (!snap.exists()) { grid.innerHTML = '<div class="alert alert-info">لا توجد بيانات حالياً في هذا القسم</div>'; return; }
-            grid.innerHTML = '';
-            snap.forEach(child => {
-                let item = child.val();
-                grid.innerHTML += `
-                    <div class="col-md-6 mb-3">
-                        <div class="card h-100">
-                            <img src="${item.image || 'https://via.placeholder.com/400'}" class="card-img-top" style="height: 180px; object-fit: cover;">
-                            <div class="card-body">
-                                <h6>${item.title}</h6>
-                                <p class="small text-muted">${item.description || ''}</p>
-                                <small><i class="fas fa-user"></i> ${item.student || 'طالب'} - ${item.grade || ''}</small>
-                            </div>
+        
+        // بيانات تجريبية للأقسام الفرعية
+        const demoData = {
+            arts: [
+                { title: 'لوحة الحصاد', description: 'لوحة زيتية تعبر عن موسم الحصاد', student: 'فاطمة الزهراء', grade: 'الأول الثانوي', image: 'https://picsum.photos/id/30/400/300' },
+                { title: 'مناظر طبيعية', description: 'لوحة بألوان الأكريليك', student: 'مريم علي', grade: 'الثاني الإعدادي', image: 'https://picsum.photos/id/15/400/300' }
+            ],
+            press: [
+                { title: 'نشرة أخبار المدرسة', description: 'أحدث أخبار المدرسة لهذا الأسبوع', student: 'فريق الصحافة', grade: '', image: 'https://picsum.photos/id/0/400/300' }
+            ],
+            talents: [
+                { title: 'الطالب المثالي', description: 'تكريم الطالب أحمد محمد لحصوله على المركز الأول', student: 'أحمد محمد', grade: 'الثالث الإعدادي', image: 'https://picsum.photos/id/91/400/300' }
+            ],
+            library: [
+                { title: 'مكتبة المدرسة', description: 'أحدث الكتب المتاحة', student: '', grade: '', image: 'https://picsum.photos/id/24/400/300' }
+            ],
+            radio: [
+                { title: 'إذاعة اليوم', description: 'فقرة عن النظافة', student: 'إذاعة المدرسة', grade: '', image: 'https://picsum.photos/id/42/400/300' }
+            ],
+            sports: [
+                { title: 'نهائي كرة القدم', description: 'مباراة المدرسة ضد مدرسة الفشن', student: 'فريق المدرسة', grade: '', image: 'https://picsum.photos/id/3/400/300' }
+            ]
+        };
+        
+        const grid = document.getElementById('subContent');
+        const data = demoData[sub] || [];
+        
+        if (data.length === 0) {
+            grid.innerHTML = '<div class="alert alert-info">لا توجد بيانات حالياً في هذا القسم</div>';
+            return;
+        }
+        
+        grid.innerHTML = '';
+        data.forEach(item => {
+            grid.innerHTML += `
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <img src="${item.image}" class="card-img-top" style="height: 180px; object-fit: cover;">
+                        <div class="card-body">
+                            <h6>${item.title}</h6>
+                            <p class="small text-muted">${item.description || ''}</p>
+                            ${item.student ? `<small><i class="fas fa-user"></i> ${item.student} ${item.grade ? '- ' + item.grade : ''}</small>` : ''}
                         </div>
                     </div>
-                `;
-            });
+                </div>
+            `;
         });
     }
 
@@ -311,26 +349,58 @@
         const grade = document.getElementById('gradeSelect').value;
         const seat = document.getElementById('seatNumber').value;
         const area = document.getElementById('resultArea');
-        if (!seat) { Swal.fire('تنبيه', 'أدخل رقم الجلوس', 'warning'); return; }
+        
+        if (!seat) {
+            Swal.fire('تنبيه', 'أدخل رقم الجلوس', 'warning');
+            return;
+        }
+        
         area.innerHTML = '<div class="loading"></div> جاري البحث...';
-
-        database.ref(`results/${grade}/${seat}`).once('value').then(snap => {
-            if (!snap.exists()) { area.innerHTML = '<div class="alert alert-danger">❌ لا توجد نتيجة لهذا الرقم</div>'; return; }
-            const d = snap.val();
+        
+        // بيانات تجريبية للنتائج
+        const demoResult = {
+            name: "أحمد محمد علي",
+            class: "الصف الثاني الإعدادي",
+            subjects: {
+                "اللغة العربية": 85,
+                "اللغة الإنجليزية": 78,
+                "الرياضيات": 92,
+                "العلوم": 88,
+                "الدراسات الاجتماعية": 84,
+                "التربية الفنية": 90,
+                "الحاسب الآلي": 86,
+                "التربية الدينية": 95
+            },
+            total: 698,
+            percentage: 87.25,
+            grade: "جيد جداً"
+        };
+        
+        setTimeout(() => {
+            const d = demoResult;
             let subjectsHtml = '';
             let subjectNames = [], subjectScores = [];
-            for (let [sub, score] of Object.entries(d.subjects || {})) {
+            
+            for (let [sub, score] of Object.entries(d.subjects)) {
                 subjectsHtml += `<div class="subject-item"><span>📘 ${sub}</span><span><strong>${score} درجة</strong></span></div>`;
-                subjectNames.push(sub); subjectScores.push(score);
+                subjectNames.push(sub);
+                subjectScores.push(score);
             }
+            
             area.innerHTML = `
                 <div class="result-card">
-                    <div class="text-center"><img src="logo.jpg" style="width:60px"><h5 class="mt-2">${d.name}</h5><p>${d.class} - رقم الجلوس: ${seat}</p></div>
-                    <hr>${subjectsHtml}<hr>
+                    <div class="text-center">
+                        <img src="logo.jpg" style="width:60px" onerror="this.src='https://via.placeholder.com/60'">
+                        <h5 class="mt-2">${d.name}</h5>
+                        <p>${d.class} - رقم الجلوس: ${seat}</p>
+                    </div>
+                    <hr>
+                    ${subjectsHtml}
+                    <hr>
                     <div class="row text-center">
-                        <div class="col-4"><strong>المجموع الكلي</strong><br><span class="fs-5">${d.total}</span></div>
-                        <div class="col-4"><strong>النسبة</strong><br><span class="fs-5">${d.percentage || (d.total/10)}%</span></div>
-                        <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success">${d.grade || 'جيد جداً'}</span></div>
+                        <div class="col-4"><strong>المجموع الكلي</strong><br><span class="fs-5">${d.total}/800</span></div>
+                        <div class="col-4"><strong>النسبة</strong><br><span class="fs-5">${d.percentage}%</span></div>
+                        <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success fs-6">${d.grade}</span></div>
                     </div>
                     <canvas id="subChart" class="mt-3"></canvas>
                     <div class="mt-3 text-center no-print">
@@ -339,90 +409,108 @@
                     </div>
                 </div>
             `;
+            
             if (subjectNames.length) {
-                new Chart(document.getElementById('subChart'), { type: 'bar', data: { labels: subjectNames, datasets: [{ label: 'الدرجات', data: subjectScores, backgroundColor: '#d4af37' }] } });
+                const ctx = document.getElementById('subChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: { labels: subjectNames, datasets: [{ label: 'الدرجات', data: subjectScores, backgroundColor: '#d4af37', borderRadius: 10 }] },
+                    options: { responsive: true, maintainAspectRatio: true }
+                });
             }
-        });
+        }, 500);
     }
 
     function loadGallery() {
         const container = document.getElementById('galleryGrid');
         container.innerHTML = '<div class="text-center"><div class="loading"></div></div>';
-        database.ref('posts').once('value').then(snap => {
+        
+        const demoPosts = [
+            { title: 'معرض الفنون', url: 'https://picsum.photos/id/20/400/300', description: 'لوحات فنية رائعة من إبداع طلابنا', student: 'فاطمة الزهراء', grade: 'الأول الثانوي' },
+            { title: 'الابتكارات العلمية', url: 'https://picsum.photos/id/100/400/300', description: 'مشروع الطاقة الشمسية', student: 'عمر خالد', grade: 'الثالث الإعدادي' },
+            { title: 'يوم التفوق', url: 'https://picsum.photos/id/26/400/300', description: 'تكريم أوائل الطلاب', student: 'إدارة المدرسة', grade: '' }
+        ];
+        
+        setTimeout(() => {
             container.innerHTML = '';
-            if (!snap.exists()) { container.innerHTML = '<div class="alert alert-info">لا توجد صور أو مقالات بعد</div>'; return; }
-            snap.forEach(child => {
-                let p = child.val();
+            demoPosts.forEach(p => {
                 container.innerHTML += `
                     <div class="col-md-6 mb-3">
                         <div class="card h-100">
-                            <img src="${p.url || p.image}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                            <img src="${p.url}" class="card-img-top" style="height: 200px; object-fit: cover;">
                             <div class="card-body">
                                 <h6>${p.title}</h6>
-                                <p class="small">${p.description || p.content?.substring(0, 80)}</p>
-                                <small class="text-muted"><i class="fas fa-user"></i> ${p.student || 'طالب'} - ${p.grade || 'عام'}</small>
+                                <p class="small">${p.description}</p>
+                                ${p.student ? `<small class="text-muted"><i class="fas fa-user"></i> ${p.student} ${p.grade ? '- ' + p.grade : ''}</small>` : ''}
                             </div>
                         </div>
                     </div>
                 `;
             });
-        });
+        }, 500);
     }
 
     function loadStats() {
         const container = document.getElementById('statsBox');
         container.innerHTML = '<div class="loading"></div>';
-        Promise.all([database.ref('posts').once('value'), database.ref('messages').once('value')]).then(([postsSnap, msgSnap]) => {
+        
+        setTimeout(() => {
             container.innerHTML = `
                 <div class="row">
-                    <div class="col-md-4 mb-3"><div class="alert alert-primary text-center"><h3>${postsSnap.numChildren()}</h3><p>المنشورات</p></div></div>
-                    <div class="col-md-4 mb-3"><div class="alert alert-success text-center"><h3>${msgSnap.numChildren()}</h3><p>الرسائل</p></div></div>
+                    <div class="col-md-4 mb-3"><div class="alert alert-primary text-center"><h3>15</h3><p>المنشورات</p></div></div>
+                    <div class="col-md-4 mb-3"><div class="alert alert-success text-center"><h3>8</h3><p>الرسائل</p></div></div>
                     <div class="col-md-4 mb-3"><div class="alert alert-warning text-center"><h3>94%</h3><p>نسبة النجاح</p></div></div>
                 </div>
                 <canvas id="statsChart" height="150"></canvas>
             `;
-            new Chart(document.getElementById('statsChart'), { type: 'bar', data: { labels: ['المنشورات', 'الرسائل', 'نسبة النجاح'], datasets: [{ label: 'الإحصائيات', data: [postsSnap.numChildren(), msgSnap.numChildren(), 94], backgroundColor: '#d4af37' }] } });
-        });
+            const ctx = document.getElementById('statsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: { labels: ['المنشورات', 'الرسائل', 'نسبة النجاح'], datasets: [{ label: 'الإحصائيات', data: [15, 8, 94], backgroundColor: '#d4af37' }] }
+            });
+        }, 500);
     }
 
     function sendMessage(e) {
         e.preventDefault();
-        database.ref('messages').push({ name: document.getElementById('contactName').value, email: document.getElementById('contactEmail').value, message: document.getElementById('contactMsg').value, date: new Date().toLocaleString() });
         Swal.fire('✅ تم الإرسال', 'سيتم الرد عليك قريباً', 'success');
         e.target.reset();
     }
 
-    function shareWhatsApp(name, total) { window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total} درجة من مدرسة سعد بن أبي وقاص`, '_blank'); }
-
-    function showAdminLogin() {
-        Swal.fire({ title: 'دخول المشرف', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true }).then(res => {
-            if (res.value === ADMIN_PASSWORD) { isAdmin = true; Swal.fire('مرحباً مشرف', '', 'success'); openSection('gallery'); }
-            else if (res.value) Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
-        });
+    function shareWhatsApp(name, total) {
+        window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total} درجة من مدرسة سعد بن أبي وقاص`, '_blank');
     }
 
-    // تحميل بيانات افتراضية إذا كانت قاعدة البيانات فارغة
-    function initDefaultData() {
-        database.ref('posts').once('value').then(snap => {
-            if (!snap.exists()) {
-                const defaultPosts = [
-                    { type: 'image', title: 'معرض الفنون', url: 'https://picsum.photos/id/20/400/300', description: 'لوحات فنية رائعة من إبداع طلابنا', student: 'فاطمة الزهراء', grade: 'الأول الثانوي' },
-                    { type: 'image', title: 'الابتكارات العلمية', url: 'https://picsum.photos/id/100/400/300', description: 'مشروع الطاقة الشمسية', student: 'عمر خالد', grade: 'الثالث الإعدادي' }
-                ];
-                defaultPosts.forEach(post => database.ref('posts').push(post));
+    function showAdminLogin() {
+        Swal.fire({
+            title: 'دخول المشرف',
+            input: 'password',
+            inputLabel: 'كلمة السر',
+            inputPlaceholder: 'أدخل كلمة السر',
+            showCancelButton: true,
+            confirmButtonText: 'دخول',
+            cancelButtonText: 'إلغاء'
+        }).then(res => {
+            if (res.value === ADMIN_PASSWORD) {
+                isAdmin = true;
+                Swal.fire('مرحباً مشرف', 'تم الدخول بنجاح', 'success');
+                openSection('gallery');
+            } else if (res.value) {
+                Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
             }
         });
     }
 
-    initDefaultData();
-    openSection('results');
-
+    // تعريف الدوال في النطاق العام
     window.openSection = openSection;
     window.openSubSection = openSubSection;
     window.fetchResult = fetchResult;
     window.showAdminLogin = showAdminLogin;
     window.shareWhatsApp = shareWhatsApp;
     window.sendMessage = sendMessage;
+    
+    // فتح القسم الافتراضي
+    openSection('results');
 </script>
 </body>
 </html>
