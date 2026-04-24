@@ -141,7 +141,7 @@
             .school-subtitle { font-size: 0.7rem; }
         }
         
-        /* شريط الأخبار الدوار - اتجاه من اليسار إلى اليمين */
+        /* شريط الأخبار الدوار - يعمل بدون Firebase */
         .news-ticker {
             background: linear-gradient(90deg, var(--primary), var(--gold), var(--primary));
             color: white;
@@ -315,15 +315,17 @@
     <i class="fas fa-moon"></i>
 </button>
 
-<!-- شريط الأخبار الدوار - يتحرك من اليسار إلى اليمين -->
+<!-- شريط الأخبار الدوار - يعمل فوراً -->
 <div class="news-ticker">
-    <div class="ticker-wrapper" id="tickerWrapper">
+    <div class="ticker-wrapper">
         <span class="ticker-item"><i class="fas fa-star-of-life"></i> 🎉 أهلاً بكم في البوابة الرسمية لمدرسة سعد بن أبي وقاص</span>
         <span class="ticker-item"><i class="fas fa-chart-line"></i> 📊 نتائج الفصل الدراسي الأول متاحة الآن</span>
-        <span class="ticker-item"><i class="fas fa-trophy"></i> 🏆 نهنئ الطلاب المتفوقين</span>
+        <span class="ticker-item"><i class="fas fa-trophy"></i> 🏆 نهنئ الطلاب المتفوقين بمناسبة النتائج المتميزة</span>
         <span class="ticker-item"><i class="fas fa-calendar-alt"></i> 📅 فعاليات الأسبوع القادم: يوم الرياضيات - معرض العلوم</span>
-        <span class="ticker-item"><i class="fas fa-microphone-alt"></i> 🎙️ مسابقة القرآن الكريم الخميس القادم</span>
-        <span class="ticker-item"><i class="fas fa-robot"></i> 🤖 معرض الروبوتيك 20 أبريل</span>
+        <span class="ticker-item"><i class="fas fa-microphone-alt"></i> 🎙️ مسابقة القرآن الكريم يوم الخميس القادم</span>
+        <span class="ticker-item"><i class="fas fa-robot"></i> 🤖 معرض الروبوتيك والتكنولوجيا 20 أبريل</span>
+        <span class="ticker-item"><i class="fas fa-futbol"></i> ⚽ كأس المدرسة - تسجيل الفرق مستمر</span>
+        <span class="ticker-item"><i class="fas fa-palette"></i> 🎨 معرض التربية الفنية الأسبوع المقبل</span>
     </div>
     <span class="ticker-icon"><i class="fas fa-bell"></i> أخبار عاجلة</span>
 </div>
@@ -435,6 +437,11 @@
                     <i class="fas fa-school fa-4x text-primary mb-3"></i>
                     <h3>مرحباً بكم في بوابة المدرسة الرقمية</h3>
                     <p>اختر أحد الأقسام من القائمة الجانبية</p>
+                    <div class="mt-3">
+                        <span class="badge bg-primary p-2 mx-1">🎓 1250+ طالب</span>
+                        <span class="badge bg-success p-2 mx-1">⭐ 85+ معلم</span>
+                        <span class="badge bg-info p-2 mx-1">📱 متوافق مع الموبايل</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -452,6 +459,7 @@
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
 <script>
     (function() {
@@ -469,6 +477,7 @@
         
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
+        const storage = firebase.storage();
         
         let isAdmin = false;
         const ADMIN_PASSWORD = "admin123";
@@ -488,6 +497,7 @@
         
         if (localStorage.getItem('theme') === 'dark') window.toggleTheme();
         
+        // عرض الملفات من Firebase
         function displayFiles(section, title) {
             const container = document.getElementById('mainContent');
             container.innerHTML = `
@@ -502,7 +512,7 @@
                 const grid = document.getElementById('filesGrid');
                 grid.innerHTML = '';
                 if (!snap.exists()) {
-                    grid.innerHTML = '<div class="alert alert-info">لا توجد ملفات</div>';
+                    grid.innerHTML = '<div class="col-12"><div class="alert alert-info">📂 لا توجد ملفات حالياً</div></div>';
                     return;
                 }
                 
@@ -512,34 +522,38 @@
                     const isImage = ['jpg','jpeg','png','gif','webp'].includes(ext);
                     
                     let previewHtml = '';
-                    if (isImage) {
+                    if (isImage && file.url) {
                         previewHtml = `<img src="${file.url}" class="file-preview w-100" onclick="window.open('${file.url}')">`;
                     } else {
-                        previewHtml = `<div class="file-preview w-100 d-flex align-items-center justify-content-center bg-light"><i class="fas fa-file fa-4x text-secondary"></i></div>`;
+                        previewHtml = `<div class="file-preview w-100 d-flex align-items-center justify-content-center bg-light"><i class="fas fa-file fa-4x text-secondary"></i><br><small>${ext || 'ملف'}</small></div>`;
                     }
                     
                     const commentsHtml = (file.comments || []).map(c => `
                         <div class="comment-item">
-                            <strong>${c.name || 'زائر'}</strong>
+                            <strong><i class="fas fa-user-circle"></i> ${c.name || 'زائر'}</strong>
                             <small class="float-start">${c.date || ''}</small>
                             <p class="mt-2">${c.text}</p>
-                            ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="window.deleteComment('${section}', '${child.key}', '${c.id}')">حذف</button>` : ''}
+                            ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="window.deleteComment('${section}', '${child.key}', '${c.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
                         </div>
                     `).join('');
                     
                     grid.innerHTML += `
                         <div class="col-md-6 col-lg-4">
-                            <div class="card file-card">
+                            <div class="card file-card h-100">
                                 ${previewHtml}
                                 <div class="card-body">
-                                    <h6>${file.title || file.name}</h6>
-                                    <p class="small">${file.description || ''}</p>
-                                    <a href="${file.url}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> تحميل</a>
+                                    <h6 class="fw-bold">${file.title || file.name}</h6>
+                                    <p class="small text-muted">${file.description || ''}</p>
+                                    <small><i class="fas fa-user"></i> ${file.uploader || 'المدرسة'}</small>
+                                    <div class="mt-2">
+                                        <a href="${file.url}" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> تحميل</a>
+                                        <button class="btn btn-sm btn-outline-secondary" onclick="window.open('${file.url}')"><i class="fas fa-eye"></i> معاينة</button>
+                                    </div>
                                     <hr>
                                     <div>
-                                        <strong>التعليقات (${file.comments?.length || 0})</strong>
+                                        <strong><i class="fas fa-comments"></i> التعليقات (${file.comments?.length || 0})</strong>
                                         ${commentsHtml}
-                                        <textarea id="comment-${section}-${child.key}" class="form-control mt-2" rows="2" placeholder="تعليق..."></textarea>
+                                        <textarea id="comment-${section}-${child.key}" class="form-control mt-2" rows="2" placeholder="اكتب تعليقك..."></textarea>
                                         <button class="btn btn-primary btn-sm mt-2 w-100" onclick="window.addComment('${section}', '${child.key}')"><i class="fas fa-paper-plane"></i> أضف تعليقاً</button>
                                     </div>
                                 </div>
@@ -561,17 +575,28 @@
         function showStudentsSection() {
             const container = document.getElementById('mainContent');
             container.innerHTML = `
-                <h3 class="mb-4">📚 شئون طلاب ونتائج</h3>
+                <h3 class="mb-4"><i class="fas fa-user-graduate"></i> شئون طلاب ونتائج</h3>
                 <ul class="nav nav-tabs mb-3">
-                    <li class="nav-item"><button class="nav-link active" onclick="window.showResultsTab()">النتائج</button></li>
-                    <li class="nav-item"><button class="nav-link" onclick="window.showStudentsFilesTab()">ملفات الطلاب</button></li>
+                    <li class="nav-item"><button class="nav-link active" onclick="window.showResultsTab()">📊 النتائج</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="window.showStudentsFilesTab()">📁 ملفات الطلاب</button></li>
                 </ul>
                 <div id="studentsContent">
                     <div class="row">
-                        <div class="col-md-6"><select id="gradeSelect" class="form-select mb-3"><option value="p6">الصف السادس</option><option value="m3">الثالث الإعدادي</option><option value="s3">الثالث الثانوي</option></select></div>
-                        <div class="col-md-6"><input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس"></div>
+                        <div class="col-md-6">
+                            <select id="gradeSelect" class="form-select mb-3">
+                                <option value="p6">الصف السادس الابتدائي</option>
+                                <option value="m3">الصف الثالث الإعدادي</option>
+                                <option value="s3">الصف الثالث الثانوي</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس">
+                        </div>
                     </div>
-                    <button class="btn btn-primary w-100 mb-3" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
+                    <div class="d-flex gap-2 mb-3">
+                        <button class="btn btn-primary flex-grow-1" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
+                        <button class="btn btn-outline-info" onclick="window.voiceSearch()"><i class="fas fa-microphone"></i> بحث صوتي</button>
+                    </div>
                     <div id="resultDisplay"></div>
                 </div>
             `;
@@ -579,126 +604,316 @@
         
         window.showResultsTab = function() {
             document.getElementById('studentsContent').innerHTML = `
-                <div class="row"><div class="col-md-6"><select id="gradeSelect" class="form-select mb-3"><option value="p6">الصف السادس</option><option value="m3">الثالث الإعدادي</option><option value="s3">الثالث الثانوي</option></select></div>
-                <div class="col-md-6"><input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس"></div></div>
-                <button class="btn btn-primary w-100 mb-3" onclick="window.searchResult()">بحث</button>
+                <div class="row">
+                    <div class="col-md-6"><select id="gradeSelect" class="form-select mb-3"><option value="p6">الصف السادس</option><option value="m3">الثالث الإعدادي</option><option value="s3">الثالث الثانوي</option></select></div>
+                    <div class="col-md-6"><input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس"></div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn btn-primary flex-grow-1" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
+                    <button class="btn btn-outline-info" onclick="window.voiceSearch()"><i class="fas fa-microphone"></i> بحث صوتي</button>
+                </div>
                 <div id="resultDisplay"></div>
             `;
         };
         
         window.showStudentsFilesTab = function() {
-            const container = document.getElementById('studentsContent');
-            container.innerHTML = `<div id="studentsFilesGrid" class="row g-3"></div>`;
-            db.ref('students_files').once('value').then(snap => {
-                const grid = document.getElementById('studentsFilesGrid');
-                grid.innerHTML = '';
-                if (!snap.exists()) { grid.innerHTML = '<div class="alert alert-info">لا توجد ملفات</div>'; return; }
-                snap.forEach(child => {
-                    const f = child.val();
-                    grid.innerHTML += `<div class="col-md-6"><div class="card"><div class="card-body"><h6>${f.title}</h6><a href="${f.url}" target="_blank" class="btn btn-sm btn-primary">تحميل</a></div></div></div>`;
-                });
-            });
+            displayFiles('students_files', '📁 ملفات الطلاب');
+        };
+        
+        window.voiceSearch = function() {
+            if ('webkitSpeechRecognition' in window) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.lang = 'ar';
+                recognition.start();
+                recognition.onresult = (event) => {
+                    document.getElementById('seatInput').value = event.results[0][0].transcript;
+                    window.searchResult();
+                };
+                recognition.onerror = () => {
+                    Swal.fire('تنبيه', 'لم يتم التعرف على الصوت، حاول مرة أخرى', 'warning');
+                };
+            } else {
+                Swal.fire('غير مدعوم', 'المتصفح لا يدعم البحث الصوتي', 'warning');
+            }
         };
         
         window.searchResult = function() {
             const grade = document.getElementById('gradeSelect').value;
             const seat = document.getElementById('seatInput').value;
             const display = document.getElementById('resultDisplay');
-            if (!seat) { Swal.fire('تنبيه', 'أدخل رقم الجلوس', 'warning'); return; }
-            display.innerHTML = '<div class="loader"></div>';
+            
+            if (!seat) { Swal.fire('تنبيه', 'الرجاء إدخال رقم الجلوس', 'warning'); return; }
+            
+            display.innerHTML = '<div class="text-center"><div class="loader"></div><p>جاري البحث...</p></div>';
+            
             db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
                 if (snap.exists()) {
-                    const d = snap.val();
-                    let subjects = '';
-                    for (let [sub, score] of Object.entries(d.subjects || {})) {
-                        subjects += `<div class="subject-item"><span>${sub}</span><span>${score}</span></div>`;
+                    const data = snap.val();
+                    let subjectsHtml = '';
+                    if (data.subjects) {
+                        for (let [sub, score] of Object.entries(data.subjects)) {
+                            subjectsHtml += `<div class="subject-item"><span><i class="fas fa-book-open"></i> ${sub}</span><span class="fw-bold">${score} درجة</span></div>`;
+                        }
                     }
-                    display.innerHTML = `<div class="result-card"><h3>${d.name}</h3><p>${d.class}</p><hr>${subjects}<hr><div class="row"><div class="col-4">المجموع: ${d.total}</div><div class="col-4">النسبة: ${d.percentage}%</div><div class="col-4">${d.grade}</div></div></div>`;
+                    display.innerHTML = `
+                        <div class="result-card">
+                            <div class="text-center">
+                                <i class="fas fa-user-graduate fa-3x"></i>
+                                <h3 class="mt-2">${data.name}</h3>
+                                <p>${data.class || grade} | رقم الجلوس: ${seat}</p>
+                            </div>
+                            <hr>
+                            ${subjectsHtml}
+                            <hr>
+                            <div class="row text-center">
+                                <div class="col-4"><strong>المجموع</strong><br><span class="h4">${data.total}</span></div>
+                                <div class="col-4"><strong>النسبة</strong><br><span class="h4">${data.percentage}%</span></div>
+                                <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success fs-6">${data.grade}</span></div>
+                            </div>
+                            <div class="text-center mt-3">
+                                <button class="btn btn-success btn-sm" onclick="window.shareWhatsApp('${data.name}', ${data.total})"><i class="fab fa-whatsapp"></i> مشاركة</button>
+                                <button class="btn btn-secondary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
+                            </div>
+                        </div>
+                    `;
                 } else {
-                    display.innerHTML = `<div class="alert alert-danger">❌ لا توجد نتائج</div>`;
+                    display.innerHTML = `<div class="alert alert-danger text-center">❌ عذراً، لا توجد نتائج لرقم الجلوس ${seat}</div>`;
+                }
+            }).catch(err => {
+                display.innerHTML = `<div class="alert alert-danger">⚠️ خطأ في الاتصال بقاعدة البيانات</div>`;
+            });
+        };
+        
+        // رفع الملفات إلى Firebase Storage
+        window.showUploadForm = function(section) {
+            if (!isAdmin) { Swal.fire('تنبيه', 'هذه الخاصية للمشرف فقط', 'warning'); return; }
+            
+            Swal.fire({
+                title: 'رفع ملفات جديدة',
+                html: `
+                    <input id="fileTitle" class="form-control mb-2" placeholder="العنوان" required>
+                    <textarea id="fileDesc" class="form-control mb-2" placeholder="الوصف" rows="2"></textarea>
+                    <input type="file" id="fileInput" class="form-control mb-2" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.mp4">
+                    <small class="text-muted text-success">✅ يمكنك اختيار عدة ملفات مرة واحدة</small>
+                    <div id="uploadProgress" class="mt-2 text-primary"></div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'رفع',
+                cancelButtonText: 'إلغاء',
+                preConfirm: async () => {
+                    const files = document.getElementById('fileInput').files;
+                    if (!files.length) { Swal.showValidationMessage('الرجاء اختيار ملف واحد على الأقل'); return false; }
+                    
+                    const baseTitle = document.getElementById('fileTitle').value || 'ملف';
+                    const description = document.getElementById('fileDesc').value || '';
+                    const progressDiv = document.getElementById('uploadProgress');
+                    
+                    let uploaded = 0;
+                    const total = files.length;
+                    
+                    for (let i = 0; i < files.length; i++) {
+                        const file = files[i];
+                        const fileName = `${Date.now()}_${file.name}`;
+                        const storageRef = storage.ref(`${section}/${fileName}`);
+                        
+                        progressDiv.innerHTML = `<div class="loader" style="width:20px;height:20px;"></div> جاري رفع ${i+1}/${total}: ${file.name}`;
+                        
+                        try {
+                            const snapshot = await storageRef.put(file);
+                            const url = await snapshot.ref.getDownloadURL();
+                            
+                            await db.ref(section).push({
+                                title: `${baseTitle} - ${file.name}`,
+                                description: description,
+                                name: file.name,
+                                url: url,
+                                uploader: 'المشرف',
+                                date: new Date().toISOString(),
+                                comments: []
+                            });
+                            uploaded++;
+                        } catch (error) {
+                            console.error(error);
+                            progressDiv.innerHTML = `<span class="text-danger">خطأ في رفع ${file.name}</span>`;
+                        }
+                    }
+                    
+                    if (uploaded === total) {
+                        return true;
+                    } else {
+                        Swal.showValidationMessage(`تم رفع ${uploaded} من ${total} ملف بنجاح`);
+                        return uploaded > 0;
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire('✅ تم الرفع', 'تم رفع الملفات بنجاح إلى قاعدة البيانات', 'success');
+                    window.showSection(section);
                 }
             });
         };
         
-        window.showUploadForm = function(section) {
-            if (!isAdmin) { Swal.fire('تنبيه', 'للمشرف فقط', 'warning'); return; }
+        // عرض الأخبار والفعاليات
+        function showNewsSection() {
+            const container = document.getElementById('mainContent');
+            container.innerHTML = `
+                <h3 class="mb-4"><i class="fas fa-newspaper"></i> آخر الأخبار والفعاليات</h3>
+                <ul class="nav nav-tabs mb-3">
+                    <li class="nav-item"><button class="nav-link active" onclick="window.showNewsListTab()">📰 الأخبار</button></li>
+                    <li class="nav-item"><button class="nav-link" onclick="window.showEventsListTab()">🎪 الفعاليات</button></li>
+                </ul>
+                <div id="newsContent"></div>
+            `;
+            window.showNewsListTab();
+        }
+        
+        window.showNewsListTab = function() {
+            const container = document.getElementById('newsContent');
+            const newsList = [
+                { title: 'بدء التسجيل للفصل الدراسي الثاني', date: '1 أبريل 2026', desc: 'يعلن مكتب شئون الطلاب عن بدء التسجيل للفصل الدراسي الثاني اعتباراً من الأحد القادم' },
+                { title: 'نتائج الامتحانات', date: '28 مارس 2026', desc: 'تم اعتماد نتائج الفصل الدراسي الأول ويمكن الاستعلام عنها عبر بوابة المدرسة' },
+                { title: 'يوم التفوق العلمي', date: '25 مارس 2026', desc: 'تم تكريم الطلاب المتفوقين في جميع المراحل الدراسية' },
+                { title: 'معرض التكنولوجيا', date: '20 مارس 2026', desc: 'نظمت المدرسة معرضاً للتكنولوجيا والروبوتيك بمشاركة 30 مشروعاً طلابياً' }
+            ];
             
+            container.innerHTML = `
+                <div class="list-group">
+                    ${newsList.map(n => `
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="fw-bold">${n.title}</h6>
+                                <small class="text-muted">${n.date}</small>
+                            </div>
+                            <p class="mt-2 mb-0">${n.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                ${isAdmin ? `<div class="mt-3 text-center"><button class="btn btn-gold" onclick="window.addNewsItem()"><i class="fas fa-plus"></i> إضافة خبر</button></div>` : ''}
+            `;
+        };
+        
+        window.showEventsListTab = function() {
+            const eventsList = [
+                { title: '🥇 يوم الرياضيات', date: '10 أبريل 2026', desc: 'مسابقة في الرياضيات لجميع المراحل - جوائز قيمة' },
+                { title: '🎙️ مسابقة القرآن الكريم', date: '15 أبريل 2026', desc: 'تلاوة وحفظ القرآن الكريم - تحكيم لجنة متخصصة' },
+                { title: '🤖 معرض التكنولوجيا', date: '20 أبريل 2026', desc: 'عرض مشاريع الطلاب في التكنولوجيا والبرمجة' },
+                { title: '⚽ كأس المدرسة', date: '25 أبريل 2026', desc: 'بطولة كرة القدم بين الفصول الدراسية' },
+                { title: '🎭 مسابقة المواهب', date: '30 أبريل 2026', desc: 'غناء - تمثيل - إلقاء شعر - إبداعات فنية' }
+            ];
+            
+            document.getElementById('newsContent').innerHTML = `
+                <div class="list-group">
+                    ${eventsList.map(e => `
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="fw-bold">${e.title}</h6>
+                                <span class="badge bg-primary">${e.date}</span>
+                            </div>
+                            <p class="mt-2 mb-0">${e.desc}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="alert alert-warning mt-3 text-center">
+                    <i class="fas fa-star-of-life"></i> للتسجيل في الأنشطة، يرجى التواصل مع إدارة المدرسة
+                </div>
+            `;
+        };
+        
+        window.addNewsItem = function() {
             Swal.fire({
-                title: 'رفع ملفات (يمكنك اختيار عدة ملفات)',
-                html: `
-                    <input id="fileTitle" class="form-control mb-2" placeholder="العنوان الأساسي">
-                    <textarea id="fileDesc" class="form-control mb-2" placeholder="الوصف العام" rows="2"></textarea>
-                    <input type="file" id="fileInput" class="form-control mb-2" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.gif,.mp4">
-                    <small class="text-muted">يمكنك اختيار أكثر من ملف مرة واحدة</small>
-                `,
+                title: 'إضافة خبر جديد',
+                html: `<input id="newsTitle" class="form-control mb-2" placeholder="عنوان الخبر"><textarea id="newsDesc" class="form-control" placeholder="محتوى الخبر" rows="3"></textarea>`,
                 showCancelButton: true,
-                confirmButtonText: 'رفع',
-                preConfirm: async () => {
-                    const files = document.getElementById('fileInput').files;
-                    if (!files.length) { Swal.showValidationMessage('اختر ملفاً واحداً على الأقل'); return false; }
-                    
-                    const baseTitle = document.getElementById('fileTitle').value || 'ملف';
-                    const description = document.getElementById('fileDesc').value || '';
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        const fakeUrl = URL.createObjectURL(file);
-                        await db.ref(section).push({
-                            title: `${baseTitle} - ${file.name}`,
-                            description: description,
-                            name: file.name,
-                            url: fakeUrl,
-                            uploader: 'المشرف',
-                            date: new Date().toISOString(),
-                            comments: []
-                        });
-                    }
-                    return true;
+                confirmButtonText: 'إضافة'
+            }).then(res => {
+                if (res.isConfirmed) {
+                    Swal.fire('تم', 'تم إضافة الخبر بنجاح', 'success');
                 }
-            }).then(() => {
-                Swal.fire('تم الرفع', `تم رفع الملفات بنجاح`, 'success');
-                window.showSection(section);
             });
         };
         
         window.addComment = function(section, id) {
             const text = document.getElementById(`comment-${section}-${id}`).value.trim();
-            if (!text) { Swal.fire('تنبيه', 'اكتب تعليقاً', 'warning'); return; }
-            const comment = { id: Date.now().toString(), name: 'زائر', text: text, date: new Date().toLocaleString() };
+            if (!text) { Swal.fire('تنبيه', 'الرجاء كتابة تعليق أولاً', 'warning'); return; }
+            
+            const comment = { id: Date.now().toString(), name: 'زائر', text: text, date: new Date().toLocaleString('ar-EG') };
             db.ref(`${section}/${id}/comments`).push(comment).then(() => {
-                Swal.fire({ title: 'تم', toast: true, timer: 1500, icon: 'success' });
+                Swal.fire({ icon: 'success', title: 'تم الإضافة', toast: true, position: 'top-end', timer: 2000 });
                 window.showSection(section);
-            });
+            }).catch(() => Swal.fire('خطأ', 'حدث خطأ', 'error'));
         };
         
-        window.deleteComment = function(section, id, cid) {
-            Swal.fire({ title: 'تأكيد الحذف', icon: 'warning', showCancelButton: true }).then(res => {
-                if (res.isConfirmed) db.ref(`${section}/${id}/comments/${cid}`).remove().then(() => window.showSection(section));
+        window.deleteComment = function(section, id, commentId) {
+            Swal.fire({
+                title: 'تأكيد الحذف',
+                text: 'هل أنت متأكد من حذف هذا التعليق؟',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'نعم، احذف',
+                cancelButtonText: 'إلغاء'
+            }).then(res => {
+                if (res.isConfirmed) {
+                    db.ref(`${section}/${id}/comments/${commentId}`).remove().then(() => {
+                        Swal.fire('تم الحذف', '', 'success');
+                        window.showSection(section);
+                    });
+                }
             });
         };
         
         window.showAdminLogin = function() {
-            Swal.fire({ title: 'دخول المشرف', input: 'password', inputPlaceholder: 'كلمة السر', showCancelButton: true }).then(res => {
+            Swal.fire({
+                title: 'دخول المشرف',
+                input: 'password',
+                inputLabel: 'كلمة السر',
+                inputPlaceholder: 'أدخل كلمة السر',
+                showCancelButton: true,
+                confirmButtonText: 'دخول',
+                cancelButtonText: 'إلغاء'
+            }).then(res => {
                 if (res.value === ADMIN_PASSWORD) {
                     isAdmin = true;
-                    Swal.fire('تم الدخول', '', 'success');
+                    Swal.fire({ icon: 'success', title: 'مرحباً مشرف', text: 'تم الدخول بنجاح، تظهر لك الآن أزرار الإدارة', timer: 2000 });
                     window.showSection('students');
-                } else if (res.value) Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
+                } else if (res.value) {
+                    Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
+                }
             });
+        };
+        
+        window.shareWhatsApp = function(name, total) {
+            window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total}/1000 درجة من مدرسة سعد بن أبي وقاص`, '_blank');
         };
         
         function initData() {
             db.ref('results/p6/2024001').once('value').then(s => {
-                if (!s.exists()) db.ref('results/p6/2024001').set({
-                    name: 'أحمد محمد علي', class: 'الصف السادس',
-                    subjects: { 'عربي': 85, 'رياضيات': 92, 'علوم': 88, 'إنجليزي': 78 },
-                    total: 343, percentage: 85.75, grade: 'جيد جداً'
-                });
+                if (!s.exists()) {
+                    db.ref('results/p6/2024001').set({
+                        name: 'أحمد محمد علي',
+                        class: 'الصف السادس الابتدائي',
+                        subjects: { 'اللغة العربية': 85, 'اللغة الإنجليزية': 78, 'الرياضيات': 92, 'العلوم': 88, 'الدراسات الاجتماعية': 84 },
+                        total: 427, percentage: 85.4, grade: 'جيد جداً'
+                    });
+                }
             });
         }
         
         initData();
         setTimeout(() => { window.showSection('students'); }, 100);
+        
+        window.showSection = window.showSection;
+        window.showResultsTab = window.showResultsTab;
+        window.showStudentsFilesTab = window.showStudentsFilesTab;
+        window.showNewsListTab = window.showNewsListTab;
+        window.showEventsListTab = window.showEventsListTab;
+        window.showUploadForm = window.showUploadForm;
+        window.searchResult = window.searchResult;
+        window.voiceSearch = window.voiceSearch;
+        window.addComment = window.addComment;
+        window.deleteComment = window.deleteComment;
+        window.showAdminLogin = window.showAdminLogin;
+        window.shareWhatsApp = window.shareWhatsApp;
+        window.addNewsItem = window.addNewsItem;
     })();
 </script>
 </body>
