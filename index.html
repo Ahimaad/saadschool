@@ -2,24 +2,25 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>بوابة مدرسة سعد بن أبي وقاص - النظام المتكامل</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>بوابة مدرسة سعد بن أبي وقاص</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
             --primary: #0a2b4e;
             --gold: #d4af37;
             --glass: rgba(255, 255, 255, 0.95);
         }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Cairo', sans-serif;
@@ -36,6 +37,12 @@
             color: #fff;
         }
         
+        body.dark-mode .card, body.dark-mode .list-group-item {
+            background: #2d2d44;
+            color: #fff;
+        }
+        
+        /* البطاقات الزجاجية */
         .glass-card {
             background: var(--glass);
             backdrop-filter: blur(10px);
@@ -46,19 +53,7 @@
             height: 100%;
         }
         
-        .glass-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        /* القائمة الجانبية العمودية */
-        .side-menu {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 15px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
+        /* القائمة الجانبية */
         .side-menu-item {
             background: white;
             border: none;
@@ -79,29 +74,17 @@
             transform: translateX(-5px);
         }
         
+        /* شعار المدرسة */
         .school-logo {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             border: 3px solid var(--gold);
             background: white;
             padding: 5px;
         }
         
-        .school-title {
-            font-family: 'Cairo', sans-serif;
-            font-weight: 900;
-            font-size: 1.8rem;
-            color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-        }
-        
-        .school-subtitle {
-            font-size: 0.9rem;
-            color: var(--gold);
-        }
-        
-        /* شريط الأخبار الدوار */
+        /* شريط الأخبار المتحرك */
         .news-ticker {
             background: linear-gradient(90deg, var(--primary), var(--gold), var(--primary));
             color: white;
@@ -116,12 +99,15 @@
             animation: tickerScroll 25s linear infinite;
         }
         
-        .ticker-wrapper:hover { animation-play-state: paused; }
+        .ticker-wrapper:hover {
+            animation-play-state: paused;
+        }
         
         .ticker-item {
             display: inline-block;
             padding: 0 30px;
             font-weight: bold;
+            font-size: 0.9rem;
         }
         
         @keyframes tickerScroll {
@@ -142,7 +128,7 @@
             z-index: 3;
         }
         
-        /* سلايدر */
+        /* سلايدر الصور */
         .hero-slider {
             border-radius: 20px;
             overflow: hidden;
@@ -150,10 +136,11 @@
         }
         
         .carousel-item img {
-            height: 300px;
+            height: 250px;
             object-fit: cover;
         }
         
+        /* بطاقات النتائج */
         .result-card {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
@@ -162,7 +149,7 @@
         }
         
         .subject-item {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             padding: 10px;
             border-radius: 10px;
             margin: 8px 0;
@@ -170,16 +157,11 @@
             justify-content: space-between;
         }
         
-        .file-card {
-            transition: all 0.3s;
-            height: 100%;
-        }
-        
-        .file-card:hover { transform: translateY(-5px); }
-        
+        /* معاينة الملفات */
         .file-preview {
-            height: 150px;
+            height: 140px;
             object-fit: cover;
+            border-radius: 15px 15px 0 0;
         }
         
         .comment-item {
@@ -190,8 +172,11 @@
             border-right: 3px solid var(--gold);
         }
         
-        body.dark-mode .comment-item { background: #3d3d5c; }
+        body.dark-mode .comment-item {
+            background: #3d3d5c;
+        }
         
+        /* زر الوضع الليلي */
         .theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -203,6 +188,7 @@
             height: 45px;
             z-index: 1000;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
         .loader {
@@ -222,6 +208,7 @@
             color: white;
             padding: 15px;
             margin-top: 30px;
+            text-align: center;
         }
         
         .btn-gold {
@@ -231,10 +218,19 @@
             border: none;
         }
         
+        /* تحسينات للهاتف */
         @media (max-width: 768px) {
+            .glass-card { padding: 15px; }
+            .side-menu-item { padding: 10px; font-size: 13px; }
+            .carousel-item img { height: 160px; }
             .school-title { font-size: 1.2rem; }
-            .carousel-item img { height: 180px; }
-            .side-menu-item { padding: 10px; font-size: 12px; }
+            .ticker-item { font-size: 0.7rem; padding: 0 15px; }
+            .hero-slider { margin-bottom: 15px; }
+        }
+        
+        @media (max-width: 480px) {
+            .side-menu-item { font-size: 11px; padding: 8px; }
+            .carousel-item img { height: 140px; }
         }
     </style>
 </head>
@@ -244,15 +240,19 @@
     <i class="fas fa-moon"></i>
 </button>
 
-<!-- شريط الأخبار -->
-<div class="news-ticker">
+<!-- شريط الأخبار المتحرك - يظهر فقط في الصفحة الرئيسية وليس في جميع القوائم -->
+<div id="newsTickerContainer" class="news-ticker">
     <div class="ticker-wrapper">
         <span class="ticker-item"><i class="fas fa-star-of-life"></i> 🎉 أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص</span>
-        <span class="ticker-item"><i class="fas fa-chart-line"></i> 📊 نتائج الفصل الدراسي متاحة الآن</span>
-        <span class="ticker-item"><i class="fas fa-trophy"></i> 🏆 نهنئ الطلاب المتفوقين</span>
-        <span class="ticker-item"><i class="fas fa-calendar-alt"></i> 📅 فعاليات الأسبوع القادم</span>
+        <span class="ticker-item"><i class="fas fa-chart-line"></i> 📊 نتائج الفصل الدراسي الأول متاحة الآن</span>
+        <span class="ticker-item"><i class="fas fa-trophy"></i> 🏆 نهنئ الطلاب المتفوقين بمناسبة النتائج المتميزة</span>
+        <span class="ticker-item"><i class="fas fa-calendar-alt"></i> 📅 فعاليات الأسبوع القادم: يوم الرياضيات - معرض العلوم</span>
+        <span class="ticker-item"><i class="fas fa-microphone-alt"></i> 🎙️ مسابقة القرآن الكريم يوم الخميس القادم</span>
+        <span class="ticker-item"><i class="fas fa-robot"></i> 🤖 معرض الروبوتيك والتكنولوجيا 20 أبريل</span>
+        <span class="ticker-item"><i class="fas fa-futbol"></i> ⚽ كأس المدرسة - تسجيل الفرق مستمر</span>
+        <span class="ticker-item"><i class="fas fa-palette"></i> 🎨 معرض التربية الفنية الأسبوع المقبل</span>
     </div>
-    <span class="ticker-icon"><i class="fas fa-bell"></i> أخبار</span>
+    <span class="ticker-icon"><i class="fas fa-bell"></i> أخبار عاجلة</span>
 </div>
 
 <!-- الهيدر -->
@@ -260,12 +260,12 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-auto">
-                <img src="logo.jpg" class="school-logo" onerror="this.src='https://placehold.co/70x70?text=Logo'">
+                <img src="logo.jpg" class="school-logo" onerror="this.src='https://placehold.co/60x60?text=Logo'">
             </div>
             <div class="col">
-                <div class="school-subtitle">محافظة بني سويف - إدارة الفشن التعليمية</div>
-                <h1 class="school-title mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
-                <div class="school-subtitle">بوابة رقمية متكاملة للمحتوى التعليمي والأنشطة</div>
+                <div style="font-size: 0.8rem; color: #d4af37;">محافظة بني سويف - إدارة الفشن التعليمية</div>
+                <h1 class="h4 mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
+                <div style="font-size: 0.75rem;">بوابة رقمية متكاملة للمحتوى التعليمي والأنشطة</div>
             </div>
         </div>
     </div>
@@ -273,8 +273,8 @@
 
 <!-- المحتوى الرئيسي -->
 <div class="container my-4">
-    <!-- سلايدر الصور في الأعلى -->
-    <div class="hero-slider" data-aos="fade-down">
+    <!-- سلايدر الصور - يظهر فقط في الصفحة الرئيسية -->
+    <div id="heroSliderContainer" class="hero-slider" style="display: block;">
         <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -300,11 +300,14 @@
     </div>
 
     <div class="row g-4">
-        <!-- القائمة الجانبية (السليدر على اليسار) -->
-        <div class="col-lg-3" data-aos="fade-left">
-            <div class="side-menu">
+        <!-- القائمة الجانبية (على اليسار) -->
+        <div class="col-lg-4 col-md-12" data-aos="fade-left">
+            <div class="glass-card">
                 <div class="side-menu-item" onclick="window.showSection('students')">
                     <i class="fas fa-user-graduate fa-fw ms-2"></i> 📚 شئون طلاب ونتائج
+                </div>
+                <div class="side-menu-item" onclick="window.showSection('gallery')">
+                    <i class="fas fa-images fa-fw ms-2"></i> 🖼️ المعرض والملفات
                 </div>
                 <div class="side-menu-item" onclick="window.showSection('news')">
                     <i class="fas fa-newspaper fa-fw ms-2"></i> 📰 آخر الأخبار
@@ -328,12 +331,17 @@
         </div>
         
         <!-- محتوى القسم المختار -->
-        <div class="col-lg-9" data-aos="fade-right">
+        <div class="col-lg-8 col-md-12" data-aos="fade-right">
             <div class="glass-card" id="mainContent">
                 <div class="text-center py-5">
                     <i class="fas fa-school fa-4x text-primary mb-3"></i>
                     <h4>مرحباً بكم في بوابة المدرسة الرقمية</h4>
-                    <p>اختر أحد الأقسام من القائمة الجانبية</p>
+                    <p class="text-muted">اختر أحد الأقسام من القائمة الجانبية</p>
+                    <div class="mt-3">
+                        <span class="badge bg-primary p-2 mx-1">🎓 1250+ طالب</span>
+                        <span class="badge bg-success p-2 mx-1">⭐ 85+ معلم</span>
+                        <span class="badge bg-info p-2 mx-1">📱 متوافق مع الجوال</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -341,389 +349,503 @@
 </div>
 
 <footer class="text-center">
-    <p class="mb-0">© 2026 مدرسة سعد بن أبي وقاص - محافظة بني سويف - إدارة الفشن التعليمية</p>
+    <div class="container">
+        <p class="mb-1">© 2026 مدرسة سعد بن أبي وقاص - محافظة بني سويف - إدارة الفشن التعليمية</p>
+        <p class="small opacity-75">نظام إدارة متكامل - جميع الحقوق محفوظة</p>
+    </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
 
 <script>
-    (function() {
-        AOS.init({ duration: 800, once: true });
+    AOS.init({ duration: 600, once: true });
+    
+    // إعدادات Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
+        authDomain: "saad-school-portal.firebaseapp.com",
+        databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
+        projectId: "saad-school-portal",
+        storageBucket: "saad-school-portal.firebasestorage.app",
+        messagingSenderId: "1085838136773",
+        appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const storage = firebase.storage();
+    
+    let isAdmin = false;
+    const ADMIN_PASSWORD = "admin123";
+    
+    // ✅ الصفوف الدراسية كاملة (من ثالث ابتدائي حتى ثاني ثانوي)
+    const gradesList = {
+        'p3': 'الصف الثالث الابتدائي',
+        'p4': 'الصف الرابع الابتدائي', 
+        'p5': 'الصف الخامس الابتدائي',
+        'p6': 'الصف السادس الابتدائي',
+        'm1': 'الصف الأول الإعدادي',
+        'm2': 'الصف الثاني الإعدادي',
+        'm3': 'الصف الثالث الإعدادي',
+        's1': 'الصف الأول الثانوي',
+        's2': 'الصف الثاني الثانوي'
+    };
+    
+    // وظيفة لإخفاء السلايدر وشريط الأخبار عند الدخول إلى أي قسم
+    function hideHomeElements() {
+        const ticker = document.getElementById('newsTickerContainer');
+        const slider = document.getElementById('heroSliderContainer');
+        if (ticker) ticker.style.display = 'none';
+        if (slider) slider.style.display = 'none';
+    }
+    
+    // وظيفة لإظهار السلايدر وشريط الأخبار في الصفحة الرئيسية
+    function showHomeElements() {
+        const ticker = document.getElementById('newsTickerContainer');
+        const slider = document.getElementById('heroSliderContainer');
+        if (ticker) ticker.style.display = 'block';
+        if (slider) slider.style.display = 'block';
+    }
+    
+    // تبديل الوضع الليلي
+    window.toggleTheme = function() {
+        document.body.classList.toggle('dark-mode');
+        const icon = document.querySelector('.theme-toggle i');
+        if (document.body.classList.contains('dark-mode')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+    };
+    
+    if (localStorage.getItem('theme') === 'dark') window.toggleTheme();
+    
+    // عرض الملفات في أي قسم
+    function displayFiles(section, title) {
+        hideHomeElements(); // إخفاء السلايدر عند الدخول للقسم
         
-        // 🔐 إعدادات Firebase - محمية (يمكن إخفاؤها عبر متغيرات البيئة)
-        // في الإصدار النهائي، يُفضل وضع هذه الإعدادات في ملف .env
-        const firebaseConfig = {
-            apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
-            authDomain: "saad-school-portal.firebaseapp.com",
-            databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
-            projectId: "saad-school-portal",
-            storageBucket: "saad-school-portal.firebasestorage.app",
-            messagingSenderId: "1085838136773",
-            appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
-        };
+        const container = document.getElementById('mainContent');
+        container.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <h4 class="mb-0">${title}</h4>
+                ${isAdmin ? `<button class="btn btn-gold btn-sm" onclick="window.showUploadForm('${section}')"><i class="fas fa-upload"></i> رفع ملفات</button>` : ''}
+            </div>
+            <div id="filesGrid" class="row g-3"></div>
+        `;
         
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
-        const storage = firebase.storage();
-        
-        let isAdmin = false;
-        // 🔐 كلمة السر - محمية (يمكن تغييرها)
-        // ⚠️ مهم: الكود يعرض كلمة السر في المصدر، لكن يمكن إخفاؤها عبر المصادقة الفعلية مع Firebase Auth
-        const ADMIN_PASSWORD = "admin123";
-        
-        // الصفوف الدراسية كاملة من ثالث ابتدائي إلى ثاني ثانوي
-        const gradesList = {
-            'p3': 'الصف الثالث الابتدائي',
-            'p4': 'الصف الرابع الابتدائي', 
-            'p5': 'الصف الخامس الابتدائي',
-            'p6': 'الصف السادس الابتدائي',
-            'm1': 'الصف الأول الإعدادي',
-            'm2': 'الصف الثاني الإعدادي',
-            'm3': 'الصف الثالث الإعدادي',
-            's1': 'الصف الأول الثانوي',
-            's2': 'الصف الثاني الثانوي'
-        };
-        
-        window.toggleTheme = function() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.querySelector('.theme-toggle i');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+        db.ref(section).once('value').then(snap => {
+            const grid = document.getElementById('filesGrid');
+            grid.innerHTML = '';
+            if (!snap.exists()) {
+                grid.innerHTML = '<div class="col-12 alert alert-info">📂 لا توجد ملفات حالياً</div>';
+                return;
             }
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        };
-        
-        if (localStorage.getItem('theme') === 'dark') window.toggleTheme();
-        
-        // عرض الملفات
-        function displayFiles(section, title) {
-            const container = document.getElementById('mainContent');
-            container.innerHTML = `
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4>${title}</h4>
-                    ${isAdmin ? `<button class="btn btn-gold" onclick="window.showUploadForm('${section}')"><i class="fas fa-upload"></i> رفع ملفات</button>` : ''}
-                </div>
-                <div id="filesGrid" class="row g-3"></div>
-            `;
             
-            db.ref(section).once('value').then(snap => {
-                const grid = document.getElementById('filesGrid');
-                grid.innerHTML = '';
-                if (!snap.exists()) {
-                    grid.innerHTML = '<div class="col-12 alert alert-info">📂 لا توجد ملفات حالياً</div>';
-                    return;
+            snap.forEach(child => {
+                const file = child.val();
+                const ext = file.name ? file.name.split('.').pop().toLowerCase() : '';
+                const isImage = ['jpg','jpeg','png','gif','webp'].includes(ext);
+                
+                let previewHtml = '';
+                if (isImage && file.url) {
+                    previewHtml = `<img src="${file.url}" class="file-preview w-100" style="height:140px; object-fit:cover; border-radius:15px 15px 0 0;" onclick="window.open('${file.url}')">`;
+                } else {
+                    previewHtml = `<div class="file-preview w-100 d-flex align-items-center justify-content-center bg-light" style="height:140px; border-radius:15px 15px 0 0;"><i class="fas fa-file fa-4x text-secondary"></i></div>`;
                 }
                 
-                snap.forEach(child => {
-                    const file = child.val();
-                    const ext = file.name ? file.name.split('.').pop().toLowerCase() : '';
-                    const isImage = ['jpg','jpeg','png','gif','webp'].includes(ext);
-                    
-                    let previewHtml = '';
-                    if (isImage && file.url) {
-                        previewHtml = `<img src="${file.url}" class="file-preview w-100" style="height:150px; object-fit:cover; border-radius:15px 15px 0 0;" onclick="window.open('${file.url}')">`;
-                    } else {
-                        previewHtml = `<div class="file-preview w-100 d-flex align-items-center justify-content-center bg-light" style="height:150px; border-radius:15px 15px 0 0;"><i class="fas fa-file fa-4x text-secondary"></i></div>`;
-                    }
-                    
-                    const commentsHtml = (file.comments || []).map(c => `
-                        <div class="comment-item">
-                            <strong>${c.name || 'زائر'}</strong> <small class="text-muted float-start">${c.date || ''}</small>
-                            <p class="mt-1 mb-0">${c.text}</p>
-                            ${isAdmin ? `<button class="btn btn-sm btn-danger mt-1" onclick="window.deleteComment('${section}', '${child.key}', '${c.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
-                        </div>
-                    `).join('');
-                    
-                    grid.innerHTML += `
-                        <div class="col-md-6 col-lg-4">
-                            <div class="card file-card h-100">
-                                ${previewHtml}
-                                <div class="card-body">
-                                    <h6 class="fw-bold">${file.title || file.name}</h6>
-                                    <p class="small text-muted">${file.description || ''}</p>
-                                    <a href="${file.url}" target="_blank" class="btn btn-sm btn-primary w-100 mb-2"><i class="fas fa-download"></i> تحميل</a>
-                                    <hr>
-                                    <div><strong><i class="fas fa-comments"></i> التعليقات (${file.comments?.length || 0})</strong></div>
-                                    ${commentsHtml}
-                                    <textarea id="comment-${section}-${child.key}" class="form-control mt-2" rows="2" placeholder="اكتب تعليقك..."></textarea>
-                                    <button class="btn btn-primary btn-sm mt-2 w-100" onclick="window.addComment('${section}', '${child.key}')"><i class="fas fa-paper-plane"></i> تعليق</button>
+                const commentsHtml = (file.comments || []).map(c => `
+                    <div class="comment-item">
+                        <strong><i class="fas fa-user-circle"></i> ${c.name || 'زائر'}</strong>
+                        <small class="text-muted float-start">${c.date || ''}</small>
+                        <p class="mt-1 mb-0">${c.text}</p>
+                        ${isAdmin ? `<button class="btn btn-sm btn-danger mt-1" onclick="window.deleteComment('${section}', '${child.key}', '${c.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
+                    </div>
+                `).join('');
+                
+                grid.innerHTML += `
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card file-card h-100 shadow-sm">
+                            ${previewHtml}
+                            <div class="card-body">
+                                <h6 class="fw-bold">${file.title || file.name}</h6>
+                                <p class="small text-muted">${file.description || ''}</p>
+                                <div class="d-flex gap-2 mb-2">
+                                    <a href="${file.url}" target="_blank" class="btn btn-sm btn-primary flex-grow-1"><i class="fas fa-download"></i> تحميل</a>
                                 </div>
+                                <hr class="my-2">
+                                <div><strong><i class="fas fa-comments"></i> التعليقات (${file.comments?.length || 0})</strong></div>
+                                ${commentsHtml}
+                                <textarea id="comment-${section}-${child.key}" class="form-control mt-2" rows="2" placeholder="اكتب تعليقك..."></textarea>
+                                <button class="btn btn-primary btn-sm mt-2 w-100" onclick="window.addComment('${section}', '${child.key}')"><i class="fas fa-paper-plane"></i> تعليق</button>
                             </div>
                         </div>
-                    `;
-                });
+                    </div>
+                `;
             });
+        });
+    }
+    
+    // عرض قسم شئون الطلاب (مع الصفوف الكاملة)
+    function showStudentsSection() {
+        hideHomeElements();
+        
+        let gradesOptions = '';
+        for (let [value, name] of Object.entries(gradesList)) {
+            gradesOptions += `<option value="${value}">${name}</option>`;
         }
         
-        // عرض قسم شئون الطلاب (مع الصفوف الكاملة)
-        function showStudentsSection() {
-            // إنشاء خيارات الصفوف من القائمة
-            let gradesOptions = '';
-            for (let [value, name] of Object.entries(gradesList)) {
-                gradesOptions += `<option value="${value}">${name}</option>`;
-            }
-            
-            const container = document.getElementById('mainContent');
-            container.innerHTML = `
-                <h4 class="mb-3"><i class="fas fa-user-graduate"></i> شئون طلاب ونتائج</h4>
-                <ul class="nav nav-tabs mb-3">
-                    <li class="nav-item"><button class="nav-link active" onclick="window.showResultsTab()">📊 النتائج</button></li>
-                    <li class="nav-item"><button class="nav-link" onclick="window.showStudentsFilesTab()">📁 ملفات الطلاب</button></li>
-                </ul>
-                <div id="studentsContent">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label">اختر الصف الدراسي</label>
-                            <select id="gradeSelect" class="form-select mb-3">${gradesOptions}</select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">رقم الجلوس</label>
-                            <input type="text" id="seatInput" class="form-control mb-3" placeholder="أدخل رقم الجلوس">
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 mb-3">
-                        <button class="btn btn-primary flex-grow-1" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
-                        <button class="btn btn-outline-info" onclick="window.voiceSearch()"><i class="fas fa-microphone"></i> بحث صوتي</button>
-                    </div>
-                    <div id="resultDisplay"></div>
-                </div>
-            `;
-        }
-        
-        window.showResultsTab = function() {
-            let gradesOptions = '';
-            for (let [value, name] of Object.entries(gradesList)) {
-                gradesOptions += `<option value="${value}">${name}</option>`;
-            }
-            document.getElementById('studentsContent').innerHTML = `
+        const container = document.getElementById('mainContent');
+        container.innerHTML = `
+            <h4 class="mb-3"><i class="fas fa-user-graduate"></i> شئون طلاب ونتائج</h4>
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item"><button class="nav-link active" onclick="window.showResultsTab()">📊 النتائج</button></li>
+                <li class="nav-item"><button class="nav-link" onclick="window.showStudentsFilesTab()">📁 ملفات الطلاب</button></li>
+            </ul>
+            <div id="studentsContent">
                 <div class="row">
-                    <div class="col-md-6"><select id="gradeSelect" class="form-select mb-3">${gradesOptions}</select></div>
-                    <div class="col-md-6"><input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس"></div>
+                    <div class="col-md-6">
+                        <label class="form-label">اختر الصف الدراسي</label>
+                        <select id="gradeSelect" class="form-select mb-3">${gradesOptions}</select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">رقم الجلوس</label>
+                        <input type="text" id="seatInput" class="form-control mb-3" placeholder="أدخل رقم الجلوس">
+                    </div>
                 </div>
                 <div class="d-flex gap-2 mb-3">
                     <button class="btn btn-primary flex-grow-1" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
                     <button class="btn btn-outline-info" onclick="window.voiceSearch()"><i class="fas fa-microphone"></i> بحث صوتي</button>
                 </div>
                 <div id="resultDisplay"></div>
-            `;
-        };
+            </div>
+        `;
+    }
+    
+    window.showResultsTab = function() {
+        let gradesOptions = '';
+        for (let [value, name] of Object.entries(gradesList)) {
+            gradesOptions += `<option value="${value}">${name}</option>`;
+        }
+        document.getElementById('studentsContent').innerHTML = `
+            <div class="row">
+                <div class="col-md-6"><select id="gradeSelect" class="form-select mb-3">${gradesOptions}</select></div>
+                <div class="col-md-6"><input type="text" id="seatInput" class="form-control mb-3" placeholder="رقم الجلوس"></div>
+            </div>
+            <div class="d-flex gap-2 mb-3">
+                <button class="btn btn-primary flex-grow-1" onclick="window.searchResult()"><i class="fas fa-search"></i> بحث</button>
+                <button class="btn btn-outline-info" onclick="window.voiceSearch()"><i class="fas fa-microphone"></i> بحث صوتي</button>
+            </div>
+            <div id="resultDisplay"></div>
+        `;
+    };
+    
+    window.showStudentsFilesTab = function() {
+        displayFiles('students_files', '📁 ملفات الطلاب');
+    };
+    
+    window.voiceSearch = function() {
+        if ('webkitSpeechRecognition' in window) {
+            const recognition = new webkitSpeechRecognition();
+            recognition.lang = 'ar';
+            recognition.start();
+            recognition.onresult = (event) => {
+                document.getElementById('seatInput').value = event.results[0][0].transcript;
+                window.searchResult();
+            };
+            recognition.onerror = () => {
+                Swal.fire('تنبيه', 'لم يتم التعرف على الصوت، حاول مرة أخرى', 'warning');
+            };
+        } else {
+            Swal.fire('غير مدعوم', 'المتصفح لا يدعم البحث الصوتي', 'warning');
+        }
+    };
+    
+    window.searchResult = function() {
+        const grade = document.getElementById('gradeSelect').value;
+        const seat = document.getElementById('seatInput').value;
+        const display = document.getElementById('resultDisplay');
         
-        window.showStudentsFilesTab = function() {
-            displayFiles('students_files', '📁 ملفات الطلاب');
-        };
+        if (!seat) { Swal.fire('تنبيه', 'الرجاء إدخال رقم الجلوس', 'warning'); return; }
         
-        window.voiceSearch = function() {
-            if ('webkitSpeechRecognition' in window) {
-                const recognition = new webkitSpeechRecognition();
-                recognition.lang = 'ar';
-                recognition.start();
-                recognition.onresult = (event) => {
-                    document.getElementById('seatInput').value = event.results[0][0].transcript;
-                    window.searchResult();
-                };
-            } else {
-                Swal.fire('تنبيه', 'المتصفح لا يدعم البحث الصوتي', 'warning');
-            }
-        };
+        display.innerHTML = '<div class="text-center"><div class="loader"></div><p class="mt-2">جاري البحث...</p></div>';
         
-        window.searchResult = function() {
-            const grade = document.getElementById('gradeSelect').value;
-            const seat = document.getElementById('seatInput').value;
-            const display = document.getElementById('resultDisplay');
-            
-            if (!seat) { Swal.fire('تنبيه', 'أدخل رقم الجلوس', 'warning'); return; }
-            
-            display.innerHTML = '<div class="text-center"><div class="loader"></div></div>';
-            
-            db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
-                if (snap.exists()) {
-                    const d = snap.val();
-                    let subjects = '';
-                    for (let [sub, score] of Object.entries(d.subjects || {})) {
-                        subjects += `<div class="subject-item"><span>${sub}</span><span>${score}</span></div>`;
+        db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
+            if (snap.exists()) {
+                const data = snap.val();
+                let subjectsHtml = '';
+                if (data.subjects) {
+                    for (let [sub, score] of Object.entries(data.subjects)) {
+                        subjectsHtml += `<div class="subject-item"><span><i class="fas fa-book-open"></i> ${sub}</span><span class="fw-bold">${score} درجة</span></div>`;
                     }
-                    display.innerHTML = `
-                        <div class="result-card">
-                            <h4>${d.name}</h4>
+                }
+                display.innerHTML = `
+                    <div class="result-card">
+                        <div class="text-center">
+                            <i class="fas fa-user-graduate fa-3x"></i>
+                            <h4 class="mt-2">${data.name}</h4>
                             <p>${gradesList[grade] || grade} | رقم الجلوس: ${seat}</p>
-                            <hr>${subjects}<hr>
-                            <div class="row text-center">
-                                <div class="col-4"><strong>المجموع</strong><br>${d.total}</div>
-                                <div class="col-4"><strong>النسبة</strong><br>${d.percentage}%</div>
-                                <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success">${d.grade}</span></div>
-                            </div>
-                            <div class="text-center mt-3">
-                                <button class="btn btn-success btn-sm" onclick="window.shareWhatsApp('${d.name}', ${d.total})"><i class="fab fa-whatsapp"></i> مشاركة</button>
-                                <button class="btn btn-secondary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
-                            </div>
                         </div>
-                    `;
-                } else {
-                    display.innerHTML = `<div class="alert alert-danger">❌ لا توجد نتائج لرقم ${seat}</div>`;
-                }
-            });
-        };
+                        <hr>
+                        ${subjectsHtml || '<p class="text-center">لا توجد مواد مسجلة</p>'}
+                        <hr>
+                        <div class="row text-center">
+                            <div class="col-4"><strong>المجموع</strong><br><span class="h5">${data.total}</span></div>
+                            <div class="col-4"><strong>النسبة</strong><br><span class="h5">${data.percentage}%</span></div>
+                            <div class="col-4"><strong>التقدير</strong><br><span class="badge bg-success fs-6">${data.grade}</span></div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button class="btn btn-success btn-sm" onclick="window.shareWhatsApp('${data.name}', ${data.total})"><i class="fab fa-whatsapp"></i> مشاركة</button>
+                            <button class="btn btn-secondary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> طباعة</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                display.innerHTML = `<div class="alert alert-danger text-center">❌ عذراً، لا توجد نتائج لرقم الجلوس ${seat}</div>`;
+            }
+        }).catch(err => {
+            display.innerHTML = `<div class="alert alert-danger">⚠️ خطأ في الاتصال بقاعدة البيانات</div>`;
+        });
+    };
+    
+    // عرض الأخبار
+    function showNewsSection() {
+        hideHomeElements();
+        const newsList = [
+            { title: 'بدء التسجيل للفصل الدراسي الثاني', date: '1 أبريل 2026', desc: 'يعلن مكتب شئون الطلاب عن بدء التسجيل للفصل الدراسي الثاني اعتباراً من الأحد القادم' },
+            { title: 'نتائج الامتحانات', date: '28 مارس 2026', desc: 'تم اعتماد نتائج الفصل الدراسي الأول ويمكن الاستعلام عنها عبر بوابة المدرسة' },
+            { title: 'يوم التفوق العلمي', date: '25 مارس 2026', desc: 'تم تكريم الطلاب المتفوقين في جميع المراحل الدراسية بحضور مدير الإدارة التعليمية' },
+            { title: 'معرض التكنولوجيا', date: '20 مارس 2026', desc: 'نظمت المدرسة معرضاً للتكنولوجيا والروبوتيك بمشاركة 30 مشروعاً طلابياً' }
+        ];
+        document.getElementById('mainContent').innerHTML = `
+            <h4><i class="fas fa-newspaper"></i> آخر الأخبار</h4>
+            <div class="list-group mt-3">
+                ${newsList.map(n => `
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="fw-bold mb-0">${n.title}</h6>
+                            <small class="text-muted">${n.date}</small>
+                        </div>
+                        <p class="mt-2 mb-0">${n.desc}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+    
+    // عرض الفعاليات
+    function showEventsSection() {
+        hideHomeElements();
+        const eventsList = [
+            { title: '🥇 يوم الرياضيات', date: '10 أبريل 2026', desc: 'مسابقة في الرياضيات لجميع المراحل - جوائز قيمة' },
+            { title: '🎙️ مسابقة القرآن الكريم', date: '15 أبريل 2026', desc: 'تلاوة وحفظ القرآن الكريم - تحكيم لجنة متخصصة' },
+            { title: '🤖 معرض التكنولوجيا', date: '20 أبريل 2026', desc: 'عرض مشاريع الطلاب في التكنولوجيا والبرمجة' },
+            { title: '⚽ كأس المدرسة', date: '25 أبريل 2026', desc: 'بطولة كرة القدم بين الفصول الدراسية' },
+            { title: '🎭 مسابقة المواهب', date: '30 أبريل 2026', desc: 'غناء - تمثيل - إلقاء شعر - إبداعات فنية' }
+        ];
+        document.getElementById('mainContent').innerHTML = `
+            <h4><i class="fas fa-calendar-alt"></i> الفعاليات والأنشطة القادمة</h4>
+            <div class="list-group mt-3">
+                ${eventsList.map(e => `
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <h6 class="fw-bold mb-0">${e.title}</h6>
+                            <span class="badge bg-primary">${e.date}</span>
+                        </div>
+                        <p class="mt-2 mb-0">${e.desc}</p>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="alert alert-warning mt-3 text-center">
+                <i class="fas fa-star-of-life"></i> للتسجيل في الأنشطة، يرجى التواصل مع إدارة المدرسة
+            </div>
+        `;
+    }
+    
+    // عرض الصفحة الرئيسية (إظهار السلايدر والأخبار)
+    function showHome() {
+        showHomeElements();
+        document.getElementById('mainContent').innerHTML = `
+            <div class="text-center py-4">
+                <i class="fas fa-school fa-4x text-primary mb-3"></i>
+                <h4>مرحباً بكم في بوابة المدرسة الرقمية</h4>
+                <p class="text-muted">اختر أحد الأقسام من القائمة الجانبية</p>
+                <div class="mt-3">
+                    <span class="badge bg-primary p-2 mx-1">🎓 1250+ طالب</span>
+                    <span class="badge bg-success p-2 mx-1">⭐ 85+ معلم</span>
+                    <span class="badge bg-warning p-2 mx-1">🔒 نظام آمن</span>
+                    <span class="badge bg-info p-2 mx-1">📱 متوافق مع الجوال</span>
+                </div>
+            </div>
+        `;
+    }
+    
+    // رفع الملفات
+    window.showUploadForm = function(section) {
+        if (!isAdmin) { Swal.fire('تنبيه', 'هذه الخاصية للمشرف فقط', 'warning'); return; }
         
-        // رفع الملفات (مع تحسين الأداء)
-        window.showUploadForm = function(section) {
-            if (!isAdmin) { Swal.fire('تنبيه', 'للمشرف فقط', 'warning'); return; }
-            
-            Swal.fire({
-                title: 'رفع ملفات جديدة',
-                html: `
-                    <input id="fileTitle" class="form-control mb-2" placeholder="العنوان" required>
-                    <textarea id="fileDesc" class="form-control mb-2" placeholder="الوصف" rows="2"></textarea>
-                    <input type="file" id="fileInput" class="form-control mb-2" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.png,.gif,.mp4">
-                    <div id="uploadProgress" class="text-primary mt-2"></div>
-                `,
-                showCancelButton: true,
-                confirmButtonText: 'رفع',
-                preConfirm: async () => {
-                    const files = document.getElementById('fileInput').files;
-                    if (!files.length) { Swal.showValidationMessage('اختر ملفاً'); return false; }
+        Swal.fire({
+            title: 'رفع ملفات جديدة',
+            html: `
+                <input id="fileTitle" class="form-control mb-2" placeholder="العنوان" required>
+                <textarea id="fileDesc" class="form-control mb-2" placeholder="الوصف" rows="2"></textarea>
+                <input type="file" id="fileInput" class="form-control mb-2" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif,.mp4">
+                <div id="uploadProgress" class="text-primary mt-2"></div>
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'رفع',
+            cancelButtonText: 'إلغاء',
+            preConfirm: async () => {
+                const files = document.getElementById('fileInput').files;
+                if (!files.length) { Swal.showValidationMessage('الرجاء اختيار ملف واحد على الأقل'); return false; }
+                
+                const baseTitle = document.getElementById('fileTitle').value || 'ملف';
+                const description = document.getElementById('fileDesc').value || '';
+                const progressDiv = document.getElementById('uploadProgress');
+                
+                let uploaded = 0;
+                const total = files.length;
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    progressDiv.innerHTML = `<div class="loader" style="width:15px;height:15px;"></div> جاري رفع ${i+1}/${total}: ${file.name}`;
                     
-                    const title = document.getElementById('fileTitle').value || 'ملف';
-                    const desc = document.getElementById('fileDesc').value || '';
-                    const progressDiv = document.getElementById('uploadProgress');
-                    
-                    let successCount = 0;
-                    
-                    for (let i = 0; i < files.length; i++) {
-                        const file = files[i];
-                        progressDiv.innerHTML = `<div class="loader" style="width:15px;height:15px;"></div> جاري رفع ${i+1}/${files.length}: ${file.name}`;
+                    try {
+                        const fileName = `${Date.now()}_${file.name}`;
+                        const storageRef = storage.ref(`${section}/${fileName}`);
+                        const snapshot = await storageRef.put(file);
+                        const url = await snapshot.ref.getDownloadURL();
                         
-                        try {
-                            const fileName = `${Date.now()}_${file.name}`;
-                            const storageRef = storage.ref(`${section}/${fileName}`);
-                            const snapshot = await storageRef.put(file);
-                            const url = await snapshot.ref.getDownloadURL();
-                            
-                            await db.ref(section).push({
-                                title: `${title} - ${file.name}`,
-                                description: desc,
-                                name: file.name,
-                                url: url,
-                                uploader: 'المشرف',
-                                date: new Date().toISOString(),
-                                comments: []
-                            });
-                            successCount++;
-                        } catch (err) {
-                            console.error(err);
-                            progressDiv.innerHTML = `<span class="text-danger">خطأ في رفع ${file.name}</span>`;
-                        }
-                    }
-                    
-                    if (successCount === files.length) return true;
-                    else Swal.showValidationMessage(`تم رفع ${successCount} من ${files.length}`);
-                }
-            }).then(() => {
-                Swal.fire('تم', 'رفع الملفات بنجاح', 'success');
-                window.showSection(section);
-            });
-        };
-        
-        // الأقسام الأخرى
-        function showNewsSection() {
-            const container = document.getElementById('mainContent');
-            const newsList = [
-                { title: 'بدء التسجيل للفصل الدراسي الثاني', date: '1 أبريل 2026', desc: 'يعلن مكتب شئون الطلاب عن بدء التسجيل للفصل الدراسي الثاني' },
-                { title: 'نتائج الامتحانات', date: '28 مارس 2026', desc: 'تم اعتماد نتائج الفصل الدراسي الأول' },
-                { title: 'يوم التفوق العلمي', date: '25 مارس 2026', desc: 'تم تكريم الطلاب المتفوقين' }
-            ];
-            container.innerHTML = `
-                <h4><i class="fas fa-newspaper"></i> آخر الأخبار</h4>
-                <div class="list-group mt-3">
-                    ${newsList.map(n => `<div class="list-group-item"><h6>${n.title}</h6><small>${n.date}</small><p class="mt-2">${n.desc}</p></div>`).join('')}
-                </div>
-            `;
-        }
-        
-        function showEventsSection() {
-            const eventsList = [
-                { title: 'يوم الرياضيات', date: '10 أبريل 2026', desc: 'مسابقة في الرياضيات' },
-                { title: 'مسابقة القرآن', date: '15 أبريل 2026', desc: 'تلاوة وحفظ القرآن' },
-                { title: 'معرض التكنولوجيا', date: '20 أبريل 2026', desc: 'عرض مشاريع الطلاب' }
-            ];
-            document.getElementById('mainContent').innerHTML = `
-                <h4><i class="fas fa-calendar-alt"></i> الفعاليات القادمة</h4>
-                <div class="list-group mt-3">
-                    ${eventsList.map(e => `<div class="list-group-item"><h6>${e.title}</h6><span class="badge bg-primary">${e.date}</span><p class="mt-2">${e.desc}</p></div>`).join('')}
-                </div>
-            `;
-        }
-        
-        window.addComment = function(section, id) {
-            const text = document.getElementById(`comment-${section}-${id}`).value.trim();
-            if (!text) { Swal.fire('تنبيه', 'اكتب تعليقاً', 'warning'); return; }
-            const comment = { id: Date.now().toString(), name: 'زائر', text: text, date: new Date().toLocaleString() };
-            db.ref(`${section}/${id}/comments`).push(comment).then(() => {
-                Swal.fire({ title: 'تم', toast: true, timer: 1500, icon: 'success' });
-                window.showSection(section);
-            });
-        };
-        
-        window.deleteComment = function(section, id, cid) {
-            Swal.fire({ title: 'تأكيد الحذف', icon: 'warning', showCancelButton: true }).then(res => {
-                if (res.isConfirmed) db.ref(`${section}/${id}/comments/${cid}`).remove().then(() => window.showSection(section));
-            });
-        };
-        
-        window.showAdminLogin = function() {
-            Swal.fire({
-                title: 'دخول المشرف',
-                input: 'password',
-                inputPlaceholder: 'كلمة السر',
-                showCancelButton: true
-            }).then(res => {
-                if (res.value === ADMIN_PASSWORD) {
-                    isAdmin = true;
-                    Swal.fire('تم الدخول', '', 'success');
-                    window.showSection('students');
-                } else if (res.value) Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
-            });
-        };
-        
-        window.shareWhatsApp = function(name, total) {
-            window.open(`https://wa.me/?text=نتيجة ${name}: ${total} درجة`, '_blank');
-        };
-        
-        window.showSection = function(section) {
-            if (section === 'students') showStudentsSection();
-            else if (section === 'news') showNewsSection();
-            else if (section === 'events') showEventsSection();
-            else if (section === 'radio') displayFiles('radio_section', '🎙️ الصحافة والإذاعة المدرسية');
-            else if (section === 'art') displayFiles('art_section', '🎨 معرض التربية الفنية');
-            else if (section === 'library') displayFiles('library_section', '📖 المكتبات');
-        };
-        
-        // بيانات افتراضية للنتائج
-        function initData() {
-            for (let [grade, name] of Object.entries(gradesList)) {
-                db.ref(`results/${grade}/2024001`).once('value').then(s => {
-                    if (!s.exists()) {
-                        db.ref(`results/${grade}/2024001`).set({
-                            name: 'أحمد محمد علي',
-                            class: name,
-                            subjects: { 'اللغة العربية': 85, 'الرياضيات': 92, 'العلوم': 88, 'اللغة الإنجليزية': 78 },
-                            total: 343, percentage: 85.75, grade: 'جيد جداً'
+                        await db.ref(section).push({
+                            title: `${baseTitle} - ${file.name}`,
+                            description: description,
+                            name: file.name,
+                            url: url,
+                            uploader: 'المشرف',
+                            date: new Date().toISOString(),
+                            comments: []
                         });
+                        uploaded++;
+                    } catch (error) {
+                        console.error(error);
+                        progressDiv.innerHTML = `<span class="text-danger">خطأ في رفع ${file.name}</span>`;
                     }
+                }
+                
+                if (uploaded === total) {
+                    return true;
+                } else {
+                    Swal.showValidationMessage(`تم رفع ${uploaded} من ${total} ملف بنجاح`);
+                    return uploaded > 0;
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('✅ تم الرفع', 'تم رفع الملفات بنجاح إلى قاعدة البيانات', 'success');
+                if (section === 'students_files') window.showStudentsFilesTab();
+                else displayFiles(section, '');
+            }
+        });
+    };
+    
+    window.addComment = function(section, id) {
+        const text = document.getElementById(`comment-${section}-${id}`).value.trim();
+        if (!text) { Swal.fire('تنبيه', 'الرجاء كتابة تعليق أولاً', 'warning'); return; }
+        
+        const comment = { id: Date.now().toString(), name: 'زائر', text: text, date: new Date().toLocaleString('ar-EG') };
+        db.ref(`${section}/${id}/comments`).push(comment).then(() => {
+            Swal.fire({ icon: 'success', title: 'تم الإضافة', toast: true, position: 'top-end', timer: 2000 });
+            if (section === 'students_files') window.showStudentsFilesTab();
+            else displayFiles(section, '');
+        }).catch(() => Swal.fire('خطأ', 'حدث خطأ', 'error'));
+    };
+    
+    window.deleteComment = function(section, id, commentId) {
+        Swal.fire({
+            title: 'تأكيد الحذف',
+            text: 'هل أنت متأكد من حذف هذا التعليق؟',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'نعم، احذف',
+            cancelButtonText: 'إلغاء'
+        }).then(res => {
+            if (res.isConfirmed) {
+                db.ref(`${section}/${id}/comments/${commentId}`).remove().then(() => {
+                    Swal.fire('تم الحذف', '', 'success');
+                    if (section === 'students_files') window.showStudentsFilesTab();
+                    else displayFiles(section, '');
                 });
             }
+        });
+    };
+    
+    window.showAdminLogin = function() {
+        Swal.fire({
+            title: 'دخول المشرف',
+            input: 'password',
+            inputLabel: 'كلمة السر',
+            inputPlaceholder: 'أدخل كلمة السر',
+            showCancelButton: true,
+            confirmButtonText: 'دخول',
+            cancelButtonText: 'إلغاء'
+        }).then(res => {
+            if (res.value === ADMIN_PASSWORD) {
+                isAdmin = true;
+                Swal.fire({ icon: 'success', title: 'مرحباً مشرف', text: 'تم الدخول بنجاح، تظهر لك الآن أزرار الإدارة', timer: 2000 });
+                showHome();
+            } else if (res.value) {
+                Swal.fire('خطأ', 'كلمة سر غير صحيحة', 'error');
+            }
+        });
+    };
+    
+    window.shareWhatsApp = function(name, total) {
+        window.open(`https://wa.me/?text=🎉 نتيجة الطالب ${name}: ${total}/1000 درجة من مدرسة سعد بن أبي وقاص`, '_blank');
+    };
+    
+    window.showSection = function(section) {
+        if (section === 'students') showStudentsSection();
+        else if (section === 'gallery') displayFiles('gallery_section', '🖼️ المعرض والملفات');
+        else if (section === 'news') showNewsSection();
+        else if (section === 'events') showEventsSection();
+        else if (section === 'radio') displayFiles('radio_section', '🎙️ الصحافة والإذاعة المدرسية');
+        else if (section === 'art') displayFiles('art_section', '🎨 معرض التربية الفنية');
+        else if (section === 'library') displayFiles('library_section', '📖 المكتبات');
+        else if (section === 'home') showHome();
+    };
+    
+    // بيانات افتراضية للنتائج لجميع الصفوف
+    function initData() {
+        for (let [grade, name] of Object.entries(gradesList)) {
+            db.ref(`results/${grade}/2024001`).once('value').then(s => {
+                if (!s.exists()) {
+                    db.ref(`results/${grade}/2024001`).set({
+                        name: 'أحمد محمد علي',
+                        class: name,
+                        subjects: { 'اللغة العربية': 85, 'الرياضيات': 92, 'العلوم': 88, 'اللغة الإنجليزية': 78, 'الدراسات الاجتماعية': 84 },
+                        total: 427, percentage: 85.4, grade: 'جيد جداً'
+                    });
+                }
+            });
         }
-        
-        initData();
-        setTimeout(() => { window.showSection('students'); }, 100);
-    })();
+    }
+    
+    initData();
+    showHome();
+    
+    window.showSection = window.showSection;
+    window.showResultsTab = window.showResultsTab;
+    window.showStudentsFilesTab = window.showStudentsFilesTab;
+    window.searchResult = window.searchResult;
+    window.voiceSearch = window.voiceSearch;
+    window.showUploadForm = window.showUploadForm;
+    window.addComment = window.addComment;
+    window.deleteComment = window.deleteComment;
+    window.showAdminLogin = window.showAdminLogin;
+    window.shareWhatsApp = window.shareWhatsApp;
 </script>
 </body>
 </html>
