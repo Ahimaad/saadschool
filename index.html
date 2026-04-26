@@ -1070,25 +1070,90 @@ function handleDrop(e){
 }
 function handleFileSelected(input){if(input.files[0])validateAndPreviewFile(input.files[0])}
 
+/* ============================================================
+   🗜️ ضغط الصور قبل الرفع — يقلل الحجم 60-80%
+============================================================ */
+function compressImage(file, maxWidth=1280, quality=0.75){
+    return new Promise(resolve=>{
+        // لو مش صورة — ارجعها كما هي
+        if(!/\.(jpg|jpeg|png|webp)$/i.test(file.name)){resolve(file);return}
+        const reader=new FileReader();
+        reader.onload=e=>{
+            const img=new Image();
+            img.onload=()=>{
+                // حساب الأبعاد الجديدة مع الحفاظ على النسبة
+                let w=img.width, h=img.height;
+                if(w>maxWidth){ h=Math.round(h*maxWidth/w); w=maxWidth; }
+                const canvas=document.createElement('canvas');
+                canvas.width=w; canvas.height=h;
+                const ctx=canvas.getContext('2d');
+                ctx.drawImage(img,0,0,w,h);
+                canvas.toBlob(blob=>{
+                    if(!blob){resolve(file);return}
+                    // لو الضغط زاد الحجم — استخدم الأصلي
+                    const compressed = blob.size < file.size
+                        ? new File([blob], file.name, {type:'image/jpeg'})
+                        : file;
+                    resolve(compressed);
+                },'image/jpeg', quality);
+            };
+            img.src=e.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
 function validateAndPreviewFile(file){
     if(file.size>50*1024*1024){showToast('حجم الملف يتجاوز 50 MB','error');return}
-    selectedFile=file;
     const {icon,color,bg}=getFileIconInfo('',file.name);
     const isImg_=/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
     const sizeMB=(file.size/1048576).toFixed(2),ext=file.name.split('.').pop().toUpperCase();
-    let previewHtml='';
-    if(isImg_){const url=URL.createObjectURL(file);previewHtml=`<img src="${url}" style="max-height:120px;border-radius:12px;max-width:100%;margin-top:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)">`}
-    document.getElementById('selectedFilePreview').innerHTML=`
-    <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-3" style="background:${bg};border-color:${color}40!important">
-        <i class="fas ${icon} fa-2x" style="color:${color}"></i>
-        <div class="flex-grow-1 overflow-hidden"><div class="fw-bold text-truncate" style="color:${color}">${escapeHtml(file.name)}</div><small class="text-muted">${ext} · ${sizeMB} MB</small></div>
-        <i class="fas fa-check-circle fa-lg text-success"></i>
-    </div>${previewHtml}`;
+
+    // لو صورة — اضغطها أولاً
+    if(isImg_ && !/\.svg$/i.test(file.name)){
+        showToast('🗜️ جاري ضغط الصورة...','info',1500);
+        compressImage(file).then(compressed=>{
+            selectedFile=compressed;
+            const newSizeMB=(compressed.size/1048576).toFixed(2);
+            const saved=Math.round((1-compressed.size/file.size)*100);
+            const url=URL.createObjectURL(compressed);
+            document.getElementById('selectedFilePreview').innerHTML=`
+            <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-3" style="background:${bg};border-color:${color}40!important">
+                <i class="fas ${icon} fa-2x" style="color:${color}"></i>
+                <div class="flex-grow-1 overflow-hidden">
+                    <div class="fw-bold text-truncate" style="color:${color}">${escapeHtml(file.name)}</div>
+                    <small class="text-muted">
+                        ${sizeMB} MB
+                        ${saved>5?`<span class="badge bg-success ms-1">⚡ ضُغطت ${saved}%</span>`:''}
+                        → ${newSizeMB} MB
+                    </small>
+                </div>
+                <i class="fas fa-check-circle fa-lg text-success"></i>
+            </div>
+            <img src="${url}" style="max-height:120px;border-radius:12px;max-width:100%;margin-top:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)">`;
+            document.getElementById('uploadZoneText').textContent='✅ تم اختيار الصورة وضغطها';
+            document.getElementById('uploadZoneSub').textContent=`${file.name} — وفّرنا ${saved}% من الحجم`;
+            document.getElementById('uploadIcon').className=`fas ${icon} upload-icon`;
+            document.getElementById('uploadIcon').style.color=color;
+            if(saved>5) showToast(`⚡ تم ضغط الصورة — وفّرنا ${saved}% من الحجم`, 'success', 3000);
+            else showToast(`تم اختيار: ${file.name.substring(0,30)}`, 'success', 2000);
+        });
+    } else {
+        selectedFile=file;
+        let previewHtml='';
+        if(isImg_){const url=URL.createObjectURL(file);previewHtml=`<img src="${url}" style="max-height:120px;border-radius:12px;max-width:100%;margin-top:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)">`}
+        document.getElementById('selectedFilePreview').innerHTML=`
+        <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-3" style="background:${bg};border-color:${color}40!important">
+            <i class="fas ${icon} fa-2x" style="color:${color}"></i>
+            <div class="flex-grow-1 overflow-hidden"><div class="fw-bold text-truncate" style="color:${color}">${escapeHtml(file.name)}</div><small class="text-muted">${ext} · ${sizeMB} MB</small></div>
+            <i class="fas fa-check-circle fa-lg text-success"></i>
+        </div>${previewHtml}`;
+        showToast(`تم اختيار: ${file.name.substring(0,30)}`, 'success', 2000);
+    }
     document.getElementById('uploadZoneText').textContent='✅ تم اختيار الملف';
     document.getElementById('uploadZoneSub').textContent=file.name;
     document.getElementById('uploadIcon').className=`fas ${icon} upload-icon`;
     document.getElementById('uploadIcon').style.color=color;
-    showToast(`تم اختيار: ${file.name.substring(0,30)}`, 'success', 2000);
 }
 
 function uploadFile(section,sectionTitle){
@@ -1102,9 +1167,20 @@ function uploadFile(section,sectionTitle){
     pw.style.display='block';pt.style.display='block';
     const ts=Date.now();
     const safeName=selectedFile.name.replace(/[^\w.\-\u0600-\u06FF]/g,'_');
-    const task=storage.ref(`uploads/${section}/${ts}_${safeName}`).put(selectedFile);
+
+    // إعدادات رفع محسّنة
+    const metadata={ cacheControl:'public,max-age=31536000' };
+    const task=storage.ref(`uploads/${section}/${ts}_${safeName}`).put(selectedFile, metadata);
+
     task.on('state_changed',
-        snap=>{const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);pb.style.width=pct+'%';pt.textContent=`⬆️ ${pct}% — ${formatSize(snap.bytesTransferred)} / ${formatSize(snap.totalBytes)}`;},
+        snap=>{
+            const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);
+            pb.style.width=pct+'%';
+            const speed = snap.bytesTransferred > 0
+                ? formatSize(Math.round(snap.bytesTransferred / ((Date.now()-ts)/1000))) + '/ث'
+                : '';
+            pt.textContent=`⬆️ ${pct}% — ${formatSize(snap.bytesTransferred)} / ${formatSize(snap.totalBytes)} ${speed?'| '+speed:''}`;
+        },
         err=>{
             btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
             pw.style.display=pt.style.display='none';
@@ -1114,12 +1190,17 @@ function uploadFile(section,sectionTitle){
             showToast(msg,'error',4000);
         },
         ()=>{task.snapshot.ref.getDownloadURL().then(url=>{
-            db.ref(section).push({title,description:desc||'',url,fileName:selectedFile.name,fileSize:selectedFile.size,uploadedAt:new Date().toLocaleString('ar-EG'),comments:{}})
-                .then(()=>{
-                    selectedFile=null;
-                    showToast(`✅ تم رفع "${title}" بنجاح`, 'success');
-                    setTimeout(()=>displayFiles(section,sectionTitle), 1000);
-                });
+            db.ref(section).push({
+                title, description:desc||'', url,
+                fileName:selectedFile.name,
+                fileSize:selectedFile.size,
+                uploadedAt:new Date().toLocaleString('ar-EG'),
+                comments:{}
+            }).then(()=>{
+                selectedFile=null;
+                showToast(`✅ تم رفع "${title}" بنجاح`, 'success');
+                setTimeout(()=>displayFiles(section,sectionTitle), 800);
+            });
         });}
     );
 }
