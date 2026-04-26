@@ -3,644 +3,1396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#0a2b4e">
+    <meta name="description" content="بوابة مدرسة سعد بن أبي وقاص الرسمية للغات">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <title>بوابة مدرسة سعد بن أبي وقاص</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
-    
-    <style>
-        :root {
-            --primary: #0a2b4e;
-            --gold: #d4af37;
-            --light-gold: #f4e4bc;
-            --glass: rgba(255, 255, 255, 0.95);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Cairo', sans-serif;
-            background: #f0f2f5;
-            background-image: radial-gradient(#667eea11 1px, transparent 1px);
-            background-size: 20px 20px;
-            min-height: 100vh;
-            color: #333;
-        }
-        
-        body.dark-mode {
-            background: #121212;
-            color: #eee;
-            background-image: radial-gradient(#ffffff05 1px, transparent 1px);
-        }
+<style>
+:root {
+    --primary:#0a2b4e; --primary-light:#1e4a76; --primary-glow:rgba(10,43,78,0.3);
+    --gold:#d4af37; --gold-light:#f0d060; --gold-glow:rgba(212,175,55,0.4);
+    --glass:rgba(255,255,255,0.96); --glass-border:rgba(255,255,255,0.6);
+    --bg:#eef1f7; --card-shadow:0 8px 32px rgba(10,43,78,0.10);
+    --hover-shadow:0 20px 50px rgba(10,43,78,0.18);
+    --transition:all 0.35s cubic-bezier(0.4,0,0.2,1);
+    --radius:22px; --radius-sm:14px; --font:'Cairo',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+    font-family:var(--font);background:var(--bg);
+    background-image:radial-gradient(circle at 20% 50%,rgba(10,43,78,0.04) 0%,transparent 50%),
+                     radial-gradient(circle at 80% 20%,rgba(212,175,55,0.05) 0%,transparent 50%),
+                     radial-gradient(#667eea09 1px,transparent 1px);
+    background-size:auto,auto,22px 22px;
+    min-height:100vh;color:#2c3e50;transition:background 0.5s,color 0.5s;overflow-x:hidden;
+}
+::-webkit-scrollbar{width:7px}::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:10px}
 
-        /* تحسين الهيدر */
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, #1e4a76 100%);
-            border-bottom: 4px solid var(--gold);
-            padding: 20px 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-        }
+/* DARK MODE */
+body.dark-mode{
+    background:#0b0f1a;color:#dde3ee;
+    background-image:radial-gradient(circle at 20% 50%,rgba(30,74,118,0.12) 0%,transparent 50%),
+                     radial-gradient(circle at 80% 20%,rgba(212,175,55,0.06) 0%,transparent 50%),
+                     radial-gradient(rgba(255,255,255,0.03) 1px,transparent 1px);
+    background-size:auto,auto,22px 22px;
+}
+.dark-mode .glass-card{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.07)}
+.dark-mode .side-menu-item{background:rgba(20,28,44,0.9);color:#ccd6f0}
+.dark-mode .file-card{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.06)}
+.dark-mode .form-control,.dark-mode .form-select{background:#141c2c;border-color:#2a3550;color:#dde}
+.dark-mode .form-control::placeholder{color:#556}
+.dark-mode .bg-light{background:#141c2c!important}
+.dark-mode .card{background:rgba(16,22,36,0.95)!important;border-color:rgba(255,255,255,0.06)!important;color:#dde}
+.dark-mode .text-muted{color:#7a8aaa!important}
+.dark-mode footer{background:#060912!important}
+.dark-mode .upload-zone{background:#141c2c;border-color:#2a3550}
+.dark-mode .upload-zone:hover{background:#1a2438;border-color:var(--gold)}
+.dark-mode .file-type-badge{background:#1e2840;color:#8899bb}
+.dark-mode .stat-chip{background:#141c2c}
+.dark-mode .comment-item{background:#141c2c;border-right-color:var(--gold)}
+.dark-mode .news-card{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.06)}
+.dark-mode .quick-card{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.06)}
+.dark-mode .home-stats-card{background:rgba(16,22,36,0.95)}
+.dark-mode .result-stat-box{background:rgba(255,255,255,0.1);color:white}
 
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: url('https://www.transparenttextures.com/patterns/cubes.png');
-            opacity: 0.1;
-        }
+/* LOADER */
+#pageLoader{
+    position:fixed;inset:0;z-index:9999;background:var(--primary);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    transition:opacity 0.6s,visibility 0.6s;
+}
+#pageLoader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{
+    width:90px;height:90px;border-radius:50%;
+    border:4px solid var(--gold);background:white;padding:8px;
+    animation:pulse-logo 1.5s ease-in-out infinite;
+}
+@keyframes pulse-logo{0%,100%{box-shadow:0 0 0 0 var(--gold-glow);transform:scale(1)}50%{box-shadow:0 0 0 18px transparent;transform:scale(1.05)}}
+.loader-dots{display:flex;gap:8px;margin-top:20px}
+.loader-dots span{width:10px;height:10px;border-radius:50%;background:var(--gold);animation:bounce-dot 1.2s ease-in-out infinite}
+.loader-dots span:nth-child(2){animation-delay:.2s}.loader-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce-dot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
 
-        .school-title {
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            color: white;
-        }
+/* HEADER */
+header{
+    background:linear-gradient(135deg,var(--primary) 0%,#0e3a65 60%,var(--primary-light) 100%);
+    border-bottom:4px solid var(--gold);padding:18px 0;
+    box-shadow:0 6px 30px rgba(0,0,0,0.3);position:sticky;top:0;z-index:100;overflow:hidden;
+}
+.school-logo{
+    width:80px;height:80px;border-radius:50%;border:3px solid var(--gold);
+    background:white;padding:5px;transition:var(--transition);
+    box-shadow:0 0 20px var(--gold-glow);cursor:pointer;position:relative;z-index:1;
+}
+.school-logo:hover{transform:rotate(360deg) scale(1.1)}
+.school-title{font-weight:900;color:white;text-shadow:0 2px 8px rgba(0,0,0,0.4);position:relative;z-index:1}
+.header-badge{
+    background:var(--gold);color:var(--primary);font-weight:800;
+    padding:4px 14px;border-radius:30px;font-size:0.78rem;display:inline-block;position:relative;z-index:1
+}
+.online-dot{
+    width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;
+    animation:blink-dot 2s ease-in-out infinite;margin-left:5px;
+}
+@keyframes blink-dot{0%,100%{opacity:1}50%{opacity:0.3}}
 
-        .school-logo {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--gold);
-            background: white;
-            padding: 5px;
-            transition: var(--transition);
-            box-shadow: 0 0 15px rgba(212,175,55,0.4);
-        }
+/* NEWS TICKER */
+.news-ticker{
+    background:linear-gradient(90deg,var(--primary) 0%,#0e3a65 100%);
+    color:white;padding:9px 0;border-bottom:2px solid var(--gold);
+    white-space:nowrap;overflow:hidden;position:relative;
+}
+.news-ticker::before,.news-ticker::after{
+    content:'';position:absolute;top:0;width:80px;height:100%;z-index:2;
+}
+.news-ticker::before{left:0;background:linear-gradient(to right,#0a2b4e,transparent)}
+.news-ticker::after{right:0;background:linear-gradient(to left,#0a2b4e,transparent)}
+.ticker-wrapper{display:inline-block;animation:tickerScroll 50s linear infinite}
+.ticker-wrapper:hover{animation-play-state:paused}
+@keyframes tickerScroll{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker-item{display:inline-block;padding:0 40px}
+.ticker-item i{color:var(--gold-light);margin-left:6px}
 
-        .school-logo:hover { transform: rotate(360deg) scale(1.1); }
+/* GLASS CARD */
+.glass-card{
+    background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-radius:var(--radius);padding:24px;box-shadow:var(--card-shadow);
+    border:1px solid var(--glass-border);transition:var(--transition);
+}
+.glass-card:hover{box-shadow:var(--hover-shadow)}
 
-        /* البطاقات الزجاجية */
-        .glass-card {
-            background: var(--glass);
-            backdrop-filter: blur(12px);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: var(--transition);
-        }
+/* SIDE MENU */
+.side-menu-item{
+    background:#fff;border:none;border-radius:var(--radius-sm);
+    padding:13px 16px;margin-bottom:9px;width:100%;
+    text-align:right;font-weight:700;font-size:0.92rem;
+    transition:var(--transition);cursor:pointer;
+    border-right:5px solid var(--gold);display:flex;align-items:center;gap:8px;
+    color:var(--primary);font-family:var(--font);box-shadow:0 2px 8px rgba(0,0,0,0.04);
+    position:relative;overflow:hidden;
+}
+.side-menu-item::before{
+    content:'';position:absolute;right:0;top:0;width:0;height:100%;
+    background:var(--primary);transition:width 0.35s ease;z-index:0;
+}
+.side-menu-item:hover::before,.side-menu-item.active::before{width:100%}
+.side-menu-item span,.side-menu-item i{position:relative;z-index:1}
+.side-menu-item:hover,.side-menu-item.active{color:var(--gold);box-shadow:0 8px 20px var(--primary-glow)}
+.side-menu-item i{width:26px;font-size:1.05rem}
+.menu-badge{
+    margin-right:auto;background:var(--gold);color:var(--primary);
+    font-size:0.65rem;font-weight:800;padding:2px 8px;
+    border-radius:20px;position:relative;z-index:1;
+}
 
-        body.dark-mode .glass-card {
-            background: rgba(30, 30, 45, 0.9);
-            border-color: rgba(255,255,255,0.05);
-        }
+/* SWIPER */
+.hero-swiper-wrap{
+    border-radius:var(--radius);overflow:hidden;
+    box-shadow:0 15px 50px rgba(0,0,0,0.25);border:4px solid white;
+    transition:var(--transition);margin-bottom:20px;
+}
+.hero-swiper-wrap:hover{box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.hero-swiper{height:260px}
+.hero-swiper .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.slide-caption{
+    position:absolute;bottom:0;left:0;right:0;
+    background:linear-gradient(transparent,rgba(0,0,0,0.65));
+    color:white;padding:22px 20px 12px;font-weight:700;font-size:1rem;
+}
+.swiper-pagination-bullet-active{background:var(--gold)!important}
+.swiper-button-next,.swiper-button-prev{color:var(--gold)!important}
+.swiper-button-next::after,.swiper-button-prev::after{font-size:1.2rem!important;font-weight:900!important}
 
-        /* القائمة الجانبية */
-        .side-menu-item {
-            background: #fff;
-            border: none;
-            border-radius: 18px;
-            padding: 14px 20px;
-            margin-bottom: 12px;
-            width: 100%;
-            text-align: right;
-            font-weight: 700;
-            transition: var(--transition);
-            border-right: 5px solid var(--gold);
-            display: flex;
-            align-items: center;
-            color: var(--primary);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
+/* HOME STATS */
+.home-stats-card{
+    background:white;border-radius:var(--radius-sm);padding:18px 12px;
+    text-align:center;transition:var(--transition);
+    border:1px solid rgba(0,0,0,0.05);box-shadow:0 3px 12px rgba(0,0,0,0.06);
+}
+.home-stats-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.1)}
+.home-stats-card .stat-num{font-size:2rem;font-weight:900}
 
-        .side-menu-item i { width: 30px; font-size: 1.2rem; }
+/* QUICK CARDS */
+.quick-card{
+    border-radius:var(--radius-sm);padding:22px 15px;text-align:center;
+    cursor:pointer;transition:var(--transition);border:1px solid rgba(0,0,0,0.05);
+    background:white;box-shadow:0 3px 12px rgba(0,0,0,0.05);
+}
+.quick-card:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 15px 35px rgba(0,0,0,0.12)}
+.quick-card i{font-size:2.2rem;margin-bottom:10px;display:block}
+.quick-card h6{font-weight:700;font-size:0.9rem;margin:0}
 
-        .side-menu-item:hover {
-            background: var(--primary);
-            color: var(--gold);
-            transform: scale(1.02) translateX(-10px);
-            box-shadow: 0 8px 15px rgba(10, 43, 78, 0.2);
-        }
+/* RESULT CARD */
+.result-card{
+    background:linear-gradient(135deg,var(--primary) 0%,#1a4070 100%);
+    color:white;border-radius:var(--radius);padding:28px;
+    border:2px solid var(--gold);position:relative;overflow:hidden;
+}
+.result-card::before{
+    content:'';position:absolute;top:-60px;right:-60px;
+    width:200px;height:200px;background:rgba(212,175,55,0.07);border-radius:50%;
+}
+.result-stat-box{
+    background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);
+    border-radius:12px;padding:12px 8px;text-align:center;transition:var(--transition);
+}
+.result-stat-box:hover{background:rgba(255,255,255,0.2);transform:scale(1.04)}
+.subject-item{
+    background:rgba(255,255,255,0.08);padding:11px 18px;
+    border-radius:12px;margin:7px 0;transition:var(--transition);
+    display:flex;justify-content:space-between;align-items:center;
+}
+.subject-item:hover{background:rgba(255,255,255,0.14);padding-right:24px}
 
-        body.dark-mode .side-menu-item {
-            background: #252539;
-            color: #ddd;
-        }
+/* FILE CARDS */
+.file-card{
+    background:#fff;border-radius:var(--radius-sm);overflow:hidden;
+    box-shadow:var(--card-shadow);transition:var(--transition);
+    border:1px solid rgba(0,0,0,0.05);height:100%;
+}
+.file-card:hover{transform:translateY(-5px);box-shadow:var(--hover-shadow)}
+.file-thumb{width:100%;height:140px;object-fit:cover;display:block}
+.file-icon-wrap{height:140px;display:flex;align-items:center;justify-content:center;font-size:4rem}
+.file-type-badge{
+    font-size:0.65rem;font-weight:800;padding:3px 9px;border-radius:30px;
+    text-transform:uppercase;letter-spacing:0.5px;background:#eef2ff;color:#4a60cc;display:inline-block;
+}
 
-        /* شريط الأخبار */
-        .news-ticker {
-            background: var(--primary);
-            color: white;
-            padding: 12px 0;
-            border-bottom: 2px solid var(--gold);
-            white-space: nowrap;
-            overflow: hidden;
-            position: relative;
-        }
+/* UPLOAD ZONE */
+.upload-zone{
+    border:2.5px dashed #d0d8e8;border-radius:var(--radius);
+    padding:45px 20px;text-align:center;transition:var(--transition);
+    cursor:pointer;background:#f7f9ff;position:relative;overflow:hidden;
+}
+.upload-zone:hover,.upload-zone.drag-over{
+    border-color:var(--gold);transform:scale(1.005);
+    box-shadow:0 0 0 4px rgba(212,175,55,0.15);background:#fffbf0;
+}
+.upload-icon{font-size:3.5rem;color:var(--gold);margin-bottom:15px;display:block;transition:var(--transition)}
+.upload-zone:hover .upload-icon{transform:translateY(-6px)}
 
-        .ticker-wrapper {
-            display: inline-block;
-            animation: tickerScroll 40s linear infinite;
-        }
+/* PROGRESS */
+.upload-progress{height:10px;border-radius:10px;background:#e8ecf5;margin-top:14px;display:none;overflow:hidden}
+.upload-progress-bar{
+    height:100%;border-radius:10px;width:0%;transition:width 0.3s;
+    background:linear-gradient(90deg,var(--primary),var(--gold),var(--primary));
+    background-size:200% 100%;animation:shimmer 2s linear infinite;
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.progress-text{font-size:0.8rem;font-weight:700;text-align:center;margin-top:6px;color:var(--primary);display:none}
 
-        @keyframes tickerScroll {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
+/* BUTTONS */
+.btn-gold{
+    background:linear-gradient(135deg,var(--gold),#c9a227);
+    color:var(--primary);font-weight:800;border:none;font-family:var(--font);transition:var(--transition);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--gold-glow);color:var(--primary)}
 
-        /* سلايدر الصور */
-        .hero-slider {
-            border-radius: 25px;
-            overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            border: 5px solid white;
-        }
+/* FABs */
+.theme-toggle{
+    position:fixed;bottom:30px;left:30px;
+    background:linear-gradient(135deg,var(--gold),#c9a227);
+    color:var(--primary);border:none;border-radius:50%;
+    width:56px;height:56px;z-index:500;
+    box-shadow:0 6px 24px var(--gold-glow);font-size:1.4rem;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);
+}
+.theme-toggle:hover{transform:scale(1.12) rotate(20deg)}
+.scroll-top-btn{
+    position:fixed;bottom:30px;left:96px;
+    background:var(--primary);color:white;border:none;border-radius:50%;
+    width:48px;height:48px;z-index:500;
+    box-shadow:0 6px 20px var(--primary-glow);font-size:1.1rem;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--transition);
+    opacity:0;pointer-events:none;
+}
+.scroll-top-btn.visible{opacity:1;pointer-events:all}
+.scroll-top-btn:hover{transform:translateY(-3px)}
 
-        /* بطاقة النتائج */
-        .result-card {
-            background: linear-gradient(135deg, #0a2b4e 0%, #1e4a76 100%);
-            color: white;
-            border-radius: 25px;
-            padding: 30px;
-            position: relative;
-            border: 2px solid var(--gold);
-        }
+/* STAT CHIP */
+.stat-chip{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 14px;border-radius:var(--radius-sm);
+    background:#f4f7ff;margin-bottom:8px;transition:var(--transition);
+}
+.stat-chip:hover{background:rgba(212,175,55,0.12);transform:translateX(-3px)}
 
-        .subject-item {
-            background: rgba(255,255,255,0.08);
-            padding: 12px 20px;
-            border-radius: 15px;
-            margin: 10px 0;
-            transition: var(--transition);
-        }
+/* ADMIN BAR */
+.admin-bar{
+    background:linear-gradient(90deg,#dc3545,#c0392b);
+    color:white;padding:7px 14px;border-radius:10px;
+    font-weight:700;font-size:0.82rem;
+    display:inline-flex;align-items:center;gap:7px;
+    animation:pulse-admin 2s ease-in-out infinite;
+}
+@keyframes pulse-admin{0%,100%{box-shadow:0 0 0 0 rgba(220,53,69,0.4)}50%{box-shadow:0 0 0 8px rgba(220,53,69,0)}}
 
-        .subject-item:hover { background: rgba(255,255,255,0.15); }
+/* COMMENTS */
+.comments-section{max-height:160px;overflow-y:auto}
+.comment-item{
+    background:#f4f7ff;border-radius:10px;padding:8px 12px;
+    margin-bottom:6px;font-size:0.82rem;border-right:3px solid var(--gold);
+    animation:fadeIn 0.3s ease;
+}
 
-        /* زر الوضع الليلي */
-        .theme-toggle {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background: var(--gold);
-            color: var(--primary);
-            border: none;
-            border-radius: 50%;
-            width: 55px; height: 55px;
-            z-index: 1000;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            font-size: 1.5rem;
-            display: flex; align-items: center; justify-content: center;
-        }
+/* NEWS CARDS */
+.news-card{
+    background:white;border-radius:var(--radius-sm);padding:18px;
+    border-right:5px solid var(--primary);transition:var(--transition);box-shadow:var(--card-shadow);
+}
+.news-card:hover{transform:translateX(-4px);box-shadow:var(--hover-shadow);border-right-color:var(--gold)}
 
-        /* تخصيص الطباعة */
-        @media print {
-            body * { visibility: hidden; }
-            #resultDisplay, #resultDisplay * { visibility: visible; }
-            #resultDisplay { position: absolute; left: 0; top: 0; width: 100%; color: black !important; }
-            .result-card { background: white !important; border: 2px solid black !important; color: black !important; }
-            .btn, .theme-toggle, header, .side-menu-item { display: none !important; }
-        }
+/* MOBILE NAV */
+.mobile-nav{
+    display:none;position:fixed;bottom:0;left:0;right:0;
+    background:var(--primary);z-index:200;padding:6px 0 8px;
+    border-top:3px solid var(--gold);box-shadow:0 -4px 20px rgba(0,0,0,0.2);
+}
+.mobile-nav-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;
+    color:rgba(255,255,255,0.6);font-size:0.62rem;font-weight:700;
+    cursor:pointer;padding:4px 2px;transition:var(--transition);
+    border:none;background:none;font-family:var(--font);
+}
+.mobile-nav-item i{font-size:1.2rem;margin-bottom:3px}
+.mobile-nav-item.active,.mobile-nav-item:hover{color:var(--gold)}
+@media(max-width:768px){
+    .mobile-nav{display:flex}
+    body{padding-bottom:70px}
+    .theme-toggle{bottom:80px;left:15px;width:46px;height:46px;font-size:1.2rem}
+    .scroll-top-btn{bottom:80px;left:70px;width:40px;height:40px;font-size:1rem}
+    .hero-swiper{height:190px!important}
+    .glass-card{padding:16px;border-radius:16px}
+    .d-none.d-lg-block{display:none!important}
+}
 
-        /* رؤية الهاتف المستحسنة */
-        @media (max-width: 768px) {
-            header { padding: 15px 0; }
-            .school-logo { width: 60px; height: 60px; }
-            .side-menu-item { 
-                padding: 10px; 
-                font-size: 0.9rem;
-                margin-bottom: 8px;
-                border-radius: 12px;
-            }
-            .glass-card { padding: 15px; border-radius: 15px; }
-            .hero-slider { border-radius: 15px; border-width: 3px; }
-            .carousel-item img { height: 180px; }
-        }
-    </style>
+/* ANIMATIONS */
+.fade-in{animation:fadeIn 0.45s ease both}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.stagger>*{opacity:0;animation:fadeIn 0.4s ease forwards}
+.stagger>*:nth-child(1){animation-delay:.05s}.stagger>*:nth-child(2){animation-delay:.10s}
+.stagger>*:nth-child(3){animation-delay:.15s}.stagger>*:nth-child(4){animation-delay:.20s}
+.stagger>*:nth-child(5){animation-delay:.25s}.stagger>*:nth-child(6){animation-delay:.30s}
+.glow-pulse{animation:glow-pulse-kf 3s ease-in-out infinite}
+@keyframes glow-pulse-kf{0%,100%{box-shadow:0 0 0 0 var(--gold-glow)}50%{box-shadow:0 0 20px 6px var(--gold-glow)}}
+
+/* SKELETON LOADING */
+.skeleton{background:linear-gradient(90deg,#e8ecf4 25%,#f5f7fb 50%,#e8ecf4 75%);background-size:200% 100%;animation:skeleton-shimmer 1.4s infinite;border-radius:10px}
+@keyframes skeleton-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.dark-mode .skeleton{background:linear-gradient(90deg,#1e2840 25%,#252d42 50%,#1e2840 75%);background-size:200% 100%}
+.skeleton-card{background:#fff;border-radius:var(--radius-sm);overflow:hidden;box-shadow:var(--card-shadow);border:1px solid rgba(0,0,0,0.05)}
+.dark-mode .skeleton-card{background:rgba(16,22,36,0.95)}
+.skeleton-thumb{height:140px;width:100%}
+.skeleton-line{height:14px;margin:8px 12px}
+.skeleton-line.short{width:60%}
+.skeleton-line.shorter{width:40%}
+
+/* TOAST */
+.toast-container-custom{position:fixed;top:80px;left:20px;z-index:9000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast-item{
+    background:var(--primary);color:white;padding:12px 18px;border-radius:14px;
+    font-family:var(--font);font-size:0.88rem;font-weight:600;
+    box-shadow:0 8px 25px rgba(0,0,0,0.2);border-right:4px solid var(--gold);
+    animation:toast-in 0.4s cubic-bezier(0.4,0,0.2,1) forwards;
+    pointer-events:all;display:flex;align-items:center;gap:10px;min-width:220px;
+}
+.toast-item.success{border-right-color:#2ecc71}
+.toast-item.error{background:#c0392b;border-right-color:#e74c3c}
+.toast-item.warning{background:#d68910;border-right-color:#f0b429}
+@keyframes toast-in{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+@keyframes toast-out{from{opacity:1;transform:translateX(0)}to{opacity:0;transform:translateX(-30px)}}
+
+/* SEARCH & FILTER BAR */
+.search-filter-bar{
+    background:var(--glass);border-radius:var(--radius-sm);padding:12px 16px;
+    border:1px solid var(--glass-border);margin-bottom:16px;
+    display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+    box-shadow:0 2px 10px rgba(0,0,0,0.05);
+}
+.dark-mode .search-filter-bar{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.07)}
+.search-input-wrap{position:relative;flex:1;min-width:160px}
+.search-input-wrap i{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa;font-size:0.9rem}
+.search-input-wrap input{padding-right:36px;border-radius:10px;border:1px solid #dde;font-family:var(--font);font-size:0.88rem;width:100%}
+.dark-mode .search-input-wrap input{background:#141c2c;border-color:#2a3550;color:#dde}
+.filter-btn{
+    border:1.5px solid #dde;border-radius:10px;padding:6px 12px;
+    background:white;cursor:pointer;font-size:0.78rem;font-weight:700;
+    font-family:var(--font);transition:var(--transition);white-space:nowrap;
+}
+.dark-mode .filter-btn{background:#1e2840;border-color:#2a3550;color:#ccd}
+.filter-btn.active{background:var(--primary);color:var(--gold);border-color:var(--primary)}
+.filter-btn:hover{border-color:var(--primary);color:var(--primary)}
+.dark-mode .filter-btn:hover{border-color:var(--gold);color:var(--gold)}
+.files-count-badge{font-size:0.75rem;color:#999;white-space:nowrap;margin-right:auto}
+
+/* CHAR COUNTER */
+.char-counter{font-size:0.72rem;color:#aaa;text-align:left;margin-top:3px;transition:color 0.2s}
+.char-counter.warning{color:#e67e22}
+.char-counter.danger{color:#e74c3c;font-weight:700}
+
+/* COPY LINK BTN */
+.copy-link-btn{
+    border:none;background:rgba(10,43,78,0.07);border-radius:8px;
+    padding:5px 10px;font-size:0.75rem;color:var(--primary);cursor:pointer;
+    transition:var(--transition);font-family:var(--font);font-weight:700;
+}
+.copy-link-btn:hover{background:var(--primary);color:white}
+.dark-mode .copy-link-btn{background:rgba(255,255,255,0.07);color:#aac}
+.dark-mode .copy-link-btn:hover{background:var(--primary-light);color:white}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:50px 20px}
+.empty-state-icon{
+    width:80px;height:80px;border-radius:50%;
+    background:linear-gradient(135deg,var(--light-gold,#f4e4bc),rgba(212,175,55,0.1));
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:2.5rem;margin-bottom:16px;
+}
+.empty-state h6{font-weight:700;color:#555;margin-bottom:8px}
+.dark-mode .empty-state h6{color:#aaa}
+.empty-state p{font-size:0.85rem;color:#999}
+
+/* ADMIN DASHBOARD */
+.admin-stat-card{
+    background:white;border-radius:var(--radius-sm);padding:16px;
+    border-right:5px solid var(--gold);box-shadow:var(--card-shadow);
+    transition:var(--transition);cursor:default;
+}
+.admin-stat-card:hover{transform:translateY(-3px);box-shadow:var(--hover-shadow)}
+.dark-mode .admin-stat-card{background:rgba(16,22,36,0.95);border-color:rgba(255,255,255,0.06)}
+.admin-stat-num{font-size:1.8rem;font-weight:900;color:var(--primary)}
+.dark-mode .admin-stat-num{color:var(--gold)}
+
+/* NEWS LIVE BADGE */
+.live-badge{
+    display:inline-flex;align-items:center;gap:5px;
+    background:#e74c3c;color:white;font-size:0.68rem;font-weight:800;
+    padding:3px 8px;border-radius:20px;animation:pulse-admin 2s infinite;
+}
+
+/* PRINT */
+@media print{
+    body *{visibility:hidden}
+    #resultDisplay,#resultDisplay *{visibility:visible}
+    #resultDisplay{position:absolute;left:0;top:0;width:100%}
+    .result-card{background:white!important;color:black!important;border:2px solid black!important}
+    .btn,.theme-toggle,header,.side-menu-item,.mobile-nav,.scroll-top-btn{display:none!important}
+}
+</style>
 </head>
 <body>
 
-<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع">
-    <i class="fas fa-moon"></i>
-</button>
+<!-- TOAST CONTAINER -->
+<div class="toast-container-custom" id="toastContainer"></div>
 
-<div id="newsTickerContainer" class="news-ticker">
-    <div class="ticker-wrapper">
-        <span class="mx-4"><i class="fas fa-star text-warning"></i> أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص الرسمية للغات</span>
-        <span class="mx-4"><i class="fas fa-bullhorn text-warning"></i> نبارك لطلابنا المتفوقين نتائج الفصل الدراسي الأول</span>
-        <span class="mx-4"><i class="fas fa-calendar-check text-warning"></i> ترقبوا فعاليات أسبوع الابتكار والعلوم</span>
-        <span class="mx-4"><i class="fas fa-user-shield text-warning"></i> نظامنا الرقمي يضمن سرية بيانات الطلاب والنتائج</span>
-    </div>
+<!-- LOADER -->
+<div id="pageLoader">
+    <img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/90x90/white/0a2b4e?text=S'">
+    <p style="color:rgba(255,255,255,0.7);margin-top:16px;font-family:'Cairo',sans-serif;font-weight:700">جاري التحميل...</p>
+    <div class="loader-dots"><span></span><span></span><span></span></div>
 </div>
 
+<!-- FABs -->
+<button class="theme-toggle" onclick="toggleTheme()" title="تبديل الوضع"><i class="fas fa-moon"></i></button>
+<button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="للأعلى"><i class="fas fa-chevron-up"></i></button>
+
+<!-- HEADER -->
 <header>
     <div class="container">
-        <div class="row align-items-center text-center text-md-end">
-            <div class="col-md-auto mb-3 mb-md-0">
+        <div class="row align-items-center text-center text-md-end g-2">
+            <div class="col-md-auto">
                 <img src="logo.jpg" class="school-logo" onerror="this.src='https://placehold.co/80x80/white/0a2b4e?text=S.B.W'">
             </div>
             <div class="col">
-                <div class="badge bg-gold text-dark mb-2 px-3 py-2 fw-bold" style="background: var(--gold);">إدارة الفشن التعليمية - محافظة بني سويف</div>
-                <h1 class="school-title h2 mb-1">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
-                <p class="mb-0 text-white-50 small">بوابة الإبداع والتميز الرقمي - رحلة نحو المستقبل</p>
+                <div class="header-badge mb-2">إدارة الفشن التعليمية — محافظة بني سويف</div>
+                <h1 class="school-title fs-3 mb-1">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
+                <p class="mb-0" style="position:relative;z-index:1">
+                    <span style="color:rgba(255,255,255,0.6);font-size:0.8rem"><span class="online-dot"></span> النظام يعمل</span>
+                    <span class="mx-2" style="color:rgba(255,255,255,0.25)">|</span>
+                    <span style="color:rgba(255,255,255,0.5);font-size:0.8rem">بوابة الإبداع والتميز الرقمي</span>
+                </p>
             </div>
         </div>
     </div>
 </header>
 
-<div class="container my-5">
+<!-- NEWS TICKER -->
+<div id="newsTickerContainer" class="news-ticker">
+    <div class="ticker-wrapper">
+        <span class="ticker-item"><i class="fas fa-star"></i> أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص الرسمية للغات</span>
+        <span class="ticker-item"><i class="fas fa-bullhorn"></i> نبارك لطلابنا المتفوقين نتائج الفصل الدراسي الأول</span>
+        <span class="ticker-item"><i class="fas fa-calendar-check"></i> ترقبوا فعاليات أسبوع الابتكار والعلوم</span>
+        <span class="ticker-item"><i class="fas fa-shield-halved"></i> نظامنا الرقمي يضمن سرية بيانات الطلاب</span>
+        <span class="ticker-item"><i class="fas fa-trophy"></i> مدرستنا من بين أوائل مدارس بني سويف في التحول الرقمي</span>
+    </div>
+</div>
+
+<div class="container my-4">
     <div class="row g-4">
-        <div class="col-lg-4">
-            <div class="glass-card mb-4" id="sideNav">
-                <div class="side-menu-item" onclick="showSection('home')">
-                    <i class="fas fa-home"></i> الرئيسية
-                </div>
-                <div class="side-menu-item" onclick="showSection('students')">
-                    <i class="fas fa-user-graduate"></i> شئون الطلاب والنتائج
-                </div>
-                <div class="side-menu-item" onclick="showSection('gallery')">
-                    <i class="fas fa-photo-video"></i> المعرض الرقمي
-                </div>
-                <div class="side-menu-item" onclick="showSection('news')">
-                    <i class="fas fa-newspaper"></i> ركن الأخبار
-                </div>
-                <div class="side-menu-item" onclick="showSection('art')">
-                    <i class="fas fa-palette"></i> معرض التربية الفنية
-                </div>
-                <div class="side-menu-item" onclick="showSection('library')">
-                    <i class="fas fa-book-reader"></i> المكتبة الرقمية
-                </div>
-                <div class="side-menu-item" onclick="showAdminLogin()" style="border-right-color: #dc3545;">
-                    <i class="fas fa-lock text-danger"></i> لوحة الإدارة
-                </div>
+        <!-- SIDEBAR -->
+        <div class="col-lg-4 d-none d-lg-block">
+            <div class="glass-card mb-4 stagger" id="sideNav">
+                <button class="side-menu-item" onclick="showSection('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+                <button class="side-menu-item" onclick="showSection('students')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
+                <button class="side-menu-item" onclick="showSection('gallery')"><i class="fas fa-photo-video"></i><span>المعرض الرقمي</span></button>
+                <button class="side-menu-item" onclick="showSection('news')"><i class="fas fa-newspaper"></i><span>ركن الأخبار</span></button>
+                <button class="side-menu-item" onclick="showSection('art')"><i class="fas fa-palette"></i><span>معرض التربية الفنية</span></button>
+                <button class="side-menu-item" onclick="showSection('library')"><i class="fas fa-book-reader"></i><span>المكتبة الرقمية</span><span class="menu-badge" id="libCount">0</span></button>
+                <button class="side-menu-item" onclick="showAdminLogin()" style="border-right-color:#dc3545;"><i class="fas fa-lock text-danger"></i><span id="adminBtnLabel">لوحة الإدارة</span></button>
             </div>
-            
-            <div class="glass-card d-none d-lg-block">
-                <h6 class="fw-bold mb-3"><i class="fas fa-chart-pie me-2"></i> إحصائيات المدرسة</h6>
-                <div class="d-flex justify-content-between mb-2"><span>الطلاب:</span><span class="badge bg-primary">1250</span></div>
-                <div class="d-flex justify-content-between mb-2"><span>المعلمون:</span><span class="badge bg-success">85</span></div>
-                <div class="d-flex justify-content-between"><span>الأنشطة:</span><span class="badge bg-warning text-dark">24</span></div>
+            <div class="glass-card">
+                <h6 class="fw-bold mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i> إحصائيات المدرسة</h6>
+                <div class="stat-chip"><span style="font-weight:600">الطلاب</span><span class="badge bg-primary px-3" id="cnt-students">0</span></div>
+                <div class="stat-chip"><span style="font-weight:600">المعلمون</span><span class="badge bg-success px-3" id="cnt-teachers">0</span></div>
+                <div class="stat-chip"><span style="font-weight:600">الأنشطة</span><span class="badge bg-warning text-dark px-3" id="cnt-activities">0</span></div>
+                <div id="adminBadgeArea" class="mt-2"></div>
             </div>
         </div>
-        
+
+        <!-- MAIN -->
         <div class="col-lg-8">
-            <div id="heroSliderContainer" class="hero-slider mb-4">
-                <div id="mainSlider" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="https://picsum.photos/id/20/1200/400" class="d-block w-100" alt="Slider">
-                            <div class="carousel-caption d-none d-md-block"><h5>بيئة تعليمية محفزة</h5></div>
+            <div id="heroSwiperContainer" class="hero-swiper-wrap">
+                <div class="swiper hero-swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <img src="https://picsum.photos/id/20/1200/400" alt="بيئة تعليمية" loading="lazy">
+                            <div class="slide-caption">🏫 بيئة تعليمية محفزة ومتطورة</div>
                         </div>
-                        <div class="carousel-item">
-                            <img src="https://picsum.photos/id/100/1200/400" class="d-block w-100" alt="Slider">
-                            <div class="carousel-caption d-none d-md-block"><h5>أنشطة تكنولوجية متقدمة</h5></div>
+                        <div class="swiper-slide">
+                            <img src="https://picsum.photos/id/100/1200/400" alt="تكنولوجيا" loading="lazy">
+                            <div class="slide-caption">💻 أنشطة تكنولوجية متقدمة</div>
+                        </div>
+                        <div class="swiper-slide">
+                            <img src="https://picsum.photos/id/180/1200/400" alt="إبداع" loading="lazy">
+                            <div class="slide-caption">🎨 إبداع بلا حدود</div>
                         </div>
                     </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
                 </div>
             </div>
-
-            <div class="glass-card" id="mainContent">
-                </div>
+            <div class="glass-card" id="mainContent"></div>
         </div>
     </div>
 </div>
 
+<!-- MOBILE NAV -->
+<nav class="mobile-nav">
+    <button class="mobile-nav-item" onclick="showSection('home')"><i class="fas fa-home"></i>الرئيسية</button>
+    <button class="mobile-nav-item" onclick="showSection('students')"><i class="fas fa-search"></i>النتائج</button>
+    <button class="mobile-nav-item" onclick="showSection('gallery')"><i class="fas fa-images"></i>المعرض</button>
+    <button class="mobile-nav-item" onclick="showSection('library')"><i class="fas fa-book"></i>المكتبة</button>
+    <button class="mobile-nav-item" onclick="showAdminLogin()"><i class="fas fa-lock"></i>الإدارة</button>
+</nav>
+
 <footer class="py-4 mt-5 bg-dark text-white text-center">
     <div class="container">
         <p class="mb-1 fw-bold">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</p>
-        <p class="small text-white-50">جميع الحقوق محفوظة - تم التطوير لدعم العملية التعليمية الرقمية</p>
+        <p class="small mb-0" style="color:rgba(255,255,255,0.4)">جميع الحقوق محفوظة — تم التطوير لدعم العملية التعليمية الرقمية</p>
     </div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-    // إعدادات Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
-        authDomain: "saad-school-portal.firebaseapp.com",
-        databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
-        projectId: "saad-school-portal",
-        storageBucket: "saad-school-portal.firebasestorage.app",
-        messagingSenderId: "1085838136773",
-        appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
-    };
-    
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const storage = firebase.storage();
-    
-    let isAdmin = false;
-    const SECRET_KEY = "YWRtaW4xMjM="; // Base64 for admin123
+/* ============================================================
+   FIREBASE CONFIG — يُحقن تلقائياً من GitHub Secrets
+============================================================ */
+const firebaseConfig = {
+    apiKey:            "%%FIREBASE_API_KEY%%",
+    authDomain:        "%%FIREBASE_AUTH_DOMAIN%%",
+    databaseURL:       "%%FIREBASE_DATABASE_URL%%",
+    projectId:         "%%FIREBASE_PROJECT_ID%%",
+    storageBucket:     "%%FIREBASE_STORAGE_BUCKET%%",
+    messagingSenderId: "%%FIREBASE_MESSAGING_SENDER_ID%%",
+    appId:             "%%FIREBASE_APP_ID%%"
+};
 
-    const gradesList = {
-        'p3': 'الصف الثالث الابتدائي', 'p4': 'الصف الرابع الابتدائي', 
-        'p5': 'الصف الخامس الابتدائي', 'p6': 'الصف السادس الابتدائي',
-        'm1': 'الصف الأول الإعدادي', 'm2': 'الصف الثاني الإعدادي',
-        'm3': 'الصف الثالث الإعدادي', 's1': 'الصف الأول الثانوي', 's2': 'الصف الثاني الثانوي'
-    };
+/* ============================================================
+   🔔 TOAST SYSTEM — إشعارات خفيفة
+============================================================ */
+function showToast(msg, type='info', duration=3000){
+    const icons={success:'fa-check-circle',error:'fa-times-circle',warning:'fa-exclamation-triangle',info:'fa-info-circle'};
+    const container=document.getElementById('toastContainer');
+    if(!container)return;
+    const t=document.createElement('div');
+    t.className=`toast-item ${type}`;
+    t.innerHTML=`<i class="fas ${icons[type]||icons.info}"></i><span>${msg}</span>`;
+    container.appendChild(t);
+    setTimeout(()=>{
+        t.style.animation='toast-out 0.35s ease forwards';
+        setTimeout(()=>t.remove(),350);
+    },duration);
+}
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+const storage = firebase.storage();
 
-    // --- وظائف عامة ---
-    function toggleTheme() {
-        document.body.classList.toggle('dark-mode');
-        const icon = document.querySelector('.theme-toggle i');
-        const isDark = document.body.classList.contains('dark-mode');
-        icon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
+let isAdmin=false, adminLoginAttempts=0, adminLockUntil=0, selectedFile=null;
+const SECRET_KEY="YWRtaW4xMjM=";
 
-    function hideHomeElements() {
-        document.getElementById('heroSliderContainer').style.display = 'none';
-        document.getElementById('newsTickerContainer').style.display = 'none';
-    }
+const gradesList={
+    p3:'الصف الثالث الابتدائي',p4:'الصف الرابع الابتدائي',
+    p5:'الصف الخامس الابتدائي',p6:'الصف السادس الابتدائي',
+    m1:'الصف الأول الإعدادي',m2:'الصف الثاني الإعدادي',
+    m3:'الصف الثالث الإعدادي',s1:'الصف الأول الثانوي',s2:'الصف الثاني الثانوي'
+};
 
-    function showHomeElements() {
-        document.getElementById('heroSliderContainer').style.display = 'block';
-        document.getElementById('newsTickerContainer').style.display = 'block';
-    }
+const fileIcons={
+    pdf:{icon:'fa-file-pdf',color:'#e74c3c',bg:'#fdecea'},
+    doc:{icon:'fa-file-word',color:'#2b579a',bg:'#edf2fb'},docx:{icon:'fa-file-word',color:'#2b579a',bg:'#edf2fb'},
+    xls:{icon:'fa-file-excel',color:'#1d7a47',bg:'#eafaf1'},xlsx:{icon:'fa-file-excel',color:'#1d7a47',bg:'#eafaf1'},
+    ppt:{icon:'fa-file-powerpoint',color:'#c43e1c',bg:'#fdecea'},pptx:{icon:'fa-file-powerpoint',color:'#c43e1c',bg:'#fdecea'},
+    mp4:{icon:'fa-file-video',color:'#8e44ad',bg:'#f5eefb'},mov:{icon:'fa-file-video',color:'#8e44ad',bg:'#f5eefb'},avi:{icon:'fa-file-video',color:'#8e44ad',bg:'#f5eefb'},
+    mp3:{icon:'fa-file-audio',color:'#1abc9c',bg:'#e8f8f5'},wav:{icon:'fa-file-audio',color:'#1abc9c',bg:'#e8f8f5'},
+    zip:{icon:'fa-file-zipper',color:'#f39c12',bg:'#fef9e7'},rar:{icon:'fa-file-zipper',color:'#f39c12',bg:'#fef9e7'},
+    txt:{icon:'fa-file-lines',color:'#7f8c8d',bg:'#f2f3f4'},
+    default:{icon:'fa-file',color:'#95a5a6',bg:'#f2f3f4'}
+};
 
-    // --- عرض الأقسام ---
-    function showSection(section) {
-        window.scrollTo({top: 0, behavior: 'smooth'});
-        if (section === 'home') {
-            showHome();
-        } else if (section === 'students') {
-            showStudentsSection();
-        } else if (section === 'gallery') {
-            displayFiles('gallery_section', '🖼️ المعرض والملفات');
-        } else if (section === 'news') {
-            showNewsSection();
-        } else if (section === 'art') {
-            displayFiles('art_section', '🎨 معرض التربية الفنية');
-        } else if (section === 'library') {
-            displayFiles('library_section', '📖 المكتبة الرقمية');
-        }
-    }
+function getFileIconInfo(url,name=''){const ext=(url||name).split('.').pop().toLowerCase().split('?')[0];return fileIcons[ext]||fileIcons.default}
+function isImage(url){return /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url||'')}
+function escapeHtml(t){const d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML}
+function formatSize(b){if(!b)return '';if(b<1024)return b+' B';if(b<1048576)return (b/1024).toFixed(1)+' KB';return (b/1048576).toFixed(2)+' MB'}
 
-    function showHome() {
-        showHomeElements();
-        document.getElementById('mainContent').innerHTML = `
-            <div class="text-center py-5">
-                <div class="mb-4">
-                    <i class="fas fa-school fa-5x" style="color: var(--primary)"></i>
-                </div>
-                <h2 class="fw-bold mb-3">مرحباً بك في بوابتنا الرقمية</h2>
-                <p class="text-muted lead">نسعى لتوفير أفضل تجربة تعليمية تقنية لطلابنا وأولياء الأمور</p>
-                <div class="row g-3 mt-4 justify-content-center">
-                    <div class="col-6 col-md-3">
-                        <div class="p-3 border rounded-4 bg-light">
-                            <h3 class="fw-bold text-primary mb-0">100%</h3>
-                            <small>دقة النتائج</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-3">
-                        <div class="p-3 border rounded-4 bg-light">
-                            <h3 class="fw-bold text-success mb-0">24/7</h3>
-                            <small>توافر النظام</small>
-                        </div>
-                    </div>
-                </div>
+/* ============================================================
+   📊 SKELETON LOADING — بدل spinner
+============================================================ */
+function renderSkeletons(count=4){
+    return Array.from({length:count},(_,i)=>`
+    <div class="col-md-6">
+        <div class="skeleton-card">
+            <div class="skeleton skeleton-thumb"></div>
+            <div class="p-3">
+                <div class="skeleton skeleton-line mb-2"></div>
+                <div class="skeleton skeleton-line short mb-2"></div>
+                <div class="skeleton skeleton-line shorter"></div>
             </div>
-        `;
-    }
+        </div>
+    </div>`).join('');
+}
 
-    // --- إدارة النتائج ---
-    function showStudentsSection() {
-        hideHomeElements();
-        let options = Object.entries(gradesList).map(([v, n]) => `<option value="${v}">${n}</option>`).join('');
-        
-        document.getElementById('mainContent').innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="fw-bold mb-0"><i class="fas fa-user-graduate me-2"></i> شئون الطلاب</h4>
-                <div class="btn-group">
-                    <button class="btn btn-sm btn-primary active" onclick="showResultsTab()">النتائج</button>
-                    <button class="btn btn-sm btn-outline-primary" onclick="displayFiles('student_files', 'ملفات الطلاب')">النماذج</button>
-                </div>
-            </div>
-            <div id="subContent">
-                <div class="row g-3 bg-light p-3 rounded-4 mb-4">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">المرحلة الدراسية</label>
-                        <select id="gradeSelect" class="form-select">${options}</select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">رقم الجلوس</label>
-                        <input type="text" id="seatInput" class="form-control" placeholder="أدخل رقمك هنا">
-                    </div>
-                </div>
-                <div class="d-grid gap-2">
-                    <button class="btn btn-primary py-3 fw-bold rounded-3" onclick="searchResult()">
-                        <i class="fas fa-search me-2"></i> استعلام عن النتيجة
-                    </button>
-                </div>
-                <div id="resultDisplay" class="mt-4"></div>
-            </div>
-        `;
-    }
+/* ============================================================
+   📋 COPY TO CLIPBOARD
+============================================================ */
+function copyToClipboard(text, label=''){
+    navigator.clipboard.writeText(text).then(()=>{
+        showToast(`✅ تم نسخ ${label||'الرابط'}`, 'success', 2000);
+    }).catch(()=>{
+        showToast('تعذّر النسخ تلقائياً', 'warning');
+    });
+}
 
-    function searchResult() {
-        const grade = document.getElementById('gradeSelect').value;
-        const seat = document.getElementById('seatInput').value;
-        const display = document.getElementById('resultDisplay');
-        
-        if (!seat) { Swal.fire('تنبيه', 'من فضلك أدخل رقم الجلوس', 'warning'); return; }
-        
-        display.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary"></div><p>جاري استخراج النتيجة...</p></div>';
-        
-        db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
-            if (snap.exists()) {
-                const data = snap.val();
-                let subHtml = '';
-                if(data.subjects) {
-                    Object.entries(data.subjects).forEach(([sub, score]) => {
-                        subHtml += `
-                            <div class="subject-item d-flex justify-content-between align-items-center">
-                                <span><i class="fas fa-book me-2"></i> ${sub}</span>
-                                <span class="fw-bold">${score}</span>
-                            </div>
-                        `;
-                    });
-                }
-                display.innerHTML = `
-                    <div class="result-card shadow-lg">
-                        <div class="text-center mb-4">
-                            <div class="bg-white text-primary d-inline-block p-3 rounded-circle mb-3">
-                                <i class="fas fa-graduation-cap fa-3x"></i>
-                            </div>
-                            <h3 class="fw-bold">${data.name}</h3>
-                            <span class="badge bg-light text-dark px-3 py-2">${gradesList[grade]}</span>
-                        </div>
-                        <div class="subjects-list mb-4">${subHtml}</div>
-                        <div class="row g-2 text-center">
-                            <div class="col-4"><div class="p-2 border rounded-3 bg-white text-dark"><small>المجموع</small><div class="h5 mb-0 fw-bold">${data.total}</div></div></div>
-                            <div class="col-4"><div class="p-2 border rounded-3 bg-white text-dark"><small>النسبة</small><div class="h5 mb-0 fw-bold">${data.percentage}%</div></div></div>
-                            <div class="col-4"><div class="p-2 border rounded-3 bg-white text-dark"><small>التقدير</small><div class="h5 mb-0 fw-bold text-success">${data.grade}</div></div></div>
-                        </div>
-                        <div class="mt-4 d-flex gap-2">
-                            <button class="btn btn-gold flex-grow-1" onclick="window.print()"><i class="fas fa-print me-2"></i> طباعة الشهادة</button>
-                            <button class="btn btn-outline-light" onclick="shareResult('${data.name}', '${data.total}')"><i class="fab fa-whatsapp"></i></button>
-                        </div>
-                    </div>
-                `;
-            } else {
-                display.innerHTML = `<div class="alert alert-danger rounded-4 p-4 text-center">❌ رقم الجلوس ${seat} غير مسجل حالياً.</div>`;
-            }
-        });
-    }
+/* ============================================================
+   INIT
+============================================================ */
+window.addEventListener('load',()=>{
+    new Swiper('.hero-swiper',{
+        loop:true,autoplay:{delay:4500,disableOnInteraction:false},
+        effect:'fade',fadeEffect:{crossFade:true},
+        pagination:{el:'.swiper-pagination',clickable:true},
+        navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}
+    });
+    AOS.init({duration:600,once:true,offset:50});
+    window.addEventListener('scroll',()=>{
+        document.getElementById('scrollTopBtn')?.classList.toggle('visible',window.scrollY>300);
+    });
+    animateCount('cnt-students',1250);
+    animateCount('cnt-teachers',85);
+    animateCount('cnt-activities',24);
 
-    // --- عرض الملفات والديناميكية ---
-    function displayFiles(section, title) {
-        hideHomeElements();
-        const container = document.getElementById('mainContent');
-        container.innerHTML = `
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h4 class="fw-bold mb-0">${title}</h4>
-                ${isAdmin ? `<button class="btn btn-danger btn-sm" onclick="showUploadForm('${section}')">رفع جديد</button>` : ''}
-            </div>
-            <div id="filesGrid" class="row g-3">
-                <div class="col-12 text-center p-5"><div class="spinner-border text-gold"></div></div>
-            </div>
-        `;
+    // Library badge — live count
+    db.ref('library_section').on('value',s=>{
+        const el=document.getElementById('libCount');
+        if(el)el.textContent=s.numChildren();
+    });
 
-        db.ref(section).on('value', snap => {
-            const grid = document.getElementById('filesGrid');
-            if(!grid) return;
-            grid.innerHTML = '';
-            
-            if(!snap.exists()) {
-                grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">لا توجد ملفات متوفرة في هذا القسم حالياً</div>';
-                return;
-            }
+    // 📰 Load ticker news from Firebase (falls back to static)
+    loadTickerNews();
 
-            snap.forEach(child => {
-                const file = child.val();
-                const fileId = child.key;
-                const isImg = file.url && file.url.match(/\.(jpg|jpeg|png|gif|webp)/i);
-                
-                grid.innerHTML += `
-                    <div class="col-md-6">
-                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                            ${isImg ? `<img src="${file.url}" class="card-img-top" style="height:160px; object-fit:cover">` : 
-                            `<div class="bg-light text-center py-4"><i class="fas fa-file-pdf fa-4x text-danger"></i></div>`}
-                            <div class="card-body">
-                                <h6 class="fw-bold">${file.title || 'بدون عنوان'}</h6>
-                                <p class="small text-muted mb-3">${file.description || ''}</p>
-                                <div class="d-grid"><a href="${file.url}" target="_blank" class="btn btn-outline-primary btn-sm rounded-pill">تحميل / عرض</a></div>
-                                <hr>
-                                <div class="comments-section" style="max-height: 150px; overflow-y: auto;">
-                                    ${Object.values(file.comments || {}).map(c => `
-                                        <div class="p-2 bg-light rounded-3 mb-1 small">
-                                            <b>${c.name}:</b> ${c.text}
-                                            ${isAdmin ? `<i class="fas fa-trash text-danger float-start" style="cursor:pointer" onclick="deleteComment('${section}','${fileId}','${c.id}')"></i>` : ''}
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                <div class="input-group mt-2">
-                                    <input type="text" id="input-${fileId}" class="form-control form-control-sm" placeholder="أضف تعليق...">
-                                    <button class="btn btn-gold btn-sm" onclick="addComment('${section}','${fileId}')">إرسال</button>
-                                </div>
-                                ${isAdmin ? `<button class="btn btn-link btn-sm text-danger mt-2 p-0" onclick="deleteFile('${section}','${fileId}')">حذف الملف</button>` : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-        });
-    }
-
-    function addComment(section, fileId) {
-        const input = document.getElementById(`input-${fileId}`);
-        const text = input.value.trim();
-        if(!text) return;
-
-        const newComment = {
-            id: Date.now().toString(),
-            name: isAdmin ? 'إدارة المدرسة' : 'زائر',
-            text: text,
-            date: new Date().toLocaleString('ar-EG')
-        };
-
-        db.ref(`${section}/${fileId}/comments`).push(newComment).then(() => {
-            input.value = '';
-        });
-    }
-
-    // --- لوحة الإدارة ---
-    function showAdminLogin() {
-        Swal.fire({
-            title: 'دخول الإدارة',
-            input: 'password',
-            inputPlaceholder: 'كلمة السر',
-            showCancelButton: true,
-            confirmButtonText: 'دخول',
-            cancelButtonText: 'إلغاء'
-        }).then(res => {
-            if(btoa(res.value) === SECRET_KEY) {
-                isAdmin = true;
-                Swal.fire('أهلاً بك', 'تم تفعيل صلاحيات الإدارة بنجاح', 'success');
-                showHome();
-            } else if (res.value) {
-                Swal.fire('خطأ', 'بيانات الدخول غير صحيحة', 'error');
-            }
-        });
-    }
-
-    function shareResult(name, total) {
-        const text = `🎉 نتيجة الطالب/ ${name} بمدرسة سعد بن أبي وقاص هي: ${total} درجة.`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-    }
-
-    // --- وظيفة الحذف (للأدمن) ---
-    function deleteFile(section, id) {
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            text: "لن تتمكن من استرجاع هذا الملف!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'نعم، احذف!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                db.ref(`${section}/${id}`).remove().then(() => {
-                    Swal.fire('تم!', 'تم حذف الملف بنجاح.', 'success');
-                });
-            }
-        });
-    }
-
-    function deleteComment(section, fileId, commentId) {
-        db.ref(`${section}/${fileId}/comments`).once('value', snap => {
-            snap.forEach(child => {
-                if(child.val().id === commentId) {
-                    child.ref.remove();
-                }
-            });
-        });
-    }
-
-    // ركن الأخبار
-    function showNewsSection() {
-        hideHomeElements();
-        const news = [
-            {t: 'تفعيل المنصة الرقمية', d: 'تم إطلاق النسخة المحدثة من بوابة المدرسة لتشمل نتائج كافة الصفوف.'},
-            {t: 'تنبيه هام', d: 'يرجى من أولياء الأمور تحديث بيانات التواصل في مكتب شئون الطلاب.'},
-            {t: 'مسابقة الابتكار', d: 'المدرسة تستعد لإقامة معرض العلوم السنوي بمشاركة كافة المراحل.'}
-        ];
-        document.getElementById('mainContent').innerHTML = `
-            <h4 class="fw-bold mb-4">📰 ركن الأخبار والتعميمات</h4>
-            <div class="row g-3">
-                ${news.map(n => `
-                    <div class="col-12">
-                        <div class="p-3 border-start border-4 border-primary bg-light rounded-3 shadow-sm">
-                            <h6 class="fw-bold text-primary">${n.t}</h6>
-                            <p class="mb-0 small">${n.d}</p>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-        `;
-    }
-
-    // البداية
-    if (localStorage.getItem('theme') === 'dark') toggleTheme();
+    setTimeout(()=>document.getElementById('pageLoader')?.classList.add('hide'),1200);
+    if(localStorage.getItem('theme')==='dark')toggleTheme();
     showHome();
-</script>
+});
 
+function animateCount(id,target){
+    const el=document.getElementById(id);if(!el)return;
+    let cur=0;const step=Math.ceil(target/40);
+    const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur.toLocaleString('ar-EG');if(cur>=target)clearInterval(t);},40);
+}
+
+/* ============================================================
+   📰 LIVE TICKER — من Firebase أو static
+============================================================ */
+function loadTickerNews(){
+    const staticNews=[
+        '⭐ أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص الرسمية للغات',
+        '📢 نبارك لطلابنا المتفوقين نتائج الفصل الدراسي الأول',
+        '📅 ترقبوا فعاليات أسبوع الابتكار والعلوم',
+        '🛡️ نظامنا الرقمي يضمن سرية بيانات الطلاب',
+        '🏆 مدرستنا من بين أوائل مدارس بني سويف في التحول الرقمي'
+    ];
+    db.ref('ticker_news').once('value',snap=>{
+        const wrapper=document.querySelector('.ticker-wrapper');
+        if(!wrapper)return;
+        let items=staticNews;
+        if(snap.exists()){
+            const firebaseItems=[];
+            snap.forEach(c=>{if(c.val().text)firebaseItems.push(c.val().text)});
+            if(firebaseItems.length>0)items=firebaseItems;
+        }
+        wrapper.innerHTML=items.map(t=>`<span class="ticker-item"><i class="fas fa-circle-dot" style="font-size:.5rem;vertical-align:middle"></i> ${escapeHtml(t)}</span>`).join('');
+    });
+}
+
+/* ============================================================
+   THEME
+============================================================ */
+function toggleTheme(){
+    document.body.classList.toggle('dark-mode');
+    const i=document.querySelector('.theme-toggle i'),d=document.body.classList.contains('dark-mode');
+    i.className=d?'fas fa-sun':'fas fa-moon';
+    localStorage.setItem('theme',d?'dark':'light');
+}
+function hideHomeElements(){document.getElementById('heroSwiperContainer').style.display='none';document.getElementById('newsTickerContainer').style.display='none'}
+function showHomeElements(){document.getElementById('heroSwiperContainer').style.display='';document.getElementById('newsTickerContainer').style.display=''}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+function showSection(section){
+    window.scrollTo({top:0,behavior:'smooth'});
+    document.querySelectorAll('.side-menu-item,.mobile-nav-item').forEach(b=>b.classList.remove('active'));
+    if(section==='home'){showHome();return}
+    if(section==='students'){showStudentsSection();return}
+    if(section==='gallery'){displayFiles('gallery_section','🖼️ المعرض والملفات');return}
+    if(section==='news'){showNewsSection();return}
+    if(section==='art'){displayFiles('art_section','🎨 معرض التربية الفنية');return}
+    if(section==='library'){displayFiles('library_section','📖 المكتبة الرقمية');return}
+}
+
+/* ============================================================
+   HOME
+============================================================ */
+function showHome(){
+    showHomeElements();
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="text-center py-4 mb-4">
+            <div class="mb-3" data-aos="zoom-in">
+                <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--primary-light));display:inline-flex;align-items:center;justify-content:center;box-shadow:0 8px 25px var(--primary-glow)" class="glow-pulse">
+                    <i class="fas fa-school fa-2x text-white"></i>
+                </div>
+            </div>
+            <h2 class="fw-bold mb-2" data-aos="fade-up">مرحباً بك في بوابتنا الرقمية</h2>
+            <p class="text-muted" data-aos="fade-up" data-aos-delay="100">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p>
+        </div>
+        <div class="row g-3 mb-4 stagger">
+            <div class="col-4"><div class="home-stats-card"><div class="stat-num text-primary">100%</div><div style="font-size:.8rem;color:#777">دقة النتائج</div></div></div>
+            <div class="col-4"><div class="home-stats-card"><div class="stat-num text-success">24/7</div><div style="font-size:.8rem;color:#777">توافر النظام</div></div></div>
+            <div class="col-4"><div class="home-stats-card"><div class="stat-num" style="color:var(--gold)">1250</div><div style="font-size:.8rem;color:#777">طالب</div></div></div>
+        </div>
+        <h6 class="fw-bold mb-3 text-muted">⚡ وصول سريع</h6>
+        <div class="row g-3 stagger">
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showSection('students')"><i class="fas fa-search-plus" style="color:var(--primary)"></i><h6>استعلام النتائج</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showSection('library')"><i class="fas fa-book-open" style="color:#1abc9c"></i><h6>المكتبة الرقمية</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showSection('gallery')"><i class="fas fa-images" style="color:#e74c3c"></i><h6>المعرض</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showSection('news')"><i class="fas fa-newspaper" style="color:var(--gold)"></i><h6>الأخبار</h6></div></div>
+        </div>
+    </div>`;
+    AOS.refresh();
+}
+
+/* ============================================================
+   STUDENTS / RESULTS
+============================================================ */
+function showStudentsSection(){
+    hideHomeElements();
+    const options=Object.entries(gradesList).map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h4 class="fw-bold mb-0"><i class="fas fa-user-graduate me-2 text-primary"></i> شئون الطلاب</h4>
+            <div class="btn-group">
+                <button class="btn btn-sm btn-primary" onclick="showResultsTab()">النتائج</button>
+                <button class="btn btn-sm btn-outline-primary" onclick="displayFiles('student_files','ملفات الطلاب')">النماذج</button>
+            </div>
+        </div>
+        <div id="subContent"></div>
+    </div>`;
+    showResultsTab();
+}
+
+function showResultsTab(){
+    const options=Object.entries(gradesList).map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
+    const sc=document.getElementById('subContent');if(!sc)return;
+    sc.innerHTML=`
+    <div class="p-3 rounded-4 mb-4" style="background:#f4f7ff;">
+        <div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-bold">المرحلة الدراسية</label><select id="gradeSelect" class="form-select">${options}</select></div>
+            <div class="col-md-6"><label class="form-label fw-bold">رقم الجلوس</label><input type="text" id="seatInput" class="form-control" placeholder="أدخل رقمك هنا..." onkeydown="if(event.key==='Enter')searchResult()" inputmode="numeric"></div>
+        </div>
+    </div>
+    <div class="d-grid"><button class="btn btn-primary py-3 fw-bold rounded-3" onclick="searchResult()"><i class="fas fa-search me-2"></i>استعلام عن النتيجة</button></div>
+    <div id="resultDisplay" class="mt-4"></div>`;
+}
+
+function searchResult(){
+    const grade=document.getElementById('gradeSelect')?.value;
+    const seat=document.getElementById('seatInput')?.value?.trim();
+    const display=document.getElementById('resultDisplay');
+    if(!seat){showToast('أدخل رقم الجلوس أولاً','warning');return}
+    display.innerHTML=`<div class="text-center p-5"><div class="spinner-border text-primary" style="width:3rem;height:3rem;"></div><p class="mt-3 text-muted fw-bold">جاري استخراج النتيجة...</p></div>`;
+    db.ref(`results/${grade}/${seat}`).once('value').then(snap=>{
+        if(snap.exists()){
+            const data=snap.val();
+            let subHtml='';
+            if(data.subjects)Object.entries(data.subjects).forEach(([sub,score])=>{
+                const pct=Math.round((score/100)*100);
+                const barColor=score>=85?'#2ecc71':score>=70?'#f39c12':'#e74c3c';
+                subHtml+=`
+                <div class="subject-item">
+                    <span><i class="fas fa-book me-2"></i>${escapeHtml(sub)}</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <div style="width:80px;height:6px;background:rgba(255,255,255,0.2);border-radius:3px;overflow:hidden">
+                            <div style="width:${Math.min(score,100)}%;height:100%;background:${barColor};border-radius:3px;transition:width 1s ease"></div>
+                        </div>
+                        <span class="fw-bold">${escapeHtml(String(score))}</span>
+                    </div>
+                </div>`;
+            });
+            display.innerHTML=`
+            <div class="result-card shadow-lg fade-in" id="resultCardMain">
+                <div class="text-center mb-4">
+                    <div class="d-inline-block p-3 rounded-circle mb-3" style="background:rgba(255,255,255,0.15)"><i class="fas fa-graduation-cap fa-3x"></i></div>
+                    <h3 class="fw-bold">${escapeHtml(data.name||'')}</h3>
+                    <span class="badge px-3 py-2 fs-6" style="background:var(--gold);color:var(--primary)">${gradesList[grade]||''}</span>
+                </div>
+                <div class="mb-4">${subHtml}</div>
+                <div class="row g-2 text-center mb-4">
+                    <div class="col-4"><div class="result-stat-box"><small>المجموع</small><div class="h5 mb-0 fw-bold">${escapeHtml(String(data.total||'-'))}</div></div></div>
+                    <div class="col-4"><div class="result-stat-box"><small>النسبة</small><div class="h5 mb-0 fw-bold">${escapeHtml(String(data.percentage||'-'))}%</div></div></div>
+                    <div class="col-4"><div class="result-stat-box"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${escapeHtml(data.grade||'-')}</div></div></div>
+                </div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-gold flex-grow-1" onclick="window.print()"><i class="fas fa-print me-2"></i>طباعة الشهادة</button>
+                    <button class="btn btn-outline-light" onclick="shareResult('${escapeHtml(data.name||'')}','${escapeHtml(String(data.total||''))}')"><i class="fab fa-whatsapp me-1"></i>واتساب</button>
+                    <button class="btn btn-outline-light" onclick="copyToClipboard('${escapeHtml(data.name||'')} — ${escapeHtml(String(data.total||''))} درجة','النتيجة')"><i class="fas fa-copy"></i></button>
+                </div>
+            </div>`;
+            // Animate progress bars
+            setTimeout(()=>{
+                document.querySelectorAll('#resultCardMain .subject-item div div div').forEach(b=>{
+                    const w=b.style.width;b.style.width='0';setTimeout(()=>{b.style.width=w;},100);
+                });
+            },100);
+        } else {
+            display.innerHTML=`<div class="alert alert-danger rounded-4 p-4 text-center"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس <strong>${escapeHtml(seat)}</strong> غير مسجل حالياً.</div>`;
+        }
+    }).catch(()=>{display.innerHTML=`<div class="alert alert-warning rounded-4"><i class="fas fa-wifi-slash me-2"></i>تعذّر الاتصال. تحقق من اتصالك بالإنترنت.</div>`});
+}
+
+/* ============================================================
+   DISPLAY FILES — with Search, Filter, Skeleton
+============================================================ */
+let allFilesCache = {};
+
+function displayFiles(section, title){
+    hideHomeElements();
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="fw-bold mb-0">${escapeHtml(title)}</h4>
+            ${isAdmin?`<button class="btn btn-gold btn-sm px-4" onclick="showUploadForm('${section}','${escapeHtml(title)}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>`:''}
+        </div>
+        <!-- SEARCH & FILTER -->
+        <div class="search-filter-bar">
+            <div class="search-input-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="filesSearchInput" class="form-control form-control-sm" placeholder="ابحث في الملفات..." oninput="filterFiles()">
+            </div>
+            <div class="d-flex gap-2 flex-wrap" id="filterBtns">
+                <button class="filter-btn active" data-filter="all" onclick="setFilter(this,'all')">الكل</button>
+                <button class="filter-btn" data-filter="image" onclick="setFilter(this,'image')"><i class="fas fa-image me-1"></i>صور</button>
+                <button class="filter-btn" data-filter="pdf" onclick="setFilter(this,'pdf')">PDF</button>
+                <button class="filter-btn" data-filter="doc" onclick="setFilter(this,'doc')">Word</button>
+                <button class="filter-btn" data-filter="video" onclick="setFilter(this,'video')"><i class="fas fa-video me-1"></i>فيديو</button>
+                <button class="filter-btn" data-filter="other" onclick="setFilter(this,'other')">أخرى</button>
+            </div>
+            <span class="files-count-badge" id="filesCountBadge">0 ملف</span>
+        </div>
+        <div id="filesGrid" class="row g-3">${renderSkeletons(4)}</div>
+    </div>`;
+
+    allFilesCache[section] = {};
+    let activeFilter = 'all';
+
+    db.ref(section).on('value', snap=>{
+        allFilesCache[section] = {};
+        if(snap.exists()) snap.forEach(c=>{ allFilesCache[section][c.key]=c.val(); });
+        renderFilesGrid(section, title);
+    });
+}
+
+let currentFilter = 'all';
+let currentSection_ = '';
+let currentTitle_ = '';
+
+function setFilter(btn, filter){
+    currentFilter = filter;
+    document.querySelectorAll('#filterBtns .filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    filterFiles();
+}
+
+function filterFiles(){
+    const section = Object.keys(allFilesCache).pop();
+    if(section) renderFilesGrid(section);
+}
+
+function getFileCategory(url, name){
+    if(isImage(url||name)) return 'image';
+    const ext=(url||name||'').split('.').pop().toLowerCase().split('?')[0];
+    if(['pdf'].includes(ext)) return 'pdf';
+    if(['doc','docx'].includes(ext)) return 'doc';
+    if(['mp4','mov','avi','mkv','webm'].includes(ext)) return 'video';
+    return 'other';
+}
+
+function renderFilesGrid(section, title){
+    const grid=document.getElementById('filesGrid');
+    if(!grid)return;
+    const files=allFilesCache[section]||{};
+    const search=(document.getElementById('filesSearchInput')?.value||'').toLowerCase().trim();
+    currentSection_=section; currentTitle_=title||currentTitle_;
+
+    const filtered=Object.entries(files).filter(([id,file])=>{
+        const cat=getFileCategory(file.url||'',file.fileName||'');
+        const matchFilter = currentFilter==='all' || cat===currentFilter;
+        const matchSearch = !search ||
+            (file.title||'').toLowerCase().includes(search) ||
+            (file.description||'').toLowerCase().includes(search) ||
+            (file.fileName||'').toLowerCase().includes(search);
+        return matchFilter && matchSearch;
+    });
+
+    const badge=document.getElementById('filesCountBadge');
+    if(badge) badge.textContent=`${filtered.length} ملف`;
+
+    if(filtered.length===0){
+        const isEmpty=Object.keys(files).length===0;
+        grid.innerHTML=`
+        <div class="col-12">
+            <div class="empty-state">
+                <div class="empty-state-icon">${isEmpty?'📂':'🔍'}</div>
+                <h6>${isEmpty?'لا توجد ملفات في هذا القسم':'لا توجد نتائج للبحث'}</h6>
+                <p>${isEmpty?(isAdmin?'اضغط "رفع ملف" لإضافة أول ملف':'لم يتم رفع ملفات بعد'):'جرّب كلمة بحث مختلفة أو غيّر الفلتر'}</p>
+                ${isAdmin&&isEmpty?`<button class="btn btn-gold btn-sm mt-3" onclick="showUploadForm('${section}','${escapeHtml(currentTitle_)}')"><i class="fas fa-plus me-2"></i>إضافة أول ملف</button>`:''}
+            </div>
+        </div>`;
+        return;
+    }
+
+    grid.innerHTML='';
+    filtered.forEach(([fileId, file], i)=>{
+        const {icon,color,bg}=getFileIconInfo(file.url||'',file.fileName||'');
+        const isImg_=isImage(file.url||'');
+        const ext=(file.url||file.fileName||'').split('.').pop().toLowerCase().split('?')[0];
+        const commentsCount=Object.keys(file.comments||{}).length;
+        const commentsHtml=Object.values(file.comments||{}).map(c=>`
+            <div class="comment-item">
+                <div class="d-flex justify-content-between">
+                    <b>${escapeHtml(c.name)}</b>
+                    ${isAdmin?`<button class="btn btn-link btn-sm text-danger p-0" onclick="deleteComment('${section}','${fileId}','${c.id}')"><i class="fas fa-trash-alt"></i></button>`:''}
+                </div>
+                <div>${escapeHtml(c.text)}</div>
+                <small class="text-muted">${escapeHtml(c.date||'')}</small>
+            </div>`).join('');
+
+        grid.innerHTML+=`
+        <div class="col-md-6" data-aos="fade-up" data-aos-delay="${i*50}" data-file-id="${fileId}">
+            <div class="file-card">
+                ${isImg_
+                    ?`<img src="${file.url}" class="file-thumb" alt="${escapeHtml(file.title||'')}" loading="lazy">`
+                    :`<div class="file-icon-wrap" style="background:${bg}"><i class="fas ${icon} fa-4x" style="color:${color}"></i></div>`}
+                <div class="p-3">
+                    <div class="d-flex align-items-start justify-content-between mb-1">
+                        <h6 class="fw-bold mb-0 flex-grow-1">${escapeHtml(file.title||'بدون عنوان')}</h6>
+                        <span class="file-type-badge ms-2">${ext||'ملف'}</span>
+                    </div>
+                    ${file.fileSize?`<small class="text-muted d-block mb-1"><i class="fas fa-weight-hanging me-1"></i>${formatSize(file.fileSize)}</small>`:''}
+                    ${file.description?`<p class="small text-muted mb-2">${escapeHtml(file.description)}</p>`:''}
+                    ${file.uploadedAt?`<small class="text-muted d-block mb-2"><i class="fas fa-clock me-1"></i>${escapeHtml(file.uploadedAt)}</small>`:''}
+                    <div class="d-flex gap-2 mb-3">
+                        <a href="${file.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm flex-grow-1 rounded-pill"><i class="fas fa-download me-1"></i>تحميل / عرض</a>
+                        <button class="copy-link-btn" onclick="copyToClipboard('${file.url}','رابط الملف')" title="نسخ الرابط"><i class="fas fa-link"></i></button>
+                    </div>
+                    ${commentsCount>0?`<div class="comments-section mb-2">${commentsHtml}</div>`:''}
+                    <div>
+                        <div class="input-group">
+                            <input type="text" id="input-${fileId}" class="form-control form-control-sm" placeholder="أضف تعليقاً... (200 حرف)" maxlength="200"
+                                oninput="updateCharCount('${fileId}',this.value)"
+                                onkeydown="if(event.key==='Enter')addComment('${section}','${fileId}')">
+                            <button class="btn btn-gold btn-sm" onclick="addComment('${section}','${fileId}')"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                        <div class="char-counter" id="char-${fileId}">200 / 200</div>
+                    </div>
+                    ${isAdmin?`<button class="btn btn-link btn-sm text-danger mt-2 p-0" onclick="deleteFile('${section}','${fileId}','${file.url||''}')"><i class="fas fa-trash me-1"></i>حذف</button>`:''}
+                </div>
+            </div>
+        </div>`;
+    });
+    AOS.refresh();
+}
+
+/* ============================================================
+   CHAR COUNTER
+============================================================ */
+function updateCharCount(fileId, val){
+    const el=document.getElementById(`char-${fileId}`);
+    if(!el)return;
+    const remaining=200-val.length;
+    el.textContent=`${remaining} / 200`;
+    el.className='char-counter'+(remaining<20?' warning':'')+(remaining<5?' danger':'');
+}
+
+/* ============================================================
+   UPLOAD FORM
+============================================================ */
+function showUploadForm(section,sectionTitle){
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="d-flex align-items-center gap-3 mb-4">
+            <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="displayFiles('${section}','${escapeHtml(sectionTitle)}')"><i class="fas fa-arrow-right me-1"></i>رجوع</button>
+            <h5 class="fw-bold mb-0">رفع ملف — ${escapeHtml(sectionTitle)}</h5>
+        </div>
+        <div class="mb-3"><label class="form-label fw-bold">عنوان الملف *</label><input type="text" id="upload-title" class="form-control" placeholder="مثال: مذكرة العلوم الفصل الأول" maxlength="100"></div>
+        <div class="mb-4"><label class="form-label fw-bold">وصف مختصر (اختياري)</label><textarea id="upload-desc" class="form-control" rows="2" placeholder="وصف مختصر..." maxlength="300"></textarea></div>
+        <div class="mb-4">
+            <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(كل الأنواع — حد 50 MB)</span></label>
+            <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()"
+                 ondragover="event.preventDefault();document.getElementById('uploadZone').classList.add('drag-over')"
+                 ondragleave="document.getElementById('uploadZone').classList.remove('drag-over')"
+                 ondrop="handleDrop(event)">
+                <i class="fas fa-cloud-upload-alt upload-icon" id="uploadIcon"></i>
+                <h5 class="fw-bold mb-1" id="uploadZoneText">اسحب الملف هنا أو اضغط للاختيار</h5>
+                <p class="small text-muted mb-0" id="uploadZoneSub">PDF · Word · Excel · PowerPoint · صور · فيديو · صوت · مضغوط · وأكثر</p>
+            </div>
+            <input type="file" id="fileInput" class="d-none" accept="*/*" onchange="handleFileSelected(this)">
+            <div class="upload-progress" id="uploadProgressWrap"><div class="upload-progress-bar" id="uploadProgressBar"></div></div>
+            <p class="progress-text" id="progressText"></p>
+            <div id="selectedFilePreview"></div>
+        </div>
+        <div class="d-grid"><button class="btn btn-gold py-3 fw-bold fs-5 rounded-3" id="uploadBtn" onclick="uploadFile('${section}','${escapeHtml(sectionTitle)}')"><i class="fas fa-upload me-2"></i>رفع الملف الآن</button></div>
+    </div>`;
+    selectedFile=null;
+}
+
+function handleDrop(e){
+    e.preventDefault();document.getElementById('uploadZone').classList.remove('drag-over');
+    const file=e.dataTransfer.files[0];if(file)validateAndPreviewFile(file);
+}
+function handleFileSelected(input){if(input.files[0])validateAndPreviewFile(input.files[0])}
+
+function validateAndPreviewFile(file){
+    if(file.size>50*1024*1024){showToast('حجم الملف يتجاوز 50 MB','error');return}
+    selectedFile=file;
+    const {icon,color,bg}=getFileIconInfo('',file.name);
+    const isImg_=/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
+    const sizeMB=(file.size/1048576).toFixed(2),ext=file.name.split('.').pop().toUpperCase();
+    let previewHtml='';
+    if(isImg_){const url=URL.createObjectURL(file);previewHtml=`<img src="${url}" style="max-height:120px;border-radius:12px;max-width:100%;margin-top:10px;box-shadow:0 4px 12px rgba(0,0,0,0.1)">`}
+    document.getElementById('selectedFilePreview').innerHTML=`
+    <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-3" style="background:${bg};border-color:${color}40!important">
+        <i class="fas ${icon} fa-2x" style="color:${color}"></i>
+        <div class="flex-grow-1 overflow-hidden"><div class="fw-bold text-truncate" style="color:${color}">${escapeHtml(file.name)}</div><small class="text-muted">${ext} · ${sizeMB} MB</small></div>
+        <i class="fas fa-check-circle fa-lg text-success"></i>
+    </div>${previewHtml}`;
+    document.getElementById('uploadZoneText').textContent='✅ تم اختيار الملف';
+    document.getElementById('uploadZoneSub').textContent=file.name;
+    document.getElementById('uploadIcon').className=`fas ${icon} upload-icon`;
+    document.getElementById('uploadIcon').style.color=color;
+    showToast(`تم اختيار: ${file.name.substring(0,30)}`, 'success', 2000);
+}
+
+function uploadFile(section,sectionTitle){
+    const title=document.getElementById('upload-title')?.value?.trim();
+    const desc=document.getElementById('upload-desc')?.value?.trim();
+    const btn=document.getElementById('uploadBtn');
+    const pw=document.getElementById('uploadProgressWrap'),pb=document.getElementById('uploadProgressBar'),pt=document.getElementById('progressText');
+    if(!title){showToast('اكتب عنوان الملف أولاً','warning');return}
+    if(!selectedFile){showToast('اختر ملفاً أولاً','warning');return}
+    btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
+    pw.style.display='block';pt.style.display='block';
+    const ts=Date.now();
+    const safeName=selectedFile.name.replace(/[^\w.\-\u0600-\u06FF]/g,'_');
+    const task=storage.ref(`uploads/${section}/${ts}_${safeName}`).put(selectedFile);
+    task.on('state_changed',
+        snap=>{const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);pb.style.width=pct+'%';pt.textContent=`⬆️ ${pct}% — ${formatSize(snap.bytesTransferred)} / ${formatSize(snap.totalBytes)}`;},
+        err=>{
+            btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+            pw.style.display=pt.style.display='none';
+            let msg='حدث خطأ أثناء الرفع.';
+            if(err.code==='storage/unauthorized')msg='لا صلاحية للرفع. تحقق من قواعد Firebase Storage.';
+            else if(err.code==='storage/quota-exceeded')msg='تجاوزت سعة التخزين المجانية.';
+            showToast(msg,'error',4000);
+        },
+        ()=>{task.snapshot.ref.getDownloadURL().then(url=>{
+            db.ref(section).push({title,description:desc||'',url,fileName:selectedFile.name,fileSize:selectedFile.size,uploadedAt:new Date().toLocaleString('ar-EG'),comments:{}})
+                .then(()=>{
+                    selectedFile=null;
+                    showToast(`✅ تم رفع "${title}" بنجاح`, 'success');
+                    setTimeout(()=>displayFiles(section,sectionTitle), 1000);
+                });
+        });}
+    );
+}
+
+/* ============================================================
+   COMMENTS
+============================================================ */
+function addComment(section,fileId){
+    const input=document.getElementById(`input-${fileId}`);
+    const text=input?.value?.trim();if(!text)return;
+    if(text.length>200){showToast('200 حرف كحد أقصى','warning');return}
+    db.ref(`${section}/${fileId}/comments`).push({id:Date.now().toString(),name:isAdmin?'إدارة المدرسة':'زائر',text,date:new Date().toLocaleString('ar-EG')})
+        .then(()=>{
+            if(input){input.value='';updateCharCount(fileId,'');}
+            showToast('تم إضافة تعليقك ✅', 'success', 1800);
+        });
+}
+
+/* ============================================================
+   ADMIN
+============================================================ */
+function showAdminLogin(){
+    if(isAdmin){
+        Swal.fire({title:'تسجيل خروج',icon:'question',showCancelButton:true,confirmButtonText:'خروج',cancelButtonText:'إلغاء'})
+            .then(r=>{if(r.isConfirmed){isAdmin=false;updateAdminUI();showToast('تم تسجيل الخروج','info')}});
+        return;
+    }
+    if(adminLockUntil>Date.now()){showToast(`انتظر ${Math.ceil((adminLockUntil-Date.now())/1000)} ثانية`,'warning');return}
+    Swal.fire({title:'🔐 دخول الإدارة',input:'password',inputPlaceholder:'كلمة السر',showCancelButton:true,confirmButtonText:'دخول',cancelButtonText:'إلغاء'})
+        .then(res=>{
+            if(!res.value)return;
+            if(btoa(res.value)===SECRET_KEY){
+                isAdmin=true;adminLoginAttempts=0;updateAdminUI();
+                showToast('مرحباً! تم تفعيل صلاحيات الإدارة','success');
+                showAdminDashboard();
+            } else {
+                adminLoginAttempts++;
+                if(adminLoginAttempts>=5){adminLockUntil=Date.now()+120000;showToast('محاولات كثيرة — انتظر دقيقتين','error',4000);}
+                else showToast(`كلمة سر خاطئة — ${5-adminLoginAttempts} محاولات متبقية`,'error');
+            }
+        });
+}
+
+function updateAdminUI(){
+    const lbl=document.getElementById('adminBtnLabel');
+    const badge=document.getElementById('adminBadgeArea');
+    if(lbl)lbl.textContent=isAdmin?'تسجيل خروج الإدارة':'لوحة الإدارة';
+    if(badge)badge.innerHTML=isAdmin?`<div class="admin-bar mt-2"><i class="fas fa-shield-halved"></i> وضع الإدارة مفعّل</div>`:'';
+}
+
+/* ============================================================
+   🛠️ ADMIN DASHBOARD — لوحة إحصائيات للمدير
+============================================================ */
+function showAdminDashboard(){
+    hideHomeElements();
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <h4 class="fw-bold mb-0"><i class="fas fa-shield-halved me-2 text-danger"></i> لوحة تحكم الإدارة</h4>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size:.5rem"></i> مباشر</span>
+        </div>
+        <div class="row g-3 mb-4" id="adminStatsRow">
+            <div class="col-6 col-md-3"><div class="admin-stat-card"><div class="admin-stat-num" id="astat-gallery">…</div><small class="text-muted">ملفات المعرض</small></div></div>
+            <div class="col-6 col-md-3"><div class="admin-stat-card" style="border-right-color:#1abc9c"><div class="admin-stat-num" style="color:#1abc9c" id="astat-library">…</div><small class="text-muted">المكتبة</small></div></div>
+            <div class="col-6 col-md-3"><div class="admin-stat-card" style="border-right-color:#e74c3c"><div class="admin-stat-num" style="color:#e74c3c" id="astat-art">…</div><small class="text-muted">التربية الفنية</small></div></div>
+            <div class="col-6 col-md-3"><div class="admin-stat-card" style="border-right-color:#8e44ad"><div class="admin-stat-num" style="color:#8e44ad" id="astat-total">…</div><small class="text-muted">إجمالي الملفات</small></div></div>
+        </div>
+        <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
+        <div class="row g-3 mb-4 stagger">
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showUploadForm('gallery_section','المعرض الرقمي')"><i class="fas fa-plus-circle" style="color:var(--primary)"></i><h6>رفع للمعرض</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showUploadForm('library_section','المكتبة الرقمية')"><i class="fas fa-book-medical" style="color:#1abc9c"></i><h6>رفع للمكتبة</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showUploadForm('art_section','التربية الفنية')"><i class="fas fa-palette" style="color:#e74c3c"></i><h6>رفع للفنية</h6></div></div>
+            <div class="col-6 col-md-3"><div class="quick-card" onclick="showTickerEditor()"><i class="fas fa-newspaper" style="color:var(--gold)"></i><h6>تعديل الأخبار</h6></div></div>
+        </div>
+        <div id="adminExtra"></div>
+    </div>`;
+    // Load live stats
+    ['gallery_section','library_section','art_section'].forEach((sec,idx)=>{
+        const ids=['astat-gallery','astat-library','astat-art'];
+        db.ref(sec).once('value',s=>{
+            const el=document.getElementById(ids[idx]);
+            if(el) el.textContent=s.numChildren();
+            updateTotalStat();
+        });
+    });
+}
+
+function updateTotalStat(){
+    const g=parseInt(document.getElementById('astat-gallery')?.textContent)||0;
+    const l=parseInt(document.getElementById('astat-library')?.textContent)||0;
+    const a=parseInt(document.getElementById('astat-art')?.textContent)||0;
+    const t=document.getElementById('astat-total');
+    if(t&&!isNaN(g+l+a))t.textContent=g+l+a;
+}
+
+/* ============================================================
+   📰 TICKER EDITOR — تعديل شريط الأخبار من لوحة الإدارة
+============================================================ */
+function showTickerEditor(){
+    const extra=document.getElementById('adminExtra');if(!extra)return;
+    db.ref('ticker_news').once('value',snap=>{
+        let items=[];
+        if(snap.exists())snap.forEach(c=>{if(c.val().text)items.push({id:c.key,text:c.val().text})});
+        extra.innerHTML=`
+        <div class="glass-card mt-3 fade-in">
+            <h6 class="fw-bold mb-3"><i class="fas fa-scroll me-2 text-warning"></i> تعديل شريط الأخبار</h6>
+            <div id="tickerItemsList" class="mb-3">
+                ${items.map(it=>`
+                <div class="d-flex align-items-center gap-2 mb-2" id="trow-${it.id}">
+                    <input class="form-control form-control-sm" value="${escapeHtml(it.text)}" id="tinput-${it.id}">
+                    <button class="btn btn-warning btn-sm" onclick="updateTickerItem('${it.id}')"><i class="fas fa-save"></i></button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteTickerItem('${it.id}')"><i class="fas fa-trash"></i></button>
+                </div>`).join('')}
+            </div>
+            <div class="d-flex gap-2">
+                <input class="form-control form-control-sm" id="newTickerText" placeholder="أضف خبراً جديداً..." maxlength="150">
+                <button class="btn btn-gold btn-sm px-4" onclick="addTickerItem()"><i class="fas fa-plus me-1"></i>إضافة</button>
+            </div>
+        </div>`;
+    });
+}
+
+function addTickerItem(){
+    const input=document.getElementById('newTickerText');
+    const text=input?.value?.trim();if(!text)return;
+    db.ref('ticker_news').push({text}).then(()=>{
+        if(input)input.value='';
+        showToast('تمت إضافة الخبر ✅','success');
+        loadTickerNews();
+        showTickerEditor();
+    });
+}
+function updateTickerItem(id){
+    const val=document.getElementById(`tinput-${id}`)?.value?.trim();if(!val)return;
+    db.ref(`ticker_news/${id}`).update({text:val}).then(()=>{
+        showToast('تم التحديث','success',1500);
+        loadTickerNews();
+    });
+}
+function deleteTickerItem(id){
+    db.ref(`ticker_news/${id}`).remove().then(()=>{
+        document.getElementById(`trow-${id}`)?.remove();
+        showToast('تم الحذف','info',1500);
+        loadTickerNews();
+    });
+}
+
+/* ============================================================
+   DELETE
+============================================================ */
+function deleteFile(section,id,url){
+    Swal.fire({title:'هل أنت متأكد؟',text:'سيُحذف الملف نهائياً!',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'نعم، احذف!',cancelButtonText:'إلغاء'})
+        .then(r=>{
+            if(r.isConfirmed){
+                const d1=db.ref(`${section}/${id}`).remove();
+                const d2=url?storage.refFromURL(url).delete().catch(()=>{}):Promise.resolve();
+                Promise.all([d1,d2]).then(()=>showToast('تم حذف الملف','info'));
+            }
+        });
+}
+function deleteComment(section,fileId,commentId){
+    db.ref(`${section}/${fileId}/comments`).once('value',snap=>{
+        snap.forEach(child=>{if(child.val().id===commentId)child.ref.remove();});
+    }).then(()=>showToast('تم حذف التعليق','info',1500));
+}
+
+/* ============================================================
+   NEWS — from Firebase + static fallback
+============================================================ */
+function showNewsSection(){
+    hideHomeElements();
+    document.getElementById('mainContent').innerHTML=`
+    <div class="fade-in">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h4 class="fw-bold mb-0">📰 ركن الأخبار والتعميمات</h4>
+            ${isAdmin?`<button class="btn btn-gold btn-sm" onclick="showAddNewsForm()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>`:''}
+        </div>
+        <div id="addNewsFormArea"></div>
+        <div id="newsListArea" class="row g-3 stagger">
+            <div class="col-12 text-center p-4"><div class="spinner-border" style="color:var(--gold)"></div></div>
+        </div>
+    </div>`;
+    loadNews();
+}
+
+function loadNews(){
+    const area=document.getElementById('newsListArea');if(!area)return;
+    db.ref('school_news').orderByChild('date').limitToLast(20).once('value',snap=>{
+        area.innerHTML='';
+        const staticNews=[
+            {icon:'🚀',cat:'تقنية',t:'تفعيل المنصة الرقمية',d:'تم إطلاق النسخة المحدثة من البوابة.',date:'أبريل 2026'},
+            {icon:'📢',cat:'تنبيه',t:'تنبيه لأولياء الأمور',d:'يُرجى تحديث بيانات التواصل في مكتب شئون الطلاب.',date:'مارس 2026'},
+            {icon:'🏆',cat:'نشاط',t:'مسابقة الابتكار',d:'معرض العلوم السنوي بمشاركة كافة المراحل.',date:'مارس 2026'},
+            {icon:'📚',cat:'أكاديمي',t:'الجدول الدراسي المحدث',d:'تم رفع الجدول الدراسي للفصل الثاني.',date:'فبراير 2026'}
+        ];
+        let items=staticNews;
+        if(snap.exists()){
+            const fireItems=[];
+            snap.forEach(c=>{const v=c.val();fireItems.unshift({id:c.key,icon:v.icon||'📌',cat:v.cat||'عام',t:v.title,d:v.body,date:v.dateStr||''})});
+            if(fireItems.length>0)items=[...fireItems,...staticNews];
+        }
+        area.innerHTML=items.map(n=>`
+        <div class="col-12">
+            <div class="news-card">
+                <div class="d-flex justify-content-between align-items-start mb-1 flex-wrap gap-2">
+                    <h6 class="fw-bold mb-0">${n.icon} ${escapeHtml(n.t)}</h6>
+                    <div class="d-flex gap-2 align-items-center">
+                        <span class="badge bg-primary">${escapeHtml(n.cat)}</span>
+                        <small class="text-muted">${escapeHtml(n.date)}</small>
+                        ${isAdmin&&n.id?`<button class="btn btn-link btn-sm text-danger p-0" onclick="deleteNews('${n.id}')"><i class="fas fa-trash-alt"></i></button>`:''}
+                    </div>
+                </div>
+                <p class="mb-0 small text-muted">${escapeHtml(n.d)}</p>
+            </div>
+        </div>`).join('');
+    });
+}
+
+function showAddNewsForm(){
+    const area=document.getElementById('addNewsFormArea');if(!area)return;
+    area.innerHTML=`
+    <div class="glass-card mb-4 fade-in">
+        <h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر جديد</h6>
+        <div class="row g-2">
+            <div class="col-md-8"><input class="form-control" id="newsTitle" placeholder="عنوان الخبر *" maxlength="100"></div>
+            <div class="col-md-4">
+                <select class="form-select" id="newsCat">
+                    <option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option>
+                </select>
+            </div>
+            <div class="col-12"><textarea class="form-control" id="newsBody" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div>
+        </div>
+        <div class="d-flex gap-2 mt-3">
+            <button class="btn btn-gold btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ الخبر</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('addNewsFormArea').innerHTML=''">إلغاء</button>
+        </div>
+    </div>`;
+}
+
+function saveNews(){
+    const title=document.getElementById('newsTitle')?.value?.trim();
+    const body=document.getElementById('newsBody')?.value?.trim();
+    const cat=document.getElementById('newsCat')?.value;
+    if(!title||!body){showToast('العنوان والنص مطلوبان','warning');return}
+    const icons_={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
+    db.ref('school_news').push({
+        title,body,cat,icon:icons_[cat]||'📌',
+        dateStr:new Date().toLocaleDateString('ar-EG'),
+        timestamp:Date.now()
+    }).then(()=>{
+        showToast('تم نشر الخبر ✅','success');
+        document.getElementById('addNewsFormArea').innerHTML='';
+        loadNews();
+    });
+}
+
+function deleteNews(id){
+    db.ref(`school_news/${id}`).remove().then(()=>{
+        showToast('تم حذف الخبر','info');
+        loadNews();
+    });
+}
+
+/* ============================================================
+   SHARE
+============================================================ */
+function shareResult(name,total){
+    const text=`🎉 نتيجة الطالب/ ${name} بمدرسة سعد بن أبي وقاص: ${total} درجة.`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`,'_blank');
+}
+
+
+// end
+</script>
 </body>
 </html>
