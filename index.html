@@ -649,6 +649,25 @@ function renderSkeletons(count=4){
 }
 
 /* ============================================================
+   🔍 LIGHTBOX — عرض الصور بحجم كامل
+============================================================ */
+function openLightbox(url){
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;
+        display:flex;align-items:center;justify-content:center;
+        cursor:zoom-out;animation:fadeIn 0.2s ease;padding:20px;
+    `;
+    overlay.innerHTML = `
+        <img src="${url}" style="max-width:95vw;max-height:90vh;object-fit:contain;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.5)">
+        <button style="position:absolute;top:20px;left:20px;background:rgba(255,255,255,0.2);border:none;color:white;width:44px;height:44px;border-radius:50%;font-size:1.3rem;cursor:pointer;backdrop-filter:blur(8px)">✕</button>
+        <a href="${url}" download style="position:absolute;top:20px;left:74px;background:rgba(212,175,55,0.8);border:none;color:#0a2b4e;width:44px;height:44px;border-radius:50%;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;text-decoration:none"><i class="fas fa-download"></i></a>
+    `;
+    overlay.onclick = e => { if(e.target===overlay||e.target.textContent==='✕') overlay.remove(); };
+    document.body.appendChild(overlay);
+}
+
+/* ============================================================
    📋 COPY TO CLIPBOARD
 ============================================================ */
 function copyToClipboard(text, label=''){
@@ -973,7 +992,13 @@ function renderFilesGrid(section, title){
     filtered.forEach(([fileId, file], i)=>{
         const {icon,color,bg}=getFileIconInfo(file.url||'',file.fileName||'');
         const isImg_=isImage(file.url||'');
-        const ext=(file.url||file.fileName||'').split('.').pop().toLowerCase().split('?')[0];
+        const url = file.url||'';
+        const fileName = file.fileName||'';
+        const ext=(url||fileName).split('.').pop().toLowerCase().split('?')[0];
+        const isPdf_  = ext==='pdf';
+        const isVideo_= ['mp4','mov','avi','mkv','webm'].includes(ext);
+        const isAudio_= ['mp3','wav','ogg','m4a'].includes(ext);
+
         const commentsCount=Object.keys(file.comments||{}).length;
         const commentsHtml=Object.values(file.comments||{}).map(c=>`
             <div class="comment-item">
@@ -985,12 +1010,81 @@ function renderFilesGrid(section, title){
                 <small class="text-muted">${escapeHtml(c.date||'')}</small>
             </div>`).join('');
 
+        // ── 1. معاينة الملف حسب النوع ──────────────────────────
+        let previewHtml = '';
+
+        if(isImg_){
+            // صورة — تظهر كاملة قابلة للتكبير
+            previewHtml = `
+            <div style="background:#000;border-radius:var(--radius-sm) var(--radius-sm) 0 0;overflow:hidden;cursor:zoom-in;max-height:220px;display:flex;align-items:center;justify-content:center;"
+                 onclick="openLightbox('${url}')">
+                <img src="${url}" 
+                     style="width:100%;max-height:220px;object-fit:contain;display:block;" 
+                     alt="${escapeHtml(file.title||'')}" loading="lazy"
+                     onerror="this.parentElement.innerHTML='<div style=height:100px;display:flex;align-items:center;justify-content:center><i class=fas fa-image fa-3x style=color:#ccc></i></div>'">
+            </div>`;
+
+        } else if(isPdf_){
+            // PDF — عرض مباشر داخل الصفحة
+            previewHtml = `
+            <div style="border-radius:var(--radius-sm) var(--radius-sm) 0 0;overflow:hidden;background:#f5f5f5;">
+                <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
+                        style="width:100%;height:200px;border:none;display:block;"
+                        loading="lazy"
+                        title="${escapeHtml(file.title||'PDF')}">
+                </iframe>
+            </div>`;
+
+        } else if(isVideo_){
+            // فيديو — مشغّل مدمج
+            previewHtml = `
+            <div style="background:#000;border-radius:var(--radius-sm) var(--radius-sm) 0 0;overflow:hidden;">
+                <video controls preload="metadata" 
+                       style="width:100%;max-height:220px;display:block;outline:none;"
+                       controlsList="nodownload">
+                    <source src="${url}" type="video/${ext==='mov'?'mp4':ext}">
+                    <p style="color:white;text-align:center;padding:20px">المتصفح لا يدعم تشغيل الفيديو</p>
+                </video>
+            </div>`;
+
+        } else if(isAudio_){
+            // صوت — مشغّل صوتي
+            previewHtml = `
+            <div style="background:linear-gradient(135deg,${bg},white);padding:20px;border-radius:var(--radius-sm) var(--radius-sm) 0 0;text-align:center;">
+                <i class="fas ${icon} fa-3x mb-3 d-block" style="color:${color}"></i>
+                <audio controls style="width:100%;outline:none;" preload="metadata">
+                    <source src="${url}" type="audio/${ext}">
+                </audio>
+            </div>`;
+
+        } else {
+            // ملفات أخرى — أيقونة كبيرة
+            previewHtml = `
+            <div class="file-icon-wrap" style="background:${bg};border-radius:var(--radius-sm) var(--radius-sm) 0 0;">
+                <i class="fas ${icon} fa-4x" style="color:${color}"></i>
+            </div>`;
+        }
+
+        // ── 2. أزرار الملف ──────────────────────────────────────
+        const actionBtns = `
+        <div class="d-flex gap-2 mb-3 flex-wrap">
+            <a href="${url}" target="_blank" rel="noopener" 
+               class="btn btn-primary btn-sm flex-grow-1 rounded-pill">
+                <i class="fas fa-${isPdf_||isImg_?'eye':'download'} me-1"></i>
+                ${isPdf_?'عرض PDF':isImg_?'عرض الصورة':isVideo_?'فتح الفيديو':'تحميل'}
+            </a>
+            <a href="${url}" download class="btn btn-outline-secondary btn-sm rounded-pill">
+                <i class="fas fa-download"></i>
+            </a>
+            <button class="copy-link-btn" onclick="copyToClipboard('${url}','رابط الملف')" title="نسخ الرابط">
+                <i class="fas fa-link"></i>
+            </button>
+        </div>`;
+
         grid.innerHTML+=`
         <div class="col-md-6" data-aos="fade-up" data-aos-delay="${i*50}" data-file-id="${fileId}">
             <div class="file-card">
-                ${isImg_
-                    ?`<img src="${file.url}" class="file-thumb" alt="${escapeHtml(file.title||'')}" loading="lazy">`
-                    :`<div class="file-icon-wrap" style="background:${bg}"><i class="fas ${icon} fa-4x" style="color:${color}"></i></div>`}
+                ${previewHtml}
                 <div class="p-3">
                     <div class="d-flex align-items-start justify-content-between mb-1">
                         <h6 class="fw-bold mb-0 flex-grow-1">${escapeHtml(file.title||'بدون عنوان')}</h6>
@@ -999,21 +1093,21 @@ function renderFilesGrid(section, title){
                     ${file.fileSize?`<small class="text-muted d-block mb-1"><i class="fas fa-weight-hanging me-1"></i>${formatSize(file.fileSize)}</small>`:''}
                     ${file.description?`<p class="small text-muted mb-2">${escapeHtml(file.description)}</p>`:''}
                     ${file.uploadedAt?`<small class="text-muted d-block mb-2"><i class="fas fa-clock me-1"></i>${escapeHtml(file.uploadedAt)}</small>`:''}
-                    <div class="d-flex gap-2 mb-3">
-                        <a href="${file.url}" target="_blank" rel="noopener" class="btn btn-primary btn-sm flex-grow-1 rounded-pill"><i class="fas fa-download me-1"></i>تحميل / عرض</a>
-                        <button class="copy-link-btn" onclick="copyToClipboard('${file.url}','رابط الملف')" title="نسخ الرابط"><i class="fas fa-link"></i></button>
-                    </div>
+                    ${actionBtns}
                     ${commentsCount>0?`<div class="comments-section mb-2">${commentsHtml}</div>`:''}
                     <div>
                         <div class="input-group">
-                            <input type="text" id="input-${fileId}" class="form-control form-control-sm" placeholder="أضف تعليقاً... (200 حرف)" maxlength="200"
-                                oninput="updateCharCount('${fileId}',this.value)"
-                                onkeydown="if(event.key==='Enter')addComment('${section}','${fileId}')">
-                            <button class="btn btn-gold btn-sm" onclick="addComment('${section}','${fileId}')"><i class="fas fa-paper-plane"></i></button>
+                            <input type="text" id="input-${fileId}" class="form-control form-control-sm" 
+                                   placeholder="أضف تعليقاً... (200 حرف)" maxlength="200"
+                                   oninput="updateCharCount('${fileId}',this.value)"
+                                   onkeydown="if(event.key==='Enter')addComment('${section}','${fileId}')">
+                            <button class="btn btn-gold btn-sm" onclick="addComment('${section}','${fileId}')">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
                         </div>
                         <div class="char-counter" id="char-${fileId}">200 / 200</div>
                     </div>
-                    ${isAdmin?`<button class="btn btn-link btn-sm text-danger mt-2 p-0" onclick="deleteFile('${section}','${fileId}','${file.url||''}')"><i class="fas fa-trash me-1"></i>حذف</button>`:''}
+                    ${isAdmin?`<button class="btn btn-link btn-sm text-danger mt-2 p-0" onclick="deleteFile('${section}','${fileId}','${url}')"><i class="fas fa-trash me-1"></i>حذف</button>`:''}
                 </div>
             </div>
         </div>`;
@@ -1206,7 +1300,8 @@ function uploadFile(section, sectionTitle){
     xhr.addEventListener('load', () => {
         if(xhr.status === 200){
             const res  = JSON.parse(xhr.responseText);
-            const url  = res.secure_url;
+            // تأكيد استخدام https دائماً
+            const url  = (res.secure_url || res.url || '').replace('http://', 'https://');
             const size = res.bytes || selectedFile.size;
 
             db.ref(section).push({
