@@ -1266,24 +1266,62 @@ function addComment(section,fileId){
 ============================================================ */
 function showAdminLogin(){
     if(isAdmin){
-        Swal.fire({title:'تسجيل خروج',icon:'question',showCancelButton:true,confirmButtonText:'خروج',cancelButtonText:'إلغاء'})
-            .then(r=>{if(r.isConfirmed){isAdmin=false;updateAdminUI();showToast('تم تسجيل الخروج','info')}});
+        Swal.fire({
+            title:'تسجيل خروج',icon:'question',
+            showCancelButton:true,confirmButtonText:'خروج',cancelButtonText:'إلغاء'
+        }).then(r=>{
+            if(r.isConfirmed){isAdmin=false;updateAdminUI();showToast('تم تسجيل الخروج','info');}
+        });
         return;
     }
-    if(adminLockUntil>Date.now()){showToast(`انتظر ${Math.ceil((adminLockUntil-Date.now())/1000)} ثانية`,'warning');return}
-    Swal.fire({title:'🔐 دخول الإدارة',input:'password',inputPlaceholder:'كلمة السر',showCancelButton:true,confirmButtonText:'دخول',cancelButtonText:'إلغاء'})
-        .then(res=>{
-            if(!res.value)return;
-            if(btoa(res.value)===SECRET_KEY){
-                isAdmin=true;adminLoginAttempts=0;updateAdminUI();
-                showToast('مرحباً! تم تفعيل صلاحيات الإدارة','success');
-                showAdminDashboard();
-            } else {
-                adminLoginAttempts++;
-                if(adminLoginAttempts>=5){adminLockUntil=Date.now()+120000;showToast('محاولات كثيرة — انتظر دقيقتين','error',4000);}
-                else showToast(`كلمة سر خاطئة — ${5-adminLoginAttempts} محاولات متبقية`,'error');
+
+    if(adminLockUntil>Date.now()){
+        showToast(`انتظر ${Math.ceil((adminLockUntil-Date.now())/1000)} ثانية`,'warning');
+        return;
+    }
+
+    Swal.fire({
+        title: '🔐 دخول الإدارة',
+        input: 'password',
+        inputLabel: 'كلمة السر',
+        inputPlaceholder: 'أدخل كلمة السر...',
+        inputAttributes: { autocomplete:'current-password', dir:'ltr' },
+        showCancelButton: true,
+        confirmButtonText: 'دخول',
+        cancelButtonText: 'إلغاء',
+        confirmButtonColor: '#0a2b4e',
+        showLoaderOnConfirm: true,
+        allowOutsideClick: false,
+        preConfirm: (password) => {
+            if(!password){
+                Swal.showValidationMessage('أدخل كلمة السر أولاً');
+                return false;
             }
-        });
+            return password;
+        }
+    }).then(res => {
+        if(!res.isConfirmed || !res.value) return;
+
+        const entered = res.value;
+        let encoded = '';
+        try { encoded = btoa(entered); } catch(e){ encoded = btoa(unescape(encodeURIComponent(entered))); }
+
+        if(encoded === SECRET_KEY){
+            isAdmin = true;
+            adminLoginAttempts = 0;
+            updateAdminUI();
+            showToast('مرحباً! تم تفعيل صلاحيات الإدارة ✅','success');
+            setTimeout(()=>showAdminDashboard(), 300);
+        } else {
+            adminLoginAttempts++;
+            if(adminLoginAttempts >= 5){
+                adminLockUntil = Date.now() + 120000;
+                Swal.fire('🔒 محظور','محاولات كثيرة — انتظر دقيقتين','error');
+            } else {
+                Swal.fire('❌ خطأ',`كلمة السر غير صحيحة<br><small>${5-adminLoginAttempts} محاولات متبقية</small>`,'error');
+            }
+        }
+    });
 }
 
 function updateAdminUI(){
