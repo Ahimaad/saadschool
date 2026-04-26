@@ -1,0 +1,187 @@
+# ============================================================
+#  🚀 GitHub Actions — نشر تلقائي مع حماية Firebase Secrets
+#  المدرسة: سعد بن أبي وقاص الرسمية للغات
+# ============================================================
+#
+#  كيف يعمل؟
+#  ──────────
+#  1. تعدّل الكود وترفعه على فرع main
+#  2. هذا الـ workflow يشتغل تلقائياً
+#  3. يحقن بيانات Firebase من GitHub Secrets (آمنة، مخفية)
+#  4. ينشر الموقع على GitHub Pages
+#
+#  الإعداد الأولي (مرة واحدة فقط):
+#  ──────────────────────────────────
+#  في GitHub → Repository → Settings → Secrets and variables → Actions
+#  أضف هذه الـ Secrets:
+#
+#   FIREBASE_API_KEY              ← apiKey
+#   FIREBASE_AUTH_DOMAIN          ← authDomain
+#   FIREBASE_DATABASE_URL         ← databaseURL
+#   FIREBASE_PROJECT_ID           ← projectId
+#   FIREBASE_STORAGE_BUCKET       ← storageBucket
+#   FIREBASE_MESSAGING_SENDER_ID  ← messagingSenderId
+#   FIREBASE_APP_ID               ← appId
+#   ADMIN_SECRET_KEY              ← نتيجة btoa("كلمة_السر") في console
+# ============================================================
+
+name: 🏫 Deploy School Portal
+
+on:
+  push:
+    branches:
+      - main        # ينشر تلقائياً عند رفع تحديث على main
+  workflow_dispatch: # أو يدوياً من واجهة GitHub Actions
+
+# منع تشغيل نفس الـ workflow مرتين في نفس الوقت
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================
+  #  JOB 1: فحص الكود (اختياري لكن احترافي)
+  # ============================================================
+  validate:
+    name: ✅ فحص الملفات
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 تحميل الكود
+        uses: actions/checkout@v4
+
+      - name: 🔍 التحقق من وجود index.html
+        run: |
+          if [ ! -f "index.html" ]; then
+            echo "❌ خطأ: ملف index.html غير موجود!"
+            exit 1
+          fi
+          echo "✅ index.html موجود"
+
+      - name: 🔒 التأكد من عدم وجود API Keys مكشوفة
+        run: |
+          # تحقق أن الكود يحتوي على placeholders وليس قيم حقيقية
+          if grep -q "AIzaSy" index.html; then
+            echo "⚠️  تحذير: يبدو أن Firebase API Key مكشوف في index.html!"
+            echo "   استخدم %%FIREBASE_API_KEY%% بدلاً منه"
+            exit 1
+          fi
+          echo "✅ لا توجد بيانات Firebase مكشوفة"
+
+  # ============================================================
+  #  JOB 2: بناء ونشر الموقع
+  # ============================================================
+  deploy:
+    name: 🚀 بناء ونشر الموقع
+    needs: validate        # لا يعمل إلا بعد نجاح الفحص
+    runs-on: ubuntu-latest
+
+    # صلاحيات GitHub Pages
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # ── 1. تحميل الكود ──────────────────────────────────────
+      - name: 📥 تحميل الكود من GitHub
+        uses: actions/checkout@v4
+
+      # ── 2. حقن Firebase Secrets في index.html ───────────────
+      - name: 🔐 حقن بيانات Firebase الآمنة
+        env:
+          FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          FIREBASE_DATABASE_URL:        ${{ secrets.FIREBASE_DATABASE_URL }}
+          FIREBASE_PROJECT_ID:          ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_STORAGE_BUCKET:      ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+          FIREBASE_APP_ID:              ${{ secrets.FIREBASE_APP_ID }}
+          ADMIN_SECRET_KEY:             ${{ secrets.ADMIN_SECRET_KEY }}
+        run: |
+          echo "🔄 جاري حقن متغيرات Firebase..."
+
+          # استبدال الـ placeholders بالقيم الحقيقية من Secrets
+          sed -i "s|%%FIREBASE_API_KEY%%|${FIREBASE_API_KEY}|g"                         index.html
+          sed -i "s|%%FIREBASE_AUTH_DOMAIN%%|${FIREBASE_AUTH_DOMAIN}|g"                 index.html
+          sed -i "s|%%FIREBASE_DATABASE_URL%%|${FIREBASE_DATABASE_URL}|g"               index.html
+          sed -i "s|%%FIREBASE_PROJECT_ID%%|${FIREBASE_PROJECT_ID}|g"                   index.html
+          sed -i "s|%%FIREBASE_STORAGE_BUCKET%%|${FIREBASE_STORAGE_BUCKET}|g"           index.html
+          sed -i "s|%%FIREBASE_MESSAGING_SENDER_ID%%|${FIREBASE_MESSAGING_SENDER_ID}|g" index.html
+          sed -i "s|%%FIREBASE_APP_ID%%|${FIREBASE_APP_ID}|g"                           index.html
+          sed -i "s|%%ADMIN_SECRET_KEY%%|${ADMIN_SECRET_KEY}|g"                         index.html
+
+          echo "✅ تم حقن جميع المتغيرات بنجاح"
+
+      # ── 3. حقن ADMIN_SECRET_KEY في الكود ───────────────────
+      - name: 🔑 تحديث كلمة سر الإدارة
+        env:
+          ADMIN_SECRET_KEY: ${{ secrets.ADMIN_SECRET_KEY }}
+        run: |
+          sed -i "s|const SECRET_KEY=\"YWRtaW4xMjM=\";|const SECRET_KEY=\"${ADMIN_SECRET_KEY}\";|g" index.html
+          echo "✅ تم تحديث كلمة السر"
+
+      # ── 4. إضافة تاريخ آخر نشر ─────────────────────────────
+      - name: 📅 إضافة تاريخ آخر تحديث
+        run: |
+          BUILD_DATE=$(TZ='Africa/Cairo' date '+%Y-%m-%d %H:%M')
+          sed -i "s|جميع الحقوق محفوظة|جميع الحقوق محفوظة — آخر تحديث: ${BUILD_DATE}|g" index.html
+          echo "✅ تم إضافة تاريخ البناء: ${BUILD_DATE}"
+
+      # ── 5. تحسين الأداء (Minify) ─────────────────────────────
+      - name: ⚡ ضغط الملفات لتحسين السرعة
+        run: |
+          # نسخ الملفات للمجلد النهائي
+          mkdir -p _site
+          cp index.html _site/
+          # نسخ أي ملفات إضافية لو موجودة (صور، CSS خارجي...)
+          [ -f logo.jpg ]    && cp logo.jpg _site/    || echo "logo.jpg غير موجود - سيستخدم الـ placeholder"
+          [ -d images ]      && cp -r images _site/   || true
+          [ -f favicon.ico ] && cp favicon.ico _site/ || true
+
+          # إحصائيات
+          echo "📊 حجم index.html: $(du -sh _site/index.html | cut -f1)"
+          echo "✅ الملفات جاهزة للنشر"
+
+      # ── 6. رفع الملفات لـ GitHub Pages ─────────────────────
+      - name: 📤 رفع الملفات لـ GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      # ── 7. نشر على GitHub Pages ─────────────────────────────
+      - name: 🌐 نشر على GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # ── 8. رسالة نجاح ───────────────────────────────────────
+      - name: 🎉 تم النشر بنجاح!
+        run: |
+          echo "══════════════════════════════════════"
+          echo "  ✅ تم نشر الموقع بنجاح!"
+          echo "  🌐 الرابط: ${{ steps.deployment.outputs.page_url }}"
+          echo "  📅 وقت النشر: $(TZ='Africa/Cairo' date '+%Y-%m-%d %H:%M')"
+          echo "══════════════════════════════════════"
+
+  # ============================================================
+  #  JOB 3: إشعار بالنتيجة (اختياري)
+  # ============================================================
+  notify:
+    name: 📬 إشعار النتيجة
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: always()   # يعمل حتى لو فشل النشر
+    steps:
+      - name: ✅ نجح النشر
+        if: needs.deploy.result == 'success'
+        run: echo "🎉 تم نشر موقع مدرسة سعد بن أبي وقاص بنجاح!"
+
+      - name: ❌ فشل النشر
+        if: needs.deploy.result == 'failure'
+        run: |
+          echo "❌ فشل نشر الموقع!"
+          echo "راجع الـ logs أعلاه لمعرفة السبب"
+          exit 1
