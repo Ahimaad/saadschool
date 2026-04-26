@@ -1,0 +1,54 @@
+# ============================================================
+#  .gitignore — ملفات لا ترفعها على GitHub أبداً
+# ============================================================
+
+# ❌ ملفات البيئة — تحتوي على بيانات سرية
+.env
+.env.local
+.env.production
+secrets.js
+config.local.js
+
+# ❌ Firebase local files
+.firebase/
+firebase-debug.log
+firestore-debug.log
+database-debug.log
+ui-debug.log
+
+# ❌ Node modules (لو استخدمت npm)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# ❌ ملفات النظام
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+*.swo
+
+# ❌ ملفات المحررات
+.vscode/settings.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ❌ ملفات البناء المؤقتة
+_site/
+dist/
+build/
+*.tmp
+*.temp
+
+# ❌ ملفات السجلات
+*.log
+logs/
+
+# ✅ ما يُرفع:
+# index.html        ← الموقع (بدون Firebase config حقيقي)
+# README.md         ← التوثيق
+# .github/          ← GitHub Actions
+# logo.jpg          ← الشعار
+# images/           ← الصور (اختياري)
