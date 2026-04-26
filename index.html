@@ -1185,8 +1185,6 @@ function uploadFile(section, sectionTitle){
     formData.append('file', selectedFile);
     formData.append('upload_preset', CLOUDINARY_PRESET);
     formData.append('folder', `school/${section}`);
-    formData.append('use_filename', 'true');
-    formData.append('unique_filename', 'true');
 
     const ts = Date.now();
 
