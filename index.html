@@ -1156,53 +1156,95 @@ function validateAndPreviewFile(file){
     document.getElementById('uploadIcon').style.color=color;
 }
 
-function uploadFile(section,sectionTitle){
-    const title=document.getElementById('upload-title')?.value?.trim();
-    const desc=document.getElementById('upload-desc')?.value?.trim();
-    const btn=document.getElementById('uploadBtn');
-    const pw=document.getElementById('uploadProgressWrap'),pb=document.getElementById('uploadProgressBar'),pt=document.getElementById('progressText');
-    if(!title){showToast('اكتب عنوان الملف أولاً','warning');return}
-    if(!selectedFile){showToast('اختر ملفاً أولاً','warning');return}
-    btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
-    pw.style.display='block';pt.style.display='block';
-    const ts=Date.now();
-    const safeName=selectedFile.name.replace(/[^\w.\-\u0600-\u06FF]/g,'_');
+/* ============================================================
+   ☁️ CLOUDINARY CONFIG — رفع الملفات
+============================================================ */
+const CLOUDINARY_CLOUD = 'dyo4ff7ha';
+const CLOUDINARY_PRESET = 'school_uploads';
+const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/auto/upload`;
 
-    // إعدادات رفع محسّنة
-    const metadata={ cacheControl:'public,max-age=31536000' };
-    const task=storage.ref(`uploads/${section}/${ts}_${safeName}`).put(selectedFile, metadata);
+function uploadFile(section, sectionTitle){
+    const title = document.getElementById('upload-title')?.value?.trim();
+    const desc  = document.getElementById('upload-desc')?.value?.trim();
+    const btn   = document.getElementById('uploadBtn');
+    const pw    = document.getElementById('uploadProgressWrap');
+    const pb    = document.getElementById('uploadProgressBar');
+    const pt    = document.getElementById('progressText');
 
-    task.on('state_changed',
-        snap=>{
-            const pct=Math.round(snap.bytesTransferred/snap.totalBytes*100);
-            pb.style.width=pct+'%';
-            const speed = snap.bytesTransferred > 0
-                ? formatSize(Math.round(snap.bytesTransferred / ((Date.now()-ts)/1000))) + '/ث'
-                : '';
-            pt.textContent=`⬆️ ${pct}% — ${formatSize(snap.bytesTransferred)} / ${formatSize(snap.totalBytes)} ${speed?'| '+speed:''}`;
-        },
-        err=>{
-            btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
-            pw.style.display=pt.style.display='none';
-            let msg='حدث خطأ أثناء الرفع.';
-            if(err.code==='storage/unauthorized')msg='لا صلاحية للرفع. تحقق من قواعد Firebase Storage.';
-            else if(err.code==='storage/quota-exceeded')msg='تجاوزت سعة التخزين المجانية.';
-            showToast(msg,'error',4000);
-        },
-        ()=>{task.snapshot.ref.getDownloadURL().then(url=>{
+    if(!title)        { showToast('اكتب عنوان الملف أولاً','warning'); return; }
+    if(!selectedFile) { showToast('اختر ملفاً أولاً','warning'); return; }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
+    pw.style.display = 'block';
+    pt.style.display = 'block';
+    pb.style.width   = '0%';
+
+    // بناء FormData لـ Cloudinary
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('upload_preset', CLOUDINARY_PRESET);
+    formData.append('folder', `school/${section}`);
+    formData.append('use_filename', 'true');
+    formData.append('unique_filename', 'true');
+
+    const ts = Date.now();
+
+    // XHR لمتابعة التقدم
+    const xhr = new XMLHttpRequest();
+
+    // تقدم الرفع
+    xhr.upload.addEventListener('progress', e => {
+        if(!e.lengthComputable) return;
+        const pct   = Math.round(e.loaded / e.total * 100);
+        const speed = e.loaded > 0
+            ? formatSize(Math.round(e.loaded / ((Date.now()-ts)/1000))) + '/ث'
+            : '';
+        pb.style.width   = pct + '%';
+        pt.textContent   = `⬆️ ${pct}% — ${formatSize(e.loaded)} / ${formatSize(e.total)} ${speed ? '| '+speed : ''}`;
+    });
+
+    // نجاح الرفع
+    xhr.addEventListener('load', () => {
+        if(xhr.status === 200){
+            const res  = JSON.parse(xhr.responseText);
+            const url  = res.secure_url;
+            const size = res.bytes || selectedFile.size;
+
             db.ref(section).push({
-                title, description:desc||'', url,
-                fileName:selectedFile.name,
-                fileSize:selectedFile.size,
-                uploadedAt:new Date().toLocaleString('ar-EG'),
-                comments:{}
-            }).then(()=>{
-                selectedFile=null;
+                title,
+                description: desc || '',
+                url,
+                fileName:   selectedFile.name,
+                fileSize:   size,
+                uploadedAt: new Date().toLocaleString('ar-EG'),
+                cloudinaryId: res.public_id || '',
+                comments:   {}
+            }).then(() => {
+                selectedFile = null;
+                pw.style.display = pt.style.display = 'none';
                 showToast(`✅ تم رفع "${title}" بنجاح`, 'success');
-                setTimeout(()=>displayFiles(section,sectionTitle), 800);
+                setTimeout(() => displayFiles(section, sectionTitle), 800);
             });
-        });}
-    );
+        } else {
+            const err = JSON.parse(xhr.responseText);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+            pw.style.display = pt.style.display = 'none';
+            showToast(`خطأ: ${err.error?.message || 'فشل الرفع'}`, 'error', 5000);
+        }
+    });
+
+    // خطأ في الاتصال
+    xhr.addEventListener('error', () => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+        pw.style.display = pt.style.display = 'none';
+        showToast('تعذّر الاتصال بـ Cloudinary. تحقق من اتصالك.', 'error', 4000);
+    });
+
+    xhr.open('POST', CLOUDINARY_URL);
+    xhr.send(formData);
 }
 
 /* ============================================================
@@ -1351,15 +1393,19 @@ function deleteTickerItem(id){
 /* ============================================================
    DELETE
 ============================================================ */
-function deleteFile(section,id,url){
-    Swal.fire({title:'هل أنت متأكد؟',text:'سيُحذف الملف نهائياً!',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'نعم، احذف!',cancelButtonText:'إلغاء'})
-        .then(r=>{
-            if(r.isConfirmed){
-                const d1=db.ref(`${section}/${id}`).remove();
-                const d2=url?storage.refFromURL(url).delete().catch(()=>{}):Promise.resolve();
-                Promise.all([d1,d2]).then(()=>showToast('تم حذف الملف','info'));
-            }
-        });
+function deleteFile(section, id, url){
+    Swal.fire({
+        title:'هل أنت متأكد؟', text:'سيُحذف الملف نهائياً!', icon:'warning',
+        showCancelButton:true, confirmButtonColor:'#d33',
+        confirmButtonText:'نعم، احذف!', cancelButtonText:'إلغاء'
+    }).then(r => {
+        if(r.isConfirmed){
+            // حذف من Firebase Database فقط
+            // (حذف Cloudinary يحتاج server-side — الملف يبقى في Cloudinary لكن يُزال من الموقع)
+            db.ref(`${section}/${id}`).remove()
+                .then(() => showToast('تم حذف الملف من الموقع ✅','info'));
+        }
+    });
 }
 function deleteComment(section,fileId,commentId){
     db.ref(`${section}/${fileId}/comments`).once('value',snap=>{
