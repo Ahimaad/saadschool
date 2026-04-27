@@ -331,10 +331,22 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   .hs{height:185px!important}
   .gc{padding:12px;border-radius:16px}
   .hide-mob{display:none!important}
-  .col-md-6{flex:0 0 100%;max-width:100%}
+  /* البطاقات عمود كامل على الموبايل */
+  .col-md-6{width:100%!important;flex:0 0 100%!important;max-width:100%!important}
   .sfb{gap:5px;padding:9px}
   .fb{font-size:.7rem;padding:4px 8px}
   .mmbd iframe{min-height:65vh}
+  /* نتائج الطلاب على الموبايل */
+  .rc{padding:18px}
+  .rsb{padding:8px 4px}
+  .rsb .h5{font-size:1rem}
+  /* فيديو على الموبايل */
+  .fc-viewer video{max-height:220px}
+  /* أزرار الملف */
+  .fc-actions{gap:4px}
+  .fc-btn-primary{font-size:.75rem;padding:6px 10px}
+  /* الهيدر */
+  .stl{font-size:1.1rem!important}
 }
 @media(max-width:400px){.hs{height:155px!important}}
 
@@ -1086,38 +1098,25 @@ function toggleView(fid,url,type){
     </div>`;
 
   } else if(type==='pdf'){
-    // نجرب 3 طرق للـ PDF بالترتيب
     html=`<div class="fc-viewer" style="background:#2d2d2d;min-height:380px">
       ${close}
-      <div id="PDFV${fid}" style="width:100%;min-height:350px">
-        <!-- محاولة 1: عرض مدمج بـ <object> -->
-        <object data="${url}" type="application/pdf"
-                style="width:100%;height:380px;display:block;border:none"
-                id="PDFO${fid}">
-          <!-- محاولة 2: embed -->
-          <embed src="${url}" type="application/pdf"
-                 style="width:100%;height:380px;display:block"
-                 id="PDFE${fid}">
-            <!-- محاولة 3: iframe بـ google viewer -->
-            <iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
-                    style="width:100%;height:380px;border:none;display:block;background:white"
-                    id="PDFI${fid}"
-                    onload="this.style.opacity=1"
-                    onerror="showPdfBtns('${fid}','${url}')">
-            </iframe>
-          </embed>
-        </object>
-      </div>
-      <div id="PDFB${fid}" style="text-align:center;padding:10px;background:#2d2d2d;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-        <a href="${url}" target="_blank" class="btn bg btn-sm rounded-pill">
-          <i class="fas fa-external-link-alt me-1"></i>فتح في تبويب جديد
-        </a>
-        <a href="${url}" download class="btn btn-outline-light btn-sm rounded-pill">
-          <i class="fas fa-download me-1"></i>تحميل PDF
-        </a>
-        <button class="btn btn-outline-light btn-sm rounded-pill" onclick="openModal('${url}','PDF','pdf')">
+      <!-- Google Docs Viewer — يعمل مع Cloudinary raw URLs -->
+      <iframe
+        src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
+        style="width:100%;height:380px;border:none;display:block;background:white"
+        id="PDFI${fid}"
+        loading="lazy">
+      </iframe>
+      <div style="text-align:center;padding:10px;background:#2d2d2d;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn bg btn-sm rounded-pill" onclick="openModal('${url}','PDF','pdf')">
           <i class="fas fa-expand me-1"></i>ملء الشاشة
         </button>
+        <a href="${url}" target="_blank" rel="noopener" class="btn btn-outline-light btn-sm rounded-pill">
+          <i class="fas fa-external-link-alt me-1"></i>فتح مباشر
+        </a>
+        <a href="${url}" download class="btn btn-outline-light btn-sm rounded-pill">
+          <i class="fas fa-download me-1"></i>تحميل
+        </a>
       </div>
     </div>`;
 
@@ -1326,7 +1325,19 @@ function doUpload(section,title){
   pw.style.display='block';pt.style.display='block';
   const ts=Date.now();
   const fd=new FormData();
-  fd.append('file',selFile);fd.append('upload_preset',CLD_PRESET);fd.append('folder',`school/${section}`);
+  fd.append('file',selFile);
+  fd.append('upload_preset',CLD_PRESET);
+  fd.append('folder',`school/${section}`);
+
+  // تحديد نوع الملف للـ endpoint الصحيح
+  const fname = selFile.name.toLowerCase();
+  const isImgFile  = /\.(jpg|jpeg|png|gif|webp|svg)$/.test(fname);
+  const isVidFile  = /\.(mp4|mov|avi|mkv|webm)$/.test(fname);
+  const isAudFile  = /\.(mp3|wav|ogg|m4a)$/.test(fname);
+  // PDF وكل الملفات الأخرى = raw
+  const resType = isImgFile ? 'image' : isVidFile ? 'video' : isAudFile ? 'video' : 'raw';
+  const uploadURL = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;
+
   const xhr=new XMLHttpRequest();
   xhr.upload.addEventListener('progress',e=>{
     if(!e.lengthComputable)return;
@@ -1338,23 +1349,40 @@ function doUpload(section,title){
   xhr.addEventListener('load',()=>{
     if(xhr.status===200){
       const r=JSON.parse(xhr.responseText);
-      const url=(r.secure_url||r.url||'').replace('http://','https://');
-      db.ref(section).push({title:t,description:d||'',url,fileName:selFile.name,fileSize:selFile.size,uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}})
-        .then(()=>{
-          selFile=null;pw.style.display=pt.style.display='none';
-          toast(`✅ تم رفع "${t}"  بنجاح`,'s');
-          if(section==='gallery_section')setTimeout(loadSlider,1000);
-          setTimeout(()=>showFiles(section,title),800);
-        });
+      // للـ PDF نستخدم secure_url مباشرة (raw resource)
+      let url=(r.secure_url||r.url||'').replace('http://','https://');
+      // تأكد أن الـ URL ينتهي بـ .pdf للملفات الـ raw
+      if(resType==='raw' && fname.endsWith('.pdf') && !url.includes('.pdf')){
+        url = url; // Cloudinary يحتفظ بالاسم الأصلي في raw
+      }
+      db.ref(section).push({
+        title:t,description:d||'',url,
+        fileName:selFile.name,fileSize:selFile.size,
+        resourceType:resType,
+        uploadedAt:new Date().toLocaleDateString('ar-EG'),
+        comments:{}
+      }).then(()=>{
+        selFile=null;pw.style.display=pt.style.display='none';
+        toast(`✅ تم رفع "${t}" بنجاح`,'s');
+        if(section==='gallery_section')setTimeout(loadSlider,1000);
+        setTimeout(()=>showFiles(section,title),800);
+      });
     } else {
       btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
       pw.style.display=pt.style.display='none';
-      const er=JSON.parse(xhr.responseText);
-      toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);
+      try{
+        const er=JSON.parse(xhr.responseText);
+        toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);
+      } catch(e){ toast('فشل الرفع — تحقق من إعدادات Cloudinary','e',5000); }
     }
   });
-  xhr.addEventListener('error',()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';pw.style.display=pt.style.display='none';toast('تعذّر الاتصال بـ Cloudinary','e',4000)});
-  xhr.open('POST',CLD_URL);xhr.send(fd);
+  xhr.addEventListener('error',()=>{
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+    pw.style.display=pt.style.display='none';
+    toast('تعذّر الاتصال بـ Cloudinary','e',4000)
+  });
+  xhr.open('POST',uploadURL);
+  xhr.send(fd);
 }
 
 /* ================================================================
