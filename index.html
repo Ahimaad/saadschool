@@ -10,7 +10,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<!-- jsPDF -->
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -234,7 +233,6 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .stg>*:nth-child(5){animation-delay:.25s}.stg>*:nth-child(6){animation-delay:.3s}
 .gp{animation:gp 3s ease-in-out infinite}
 @keyframes gp{0%,100%{box-shadow:0 0 0 0 var(--gdg)}50%{box-shadow:0 0 20px 6px var(--gdg)}}
-/* ===== تحسينات الجوال - القائمة الجانبية تظهر بكاملها ===== */
 @media (max-width: 768px){
   .hide-mob { display: block !important; }
   .col-lg-4 { width: 100%; margin-bottom: 20px; }
@@ -382,7 +380,7 @@ function toggleTheme(){
 }
 const hideHero=()=>{document.getElementById('SWC').style.display='none';document.getElementById('TKC').style.display='none'};
 const showHero=()=>{document.getElementById('SWC').style.display='';document.getElementById('TKC').style.display=''};
-// ==================== SLIDER - يعرض آخر الصور من Firebase ====================
+// ==================== SLIDER ====================
 function loadSlider() {
   db.ref('gallery_section').orderByKey().limitToLast(6).once('value', snap => {
     let slides = [];
@@ -464,7 +462,7 @@ function exportPDF(data){
   let subRows='';
   if(data.subjects){Object.entries(data.subjects).forEach(([sub,score])=>{const pct=Math.min(score,100);subRows+=`<tr><td>${sub}</td><td style="text-align:center;font-weight:800">${score}</td><td style="text-align:center"><div class="pdf-bar-wrap"><div class="pdf-bar" style="width:${pct}%;background:${barC(score)}"></div></div></td><td style="text-align:center"><span class="pdf-grade-badge ${grCls(score)}">${grLbl(score)}</span></td></tr>`;});}
   const card = document.getElementById('pdfCard');
-  card.innerHTML=`<div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl"><div class="pdf-header"><img src="logo.jpg" class="pdf-logo" onerror="this.style.display='none'"><div class="pdf-school"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>إدارة الفشن التعليمية — محافظة بني سويف</p></div><div style="text-align:center;background:rgba(255,255,255,.15);padding:10px 16px;border-radius:12px;min-width:120px"><div style="font-size:.7rem;opacity:.8">العام الدراسي</div><div style="font-weight:900;font-size:1.1rem">2025 / 2026</div></div></div><div class="pdf-body"><div class="pdf-student-info"><div class="pdf-info-item"><div class="pdf-info-label">اسم الطالب</div><div class="pdf-info-value">${esc(data.name||'')}</div></div><div class="pdf-info-item"><div class="pdf-info-label">الصف الدراسي</div><div class="pdf-info-value">${GL[data.grade]||''}</div></div><div class="pdf-info-item"><div class="pdf-info-label">رقم الجلوس</div><div class="pdf-info-value">${esc(String(data.seat||''))}</div></div><div class="pdf-info-item"><div class="pdf-info-label">تاريخ الإصدار</div><div class="pdf-info-value">${today}</div></div></div><div class="pdf-subjects-title"><i class="fas fa-list-check" style="color:var(--gd)"></i> تفاصيل الدرجات</div><table class="pdf-table"><thead><tr><th>المادة</th><th>الدرجة</th><th>المستوى</th><th>التقدير</th></tr></thead><tbody>${subRows}</tbody></table><div class="pdf-totals"><div class="pdf-total-box"><div class="pdf-total-num">${esc(String(data.total||0))}</div><div class="pdf-total-lbl">المجموع الكلي</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#1d7a47,#27ae60)"><div class="pdf-total-num">${esc(String(data.percentage||0))}%</div><div class="pdf-total-lbl">النسبة المئوية</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#c9a227,#d4af37);color:#0a2b4e"><div class="pdf-total-num" style="color:#0a2b4e">${esc(data.gradeLabel||'')}</div><div class="pdf-total-lbl">التقدير العام</div></div></div></div><div class="pdf-footer"><div><p style="font-weight:700;color:#0a2b4e">بوابة مدرسة سعد بن أبي وقاص الرسمية</p><p>تم إصدار هذه الشهادة بتاريخ: ${today}</p></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">توقيع مدير المدرسة</div></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">ختم المدرسة</div></div></div></div>`;
+  card.innerHTML=`<div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl"><div class="pdf-header"><img src="logo.jpg" class="pdf-logo" onerror="this.style.display='none'"><div class="pdf-school"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>إدارة الفشن التعليمية — محافظة بني سويف</p></div><div style="text-align:center;background:rgba(255,255,255,.15);padding:10px 16px;border-radius:12px;min-width:120px"><div style="font-size:.7rem;opacity:.8">العام الدراسي</div><div style="font-weight:900;font-size:1.1rem">2025 / 2026</div></div></div><div class="pdf-body"><div class="pdf-student-info"><div class="pdf-info-item"><div class="pdf-info-label">اسم الطالب</div><div class="pdf-info-value">${esc(data.name||'')}</div></div><div class="pdf-info-item"><div class="pdf-info-label">الصف الدراسي</div><div class="pdf-info-value">${GL[data.grade]||''}</div></div><div class="pdf-info-item"><div class="pdf-info-label">رقم الجلوس</div><div class="pdf-info-value">${esc(String(data.seat||''))}</div></div><div class="pdf-info-item"><div class="pdf-info-label">تاريخ الإصدار</div><div class="pdf-info-value">${today}</div></div></div><div class="pdf-subjects-title"><i class="fas fa-list-check" style="color:var(--gd)"></i> تفاصيل الدرجات</div><table class="pdf-table"><thead><tr><th>المادة</th><th>الدرجة</th><th>المستوى</th><th>التقدير</th></tr></thead><tbody>${subRows}</tbody><td><div class="pdf-totals"><div class="pdf-total-box"><div class="pdf-total-num">${esc(String(data.total||0))}</div><div class="pdf-total-lbl">المجموع الكلي</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#1d7a47,#27ae60)"><div class="pdf-total-num">${esc(String(data.percentage||0))}%</div><div class="pdf-total-lbl">النسبة المئوية</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#c9a227,#d4af37);color:#0a2b4e"><div class="pdf-total-num" style="color:#0a2b4e">${esc(data.gradeLabel||'')}</div><div class="pdf-total-lbl">التقدير العام</div></div></div></div><div class="pdf-footer"><div><p style="font-weight:700;color:#0a2b4e">بوابة مدرسة سعد بن أبي وقاص الرسمية</p><p>تم إصدار هذه الشهادة بتاريخ: ${today}</p></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">توقيع مدير المدرسة</div></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">ختم المدرسة</div></div></div></div>`;
   card.style.left='0';card.style.top='0';card.style.zIndex='-1';card.style.position='fixed';
   html2canvas(card.firstElementChild,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff'}).then(canvas=>{
     card.style.left='-9999px';
@@ -494,7 +492,11 @@ function renderFiles(section,title){
   if(!entries.length){grid.innerHTML=`<div class="col-12"><div class="es"><div class="esi">📂</div><h6 class="fw-bold">لا توجد ملفات</h6><p class="text-muted">${isAdmin?'اضغط رفع ملف للبدء':'لم يتم رفع ملفات بعد'}</p></div></div>`;return;}
   grid.innerHTML='';
   entries.forEach(([fid,f],i)=>{
-    const u=f.url||'', x=ext(u), info=fi(u);
+    let u=f.url||'', x=ext(u), info=fi(u);
+    // إصلاح رابط PDF إذا كان من Cloudinary raw
+    if (isPdf(u) && u.includes('/raw/upload/')) {
+      u = u + '?fl_attachment=false';
+    }
     const isI=isImg(u),isV=isVid(u),isA=isAud(u),isP=isPdf(u);
     const cmts=Object.values(f.comments||{});
     const cmtHtml=cmts.map(c=>`<div class="ci"><div class="d-flex justify-content-between"><b>${esc(c.name)}</b>${isAdmin?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delCmt('${fid}','${c.id}','${section}')"><i class="fas fa-trash-alt"></i></button>`:''}</div><div>${esc(c.text)}</div><small class="text-muted">${esc(c.date||'')}</small></div>`).join('');
@@ -513,7 +515,13 @@ function openModal(url, title, type){
   let body='';
   if(type==='img'){body=`<img src="${url}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px">`;}
   else if(type==='vid'){body=`<video controls autoplay playsinline style="max-width:100%;max-height:88vh;border-radius:8px;outline:none"><source src="${url}"></video>`;}
-  else if(type==='pdf'){body=`<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true" style="flex:1;border:none;border-radius:8px;background:white;width:100%"></iframe><div style="display:flex;gap:12px;justify-content:center"><a href="${url}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a><a href="${url}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a></div></div>`;}
+  else if(type==='pdf'){
+    let pdfUrl = url;
+    if (pdfUrl.includes('/raw/upload/')) {
+      pdfUrl = pdfUrl + '?fl_attachment=false';
+    }
+    body=`<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true" style="flex:1;border:none;border-radius:8px;background:white;width:100%"></iframe><div style="display:flex;gap:12px;justify-content:center"><a href="${pdfUrl}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a><a href="${pdfUrl}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a></div></div>`;
+  }
   else if(type==='aud'){body=`<div style="text-align:center;padding:60px"><div style="width:80px;height:80px;border-radius:50%;background:rgba(212,175,55,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px"><i class="fas fa-music fa-2x" style="color:var(--gd)"></i></div><h5 class="text-white mb-4">${esc(title)}</h5><audio controls autoplay style="width:100%;max-width:440px"><source src="${url}"></audio></div>`;}
   const modal=document.createElement('div');modal.className='mm';modal.id='MM';
   modal.innerHTML=`<div class="mmb"><span class="mmt"><i class="fas fa-${type==='img'?'image':type==='vid'?'video':type==='pdf'?'file-pdf':'music'} me-2"></i>${esc(title)}</span><div class="d-flex gap-2"><a href="${url}" download class="btn btn-sm rounded-pill" style="background:rgba(255,255,255,.1);color:white"><i class="fas fa-download me-1"></i>تحميل</a><button onclick="document.getElementById('MM').remove()" style="background:rgba(255,255,255,.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer">✕</button></div></div><div class="mmbd">${body}</div>`;
@@ -567,7 +575,11 @@ function doUpload(section,title){
   const fd=new FormData();
   fd.append('file',selFile);
   fd.append('upload_preset',CLD_PRESET);
+  // إضافة مجلد اختياري
   fd.append('folder',`school/${section}`);
+  // إضافة معامل لجعل الملف عاماً (مهم لملفات PDF)
+  fd.append('access_mode', 'public');
+  
   const fname=selFile.name.toLowerCase();
   const isImgFile=/\.(jpg|jpeg|png|gif|webp|svg)$/.test(fname);
   const isVidFile=/\.(mp4|mov|avi|mkv|webm)$/.test(fname);
@@ -580,6 +592,10 @@ function doUpload(section,title){
     if(xhr.status===200){
       const r=JSON.parse(xhr.responseText);
       let url=(r.secure_url||r.url||'').replace('http://','https://');
+      // إضافة معامل للوصول العام للملفات الخام (مثل PDF)
+      if (resType === 'raw') {
+        url = url + (url.includes('?') ? '&' : '?') + 'access_mode=public';
+      }
       db.ref(section).push({title:t,description:d||'',url,fileName:selFile.name,fileSize:selFile.size,resourceType:resType,uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}}).then(()=>{
         selFile=null;pw.style.display=pt.style.display='none';
         toast(`✅ تم رفع "${t}" بنجاح`,'s');
