@@ -10,12 +10,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<!-- PDF.js library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-<script>
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
-</script>
-<!-- jsPDF for result export -->
+<!-- jsPDF -->
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -39,8 +34,6 @@ body{font-family:var(--f);background:var(--bg);min-height:100vh;color:#2c3e50;
                    radial-gradient(#667eea09 1px,transparent 1px);
   background-size:auto,auto,22px 22px;overflow-x:hidden;}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:10px}
-
-/* DARK */
 .dark{background:#0b0f1a!important;color:#dde3ee;}
 .dark .gc{background:rgba(16,22,36,.96)!important;border-color:rgba(255,255,255,.07)!important}
 .dark .smi{background:rgba(20,28,44,.9)!important;color:#ccd6f0!important}
@@ -59,8 +52,6 @@ body{font-family:var(--f);background:var(--bg);min-height:100vh;color:#2c3e50;
 .dark .fb{background:#1e2840!important;border-color:#2a3550!important;color:#ccd!important}
 .dark .si input{background:#141c2c!important;border-color:#2a3550!important;color:#dde!important}
 .dark .asc{background:rgba(16,22,36,.96)!important}
-
-/* LOADER */
 #ldr{position:fixed;inset:0;z-index:9999;background:var(--pr);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s}
 #ldr.hide{opacity:0;visibility:hidden;pointer-events:none}
 .ll{width:90px;height:90px;border-radius:50%;border:4px solid var(--gd);background:white;padding:8px;animation:plg 1.5s infinite}
@@ -69,8 +60,6 @@ body{font-family:var(--f);background:var(--bg);min-height:100vh;color:#2c3e50;
 .ld span{width:10px;height:10px;border-radius:50%;background:var(--gd);animation:bd 1.2s infinite}
 .ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
 @keyframes bd{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-14px)}}
-
-/* HEADER */
 header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));border-bottom:4px solid var(--gd);padding:16px 0;box-shadow:0 6px 30px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;overflow:hidden}
 .slogo{width:76px;height:76px;border-radius:50%;border:3px solid var(--gd);background:white;padding:5px;transition:var(--tr);box-shadow:0 0 20px var(--gdg);cursor:pointer}
 .slogo:hover{transform:rotate(360deg) scale(1.1)}
@@ -78,20 +67,16 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .hbg{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;font-size:.76rem;display:inline-block}
 .od{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:od 2s infinite;margin-left:5px}
 @keyframes od{0%,100%{opacity:1}50%{opacity:.3}}
-
-/* TICKER */
 .tk{background:linear-gradient(90deg,var(--pr),#0e3a65);color:white;padding:8px 0;border-bottom:2px solid var(--gd);white-space:nowrap;overflow:hidden;position:relative}
 .tk::before{left:0;background:linear-gradient(to right,#0a2b4e,transparent);content:'';position:absolute;top:0;width:80px;height:100%;z-index:2}
 .tk::after{right:0;background:linear-gradient(to left,#0a2b4e,transparent);content:'';position:absolute;top:0;width:80px;height:100%;z-index:2}
-.tw{display:inline-block;animation:ts 50s linear infinite}.tw:hover{animation-play-state:paused}
+.tw{display:inline-block;animation:ts 50s linear infinite}
+.tw:hover{animation-play-state:paused}
 @keyframes ts{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
-.ti{display:inline-block;padding:0 36px}.ti i{color:var(--gdl);margin-left:6px}
-
-/* GLASS CARD */
+.ti{display:inline-block;padding:0 36px}
+.ti i{color:var(--gdl);margin-left:6px}
 .gc{background:var(--gl);backdrop-filter:blur(16px);border-radius:var(--r);padding:22px;box-shadow:var(--cs);border:1px solid rgba(255,255,255,.6);transition:var(--tr)}
 .gc:hover{box-shadow:var(--hs)}
-
-/* SIDE MENU */
 .smi{background:#fff;border:none;border-radius:var(--rs);padding:12px 15px;margin-bottom:8px;width:100%;text-align:right;font-weight:700;font-size:.9rem;transition:var(--tr);cursor:pointer;border-right:5px solid var(--gd);display:flex;align-items:center;gap:8px;color:var(--pr);font-family:var(--f);box-shadow:0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden}
 .smi::before{content:'';position:absolute;right:0;top:0;width:0;height:100%;background:var(--pr);transition:width .35s;z-index:0}
 .smi:hover::before,.smi.active::before{width:100%}
@@ -99,8 +84,6 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .smi:hover,.smi.active{color:var(--gd);box-shadow:0 8px 20px var(--prg)}
 .smi i{width:24px;font-size:1rem}
 .mb2{margin-right:auto;background:var(--gd);color:var(--pr);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:20px;position:relative;z-index:1}
-
-/* SWIPER */
 .sw-wrap{border-radius:var(--r);overflow:hidden;box-shadow:0 15px 50px rgba(0,0,0,.25);border:4px solid white;margin-bottom:20px}
 .hs{height:255px}
 .hs .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
@@ -108,51 +91,29 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .swiper-pagination-bullet-active{background:var(--gd)!important}
 .swiper-button-next,.swiper-button-prev{color:var(--gd)!important}
 .swiper-button-next::after,.swiper-button-prev::after{font-size:1.1rem!important;font-weight:900!important}
-
-/* STATS */
 .hsc{background:white;border-radius:var(--rs);padding:16px 10px;text-align:center;transition:var(--tr);border:1px solid rgba(0,0,0,.05);box-shadow:0 3px 12px rgba(0,0,0,.06)}
 .hsc:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
 .sn{font-size:1.9rem;font-weight:900}
 .sc{display:flex;justify-content:space-between;align-items:center;padding:9px 13px;border-radius:var(--rs);background:#f4f7ff;margin-bottom:7px;transition:var(--tr)}
 .sc:hover{background:rgba(212,175,55,.12);transform:translateX(-3px)}
-
-/* QUICK CARDS */
 .qc{border-radius:var(--rs);padding:20px 12px;text-align:center;cursor:pointer;transition:var(--tr);border:1px solid rgba(0,0,0,.05);background:white;box-shadow:0 3px 12px rgba(0,0,0,.05)}
 .qc:hover{transform:translateY(-5px) scale(1.02);box-shadow:0 14px 32px rgba(0,0,0,.12)}
 .qc i{font-size:2rem;margin-bottom:8px;display:block}
 .qc h6{font-weight:700;font-size:.88rem;margin:0}
-
-/* RESULT CARD */
 .rc{background:linear-gradient(135deg,var(--pr) 0%,#1a4070 100%);color:white;border-radius:var(--r);padding:26px;border:2px solid var(--gd);position:relative;overflow:hidden}
 .rc::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(212,175,55,.07);border-radius:50%}
 .rsb{background:rgba(255,255,255,.1);backdrop-filter:blur(8px);border-radius:12px;padding:10px 6px;text-align:center;transition:var(--tr)}
 .rsb:hover{background:rgba(255,255,255,.2);transform:scale(1.04)}
 .si2{background:rgba(255,255,255,.08);padding:10px 16px;border-radius:12px;margin:6px 0;transition:var(--tr);display:flex;justify-content:space-between;align-items:center}
 .si2:hover{background:rgba(255,255,255,.14);padding-right:22px}
-
-/* PDF CARD (hidden, used for export) */
-#pdfCard{
-  position:fixed;left:-9999px;top:0;
-  width:794px;background:white;font-family:'Cairo',sans-serif;
-  direction:rtl;text-align:right;padding:0;z-index:-1;
-}
-.pdf-header{
-  background:linear-gradient(135deg,#0a2b4e,#1e4a76);
-  color:white;padding:28px 36px 22px;
-  display:flex;align-items:center;gap:20px;
-  border-bottom:6px solid #d4af37;
-}
+#pdfCard{position:fixed;left:-9999px;top:0;width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl;text-align:right;padding:0;z-index:-1;}
+.pdf-header{background:linear-gradient(135deg,#0a2b4e,#1e4a76);color:white;padding:28px 36px 22px;display:flex;align-items:center;gap:20px;border-bottom:6px solid #d4af37;}
 .pdf-logo{width:80px;height:80px;border-radius:50%;border:3px solid #d4af37;background:white;padding:4px;object-fit:contain}
 .pdf-school{flex:1}
 .pdf-school h2{font-size:1.4rem;font-weight:900;margin:0 0 4px}
 .pdf-school p{font-size:.82rem;opacity:.8;margin:0}
 .pdf-body{padding:28px 36px}
-.pdf-student-info{
-  background:linear-gradient(135deg,#f8f9ff,#eef2ff);
-  border-radius:16px;padding:20px 24px;margin-bottom:24px;
-  border-right:6px solid #d4af37;
-  display:flex;flex-wrap:wrap;gap:16px;
-}
+.pdf-student-info{background:linear-gradient(135deg,#f8f9ff,#eef2ff);border-radius:16px;padding:20px 24px;margin-bottom:24px;border-right:6px solid #d4af37;display:flex;flex-wrap:wrap;gap:16px;}
 .pdf-info-item{flex:1;min-width:160px}
 .pdf-info-label{font-size:.72rem;color:#888;font-weight:600;margin-bottom:3px}
 .pdf-info-value{font-size:1rem;font-weight:800;color:#0a2b4e}
@@ -169,45 +130,26 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .pdf-grade-b{background:#cce5ff;color:#004085}
 .pdf-grade-c{background:#fff3cd;color:#856404}
 .pdf-grade-d{background:#f8d7da;color:#721c24}
-.pdf-totals{
-  display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;
-}
-.pdf-total-box{
-  flex:1;min-width:140px;background:linear-gradient(135deg,#0a2b4e,#1e4a76);
-  color:white;border-radius:14px;padding:14px 16px;text-align:center;
-  border-bottom:4px solid #d4af37;
-}
+.pdf-totals{display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;}
+.pdf-total-box{flex:1;min-width:140px;background:linear-gradient(135deg,#0a2b4e,#1e4a76);color:white;border-radius:14px;padding:14px 16px;text-align:center;border-bottom:4px solid #d4af37;}
 .pdf-total-num{font-size:1.6rem;font-weight:900}
 .pdf-total-lbl{font-size:.72rem;opacity:.8;margin-top:2px}
-.pdf-footer{
-  border-top:3px solid #d4af37;padding:16px 36px;
-  display:flex;justify-content:space-between;align-items:center;
-  background:#f8f9ff;
-}
+.pdf-footer{border-top:3px solid #d4af37;padding:16px 36px;display:flex;justify-content:space-between;align-items:center;background:#f8f9ff;}
 .pdf-footer p{font-size:.72rem;color:#888;margin:0}
 .pdf-signature{text-align:center}
 .pdf-sig-line{width:120px;border-bottom:2px solid #0a2b4e;margin:0 auto 4px}
 .pdf-sig-lbl{font-size:.7rem;color:#666;font-weight:600}
 .pdf-bar-wrap{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:4px}
 .pdf-bar{height:100%;border-radius:3px;transition:width .8s}
-
-/* FILE CARDS */
 .fc{background:#fff;border-radius:var(--rs);overflow:hidden;box-shadow:var(--cs);transition:var(--tr);border:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column}
 .fc:hover{transform:translateY(-4px);box-shadow:var(--hs)}
 .fib{font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:30px;text-transform:uppercase;background:#eef2ff;color:#4a60cc;display:inline-block}
 .fc-media{position:relative;overflow:hidden;flex-shrink:0}
 .fc-media img{width:100%;height:200px;object-fit:cover;display:block;transition:transform .4s}
 .fc-media:hover img{transform:scale(1.04)}
-.fc-media-overlay{
-  position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s;
-  display:flex;align-items:center;justify-content:center;
-}
+.fc-media-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s;display:flex;align-items:center;justify-content:center;}
 .fc-media:hover .fc-media-overlay{background:rgba(0,0,0,.25)}
-.fc-play-btn{
-  width:52px;height:52px;border-radius:50%;background:rgba(212,175,55,.9);
-  display:flex;align-items:center;justify-content:center;
-  opacity:0;transition:opacity .3s;transform:scale(.8);transition:all .3s;
-}
+.fc-play-btn{width:52px;height:52px;border-radius:50%;background:rgba(212,175,55,.9);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;transform:scale(.8);transition:all .3s;}
 .fc-media:hover .fc-play-btn{opacity:1;transform:scale(1)}
 .fc-icon-wrap{height:160px;display:flex;align-items:center;justify-content:center;font-size:3.8rem;flex-shrink:0}
 .fc-body{padding:14px;flex:1;display:flex;flex-direction:column}
@@ -222,21 +164,12 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .dark .fc-btn-icon:hover{background:var(--pr);color:white}
 .fc-comments{margin-top:10px;border-top:1px solid #eee;padding-top:10px}
 .dark .fc-comments{border-top-color:#2a3550}
-
-/* INLINE VIEWER */
 .fc-viewer{background:#000;width:100%;position:relative;overflow:hidden}
 .fc-viewer video{width:100%;max-height:280px;display:block;outline:none}
 .fc-viewer audio{width:100%;padding:12px;background:#1a1a2e}
 .fc-viewer img{width:100%;max-height:400px;object-fit:contain;display:block}
-.fc-viewer-close{
-  position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);
-  color:white;border:none;border-radius:50%;width:32px;height:32px;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;
-  font-size:1rem;z-index:10;transition:var(--tr);backdrop-filter:blur(4px);
-}
+.fc-viewer-close{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;z-index:10;transition:var(--tr);backdrop-filter:blur(4px);}
 .fc-viewer-close:hover{background:rgba(220,53,69,.8)}
-
-/* FULLSCREEN MODAL */
 .mm{position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:9999;display:flex;flex-direction:column;animation:fi .2s ease}
 .mmb{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(0,0,0,.6);border-bottom:1px solid rgba(255,255,255,.1);flex-shrink:0;gap:10px}
 .mmt{color:white;font-weight:700;font-size:.9rem;font-family:var(--f);flex:1;min-width:0;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}
@@ -246,8 +179,6 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .mmbd iframe{width:100%;height:100%;min-height:80vh;border:none;border-radius:8px;background:white}
 .mmbd audio{width:100%;max-width:500px;outline:none}
 .mm-audio-wrap{text-align:center;padding:40px 20px}
-
-/* UPLOAD */
 .uz{border:2.5px dashed #d0d8e8;border-radius:var(--r);padding:40px 20px;text-align:center;transition:var(--tr);cursor:pointer;background:#f7f9ff}
 .uz:hover,.uz.dov{border-color:var(--gd);box-shadow:0 0 0 4px rgba(212,175,55,.15);background:#fffbf0}
 .ui{font-size:3.2rem;color:var(--gd);margin-bottom:12px;display:block;transition:var(--tr)}
@@ -256,12 +187,8 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .upb{height:100%;border-radius:10px;width:0%;transition:width .3s;background:linear-gradient(90deg,var(--pr),var(--gd),var(--pr));background-size:200% 100%;animation:sh 2s linear infinite}
 @keyframes sh{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .pt{font-size:.78rem;font-weight:700;text-align:center;margin-top:5px;color:var(--pr);display:none}
-
-/* BUTTONS */
 .bg{background:linear-gradient(135deg,var(--gd),#c9a227);color:var(--pr);font-weight:800;border:none;font-family:var(--f);transition:var(--tr)}
 .bg:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--gdg);color:var(--pr)}
-
-/* SEARCH FILTER */
 .sfb{background:var(--gl);border-radius:var(--rs);padding:10px 14px;border:1px solid rgba(255,255,255,.6);margin-bottom:14px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.05)}
 .si{position:relative;flex:1;min-width:150px}
 .si i{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:#aaa;font-size:.85rem}
@@ -270,64 +197,35 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .fb.active{background:var(--pr);color:var(--gd);border-color:var(--pr)}
 .fb:hover:not(.active){border-color:var(--pr);color:var(--pr)}
 .fcb{font-size:.72rem;color:#999;white-space:nowrap;margin-right:auto}
-
-/* COMMENTS */
 .ci{background:#f4f7ff;border-radius:10px;padding:7px 11px;margin-bottom:5px;font-size:.8rem;border-right:3px solid var(--gd);animation:fi .3s ease}
 .cc{font-size:.7rem;color:#aaa;text-align:left;margin-top:2px;transition:color .2s}
 .cc.w{color:#e67e22}.cc.d{color:#e74c3c;font-weight:700}
-
-/* NEWS */
 .nc{background:white;border-radius:var(--rs);padding:16px;border-right:5px solid var(--pr);transition:var(--tr);box-shadow:var(--cs)}
 .nc:hover{transform:translateX(-4px);box-shadow:var(--hs);border-right-color:var(--gd)}
 .dark .nc{background:rgba(16,22,36,.96)!important}
-
-/* SKELETON */
 .sk{background:linear-gradient(90deg,#e8ecf4 25%,#f5f7fb 50%,#e8ecf4 75%);background-size:200% 100%;animation:sks 1.4s infinite;border-radius:10px}
 @keyframes sks{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .dark .sk{background:linear-gradient(90deg,#1e2840 25%,#252d42 50%,#1e2840 75%)!important;background-size:200% 100%}
-
-/* TOAST */
 .tc{position:fixed;top:80px;left:20px;z-index:9000;display:flex;flex-direction:column;gap:7px;pointer-events:none}
 .ti2{background:var(--pr);color:white;padding:10px 16px;border-radius:12px;font-family:var(--f);font-size:.85rem;font-weight:600;box-shadow:0 8px 24px rgba(0,0,0,.2);border-right:4px solid var(--gd);animation:tin .4s cubic-bezier(.4,0,.2,1) forwards;pointer-events:all;display:flex;align-items:center;gap:8px;min-width:200px}
 .ti2.s{border-right-color:#2ecc71}.ti2.e{background:#c0392b;border-right-color:#e74c3c}.ti2.w{background:#d68910;border-right-color:#f0b429}
 @keyframes tin{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:translateX(0)}}
-
-/* ADMIN */
 .ab{background:linear-gradient(90deg,#dc3545,#c0392b);color:white;padding:6px 12px;border-radius:10px;font-weight:700;font-size:.8rem;display:inline-flex;align-items:center;gap:6px;animation:pa 2s infinite}
 @keyframes pa{0%,100%{box-shadow:0 0 0 0 rgba(220,53,69,.4)}50%{box-shadow:0 0 0 8px rgba(220,53,69,0)}}
 .asc{background:white;border-radius:var(--rs);padding:14px;border-right:5px solid var(--gd);box-shadow:var(--cs);transition:var(--tr)}
 .asc:hover{transform:translateY(-3px);box-shadow:var(--hs)}
 .asn{font-size:1.7rem;font-weight:900;color:var(--pr)}
 .dark .asn{color:var(--gd)}
-
-/* EMPTY STATE */
 .es{text-align:center;padding:44px 20px}
 .esi{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#f4e4bc,rgba(212,175,55,.1));display:inline-flex;align-items:center;justify-content:center;font-size:2.4rem;margin-bottom:14px}
-
-/* FABs */
 .fab-th{position:fixed;bottom:28px;left:28px;background:linear-gradient(135deg,var(--gd),#c9a227);color:var(--pr);border:none;border-radius:50%;width:54px;height:54px;z-index:500;box-shadow:0 6px 22px var(--gdg);font-size:1.3rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr)}
 .fab-th:hover{transform:scale(1.1) rotate(20deg)}
 .fab-st{position:fixed;bottom:28px;left:92px;background:var(--pr);color:white;border:none;border-radius:50%;width:46px;height:46px;z-index:500;box-shadow:0 5px 18px var(--prg);font-size:1rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);opacity:0;pointer-events:none}
 .fab-st.show{opacity:1;pointer-events:all}
-
-/* ===== RESPONSIVE - الجوال يظهر بكامل إمكاناته ===== */
-@media (max-width: 768px) {
-  .hide-mob { display: block !important; }
-  .col-lg-4 { width: 100%; margin-bottom: 20px; }
-  .col-lg-8 { width: 100%; }
-  body { padding-bottom: 0; }
-  .mn { display: none !important; }
-  .gc { padding: 12px; border-radius: 16px; }
-  body { font-size: 14px; }
-  .fc-media img, .fc-media video { height: 180px; }
-  .hs { height: 185px !important; }
-  .fab-th { bottom: 20px; left: 14px; width: 44px; height: 44px; font-size: 1.15rem; }
-  .fab-st { bottom: 20px; left: 68px; width: 38px; height: 38px; font-size: .9rem; }
-  .rc { padding: 18px; }
-  .rsb { padding: 8px 4px; }
-}
-
-/* ANIMATIONS */
+.mn{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--pr);z-index:200;padding:5px 0 7px;border-top:3px solid var(--gd);box-shadow:0 -4px 18px rgba(0,0,0,.2)}
+.mni{flex:1;display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.6);font-size:.58rem;font-weight:700;cursor:pointer;padding:3px 2px;transition:var(--tr);border:none;background:none;font-family:var(--f)}
+.mni i{font-size:1.1rem;margin-bottom:2px}
+.mni.active,.mni:hover{color:var(--gd)}
 .fi{animation:fi .4s ease both}
 @keyframes fi{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .stg>*{opacity:0;animation:fi .4s ease forwards}
@@ -336,58 +234,48 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .stg>*:nth-child(5){animation-delay:.25s}.stg>*:nth-child(6){animation-delay:.3s}
 .gp{animation:gp 3s ease-in-out infinite}
 @keyframes gp{0%,100%{box-shadow:0 0 0 0 var(--gdg)}50%{box-shadow:0 0 20px 6px var(--gdg)}}
+/* ===== تحسينات الجوال - القائمة الجانبية تظهر بكاملها ===== */
+@media (max-width: 768px){
+  .hide-mob { display: block !important; }
+  .col-lg-4 { width: 100%; margin-bottom: 20px; }
+  .col-lg-8 { width: 100%; }
+  body { padding-bottom: 0; }
+  .mn { display: none !important; }
+  .gc { padding: 12px; border-radius: 16px; }
+  .fc-media img, .fc-media video { height: 180px; }
+  .hs { height: 185px !important; }
+  .fab-th { bottom: 20px; left: 14px; width: 44px; height: 44px; font-size: 1.15rem; }
+  .fab-st { bottom: 20px; left: 68px; width: 38px; height: 38px; font-size: .9rem; }
+  .rc { padding: 18px; }
+  .rsb { padding: 8px 4px; }
+}
 </style>
 </head>
 <body>
-
-<!-- PDF CARD (hidden - for export) -->
 <div id="pdfCard"></div>
-
-<!-- TOAST -->
 <div class="tc" id="TC"></div>
-
-<!-- LOADER -->
 <div id="ldr">
   <img src="logo.jpg" class="ll" onerror="this.src='https://placehold.co/90x90/white/0a2b4e?text=S'">
   <p style="color:rgba(255,255,255,.7);margin-top:14px;font-family:var(--f);font-weight:700">جاري التحميل...</p>
   <div class="ld"><span></span><span></span><span></span></div>
 </div>
-
-<!-- FABs -->
 <button class="fab-th" onclick="toggleTheme()" title="تبديل الوضع"><i class="fas fa-moon"></i></button>
 <button class="fab-st" id="STB" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
-
-<!-- HEADER -->
 <header>
   <div class="container">
     <div class="row align-items-center text-center text-md-end g-2">
-      <div class="col-md-auto">
-        <img src="logo.jpg" class="slogo" onerror="this.src='https://placehold.co/76x76/white/0a2b4e?text=S'">
-      </div>
+      <div class="col-md-auto"><img src="logo.jpg" class="slogo" onerror="this.src='https://placehold.co/76x76/white/0a2b4e?text=S'"></div>
       <div class="col">
         <div class="hbg mb-2">إدارة الفشن التعليمية — محافظة بني سويف</div>
         <h1 class="stl fs-4 mb-1">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
-        <p class="mb-0" style="color:rgba(255,255,255,.6);font-size:.78rem">
-          <span class="od"></span> النظام يعمل &nbsp;|&nbsp; بوابة الإبداع والتميز الرقمي
-        </p>
+        <p class="mb-0" style="color:rgba(255,255,255,.6);font-size:.78rem"><span class="od"></span> النظام يعمل &nbsp;|&nbsp; بوابة الإبداع والتميز الرقمي</p>
       </div>
     </div>
   </div>
 </header>
-
-<!-- TICKER -->
-<div id="TKC" class="tk">
-  <div class="tw" id="TKW">
-    <span class="ti"><i class="fas fa-star"></i> أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص الرسمية للغات</span>
-    <span class="ti"><i class="fas fa-bullhorn"></i> نبارك لطلابنا المتفوقين نتائج الفصل الدراسي الأول</span>
-    <span class="ti"><i class="fas fa-trophy"></i> مدرستنا من بين أوائل مدارس بني سويف في التحول الرقمي</span>
-  </div>
-</div>
-
-<!-- MAIN -->
+<div id="TKC" class="tk"><div class="tw" id="TKW"><span class="ti"><i class="fas fa-star"></i> أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص الرسمية للغات</span><span class="ti"><i class="fas fa-bullhorn"></i> نبارك لطلابنا المتفوقين نتائج الفصل الدراسي الأول</span><span class="ti"><i class="fas fa-trophy"></i> مدرستنا من بين أوائل مدارس بني سويف في التحول الرقمي</span></div></div>
 <div class="container my-4">
   <div class="row g-4">
-    <!-- SIDEBAR -->
     <div class="col-lg-4 hide-mob">
       <div class="gc mb-4 stg" id="SNV">
         <button class="smi" onclick="go('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
@@ -406,20 +294,12 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
         <div id="ABG" class="mt-2"></div>
       </div>
     </div>
-
-    <!-- CONTENT -->
     <div class="col-lg-8">
       <div id="SWC" class="sw-wrap">
         <div class="swiper hs" id="HSW">
           <div class="swiper-wrapper" id="SWWR">
-            <div class="swiper-slide" style="position:relative">
-              <img src="https://picsum.photos/id/20/1200/400" alt="">
-              <div class="sc2">🏫 بيئة تعليمية محفزة ومتطورة</div>
-            </div>
-            <div class="swiper-slide" style="position:relative">
-              <img src="https://picsum.photos/id/100/1200/400" alt="">
-              <div class="sc2">💻 أنشطة تكنولوجية متقدمة</div>
-            </div>
+            <div class="swiper-slide" style="position:relative"><img src="https://picsum.photos/id/20/1200/400" alt=""><div class="sc2">🏫 بيئة تعليمية محفزة ومتطورة</div></div>
+            <div class="swiper-slide" style="position:relative"><img src="https://picsum.photos/id/100/1200/400" alt=""><div class="sc2">💻 أنشطة تكنولوجية متقدمة</div></div>
           </div>
           <div class="swiper-pagination"></div>
           <div class="swiper-button-next"></div>
@@ -430,8 +310,6 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
     </div>
   </div>
 </div>
-
-<!-- MOBILE NAV (مخفي لأن القائمة الجانبية تظهر على الجوال) -->
 <nav class="mn">
   <button class="mni" onclick="go('home')"><i class="fas fa-home"></i>الرئيسية</button>
   <button class="mni" onclick="go('students')"><i class="fas fa-search"></i>النتائج</button>
@@ -439,19 +317,10 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   <button class="mni" onclick="go('library')"><i class="fas fa-book"></i>المكتبة</button>
   <button class="mni" onclick="doAdmin()"><i class="fas fa-lock"></i>الإدارة</button>
 </nav>
-
-<footer class="py-4 mt-5 bg-dark text-white text-center">
-  <div class="container">
-    <p class="mb-1 fw-bold">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</p>
-    <p class="small mb-0" style="color:rgba(255,255,255,.4)">جميع الحقوق محفوظة — بوابة التعليم الرقمي</p>
-  </div>
-</footer>
-
+<footer class="py-4 mt-5 bg-dark text-white text-center"><div class="container"><p class="mb-1 fw-bold">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</p><p class="small mb-0" style="color:rgba(255,255,255,.4)">جميع الحقوق محفوظة — بوابة التعليم الرقمي</p></div></footer>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-/* ================================================================
-   CONFIG - استخدم إعداداتك الأصلية هنا
-================================================================ */
+// ==================== CONFIG ====================
 const FB_CFG = {
   apiKey:"AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
   authDomain:"saad-school-portal.firebaseapp.com",
@@ -462,51 +331,24 @@ const FB_CFG = {
 };
 firebase.initializeApp(FB_CFG);
 const db = firebase.database();
-
-const CLD_CLOUD  = 'dyo4ff7ha';
+const CLD_CLOUD = 'dyo4ff7ha';
 const CLD_PRESET = 'school_uploads';
-const CLD_URL    = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/auto/upload`;
-
-const SECRET_KEY = "YWJ1c2FiZXIxMjM="; // abusaber123
-
+const SECRET_KEY = "YWJ1c2FiZXIxMjM=";
 let isAdmin = false, adminTries = 0, adminLock = 0, selFile = null;
-let swiperInst = null, activeFilter = 'all', filesCache = {};
-
-const GL = {
-  p3:'الصف الثالث الابتدائي',p4:'الصف الرابع الابتدائي',
-  p5:'الصف الخامس الابتدائي',p6:'الصف السادس الابتدائي',
-  m1:'الصف الأول الإعدادي',m2:'الصف الثاني الإعدادي',m3:'الصف الثالث الإعدادي',
-  s1:'الصف الأول الثانوي',s2:'الصف الثاني الثانوي'
-};
-
-const FI = {
-  pdf:{i:'fa-file-pdf',c:'#e74c3c',b:'#fdecea'},
-  doc:{i:'fa-file-word',c:'#2b579a',b:'#edf2fb'},docx:{i:'fa-file-word',c:'#2b579a',b:'#edf2fb'},
-  xls:{i:'fa-file-excel',c:'#1d7a47',b:'#eafaf1'},xlsx:{i:'fa-file-excel',c:'#1d7a47',b:'#eafaf1'},
-  ppt:{i:'fa-file-powerpoint',c:'#c43e1c',b:'#fdecea'},pptx:{i:'fa-file-powerpoint',c:'#c43e1c',b:'#fdecea'},
-  mp4:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},mov:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},
-  avi:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},mkv:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},
-  mp3:{i:'fa-file-audio',c:'#1abc9c',b:'#e8f8f5'},wav:{i:'fa-file-audio',c:'#1abc9c',b:'#e8f8f5'},
-  zip:{i:'fa-file-zipper',c:'#f39c12',b:'#fef9e7'},rar:{i:'fa-file-zipper',c:'#f39c12',b:'#fef9e7'},
-  txt:{i:'fa-file-lines',c:'#7f8c8d',b:'#f2f3f4'},
-  _:{i:'fa-file',c:'#95a5a6',b:'#f2f3f4'}
-};
-
+let activeFilter = 'all', filesCache = {};
+const GL = {p3:'الصف الثالث الابتدائي',p4:'الصف الرابع الابتدائي',p5:'الصف الخامس الابتدائي',p6:'الصف السادس الابتدائي',m1:'الصف الأول الإعدادي',m2:'الصف الثاني الإعدادي',m3:'الصف الثالث الإعدادي',s1:'الصف الأول الثانوي',s2:'الصف الثاني الثانوي'};
+const FI = {pdf:{i:'fa-file-pdf',c:'#e74c3c',b:'#fdecea'},doc:{i:'fa-file-word',c:'#2b579a',b:'#edf2fb'},docx:{i:'fa-file-word',c:'#2b579a',b:'#edf2fb'},xls:{i:'fa-file-excel',c:'#1d7a47',b:'#eafaf1'},xlsx:{i:'fa-file-excel',c:'#1d7a47',b:'#eafaf1'},ppt:{i:'fa-file-powerpoint',c:'#c43e1c',b:'#fdecea'},pptx:{i:'fa-file-powerpoint',c:'#c43e1c',b:'#fdecea'},mp4:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},mov:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},avi:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},mkv:{i:'fa-file-video',c:'#8e44ad',b:'#f5eefb'},mp3:{i:'fa-file-audio',c:'#1abc9c',b:'#e8f8f5'},wav:{i:'fa-file-audio',c:'#1abc9c',b:'#e8f8f5'},zip:{i:'fa-file-zipper',c:'#f39c12',b:'#fef9e7'},rar:{i:'fa-file-zipper',c:'#f39c12',b:'#fef9e7'},txt:{i:'fa-file-lines',c:'#7f8c8d',b:'#f2f3f4'},_:{i:'fa-file',c:'#95a5a6',b:'#f2f3f4'}};
 const isImg = u => /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(u||'');
 const isVid = u => /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(u||'');
 const isAud = u => /\.(mp3|wav|ogg|m4a)(\?|$)/i.test(u||'');
 const isPdf = u => /\.pdf(\?|$)/i.test(u||'');
-const ext   = u => (u||'').split('.').pop().toLowerCase().split('?')[0];
-const fi    = u => FI[ext(u)] || FI._;
-const esc   = t => {const d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML};
-const fsz   = b => !b?'':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';
+const ext = u => (u||'').split('.').pop().toLowerCase().split('?')[0];
+const fi = u => FI[ext(u)] || FI._;
+const esc = t => {const d=document.createElement('div');d.appendChild(document.createTextNode(t||''));return d.innerHTML};
+const fsz = b => !b?'':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(2)+' MB';
 const grCls = s => s>=85?'pdf-grade-a':s>=70?'pdf-grade-b':s>=50?'pdf-grade-c':'pdf-grade-d';
 const grLbl = s => s>=85?'امتياز':s>=70?'جيد جداً':s>=50?'جيد':'مقبول';
-const barC  = s => s>=85?'#2ecc71':s>=70?'#f39c12':'#e74c3c';
-
-/* ================================================================
-   TOAST
-================================================================ */
+const barC = s => s>=85?'#2ecc71':s>=70?'#f39c12':'#e74c3c';
 function toast(msg, type='i', dur=3000){
   const icons={s:'fa-check-circle',e:'fa-times-circle',w:'fa-exclamation-triangle',i:'fa-info-circle'};
   const c=document.getElementById('TC'); if(!c)return;
@@ -516,10 +358,6 @@ function toast(msg, type='i', dur=3000){
   c.appendChild(t);
   setTimeout(()=>{t.style.animation='tout .35s ease forwards';setTimeout(()=>t.remove(),350);},dur);
 }
-
-/* ================================================================
-   INIT
-================================================================ */
 window.addEventListener('load',()=>{
   AOS.init({duration:600,once:true,offset:40});
   window.addEventListener('scroll',()=>document.getElementById('STB')?.classList.toggle('show',scrollY>280));
@@ -531,16 +369,11 @@ window.addEventListener('load',()=>{
   setTimeout(()=>document.getElementById('ldr')?.classList.add('hide'),1100);
   showHome();
 });
-
 function animN(id,target){
   const el=document.getElementById(id);if(!el)return;
   let cur=0;const step=Math.ceil(target/40);
   const t=setInterval(()=>{cur=Math.min(cur+step,target);el.textContent=cur.toLocaleString('ar-EG');if(cur>=target)clearInterval(t)},40);
 }
-
-/* ================================================================
-   THEME
-================================================================ */
 function toggleTheme(){
   document.body.classList.toggle('dark');
   const i=document.querySelector('.fab-th i'),d=document.body.classList.contains('dark');
@@ -549,10 +382,7 @@ function toggleTheme(){
 }
 const hideHero=()=>{document.getElementById('SWC').style.display='none';document.getElementById('TKC').style.display='none'};
 const showHero=()=>{document.getElementById('SWC').style.display='';document.getElementById('TKC').style.display=''};
-
-/* ================================================================
-   SLIDER - يعرض آخر الصور المرفوعة من Firebase
-================================================================ */
+// ==================== SLIDER - يعرض آخر الصور من Firebase ====================
 function loadSlider() {
   db.ref('gallery_section').orderByKey().limitToLast(6).once('value', snap => {
     let slides = [];
@@ -572,28 +402,12 @@ function loadSlider() {
     }
     const swiperWrapper = document.getElementById('SWWR');
     if (swiperWrapper) {
-      swiperWrapper.innerHTML = slides.map(s => `
-        <div class="swiper-slide" style="position:relative">
-          <img src="${s.url}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.src='https://picsum.photos/id/20/1200/400'">
-          <div class="sc2">${esc(s.title)}</div>
-        </div>
-      `).join('');
+      swiperWrapper.innerHTML = slides.map(s => `<div class="swiper-slide" style="position:relative"><img src="${s.url}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.src='https://picsum.photos/id/20/1200/400'"><div class="sc2">${esc(s.title)}</div></div>`).join('');
       if (window.mySwiper) window.mySwiper.destroy(true, true);
-      window.mySwiper = new Swiper('#HSW', {
-        loop: slides.length > 1,
-        autoplay: { delay: 4000, disableOnInteraction: false },
-        effect: 'fade',
-        fadeEffect: { crossFade: true },
-        pagination: { el: '.swiper-pagination', clickable: true },
-        navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
-      });
+      window.mySwiper = new Swiper('#HSW', { loop: slides.length > 1, autoplay: { delay: 4000, disableOnInteraction: false }, effect: 'fade', fadeEffect: { crossFade: true }, pagination: { el: '.swiper-pagination', clickable: true }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } });
     }
   });
 }
-
-/* ================================================================
-   TICKER
-================================================================ */
 function loadTicker(){
   db.ref('ticker_news').once('value',snap=>{
     const wr=document.getElementById('TKW');if(!wr)return;
@@ -603,96 +417,32 @@ function loadTicker(){
     wr.innerHTML=items.map(t=>`<span class="ti"><i class="fas fa-circle-dot" style="font-size:.45rem;vertical-align:middle"></i> ${esc(t)}</span>`).join('');
   });
 }
-
-/* ================================================================
-   NAVIGATION
-================================================================ */
 function go(sec){
   scrollTo({top:0,behavior:'smooth'});
   document.querySelectorAll('.smi,.mni').forEach(b=>b.classList.remove('active'));
-  if(sec==='home')    return showHome();
-  if(sec==='students')return showStudents();
+  if(sec==='home') return showHome();
+  if(sec==='students') return showStudents();
   if(sec==='gallery') return showFiles('gallery_section','🖼️ المعرض الرقمي');
-  if(sec==='news')    return showNews();
-  if(sec==='art')     return showFiles('art_section','🎨 معرض التربية الفنية');
+  if(sec==='news') return showNews();
+  if(sec==='art') return showFiles('art_section','🎨 معرض التربية الفنية');
   if(sec==='library') return showFiles('library_section','📖 المكتبة الرقمية');
 }
-
-/* ================================================================
-   HOME
-================================================================ */
 function showHome(){
   showHero();
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="text-center py-4 mb-3">
-      <div class="gp d-inline-flex mb-3" style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));align-items:center;justify-content:center;box-shadow:0 8px 24px var(--prg)">
-        <i class="fas fa-school fa-2x text-white"></i>
-      </div>
-      <h2 class="fw-bold mb-2">مرحباً بك في بوابتنا الرقمية</h2>
-      <p class="text-muted">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p>
-    </div>
-    <div class="row g-3 mb-4 stg">
-      <div class="col-4"><div class="hsc"><div class="sn text-primary">100%</div><small class="text-muted">دقة النتائج</small></div></div>
-      <div class="col-4"><div class="hsc"><div class="sn text-success">24/7</div><small class="text-muted">توافر النظام</small></div></div>
-      <div class="col-4"><div class="hsc"><div class="sn" style="color:var(--gd)">1250</div><small class="text-muted">طالب</small></div></div>
-    </div>
-    <h6 class="fw-bold mb-3 text-muted">⚡ وصول سريع</h6>
-    <div class="row g-3 stg">
-      <div class="col-6 col-md-3"><div class="qc" onclick="go('students')"><i class="fas fa-search-plus" style="color:var(--pr)"></i><h6>استعلام النتائج</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="go('library')"><i class="fas fa-book-open" style="color:#1abc9c"></i><h6>المكتبة الرقمية</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="go('gallery')"><i class="fas fa-images" style="color:#e74c3c"></i><h6>المعرض</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="go('news')"><i class="fas fa-newspaper" style="color:var(--gd)"></i><h6>الأخبار</h6></div></div>
-    </div>
-  </div>`;
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="text-center py-4 mb-3"><div class="gp d-inline-flex mb-3" style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));align-items:center;justify-content:center;box-shadow:0 8px 24px var(--prg)"><i class="fas fa-school fa-2x text-white"></i></div><h2 class="fw-bold mb-2">مرحباً بك في بوابتنا الرقمية</h2><p class="text-muted">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p></div><div class="row g-3 mb-4 stg"><div class="col-4"><div class="hsc"><div class="sn text-primary">100%</div><small class="text-muted">دقة النتائج</small></div></div><div class="col-4"><div class="hsc"><div class="sn text-success">24/7</div><small class="text-muted">توافر النظام</small></div></div><div class="col-4"><div class="hsc"><div class="sn" style="color:var(--gd)">1250</div><small class="text-muted">طالب</small></div></div></div><h6 class="fw-bold mb-3 text-muted">⚡ وصول سريع</h6><div class="row g-3 stg"><div class="col-6 col-md-3"><div class="qc" onclick="go('students')"><i class="fas fa-search-plus" style="color:var(--pr)"></i><h6>استعلام النتائج</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('library')"><i class="fas fa-book-open" style="color:#1abc9c"></i><h6>المكتبة الرقمية</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('gallery')"><i class="fas fa-images" style="color:#e74c3c"></i><h6>المعرض</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('news')"><i class="fas fa-newspaper" style="color:var(--gd)"></i><h6>الأخبار</h6></div></div></div></div>`;
   AOS.refresh();
 }
-
-/* ================================================================
-   STUDENTS / RESULTS
-================================================================ */
 function showStudents(){
   hideHero();
   const opts=Object.entries(GL).map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-      <h4 class="fw-bold mb-0"><i class="fas fa-user-graduate me-2 text-primary"></i> شئون الطلاب</h4>
-      <div class="btn-group">
-        <button class="btn btn-sm btn-primary" onclick="showResults()">النتائج</button>
-        <button class="btn btn-sm btn-outline-primary" onclick="showFiles('student_files','ملفات الطلاب')">النماذج</button>
-      </div>
-    </div>
-    <div id="SC"></div>
-  </div>`;
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"><h4 class="fw-bold mb-0"><i class="fas fa-user-graduate me-2 text-primary"></i> شئون الطلاب</h4><div class="btn-group"><button class="btn btn-sm btn-primary" onclick="showResults()">النتائج</button><button class="btn btn-sm btn-outline-primary" onclick="showFiles('student_files','ملفات الطلاب')">النماذج</button></div></div><div id="SC"></div></div>`;
   showResults();
 }
-
 function showResults(){
   const opts=Object.entries(GL).map(([v,n])=>`<option value="${v}">${n}</option>`).join('');
   const sc=document.getElementById('SC');if(!sc)return;
-  sc.innerHTML=`
-  <div class="p-3 rounded-4 mb-3" style="background:#f4f7ff">
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label class="form-label fw-bold">المرحلة الدراسية</label>
-        <select id="GS" class="form-select">${opts}</select>
-      </div>
-      <div class="col-md-6">
-        <label class="form-label fw-bold">رقم الجلوس</label>
-        <input type="text" id="SI" class="form-control" placeholder="أدخل رقمك هنا..." inputmode="numeric"
-               onkeydown="if(event.key==='Enter')doSearch()">
-      </div>
-    </div>
-  </div>
-  <div class="d-grid mb-3">
-    <button class="btn btn-primary py-3 fw-bold rounded-3" onclick="doSearch()">
-      <i class="fas fa-search me-2"></i>استعلام عن النتيجة
-    </button>
-  </div>
-  <div id="RD"></div>`;
+  sc.innerHTML=`<div class="p-3 rounded-4 mb-3" style="background:#f4f7ff"><div class="row g-3"><div class="col-md-6"><label class="form-label fw-bold">المرحلة الدراسية</label><select id="GS" class="form-select">${opts}</select></div><div class="col-md-6"><label class="form-label fw-bold">رقم الجلوس</label><input type="text" id="SI" class="form-control" placeholder="أدخل رقمك هنا..." inputmode="numeric" onkeydown="if(event.key==='Enter')doSearch()"></div></div></div><div class="d-grid mb-3"><button class="btn btn-primary py-3 fw-bold rounded-3" onclick="doSearch()"><i class="fas fa-search me-2"></i>استعلام عن النتيجة</button></div><div id="RD"></div>`;
 }
-
 function doSearch(){
   const grade=document.getElementById('GS')?.value;
   const seat=document.getElementById('SI')?.value?.trim();
@@ -700,125 +450,21 @@ function doSearch(){
   if(!seat){toast('أدخل رقم الجلوس أولاً','w');return}
   rd.innerHTML=`<div class="text-center p-5"><div class="spinner-border text-primary" style="width:3rem;height:3rem"></div><p class="mt-3 text-muted fw-bold">جاري استخراج النتيجة...</p></div>`;
   db.ref(`results/${grade}/${seat}`).once('value').then(snap=>{
-    if(!snap.exists()){
-      rd.innerHTML=`<div class="alert alert-danger rounded-4 p-4 text-center"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس <strong>${esc(seat)}</strong> غير مسجل.</div>`;
-      return;
-    }
+    if(!snap.exists()){rd.innerHTML=`<div class="alert alert-danger rounded-4 p-4 text-center"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس <strong>${esc(seat)}</strong> غير مسجل.</div>`;return;}
     const d=snap.val();
-    let subHtml='',totalMax=0,pdfSubHtml='';
-    if(d.subjects){
-      Object.entries(d.subjects).forEach(([sub,score])=>{
-        totalMax+=100;
-        const pct=Math.min(score,100);
-        const bc=barC(score);
-        subHtml+=`
-        <div class="si2">
-          <span><i class="fas fa-book me-2 opacity-75"></i>${esc(sub)}</span>
-          <div class="d-flex align-items-center gap-2">
-            <div style="width:70px;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden">
-              <div style="width:${pct}%;height:100%;background:${bc};border-radius:3px;transition:width 1s ease"></div>
-            </div>
-            <span class="fw-bold">${score}</span>
-          </div>
-        </div>`;
-        pdfSubHtml+=`
-        <tr>
-          <td>${esc(sub)}</td>
-          <td style="text-align:center;font-weight:700">${score}</td>
-          <td style="text-align:center">
-            <div class="pdf-bar-wrap"><div class="pdf-bar" style="width:${pct}%;background:${bc}"></div></div>
-          </td>
-          <td style="text-align:center"><span class="pdf-grade-badge ${grCls(score)}">${grLbl(score)}</span></td>
-        </tr>`;
-      });
-    }
-    rd.innerHTML=`
-    <div class="rc shadow-lg fi" id="RCM">
-      <div class="text-center mb-4">
-        <div class="d-inline-block p-3 rounded-circle mb-3" style="background:rgba(255,255,255,.15)">
-          <i class="fas fa-graduation-cap fa-3x"></i>
-        </div>
-        <h3 class="fw-bold">${esc(d.name||'')}</h3>
-        <span class="badge px-3 py-2" style="background:var(--gd);color:var(--pr);font-size:.95rem">${GL[grade]||''}</span>
-        <div class="mt-2"><small style="color:rgba(255,255,255,.6)">رقم الجلوس: ${esc(seat)}</small></div>
-      </div>
-      <div class="mb-4">${subHtml}</div>
-      <div class="row g-2 text-center mb-4">
-        <div class="col-4"><div class="rsb"><small>المجموع</small><div class="h5 mb-0 fw-bold">${esc(String(d.total||'-'))}</div></div></div>
-        <div class="col-4"><div class="rsb"><small>النسبة</small><div class="h5 mb-0 fw-bold">${esc(String(d.percentage||'-'))}%</div></div></div>
-        <div class="col-4"><div class="rsb"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${esc(d.grade||'-')}</div></div></div>
-      </div>
-      <div class="d-flex gap-2 flex-wrap">
-        <button class="btn bg flex-grow-1" onclick="exportPDF(${JSON.stringify({name:d.name,grade,seat,subjects:d.subjects,total:d.total,percentage:d.percentage,gradeLabel:d.grade}).replace(/"/g,'&quot;')})">
-          <i class="fas fa-file-pdf me-2"></i>تحميل PDF
-        </button>
-        <button class="btn btn-outline-light" onclick="shareResult('${esc(d.name||'')}','${esc(String(d.total||''))}')">
-          <i class="fab fa-whatsapp me-1"></i>واتساب
-        </button>
-        <button class="btn btn-outline-light" onclick="copyTxt('${esc(d.name||'')} — ${esc(String(d.total||''))} درجة')">
-          <i class="fas fa-copy"></i>
-        </button>
-      </div>
-    </div>`;
+    let subHtml='';
+    if(d.subjects){Object.entries(d.subjects).forEach(([sub,score])=>{const pct=Math.min(score,100);const bc=barC(score);subHtml+=`<div class="si2"><span><i class="fas fa-book me-2 opacity-75"></i>${esc(sub)}</span><div class="d-flex align-items-center gap-2"><div style="width:70px;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden"><div style="width:${pct}%;height:100%;background:${bc};border-radius:3px"></div></div><span class="fw-bold">${score}</span></div></div>`;});}
+    rd.innerHTML=`<div class="rc shadow-lg fi" id="RCM"><div class="text-center mb-4"><div class="d-inline-block p-3 rounded-circle mb-3" style="background:rgba(255,255,255,.15)"><i class="fas fa-graduation-cap fa-3x"></i></div><h3 class="fw-bold">${esc(d.name||'')}</h3><span class="badge px-3 py-2" style="background:var(--gd);color:var(--pr);font-size:.95rem">${GL[grade]||''}</span><div class="mt-2"><small style="color:rgba(255,255,255,.6)">رقم الجلوس: ${esc(seat)}</small></div></div><div class="mb-4">${subHtml}</div><div class="row g-2 text-center mb-4"><div class="col-4"><div class="rsb"><small>المجموع</small><div class="h5 mb-0 fw-bold">${esc(String(d.total||'-'))}</div></div></div><div class="col-4"><div class="rsb"><small>النسبة</small><div class="h5 mb-0 fw-bold">${esc(String(d.percentage||'-'))}%</div></div></div><div class="col-4"><div class="rsb"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${esc(d.grade||'-')}</div></div></div></div><div class="d-flex gap-2 flex-wrap"><button class="btn bg flex-grow-1" onclick="exportPDF(${JSON.stringify({name:d.name,grade,seat,subjects:d.subjects,total:d.total,percentage:d.percentage,gradeLabel:d.grade}).replace(/"/g,'&quot;')})"><i class="fas fa-file-pdf me-2"></i>تحميل PDF</button><button class="btn btn-outline-light" onclick="shareResult('${esc(d.name||'')}','${esc(String(d.total||''))}')"><i class="fab fa-whatsapp me-1"></i>واتساب</button><button class="btn btn-outline-light" onclick="copyTxt('${esc(d.name||'')} — ${esc(String(d.total||''))} درجة')"><i class="fas fa-copy"></i></button></div></div>`;
   }).catch(()=>{rd.innerHTML=`<div class="alert alert-warning rounded-4"><i class="fas fa-wifi-slash me-2"></i>تعذّر الاتصال.</div>`});
 }
-
-/* ================================================================
-   EXPORT PDF
-================================================================ */
 function exportPDF(data){
   if(typeof data === 'string') data = JSON.parse(data.replace(/&quot;/g,'"'));
   toast('⏳ جاري إنشاء PDF...','i',3000);
   const today = new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});
-  let subRows='',totalMax=0;
-  if(data.subjects){
-    Object.entries(data.subjects).forEach(([sub,score])=>{
-      totalMax+=100;
-      const pct=Math.min(score,100);
-      subRows+=`
-      <tr>
-        <td>${sub}</td>
-        <td style="text-align:center;font-weight:800">${score}</td>
-        <td style="text-align:center"><div class="pdf-bar-wrap"><div class="pdf-bar" style="width:${pct}%;background:${barC(score)}"></div></div></td>
-        <td style="text-align:center"><span class="pdf-grade-badge ${grCls(score)}">${grLbl(score)}</span></td>
-      </tr>`;
-    });
-  }
+  let subRows='';
+  if(data.subjects){Object.entries(data.subjects).forEach(([sub,score])=>{const pct=Math.min(score,100);subRows+=`<tr><td>${sub}</td><td style="text-align:center;font-weight:800">${score}</td><td style="text-align:center"><div class="pdf-bar-wrap"><div class="pdf-bar" style="width:${pct}%;background:${barC(score)}"></div></div></td><td style="text-align:center"><span class="pdf-grade-badge ${grCls(score)}">${grLbl(score)}</span></td></tr>`;});}
   const card = document.getElementById('pdfCard');
-  card.innerHTML=`
-  <div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl">
-    <div class="pdf-header">
-      <img src="logo.jpg" class="pdf-logo" onerror="this.style.display='none'">
-      <div class="pdf-school">
-        <h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2>
-        <p>إدارة الفشن التعليمية — محافظة بني سويف</p>
-      </div>
-      <div style="text-align:center;background:rgba(255,255,255,.15);padding:10px 16px;border-radius:12px;min-width:120px">
-        <div style="font-size:.7rem;opacity:.8">العام الدراسي</div>
-        <div style="font-weight:900;font-size:1.1rem">2025 / 2026</div>
-      </div>
-    </div>
-    <div class="pdf-body">
-      <div class="pdf-student-info">
-        <div class="pdf-info-item"><div class="pdf-info-label">اسم الطالب</div><div class="pdf-info-value">${esc(data.name||'')}</div></div>
-        <div class="pdf-info-item"><div class="pdf-info-label">الصف الدراسي</div><div class="pdf-info-value">${GL[data.grade]||''}</div></div>
-        <div class="pdf-info-item"><div class="pdf-info-label">رقم الجلوس</div><div class="pdf-info-value">${esc(String(data.seat||''))}</div></div>
-        <div class="pdf-info-item"><div class="pdf-info-label">تاريخ الإصدار</div><div class="pdf-info-value">${today}</div></div>
-      </div>
-      <div class="pdf-subjects-title"><i class="fas fa-list-check" style="color:var(--gd)"></i> تفاصيل الدرجات</div>
-      <table class="pdf-table"><thead><tr><th>المادة</th><th>الدرجة</th><th>المستوى</th><th>التقدير</th></tr></thead><tbody>${subRows}</tbody></table>
-      <div class="pdf-totals">
-        <div class="pdf-total-box"><div class="pdf-total-num">${esc(String(data.total||0))}</div><div class="pdf-total-lbl">المجموع الكلي</div></div>
-        <div class="pdf-total-box" style="background:linear-gradient(135deg,#1d7a47,#27ae60)"><div class="pdf-total-num">${esc(String(data.percentage||0))}%</div><div class="pdf-total-lbl">النسبة المئوية</div></div>
-        <div class="pdf-total-box" style="background:linear-gradient(135deg,#c9a227,#d4af37);color:#0a2b4e"><div class="pdf-total-num" style="color:#0a2b4e">${esc(data.gradeLabel||'')}</div><div class="pdf-total-lbl">التقدير العام</div></div>
-      </div>
-    </div>
-    <div class="pdf-footer">
-      <div><p style="font-weight:700;color:#0a2b4e">بوابة مدرسة سعد بن أبي وقاص الرسمية</p><p>تم إصدار هذه الشهادة بتاريخ: ${today}</p></div>
-      <div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">توقيع مدير المدرسة</div></div>
-      <div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">ختم المدرسة</div></div>
-    </div>
-  </div>`;
+  card.innerHTML=`<div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl"><div class="pdf-header"><img src="logo.jpg" class="pdf-logo" onerror="this.style.display='none'"><div class="pdf-school"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>إدارة الفشن التعليمية — محافظة بني سويف</p></div><div style="text-align:center;background:rgba(255,255,255,.15);padding:10px 16px;border-radius:12px;min-width:120px"><div style="font-size:.7rem;opacity:.8">العام الدراسي</div><div style="font-weight:900;font-size:1.1rem">2025 / 2026</div></div></div><div class="pdf-body"><div class="pdf-student-info"><div class="pdf-info-item"><div class="pdf-info-label">اسم الطالب</div><div class="pdf-info-value">${esc(data.name||'')}</div></div><div class="pdf-info-item"><div class="pdf-info-label">الصف الدراسي</div><div class="pdf-info-value">${GL[data.grade]||''}</div></div><div class="pdf-info-item"><div class="pdf-info-label">رقم الجلوس</div><div class="pdf-info-value">${esc(String(data.seat||''))}</div></div><div class="pdf-info-item"><div class="pdf-info-label">تاريخ الإصدار</div><div class="pdf-info-value">${today}</div></div></div><div class="pdf-subjects-title"><i class="fas fa-list-check" style="color:var(--gd)"></i> تفاصيل الدرجات</div><table class="pdf-table"><thead><tr><th>المادة</th><th>الدرجة</th><th>المستوى</th><th>التقدير</th></tr></thead><tbody>${subRows}</tbody></table><div class="pdf-totals"><div class="pdf-total-box"><div class="pdf-total-num">${esc(String(data.total||0))}</div><div class="pdf-total-lbl">المجموع الكلي</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#1d7a47,#27ae60)"><div class="pdf-total-num">${esc(String(data.percentage||0))}%</div><div class="pdf-total-lbl">النسبة المئوية</div></div><div class="pdf-total-box" style="background:linear-gradient(135deg,#c9a227,#d4af37);color:#0a2b4e"><div class="pdf-total-num" style="color:#0a2b4e">${esc(data.gradeLabel||'')}</div><div class="pdf-total-lbl">التقدير العام</div></div></div></div><div class="pdf-footer"><div><p style="font-weight:700;color:#0a2b4e">بوابة مدرسة سعد بن أبي وقاص الرسمية</p><p>تم إصدار هذه الشهادة بتاريخ: ${today}</p></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">توقيع مدير المدرسة</div></div><div class="pdf-signature"><div class="pdf-sig-line"></div><div class="pdf-sig-lbl">ختم المدرسة</div></div></div></div>`;
   card.style.left='0';card.style.top='0';card.style.zIndex='-1';card.style.position='fixed';
   html2canvas(card.firstElementChild,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff'}).then(canvas=>{
     card.style.left='-9999px';
@@ -832,320 +478,82 @@ function exportPDF(data){
     toast('✅ تم تحميل PDF بنجاح','s');
   }).catch(e=>{card.style.left='-9999px';toast('تعذّر إنشاء PDF','e');console.error(e);});
 }
-
-/* ================================================================
-   دالة عرض PDF باستخدام PDF.js
-================================================================ */
-async function renderPdfInside(url, containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  try {
-    const loadingTask = pdfjsLib.getDocument(url);
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    const scale = 1.2;
-    const viewport = page.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    canvas.style.width = '100%';
-    canvas.style.height = 'auto';
-    canvas.style.border = '1px solid #ddd';
-    canvas.style.borderRadius = '8px';
-    container.innerHTML = '';
-    container.appendChild(canvas);
-    await page.render({ canvasContext: context, viewport }).promise;
-  } catch (err) {
-    container.innerHTML = `<div style="color:red;padding:20px;text-align:center">⚠️ تعذر عرض PDF. <a href="${url}" download class="btn btn-sm btn-danger mt-2">تحميل الملف</a></div>`;
-  }
-}
-
-/* ================================================================
-   FILES - عرض الملفات مع مشغل PDF مدمج
-================================================================ */
 function showFiles(section, title){
   hideHero();
   activeFilter='all';filesCache={};
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-      <h4 class="fw-bold mb-0">${esc(title)}</h4>
-      ${isAdmin?`<button class="btn bg btn-sm px-4" onclick="showUpload('${section}','${esc(title)}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>`:''}
-    </div>
-    <div class="sfb">
-      <div class="si"><i class="fas fa-search"></i><input type="text" id="FSI" placeholder="ابحث..." oninput="renderFiles('${section}')"></div>
-      <div class="d-flex gap-1 flex-wrap" id="FBG">
-        <button class="fb active" onclick="setF(this,'all')">الكل</button>
-        <button class="fb" onclick="setF(this,'img')"><i class="fas fa-image me-1"></i>صور</button>
-        <button class="fb" onclick="setF(this,'vid')"><i class="fas fa-video me-1"></i>فيديو</button>
-        <button class="fb" onclick="setF(this,'pdf')">PDF</button>
-        <button class="fb" onclick="setF(this,'aud')"><i class="fas fa-music me-1"></i>صوت</button>
-        <button class="fb" onclick="setF(this,'doc')">مستندات</button>
-      </div>
-      <span class="fcb" id="FCB">0 ملف</span>
-    </div>
-    <div id="FG" class="row g-3"></div>
-  </div>`;
-  db.ref(section).on('value',snap=>{
-    filesCache={};
-    if(snap.exists())snap.forEach(c=>{filesCache[c.key]=c.val()});
-    renderFiles(section,title);
-  });
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><h4 class="fw-bold mb-0">${esc(title)}</h4>${isAdmin?`<button class="btn bg btn-sm px-4" onclick="showUpload('${section}','${esc(title)}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>`:''}</div><div class="sfb"><div class="si"><i class="fas fa-search"></i><input type="text" id="FSI" placeholder="ابحث..." oninput="renderFiles('${section}')"></div><div class="d-flex gap-1 flex-wrap" id="FBG"><button class="fb active" onclick="setF(this,'all')">الكل</button><button class="fb" onclick="setF(this,'img')"><i class="fas fa-image me-1"></i>صور</button><button class="fb" onclick="setF(this,'vid')"><i class="fas fa-video me-1"></i>فيديو</button><button class="fb" onclick="setF(this,'pdf')">PDF</button><button class="fb" onclick="setF(this,'aud')"><i class="fas fa-music me-1"></i>صوت</button><button class="fb" onclick="setF(this,'doc')">مستندات</button></div><span class="fcb" id="FCB">0 ملف</span></div><div id="FG" class="row g-3"></div></div>`;
+  db.ref(section).on('value',snap=>{filesCache={};if(snap.exists())snap.forEach(c=>{filesCache[c.key]=c.val()});renderFiles(section,title);});
 }
-
-function setF(btn,f){
-  activeFilter=f;
-  document.querySelectorAll('#FBG .fb').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderFiles();
-}
-
+function setF(btn,f){activeFilter=f;document.querySelectorAll('#FBG .fb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFiles();}
 function renderFiles(section,title){
   const grid=document.getElementById('FG');if(!grid)return;
   const q=(document.getElementById('FSI')?.value||'').toLowerCase();
   const cat=f=>{if(isImg(f))return 'img';if(isVid(f))return 'vid';if(isPdf(f))return 'pdf';if(isAud(f))return 'aud';return 'doc'};
-  const entries=Object.entries(filesCache).filter(([,f])=>{
-    const c=cat(f.url||'');
-    const mf=activeFilter==='all'||c===activeFilter;
-    const ms=!q||(f.title||'').toLowerCase().includes(q)||(f.description||'').toLowerCase().includes(q);
-    return mf&&ms;
-  });
+  const entries=Object.entries(filesCache).filter(([,f])=>{const c=cat(f.url||'');const mf=activeFilter==='all'||c===activeFilter;const ms=!q||(f.title||'').toLowerCase().includes(q)||(f.description||'').toLowerCase().includes(q);return mf&&ms;});
   const badge=document.getElementById('FCB');if(badge)badge.textContent=`${entries.length} ملف`;
-  if(!entries.length){
-    grid.innerHTML=`<div class="col-12"><div class="es"><div class="esi">📂</div><h6 class="fw-bold">لا توجد ملفات</h6><p class="text-muted">${isAdmin?'اضغط رفع ملف للبدء':'لم يتم رفع ملفات بعد'}</p></div></div>`;
-    return;
-  }
+  if(!entries.length){grid.innerHTML=`<div class="col-12"><div class="es"><div class="esi">📂</div><h6 class="fw-bold">لا توجد ملفات</h6><p class="text-muted">${isAdmin?'اضغط رفع ملف للبدء':'لم يتم رفع ملفات بعد'}</p></div></div>`;return;}
   grid.innerHTML='';
   entries.forEach(([fid,f],i)=>{
     const u=f.url||'', x=ext(u), info=fi(u);
     const isI=isImg(u),isV=isVid(u),isA=isAud(u),isP=isPdf(u);
     const cmts=Object.values(f.comments||{});
-    const cmtHtml=cmts.map(c=>`
-      <div class="ci">
-        <div class="d-flex justify-content-between">
-          <b>${esc(c.name)}</b>
-          ${isAdmin?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delCmt('${fid}','${c.id}','${section}')"><i class="fas fa-trash-alt"></i></button>`:''}
-        </div>
-        <div>${esc(c.text)}</div>
-        <small class="text-muted">${esc(c.date||'')}</small>
-      </div>`).join('');
+    const cmtHtml=cmts.map(c=>`<div class="ci"><div class="d-flex justify-content-between"><b>${esc(c.name)}</b>${isAdmin?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delCmt('${fid}','${c.id}','${section}')"><i class="fas fa-trash-alt"></i></button>`:''}</div><div>${esc(c.text)}</div><small class="text-muted">${esc(c.date||'')}</small></div>`).join('');
     let thumb='';
-    if(isI){
-      thumb=`<div class="fc-media" style="height:200px;background:#f0f0f0"><img src="${u}" style="width:100%;height:200px;object-fit:cover" onerror="this.parentElement.innerHTML='<div style=height:200px;display:flex;align-items:center;justify-content:center><i class=fas fa-image fa-3x style=color:#ddd></i></div>'"><div class="fc-media-overlay" onclick="toggleView('${fid}','${u}','img')"><div class="fc-play-btn"><i class="fas fa-expand"></i></div></div></div>`;
-    } else if(isV){
-      thumb=`<div class="fc-media" style="height:200px;background:#000;cursor:pointer" onclick="toggleView('${fid}','${u}','vid')"><video preload="metadata" style="width:100%;height:200px;object-fit:cover"><source src="${u}#t=0.5"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;
-    } else if(isP){
-      thumb=`<div class="fc-media" style="height:160px;background:linear-gradient(135deg,#fdecea,#fff5f5);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center" onclick="toggleView('${fid}','${u}','pdf')"><i class="fas fa-file-pdf fa-4x mb-2" style="color:#e74c3c"></i><span style="font-size:.78rem;font-weight:700;color:#e74c3c">اضغط لعرض PDF</span></div>`;
-    } else if(isA){
-      thumb=`<div style="padding:16px;background:linear-gradient(135deg,#e8f8f5,#fff)"><div class="text-center mb-2"><i class="fas fa-music fa-2x" style="color:#1abc9c"></i></div><audio controls style="width:100%" preload="metadata"><source src="${u}"></audio></div>`;
-    } else {
-      thumb=`<div class="fc-icon-wrap" style="background:${info.b};height:140px;cursor:pointer" onclick="window.open('${u}','_blank')"><i class="fas ${info.i} fa-4x" style="color:${info.c}"></i></div>`;
-    }
-    grid.innerHTML+=`
-    <div class="col-md-6" data-aos="fade-up" data-aos-delay="${i*40}">
-      <div class="fc" id="FC${fid}">
-        ${thumb}
-        <div id="VW${fid}" style="display:none"></div>
-        <div class="fc-body">
-          <div class="d-flex align-items-start justify-content-between mb-1 gap-2">
-            <div class="fc-title">${esc(f.title||'بدون عنوان')}</div>
-            <span class="fib flex-shrink-0">${x||'ملف'}</span>
-          </div>
-          <div class="fc-meta">${f.fileSize?`<i class="fas fa-weight-hanging me-1"></i>${fsz(f.fileSize)}&ensp;`:''}${f.uploadedAt?`<i class="fas fa-clock me-1"></i>${esc(f.uploadedAt)}`:''}</div>
-          ${f.description?`<p style="font-size:.82rem;color:#888;margin-bottom:8px">${esc(f.description)}</p>`:''}
-          <div class="fc-actions">
-            ${isI?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','img')"><i class="fas fa-expand"></i> عرض كامل</button>`:
-              isV?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','vid')"><i class="fas fa-play"></i> تشغيل</button>`:
-              isP?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','pdf')"><i class="fas fa-eye"></i> عرض PDF</button>`:
-              isA?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','aud')"><i class="fas fa-headphones"></i> تشغيل</button>`:
-              `<a href="${u}" target="_blank" class="fc-btn-primary"><i class="fas fa-external-link-alt"></i> فتح</a>`}
-            <a href="${u}" download class="fc-btn-icon" title="تحميل"><i class="fas fa-download"></i></a>
-            <button class="fc-btn-icon" onclick="copyTxt('${u}')" title="نسخ الرابط"><i class="fas fa-link"></i></button>
-            ${isAdmin?`<button class="fc-btn-icon text-danger" onclick="delFile('${section}','${fid}')" title="حذف" style="border-color:#ffccd4;color:#dc3545!important"><i class="fas fa-trash"></i></button>`:''}
-          </div>
-          ${cmts.length?`<div class="fc-comments">${cmtHtml}</div>`:''}
-          <div class="mt-2">
-            <div class="input-group input-group-sm">
-              <input type="text" id="CMI${fid}" class="form-control" placeholder="تعليق... (200)" maxlength="200"
-                     oninput="const r=200-this.value.length;const c=document.getElementById('CC${fid}');c.textContent=r+'/200';c.className='cc'+(r<20?' w':'')+(r<5?' d':'')"
-                     onkeydown="if(event.key==='Enter')addCmt('${section}','${fid}')">
-              <button class="btn bg btn-sm" onclick="addCmt('${section}','${fid}')"><i class="fas fa-paper-plane"></i></button>
-            </div>
-            <div class="cc" id="CC${fid}">200/200</div>
-          </div>
-        </div>
-      </div>
-    </div>`;
+    if(isI){thumb=`<div class="fc-media" style="height:200px;background:#f0f0f0"><img src="${u}" style="width:100%;height:200px;object-fit:cover" onerror="this.parentElement.innerHTML='<div style=height:200px;display:flex;align-items:center;justify-content:center><i class=fas fa-image fa-3x style=color:#ddd></i></div>'"><div class="fc-media-overlay" onclick="openModal('${u}','${esc(f.title||'')}','img')"><div class="fc-play-btn"><i class="fas fa-expand"></i></div></div></div>`;}
+    else if(isV){thumb=`<div class="fc-media" style="height:200px;background:#000;cursor:pointer" onclick="openModal('${u}','${esc(f.title||'')}','vid')"><video preload="metadata" style="width:100%;height:200px;object-fit:cover"><source src="${u}#t=0.5"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;}
+    else if(isP){thumb=`<div class="fc-media" style="height:160px;background:linear-gradient(135deg,#fdecea,#fff5f5);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center" onclick="openModal('${u}','${esc(f.title||'')}','pdf')"><i class="fas fa-file-pdf fa-4x mb-2" style="color:#e74c3c"></i><span style="font-size:.78rem;font-weight:700;color:#e74c3c">اضغط لعرض PDF</span></div>`;}
+    else if(isA){thumb=`<div style="padding:16px;background:linear-gradient(135deg,#e8f8f5,#fff)"><div class="text-center mb-2"><i class="fas fa-music fa-2x" style="color:#1abc9c"></i></div><audio controls style="width:100%" preload="metadata"><source src="${u}"></audio></div>`;}
+    else {thumb=`<div class="fc-icon-wrap" style="background:${info.b};height:140px;cursor:pointer" onclick="window.open('${u}','_blank')"><i class="fas ${info.i} fa-4x" style="color:${info.c}"></i></div>`;}
+    grid.innerHTML+=`<div class="col-md-6" data-aos="fade-up" data-aos-delay="${i*40}"><div class="fc" id="FC${fid}">${thumb}<div class="fc-body"><div class="d-flex align-items-start justify-content-between mb-1 gap-2"><div class="fc-title">${esc(f.title||'بدون عنوان')}</div><span class="fib flex-shrink-0">${x||'ملف'}</span></div><div class="fc-meta">${f.fileSize?`<i class="fas fa-weight-hanging me-1"></i>${fsz(f.fileSize)}&ensp;`:''}${f.uploadedAt?`<i class="fas fa-clock me-1"></i>${esc(f.uploadedAt)}`:''}</div>${f.description?`<p style="font-size:.82rem;color:#888;margin-bottom:8px">${esc(f.description)}</p>`:''}<div class="fc-actions">${isI?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','img')"><i class="fas fa-expand"></i> عرض كامل</button>`:isV?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','vid')"><i class="fas fa-play"></i> تشغيل</button>`:isP?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','pdf')"><i class="fas fa-eye"></i> عرض PDF</button>`:isA?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','aud')"><i class="fas fa-headphones"></i> تشغيل</button>`:`<a href="${u}" target="_blank" class="fc-btn-primary"><i class="fas fa-external-link-alt"></i> فتح</a>`}<a href="${u}" download class="fc-btn-icon" title="تحميل"><i class="fas fa-download"></i></a><button class="fc-btn-icon" onclick="copyTxt('${u}')" title="نسخ الرابط"><i class="fas fa-link"></i></button>${isAdmin?`<button class="fc-btn-icon text-danger" onclick="delFile('${section}','${fid}')" title="حذف" style="border-color:#ffccd4;color:#dc3545!important"><i class="fas fa-trash"></i></button>`:''}</div>${cmts.length?`<div class="fc-comments">${cmtHtml}</div>`:''}<div class="mt-2"><div class="input-group input-group-sm"><input type="text" id="CMI${fid}" class="form-control" placeholder="تعليق... (200)" maxlength="200" oninput="const r=200-this.value.length;const c=document.getElementById('CC${fid}');c.textContent=r+'/200';c.className='cc'+(r<20?' w':'')+(r<5?' d':'')" onkeydown="if(event.key==='Enter')addCmt('${section}','${fid}')"><button class="btn bg btn-sm" onclick="addCmt('${section}','${fid}')"><i class="fas fa-paper-plane"></i></button></div><div class="cc" id="CC${fid}">200/200</div></div></div></div></div>`;
   });
   AOS.refresh();
 }
-
-function closeSV(fid){
-  const s=document.getElementById(`VW${fid}`);
-  if(s){s.style.display='none';s.innerHTML=''}
-}
-
-function toggleView(fid, url, type) {
-  const slot = document.getElementById(`VW${fid}`);
-  if (!slot) return;
-  if (slot.style.display !== 'none' && slot.dataset.url === url) {
-    closeSV(fid);
-    return;
-  }
-  slot.dataset.url = url;
-  const closeBtn = `<button class="fc-viewer-close" onclick="closeSV('${fid}')">✕</button>`;
-  let html = '';
-  if (type === 'vid') {
-    html = `<div class="fc-viewer"><div style="background:#000">${closeBtn}<video controls autoplay style="width:100%;max-height:300px;outline:none"><source src="${url}"></video></div></div>`;
-  } else if (type === 'pdf') {
-    const pdfId = `pdf-viewer-${fid}`;
-    html = `<div class="fc-viewer" style="background:#1e1e2e;padding:8px">
-              ${closeBtn}
-              <div id="${pdfId}" style="height:340px;overflow:auto;background:#fff;border-radius:8px;padding:8px;text-align:center">
-                <div style="padding:40px"><div class="spinner-border text-primary"></div><p>جاري تحميل PDF...</p></div>
-              </div>
-              <div style="display:flex;gap:8px;justify-content:center;margin-top:8px">
-                <button class="btn bg btn-sm" onclick="openModal('${url}','PDF','pdf')"><i class="fas fa-expand"></i> عرض كامل</button>
-                <a href="${url}" download class="btn btn-outline-light btn-sm"><i class="fas fa-download"></i> تحميل</a>
-              </div>
-            </div>`;
-    setTimeout(() => renderPdfInside(url, pdfId), 100);
-  } else if (type === 'img') {
-    html = `<div class="fc-viewer" style="background:#111;cursor:zoom-in" onclick="openModal('${url}','صورة','img')">
-              ${closeBtn.replace('onclick="closeSV', 'onclick="event.stopPropagation();closeSV')}
-              <img src="${url}" style="max-width:100%;max-height:400px;margin:auto;display:block">
-            </div>`;
-  } else if (type === 'aud') {
-    html = `<div class="fc-viewer" style="background:#111;padding:20px">${closeBtn}<audio controls autoplay style="width:100%"><source src="${url}"></audio></div>`;
-  }
-  slot.innerHTML = html;
-  slot.style.display = 'block';
-  slot.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function openModal(url, title, type) {
+function openModal(url, title, type){
   document.getElementById('MM')?.remove();
-  let body = '';
-  if (type === 'img') {
-    body = `<img src="${url}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px">`;
-  } else if (type === 'vid') {
-    body = `<video controls autoplay playsinline style="max-width:100%;max-height:88vh;border-radius:8px;outline:none"><source src="${url}"></video>`;
-  } else if (type === 'pdf') {
-    body = `<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px">
-      <div id="modalPdfViewer" style="flex:1;background:#f5f5f5;border-radius:12px;overflow:auto;padding:16px">
-        <div style="text-align:center;padding:80px"><div class="spinner-border text-primary"></div><p>جاري تحميل PDF...</p></div>
-      </div>
-      <div style="display:flex;gap:12px;justify-content:center">
-        <a href="${url}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a>
-        <a href="${url}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a>
-      </div>
-    </div>`;
-    setTimeout(() => renderPdfInside(url, 'modalPdfViewer'), 100);
-  } else if (type === 'aud') {
-    body = `<div style="text-align:center;padding:60px"><div style="width:80px;height:80px;border-radius:50%;background:rgba(212,175,55,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px"><i class="fas fa-music fa-2x" style="color:var(--gd)"></i></div><h5 class="text-white mb-4">${esc(title)}</h5><audio controls autoplay style="width:100%;max-width:440px"><source src="${url}"></audio></div>`;
-  }
-  const modal = document.createElement('div');
-  modal.className = 'mm';
-  modal.id = 'MM';
-  modal.innerHTML = `<div class="mmb"><span class="mmt"><i class="fas fa-${type==='img'?'image':type==='vid'?'video':type==='pdf'?'file-pdf':'music'} me-2"></i>${esc(title)}</span><div class="d-flex gap-2"><a href="${url}" download class="btn btn-sm rounded-pill" style="background:rgba(255,255,255,.1);color:white"><i class="fas fa-download me-1"></i>تحميل</a><button onclick="document.getElementById('MM').remove()" style="background:rgba(255,255,255,.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer">✕</button></div></div><div class="mmbd">${body}</div>`;
-  modal.querySelector('.mmbd')?.addEventListener('click', (e) => { if (e.target === e.currentTarget) modal.remove(); });
-  const onKey = (e) => { if (e.key === 'Escape') { modal.remove(); document.removeEventListener('keydown', onKey); } };
-  document.addEventListener('keydown', onKey);
+  let body='';
+  if(type==='img'){body=`<img src="${url}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px">`;}
+  else if(type==='vid'){body=`<video controls autoplay playsinline style="max-width:100%;max-height:88vh;border-radius:8px;outline:none"><source src="${url}"></video>`;}
+  else if(type==='pdf'){body=`<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true" style="flex:1;border:none;border-radius:8px;background:white;width:100%"></iframe><div style="display:flex;gap:12px;justify-content:center"><a href="${url}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a><a href="${url}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a></div></div>`;}
+  else if(type==='aud'){body=`<div style="text-align:center;padding:60px"><div style="width:80px;height:80px;border-radius:50%;background:rgba(212,175,55,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px"><i class="fas fa-music fa-2x" style="color:var(--gd)"></i></div><h5 class="text-white mb-4">${esc(title)}</h5><audio controls autoplay style="width:100%;max-width:440px"><source src="${url}"></audio></div>`;}
+  const modal=document.createElement('div');modal.className='mm';modal.id='MM';
+  modal.innerHTML=`<div class="mmb"><span class="mmt"><i class="fas fa-${type==='img'?'image':type==='vid'?'video':type==='pdf'?'file-pdf':'music'} me-2"></i>${esc(title)}</span><div class="d-flex gap-2"><a href="${url}" download class="btn btn-sm rounded-pill" style="background:rgba(255,255,255,.1);color:white"><i class="fas fa-download me-1"></i>تحميل</a><button onclick="document.getElementById('MM').remove()" style="background:rgba(255,255,255,.15);border:none;color:white;width:34px;height:34px;border-radius:50%;cursor:pointer">✕</button></div></div><div class="mmbd">${body}</div>`;
+  modal.querySelector('.mmbd')?.addEventListener('click',(e)=>{if(e.target===e.currentTarget)modal.remove();});
+  const onKey=(e)=>{if(e.key==='Escape'){modal.remove();document.removeEventListener('keydown',onKey);}};
+  document.addEventListener('keydown',onKey);
   document.body.appendChild(modal);
 }
-
-/* ================================================================
-   UPLOAD
-================================================================ */
 function showUpload(section,title){
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="d-flex align-items-center gap-3 mb-4">
-      <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showFiles('${section}','${esc(title)}')"><i class="fas fa-arrow-right me-1"></i>رجوع</button>
-      <h5 class="fw-bold mb-0">رفع ملف — ${esc(title)}</h5>
-    </div>
-    <div class="mb-3"><label class="form-label fw-bold">العنوان *</label><input type="text" id="UT" class="form-control" placeholder="عنوان الملف..." maxlength="100"></div>
-    <div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label><textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea></div>
-    <div class="mb-4">
-      <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(كل الأنواع — حد 50 MB)</span></label>
-      <div class="uz" id="UZ" onclick="document.getElementById('UFI').click()"
-           ondragover="event.preventDefault();this.classList.add('dov')"
-           ondragleave="this.classList.remove('dov')"
-           ondrop="this.classList.remove('dov');handleDrop(event)">
-        <i class="fas fa-cloud-upload-alt ui" id="UIK"></i>
-        <h5 class="fw-bold mb-1" id="UZT">اسحب الملف هنا أو اضغط للاختيار</h5>
-        <p class="small text-muted mb-0" id="UZS">PDF · Word · Excel · صور · فيديو · صوت · مضغوط</p>
-      </div>
-      <input type="file" id="UFI" class="d-none" accept="*/*" onchange="pickFile(this)">
-      <div class="up" id="UPW"><div class="upb" id="UPB"></div></div>
-      <p class="pt" id="UPT"></p>
-      <div id="UPV"></div>
-    </div>
-    <div class="d-grid">
-      <button class="btn bg py-3 fw-bold fs-5 rounded-3" id="UBT" onclick="doUpload('${section}','${esc(title)}')">
-        <i class="fas fa-upload me-2"></i>رفع الملف الآن
-      </button>
-    </div>
-  </div>`;
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="d-flex align-items-center gap-3 mb-4"><button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showFiles('${section}','${esc(title)}')"><i class="fas fa-arrow-right me-1"></i>رجوع</button><h5 class="fw-bold mb-0">رفع ملف — ${esc(title)}</h5></div><div class="mb-3"><label class="form-label fw-bold">العنوان *</label><input type="text" id="UT" class="form-control" placeholder="عنوان الملف..." maxlength="100"></div><div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label><textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea></div><div class="mb-4"><label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(كل الأنواع — حد 50 MB)</span></label><div class="uz" id="UZ" onclick="document.getElementById('UFI').click()" ondragover="event.preventDefault();this.classList.add('dov')" ondragleave="this.classList.remove('dov')" ondrop="this.classList.remove('dov');handleDrop(event)"><i class="fas fa-cloud-upload-alt ui" id="UIK"></i><h5 class="fw-bold mb-1" id="UZT">اسحب الملف هنا أو اضغط للاختيار</h5><p class="small text-muted mb-0" id="UZS">PDF · Word · Excel · صور · فيديو · صوت · مضغوط</p></div><input type="file" id="UFI" class="d-none" accept="*/*" onchange="pickFile(this)"><div class="up" id="UPW"><div class="upb" id="UPB"></div></div><p class="pt" id="UPT"></p><div id="UPV"></div></div><div class="d-grid"><button class="btn bg py-3 fw-bold fs-5 rounded-3" id="UBT" onclick="doUpload('${section}','${esc(title)}')"><i class="fas fa-upload me-2"></i>رفع الملف الآن</button></div></div>`;
   selFile=null;
 }
-
 function handleDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)processFile(f)}
 function pickFile(i){if(i.files[0])processFile(i.files[0])}
-
 function processFile(file){
   if(file.size>50*1024*1024){toast('حجم الملف يتجاوز 50 MB','e');return}
   const isI=/\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
-  if(isI){
-    toast('🗜️ جاري ضغط الصورة...','i',1500);
-    compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)});
-  } else {selFile=file;previewFile(file)}
+  if(isI){toast('🗜️ جاري ضغط الصورة...','i',1500);compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)});}
+  else {selFile=file;previewFile(file);}
 }
-
 function compressImg(file,mw=1280,q=.75){
   return new Promise(res=>{
     if(!/\.(jpg|jpeg|png|webp)$/i.test(file.name)){res(file);return}
     const r=new FileReader();
-    r.onload=e=>{
-      const img=new Image();
-      img.onload=()=>{
-        let w=img.width,h=img.height;
-        if(w>mw){h=Math.round(h*mw/w);w=mw}
-        const cv=document.createElement('canvas');cv.width=w;cv.height=h;
-        cv.getContext('2d').drawImage(img,0,0,w,h);
-        cv.toBlob(b=>{
-          if(!b){res(file);return}
-          res(b.size<file.size?new File([b],file.name,{type:'image/jpeg'}):file);
-        },'image/jpeg',q);
-      };
-      img.src=e.target.result;
-    };
+    r.onload=e=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>mw){h=Math.round(h*mw/w);w=mw}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);cv.toBlob(b=>{if(!b){res(file);return}res(b.size<file.size?new File([b],file.name,{type:'image/jpeg'}):file);},'image/jpeg',q);};img.src=e.target.result;};
     r.readAsDataURL(file);
   });
 }
-
 function previewFile(file,origSize){
   const info=fi(file.name);
   const isI=/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
   const saved=origSize&&origSize!==file.size?Math.round((1-file.size/origSize)*100):0;
   let prev='';
   if(isI){const u=URL.createObjectURL(file);prev=`<img src="${u}" style="max-height:110px;border-radius:10px;max-width:100%;margin-top:8px">`}
-  document.getElementById('UPV').innerHTML=`
-  <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-2" style="background:${info.b}">
-    <i class="fas ${info.i} fa-2x" style="color:${info.c}"></i>
-    <div class="flex-grow-1 overflow-hidden">
-      <div class="fw-bold text-truncate" style="color:${info.c}">${esc(file.name)}</div>
-      <small class="text-muted">${fsz(file.size)}${saved>5?` <span class="badge bg-success">ضُغطت ${saved}%</span>`:''}</small>
-    </div>
-    <i class="fas fa-check-circle fa-lg text-success"></i>
-  </div>${prev}`;
+  document.getElementById('UPV').innerHTML=`<div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-2" style="background:${info.b}"><i class="fas ${info.i} fa-2x" style="color:${info.c}"></i><div class="flex-grow-1 overflow-hidden"><div class="fw-bold text-truncate" style="color:${info.c}">${esc(file.name)}</div><small class="text-muted">${fsz(file.size)}${saved>5?` <span class="badge bg-success">ضُغطت ${saved}%</span>`:''}</small></div><i class="fas fa-check-circle fa-lg text-success"></i></div>${prev}`;
   document.getElementById('UZT').textContent='✅ تم اختيار الملف';
   document.getElementById('UZS').textContent=file.name;
   document.getElementById('UIK').className=`fas ${info.i} ui`;
   document.getElementById('UIK').style.color=info.c;
 }
-
 function doUpload(section,title){
   const t=document.getElementById('UT')?.value?.trim();
   const d=document.getElementById('UD')?.value?.trim();
@@ -1160,31 +568,19 @@ function doUpload(section,title){
   fd.append('file',selFile);
   fd.append('upload_preset',CLD_PRESET);
   fd.append('folder',`school/${section}`);
-  const fname = selFile.name.toLowerCase();
-  const isImgFile  = /\.(jpg|jpeg|png|gif|webp|svg)$/.test(fname);
-  const isVidFile  = /\.(mp4|mov|avi|mkv|webm)$/.test(fname);
-  const isAudFile  = /\.(mp3|wav|ogg|m4a)$/.test(fname);
-  const resType = isImgFile ? 'image' : isVidFile ? 'video' : isAudFile ? 'video' : 'raw';
-  const uploadURL = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;
+  const fname=selFile.name.toLowerCase();
+  const isImgFile=/\.(jpg|jpeg|png|gif|webp|svg)$/.test(fname);
+  const isVidFile=/\.(mp4|mov|avi|mkv|webm)$/.test(fname);
+  const isAudFile=/\.(mp3|wav|ogg|m4a)$/.test(fname);
+  const resType=isImgFile?'image':isVidFile?'video':isAudFile?'video':'raw';
+  const uploadURL=`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;
   const xhr=new XMLHttpRequest();
-  xhr.upload.addEventListener('progress',e=>{
-    if(!e.lengthComputable)return;
-    const p=Math.round(e.loaded/e.total*100);
-    pb.style.width=p+'%';
-    const spd=e.loaded>0?fsz(Math.round(e.loaded/((Date.now()-ts)/1000)))+'/ث':'';
-    pt.textContent=`⬆️ ${p}% — ${fsz(e.loaded)} / ${fsz(e.total)} ${spd?'| '+spd:''}`;
-  });
+  xhr.upload.addEventListener('progress',e=>{if(!e.lengthComputable)return;const p=Math.round(e.loaded/e.total*100);pb.style.width=p+'%';const spd=e.loaded>0?fsz(Math.round(e.loaded/((Date.now()-ts)/1000)))+'/ث':'';pt.textContent=`⬆️ ${p}% — ${fsz(e.loaded)} / ${fsz(e.total)} ${spd?'| '+spd:''}`;});
   xhr.addEventListener('load',()=>{
     if(xhr.status===200){
       const r=JSON.parse(xhr.responseText);
       let url=(r.secure_url||r.url||'').replace('http://','https://');
-      db.ref(section).push({
-        title:t,description:d||'',url,
-        fileName:selFile.name,fileSize:selFile.size,
-        resourceType:resType,
-        uploadedAt:new Date().toLocaleDateString('ar-EG'),
-        comments:{}
-      }).then(()=>{
+      db.ref(section).push({title:t,description:d||'',url,fileName:selFile.name,fileSize:selFile.size,resourceType:resType,uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}}).then(()=>{
         selFile=null;pw.style.display=pt.style.display='none';
         toast(`✅ تم رفع "${t}" بنجاح`,'s');
         if(section==='gallery_section')setTimeout(loadSlider,1000);
@@ -1193,201 +589,74 @@ function doUpload(section,title){
     } else {
       btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
       pw.style.display=pt.style.display='none';
-      try{
-        const er=JSON.parse(xhr.responseText);
-        toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);
-      } catch(e){ toast('فشل الرفع','e',5000); }
+      try{const er=JSON.parse(xhr.responseText);toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);}catch(e){toast('فشل الرفع','e',5000);}
     }
   });
-  xhr.addEventListener('error',()=>{
-    btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
-    pw.style.display=pt.style.display='none';
-    toast('تعذّر الاتصال بـ Cloudinary','e',4000)
-  });
+  xhr.addEventListener('error',()=>{btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';pw.style.display=pt.style.display='none';toast('تعذّر الاتصال بـ Cloudinary','e',4000)});
   xhr.open('POST',uploadURL);
   xhr.send(fd);
 }
-
-/* ================================================================
-   COMMENTS & ADMIN & NEWS
-================================================================ */
 function addCmt(section,fid){
   const inp=document.getElementById(`CMI${fid}`);
   const txt=inp?.value?.trim();if(!txt)return;
   if(txt.length>200){toast('200 حرف كحد أقصى','w');return}
-  db.ref(`${section}/${fid}/comments`).push({id:Date.now().toString(),name:isAdmin?'إدارة المدرسة':'زائر',text:txt,date:new Date().toLocaleDateString('ar-EG')})
-    .then(()=>{if(inp){inp.value='';document.getElementById(`CC${fid}`).textContent='200/200';}toast('✅ تم إضافة تعليقك','s',1800)});
+  db.ref(`${section}/${fid}/comments`).push({id:Date.now().toString(),name:isAdmin?'إدارة المدرسة':'زائر',text:txt,date:new Date().toLocaleDateString('ar-EG')}).then(()=>{if(inp){inp.value='';document.getElementById(`CC${fid}`).textContent='200/200';}toast('✅ تم إضافة تعليقك','s',1800)});
 }
-
 function doAdmin(){
-  if(isAdmin){
-    Swal.fire({title:'تسجيل خروج',icon:'question',showCancelButton:true,confirmButtonText:'خروج',cancelButtonText:'إلغاء'})
-      .then(r=>{if(r.isConfirmed){isAdmin=false;updAdmin();toast('تم تسجيل الخروج','i')}});
-    return;
-  }
-  if(adminLock>Date.now()){toast(`انتظر ${Math.ceil((adminLock-Date.now())/1000)} ثانية`,'w');return}
-  Swal.fire({title:'🔐 دخول الإدارة',input:'password',inputLabel:'كلمة السر',inputPlaceholder:'أدخل كلمة السر...',showCancelButton:true,confirmButtonText:'دخول',cancelButtonText:'إلغاء',confirmButtonColor:'#0a2b4e',allowOutsideClick:false,
-    preConfirm:p=>{if(!p){Swal.showValidationMessage('أدخل كلمة السر');return false}return p}
-  }).then(res=>{
+  if(isAdmin){Swal.fire({title:'تسجيل خروج',icon:'question',showCancelButton:true,confirmButtonText:'خروج',cancelButtonText:'إلغاء'}).then(r=>{if(r.isConfirmed){isAdmin=false;updAdmin();toast('تم تسجيل الخروج','i')}});return;}
+  if(adminLock>Date.now()){toast(`انتظر ${Math.ceil((adminLock-Date.now())/1000)} ثانية`,'w');return;}
+  Swal.fire({title:'🔐 دخول الإدارة',input:'password',inputLabel:'كلمة السر',inputPlaceholder:'أدخل كلمة السر...',showCancelButton:true,confirmButtonText:'دخول',cancelButtonText:'إلغاء',confirmButtonColor:'#0a2b4e',allowOutsideClick:false,preConfirm:p=>{if(!p){Swal.showValidationMessage('أدخل كلمة السر');return false}return p}}).then(res=>{
     if(!res.isConfirmed||!res.value)return;
     let enc='';try{enc=btoa(res.value)}catch(e){enc=btoa(unescape(encodeURIComponent(res.value)))}
-    if(enc===SECRET_KEY){isAdmin=true;adminTries=0;updAdmin();toast('مرحباً! تم تفعيل الإدارة ✅','s');setTimeout(showAdminDash,300)}
-    else{
-      adminTries++;
-      if(adminTries>=5){adminLock=Date.now()+120000;Swal.fire('🔒 محظور','محاولات كثيرة — انتظر دقيقتين','error')}
-      else Swal.fire('❌ خطأ',`كلمة السر غير صحيحة — ${5-adminTries} محاولات متبقية`,'error');
-    }
+    if(enc===SECRET_KEY){isAdmin=true;adminTries=0;updAdmin();toast('مرحباً! تم تفعيل الإدارة ✅','s');setTimeout(showAdminDash,300);}
+    else{adminTries++;if(adminTries>=5){adminLock=Date.now()+120000;Swal.fire('🔒 محظور','محاولات كثيرة — انتظر دقيقتين','error');}else Swal.fire('❌ خطأ',`كلمة السر غير صحيحة — ${5-adminTries} محاولات متبقية`,'error');}
   });
 }
-
-function updAdmin(){
-  const l=document.getElementById('ALB');const b=document.getElementById('ABG');
-  if(l)l.textContent=isAdmin?'تسجيل خروج الإدارة':'لوحة الإدارة';
-  if(b)b.innerHTML=isAdmin?`<div class="ab mt-2"><i class="fas fa-shield-halved"></i> وضع الإدارة مفعّل</div>`:'';
-}
-
+function updAdmin(){const l=document.getElementById('ALB');const b=document.getElementById('ABG');if(l)l.textContent=isAdmin?'تسجيل خروج الإدارة':'لوحة الإدارة';if(b)b.innerHTML=isAdmin?`<div class="ab mt-2"><i class="fas fa-shield-halved"></i> وضع الإدارة مفعّل</div>`:'';}
 function showAdminDash(){
   hideHero();
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
-      <h4 class="fw-bold mb-0"><i class="fas fa-shield-halved me-2 text-danger"></i> لوحة تحكم الإدارة</h4>
-      <span class="badge bg-danger px-3 py-2"><i class="fas fa-circle me-1" style="font-size:.5rem"></i> مباشر</span>
-    </div>
-    <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3"><div class="asc"><div class="asn" id="AS1">…</div><small class="text-muted">ملفات المعرض</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#1abc9c"><div class="asn" style="color:#1abc9c" id="AS2">…</div><small class="text-muted">المكتبة</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#e74c3c"><div class="asn" style="color:#e74c3c" id="AS3">…</div><small class="text-muted">التربية الفنية</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#8e44ad"><div class="asn" style="color:#8e44ad" id="AS4">…</div><small class="text-muted">الإجمالي</small></div></div>
-    </div>
-    <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
-    <div class="row g-3 mb-4 stg">
-      <div class="col-6 col-md-3"><div class="qc" onclick="showUpload('gallery_section','المعرض')"><i class="fas fa-plus-circle" style="color:var(--pr)"></i><h6>رفع للمعرض</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="showUpload('library_section','المكتبة')"><i class="fas fa-book-medical" style="color:#1abc9c"></i><h6>رفع للمكتبة</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="showUpload('art_section','التربية الفنية')"><i class="fas fa-palette" style="color:#e74c3c"></i><h6>رفع للفنية</h6></div></div>
-      <div class="col-6 col-md-3"><div class="qc" onclick="showTickerEditor()"><i class="fas fa-newspaper" style="color:var(--gd)"></i><h6>تعديل الأخبار</h6></div></div>
-    </div>
-    <div id="AEX"></div>
-  </div>`;
-  ['gallery_section','library_section','art_section'].forEach((s,idx)=>{
-    db.ref(s).once('value',snap=>{
-      const ids=['AS1','AS2','AS3'];
-      const el=document.getElementById(ids[idx]);if(el)el.textContent=snap.numChildren();
-      const v=[parseInt(document.getElementById('AS1')?.textContent)||0,parseInt(document.getElementById('AS2')?.textContent)||0,parseInt(document.getElementById('AS3')?.textContent)||0];
-      const t=document.getElementById('AS4');if(t&&!v.some(isNaN))t.textContent=v.reduce((a,b)=>a+b,0);
-    });
-  });
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2"><h4 class="fw-bold mb-0"><i class="fas fa-shield-halved me-2 text-danger"></i> لوحة تحكم الإدارة</h4><span class="badge bg-danger px-3 py-2"><i class="fas fa-circle me-1" style="font-size:.5rem"></i> مباشر</span></div><div class="row g-3 mb-4"><div class="col-6 col-md-3"><div class="asc"><div class="asn" id="AS1">…</div><small class="text-muted">ملفات المعرض</small></div></div><div class="col-6 col-md-3"><div class="asc" style="border-right-color:#1abc9c"><div class="asn" style="color:#1abc9c" id="AS2">…</div><small class="text-muted">المكتبة</small></div></div><div class="col-6 col-md-3"><div class="asc" style="border-right-color:#e74c3c"><div class="asn" style="color:#e74c3c" id="AS3">…</div><small class="text-muted">التربية الفنية</small></div></div><div class="col-6 col-md-3"><div class="asc" style="border-right-color:#8e44ad"><div class="asn" style="color:#8e44ad" id="AS4">…</div><small class="text-muted">الإجمالي</small></div></div></div><h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6><div class="row g-3 mb-4 stg"><div class="col-6 col-md-3"><div class="qc" onclick="showUpload('gallery_section','المعرض')"><i class="fas fa-plus-circle" style="color:var(--pr)"></i><h6>رفع للمعرض</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="showUpload('library_section','المكتبة')"><i class="fas fa-book-medical" style="color:#1abc9c"></i><h6>رفع للمكتبة</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="showUpload('art_section','التربية الفنية')"><i class="fas fa-palette" style="color:#e74c3c"></i><h6>رفع للفنية</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="showTickerEditor()"><i class="fas fa-newspaper" style="color:var(--gd)"></i><h6>تعديل الأخبار</h6></div></div></div><div id="AEX"></div></div>`;
+  ['gallery_section','library_section','art_section'].forEach((s,idx)=>{db.ref(s).once('value',snap=>{const ids=['AS1','AS2','AS3'];const el=document.getElementById(ids[idx]);if(el)el.textContent=snap.numChildren();const v=[parseInt(document.getElementById('AS1')?.textContent)||0,parseInt(document.getElementById('AS2')?.textContent)||0,parseInt(document.getElementById('AS3')?.textContent)||0];const t=document.getElementById('AS4');if(t&&!v.some(isNaN))t.textContent=v.reduce((a,b)=>a+b,0);});});
 }
-
 function showTickerEditor(){
   const ex=document.getElementById('AEX');if(!ex)return;
-  db.ref('ticker_news').once('value',snap=>{
-    let items=[];if(snap.exists())snap.forEach(c=>{if(c.val().text)items.push({id:c.key,text:c.val().text})});
-    ex.innerHTML=`
-    <div class="gc mt-3 fi">
-      <h6 class="fw-bold mb-3"><i class="fas fa-scroll me-2 text-warning"></i> تعديل شريط الأخبار</h6>
-      <div id="TIL" class="mb-3">
-        ${items.map(it=>`
-        <div class="d-flex align-items-center gap-2 mb-2" id="TR${it.id}">
-          <input class="form-control form-control-sm" value="${esc(it.text)}" id="TI${it.id}">
-          <button class="btn btn-warning btn-sm" onclick="updTicker('${it.id}')"><i class="fas fa-save"></i></button>
-          <button class="btn btn-danger btn-sm" onclick="delTicker('${it.id}')"><i class="fas fa-trash"></i></button>
-        </div>`).join('')}
-      </div>
-      <div class="d-flex gap-2">
-        <input class="form-control form-control-sm" id="NTT" placeholder="أضف خبراً جديداً..." maxlength="150">
-        <button class="btn bg btn-sm px-4" onclick="addTicker()"><i class="fas fa-plus me-1"></i>إضافة</button>
-      </div>
-    </div>`;
-  });
+  db.ref('ticker_news').once('value',snap=>{let items=[];if(snap.exists())snap.forEach(c=>{if(c.val().text)items.push({id:c.key,text:c.val().text})});ex.innerHTML=`<div class="gc mt-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-scroll me-2 text-warning"></i> تعديل شريط الأخبار</h6><div id="TIL" class="mb-3">${items.map(it=>`<div class="d-flex align-items-center gap-2 mb-2" id="TR${it.id}"><input class="form-control form-control-sm" value="${esc(it.text)}" id="TI${it.id}"><button class="btn btn-warning btn-sm" onclick="updTicker('${it.id}')"><i class="fas fa-save"></i></button><button class="btn btn-danger btn-sm" onclick="delTicker('${it.id}')"><i class="fas fa-trash"></i></button></div>`).join('')}</div><div class="d-flex gap-2"><input class="form-control form-control-sm" id="NTT" placeholder="أضف خبراً جديداً..." maxlength="150"><button class="btn bg btn-sm px-4" onclick="addTicker()"><i class="fas fa-plus me-1"></i>إضافة</button></div></div>`;});
 }
-
-function addTicker(){const i=document.getElementById('NTT');const t=i?.value?.trim();if(!t)return;db.ref('ticker_news').push({text:t}).then(()=>{if(i)i.value='';toast('تمت إضافة الخبر ✅','s');loadTicker();showTickerEditor()})}
-function updTicker(id){const v=document.getElementById(`TI${id}`)?.value?.trim();if(!v)return;db.ref(`ticker_news/${id}`).update({text:v}).then(()=>{toast('تم التحديث','s',1500);loadTicker()})}
-function delTicker(id){db.ref(`ticker_news/${id}`).remove().then(()=>{document.getElementById(`TR${id}`)?.remove();toast('تم الحذف','i',1500);loadTicker()})}
-
-function delFile(section,id){
-  Swal.fire({title:'هل أنت متأكد؟',text:'سيُحذف نهائياً!',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'احذف!',cancelButtonText:'إلغاء'})
-    .then(r=>{if(r.isConfirmed)db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i'))});
-}
-function delCmt(section,fid,cmtId){
-  db.ref(`${section}/${fid}/comments`).once('value',snap=>{snap.forEach(c=>{if(c.val().id===cmtId)c.ref.remove()})});
-  toast('تم حذف التعليق','i',1500);
-}
-
+function addTicker(){const i=document.getElementById('NTT');const t=i?.value?.trim();if(!t)return;db.ref('ticker_news').push({text:t}).then(()=>{if(i)i.value='';toast('تمت إضافة الخبر ✅','s');loadTicker();showTickerEditor()});}
+function updTicker(id){const v=document.getElementById(`TI${id}`)?.value?.trim();if(!v)return;db.ref(`ticker_news/${id}`).update({text:v}).then(()=>{toast('تم التحديث','s',1500);loadTicker()});}
+function delTicker(id){db.ref(`ticker_news/${id}`).remove().then(()=>{document.getElementById(`TR${id}`)?.remove();toast('تم الحذف','i',1500);loadTicker()});}
+function delFile(section,id){Swal.fire({title:'هل أنت متأكد؟',text:'سيُحذف نهائياً!',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'احذف!',cancelButtonText:'إلغاء'}).then(r=>{if(r.isConfirmed)db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i'))});}
+function delCmt(section,fid,cmtId){db.ref(`${section}/${fid}/comments`).once('value',snap=>{snap.forEach(c=>{if(c.val().id===cmtId)c.ref.remove()})});toast('تم حذف التعليق','i',1500);}
 function showNews(){
   hideHero();
-  document.getElementById('MC').innerHTML=`
-  <div class="fi">
-    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-      <h4 class="fw-bold mb-0">📰 ركن الأخبار</h4>
-      ${isAdmin?`<button class="btn bg btn-sm" onclick="showAddNews()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>`:''}
-    </div>
-    <div id="ANF"></div>
-    <div id="NL" class="row g-3 stg"></div>
-  </div>`;
+  document.getElementById('MC').innerHTML=`<div class="fi"><div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2"><h4 class="fw-bold mb-0">📰 ركن الأخبار</h4>${isAdmin?`<button class="btn bg btn-sm" onclick="showAddNews()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>`:''}</div><div id="ANF"></div><div id="NL" class="row g-3 stg"></div></div>`;
   loadNews();
 }
-
 function loadNews(){
   const nl=document.getElementById('NL');if(!nl)return;
   db.ref('school_news').orderByChild('timestamp').limitToLast(20).once('value',snap=>{
     nl.innerHTML='';
-    const st=[
-      {icon:'🚀',cat:'تقنية',t:'تفعيل المنصة الرقمية',d:'تم إطلاق النسخة المحدثة من بوابة المدرسة.',date:'أبريل 2026'},
-      {icon:'📢',cat:'تنبيه',t:'تنبيه لأولياء الأمور',d:'يُرجى تحديث بيانات التواصل في مكتب شئون الطلاب.',date:'مارس 2026'},
-      {icon:'🏆',cat:'نشاط',t:'مسابقة الابتكار',d:'المدرسة تستعد لمعرض العلوم السنوي بمشاركة كافة المراحل.',date:'مارس 2026'},
-    ];
+    const st=[{icon:'🚀',cat:'تقنية',t:'تفعيل المنصة الرقمية',d:'تم إطلاق النسخة المحدثة من بوابة المدرسة.',date:'أبريل 2026'},{icon:'📢',cat:'تنبيه',t:'تنبيه لأولياء الأمور',d:'يُرجى تحديث بيانات التواصل في مكتب شئون الطلاب.',date:'مارس 2026'},{icon:'🏆',cat:'نشاط',t:'مسابقة الابتكار',d:'المدرسة تستعد لمعرض العلوم السنوي بمشاركة كافة المراحل.',date:'مارس 2026'}];
     let items=st;
-    if(snap.exists()){const a=[];snap.forEach(c=>{const v=c.val();a.unshift({id:c.key,icon:v.icon||'📌',cat:v.cat||'عام',t:v.title,d:v.body,date:v.dateStr||''})});if(a.length)items=[...a,...st]}
-    nl.innerHTML=items.map(n=>`
-    <div class="col-12">
-      <div class="nc fi">
-        <div class="d-flex justify-content-between align-items-start mb-1 flex-wrap gap-2">
-          <h6 class="fw-bold mb-0">${n.icon} ${esc(n.t)}</h6>
-          <div class="d-flex gap-2 align-items-center">
-            <span class="badge bg-primary">${esc(n.cat)}</span>
-            <small class="text-muted">${esc(n.date)}</small>
-            ${isAdmin&&n.id?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delNews('${n.id}')"><i class="fas fa-trash-alt"></i></button>`:''}
-          </div>
-        </div>
-        <p class="mb-0 small text-muted">${esc(n.d)}</p>
-      </div>
-    </div>`).join('');
+    if(snap.exists()){const a=[];snap.forEach(c=>{const v=c.val();a.unshift({id:c.key,icon:v.icon||'📌',cat:v.cat||'عام',t:v.title,d:v.body,date:v.dateStr||''})});if(a.length)items=[...a,...st];}
+    nl.innerHTML=items.map(n=>`<div class="col-12"><div class="nc fi"><div class="d-flex justify-content-between align-items-start mb-1 flex-wrap gap-2"><h6 class="fw-bold mb-0">${n.icon} ${esc(n.t)}</h6><div class="d-flex gap-2 align-items-center"><span class="badge bg-primary">${esc(n.cat)}</span><small class="text-muted">${esc(n.date)}</small>${isAdmin&&n.id?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delNews('${n.id}')"><i class="fas fa-trash-alt"></i></button>`:''}</div></div><p class="mb-0 small text-muted">${esc(n.d)}</p></div></div>`).join('');
   });
 }
-
 function showAddNews(){
   const a=document.getElementById('ANF');if(!a)return;
-  a.innerHTML=`
-  <div class="gc mb-3 fi">
-    <h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6>
-    <div class="row g-2">
-      <div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div>
-      <div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div>
-      <div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div>
-    </div>
-    <div class="d-flex gap-2 mt-2">
-      <button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button>
-      <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button>
-    </div>
-  </div>`;
+  a.innerHTML=`<div class="gc mb-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6><div class="row g-2"><div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div><div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div><div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div></div><div class="d-flex gap-2 mt-2"><button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button></div></div>`;
 }
-
 function saveNews(){
   const t=document.getElementById('NT')?.value?.trim();
   const b=document.getElementById('NB')?.value?.trim();
   const c=document.getElementById('NC')?.value;
   if(!t||!b){toast('العنوان والنص مطلوبان','w');return}
   const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
-  db.ref('school_news').push({title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()})
-    .then(()=>{toast('تم نشر الخبر ✅','s');document.getElementById('ANF').innerHTML='';loadNews()});
+  db.ref('school_news').push({title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()}).then(()=>{toast('تم نشر الخبر ✅','s');document.getElementById('ANF').innerHTML='';loadNews()});
 }
-
-function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم الحذف','i');loadNews()})}
-
-function shareResult(name,total){window.open(`https://wa.me/?text=${encodeURIComponent(`🎉 نتيجة الطالب/ ${name} بمدرسة سعد بن أبي وقاص: ${total} درجة.`)}`,'_blank')}
-function copyTxt(t){navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✅','s',1800)).catch(()=>toast('تعذّر النسخ','w'))}
+function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم الحذف','i');loadNews()});}
+function shareResult(name,total){window.open(`https://wa.me/?text=${encodeURIComponent(`🎉 نتيجة الطالب/ ${name} بمدرسة سعد بن أبي وقاص: ${total} درجة.`)}`,'_blank');}
+function copyTxt(t){navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✅','s',1800)).catch(()=>toast('تعذّر النسخ','w'));}
 </script>
 </body>
 </html>
