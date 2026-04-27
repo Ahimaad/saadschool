@@ -312,26 +312,17 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 
 /* ===== RESPONSIVE - الجوال يظهر بكامل إمكاناته ===== */
 @media (max-width: 768px) {
-  /* القائمة الجانبية تظهر بشكل طبيعي */
   .hide-mob { display: block !important; }
-  /* توزيع الأعمدة */
   .col-lg-4 { width: 100%; margin-bottom: 20px; }
   .col-lg-8 { width: 100%; }
-  /* إخفاء شريط التنقل السفلي لأنه غير ضروري مع ظهور القائمة الجانبية */
+  body { padding-bottom: 0; }
   .mn { display: none !important; }
-  /* تقليل الهوامش */
   .gc { padding: 12px; border-radius: 16px; }
-  body { font-size: 14px; padding-bottom: 0; }
-  /* تحسين عرض البطاقات */
+  body { font-size: 14px; }
   .fc-media img, .fc-media video { height: 180px; }
-  .fc-body { padding: 10px; }
-  .fc-title { font-size: .85rem; }
-  /* تحسين السلايدر */
   .hs { height: 185px !important; }
-  /* تحسين أزرار الإدارة */
   .fab-th { bottom: 20px; left: 14px; width: 44px; height: 44px; font-size: 1.15rem; }
   .fab-st { bottom: 20px; left: 68px; width: 38px; height: 38px; font-size: .9rem; }
-  /* تحسين عرض النتائج */
   .rc { padding: 18px; }
   .rsb { padding: 8px 4px; }
 }
@@ -440,7 +431,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   </div>
 </div>
 
-<!-- MOBILE NAV (يُخفي تلقائياً على الجوال لأن القائمة الجانبية تظهر) -->
+<!-- MOBILE NAV (مخفي لأن القائمة الجانبية تظهر على الجوال) -->
 <nav class="mn">
   <button class="mni" onclick="go('home')"><i class="fas fa-home"></i>الرئيسية</button>
   <button class="mni" onclick="go('students')"><i class="fas fa-search"></i>النتائج</button>
@@ -459,7 +450,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* ================================================================
-   CONFIG
+   CONFIG - استخدم إعداداتك الأصلية هنا
 ================================================================ */
 const FB_CFG = {
   apiKey:"AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
@@ -560,7 +551,7 @@ const hideHero=()=>{document.getElementById('SWC').style.display='none';document
 const showHero=()=>{document.getElementById('SWC').style.display='';document.getElementById('TKC').style.display=''};
 
 /* ================================================================
-   SLIDER - يعرض آخر الصور المرفوعة في المعرض
+   SLIDER - يعرض آخر الصور المرفوعة من Firebase
 ================================================================ */
 function loadSlider() {
   db.ref('gallery_section').orderByKey().limitToLast(6).once('value', snap => {
@@ -843,6 +834,34 @@ function exportPDF(data){
 }
 
 /* ================================================================
+   دالة عرض PDF باستخدام PDF.js
+================================================================ */
+async function renderPdfInside(url, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  try {
+    const loadingTask = pdfjsLib.getDocument(url);
+    const pdf = await loadingTask.promise;
+    const page = await pdf.getPage(1);
+    const scale = 1.2;
+    const viewport = page.getViewport({ scale });
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.height = viewport.height;
+    canvas.width = viewport.width;
+    canvas.style.width = '100%';
+    canvas.style.height = 'auto';
+    canvas.style.border = '1px solid #ddd';
+    canvas.style.borderRadius = '8px';
+    container.innerHTML = '';
+    container.appendChild(canvas);
+    await page.render({ canvasContext: context, viewport }).promise;
+  } catch (err) {
+    container.innerHTML = `<div style="color:red;padding:20px;text-align:center">⚠️ تعذر عرض PDF. <a href="${url}" download class="btn btn-sm btn-danger mt-2">تحميل الملف</a></div>`;
+  }
+}
+
+/* ================================================================
    FILES - عرض الملفات مع مشغل PDF مدمج
 ================================================================ */
 function showFiles(section, title){
@@ -967,32 +986,6 @@ function closeSV(fid){
   if(s){s.style.display='none';s.innerHTML=''}
 }
 
-/* ===== دالة عرض PDF المدمجة داخل الصفحة ===== */
-async function renderPdfInside(url, containerId) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  try {
-    const loadingTask = pdfjsLib.getDocument(url);
-    const pdf = await loadingTask.promise;
-    const page = await pdf.getPage(1);
-    const scale = 1.2;
-    const viewport = page.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-    canvas.style.width = '100%';
-    canvas.style.height = 'auto';
-    canvas.style.border = '1px solid #ddd';
-    canvas.style.borderRadius = '8px';
-    container.innerHTML = '';
-    container.appendChild(canvas);
-    await page.render({ canvasContext: context, viewport }).promise;
-  } catch (err) {
-    container.innerHTML = `<div style="color:red;padding:20px;text-align:center">⚠️ تعذر عرض PDF. <a href="${url}" download class="btn btn-sm btn-danger mt-2">تحميل الملف</a></div>`;
-  }
-}
-
 function toggleView(fid, url, type) {
   const slot = document.getElementById(`VW${fid}`);
   if (!slot) return;
@@ -1039,7 +1032,15 @@ function openModal(url, title, type) {
   } else if (type === 'vid') {
     body = `<video controls autoplay playsinline style="max-width:100%;max-height:88vh;border-radius:8px;outline:none"><source src="${url}"></video>`;
   } else if (type === 'pdf') {
-    body = `<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px"><div id="modalPdfViewer" style="flex:1;background:#f5f5f5;border-radius:12px;overflow:auto;padding:16px"><div style="text-align:center;padding:80px"><div class="spinner-border text-primary"></div><p>جاري تحميل PDF...</p></div></div><div style="display:flex;gap:12px;justify-content:center"><a href="${url}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a><a href="${url}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a></div></div>`;
+    body = `<div style="width:100%;height:85vh;display:flex;flex-direction:column;gap:12px">
+      <div id="modalPdfViewer" style="flex:1;background:#f5f5f5;border-radius:12px;overflow:auto;padding:16px">
+        <div style="text-align:center;padding:80px"><div class="spinner-border text-primary"></div><p>جاري تحميل PDF...</p></div>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center">
+        <a href="${url}" target="_blank" class="btn bg rounded-pill px-4"><i class="fas fa-external-link-alt me-2"></i>فتح في تبويب جديد</a>
+        <a href="${url}" download class="btn btn-outline-light rounded-pill px-4"><i class="fas fa-download me-2"></i>تحميل</a>
+      </div>
+    </div>`;
     setTimeout(() => renderPdfInside(url, 'modalPdfViewer'), 100);
   } else if (type === 'aud') {
     body = `<div style="text-align:center;padding:60px"><div style="width:80px;height:80px;border-radius:50%;background:rgba(212,175,55,.2);display:inline-flex;align-items:center;justify-content:center;margin-bottom:20px"><i class="fas fa-music fa-2x" style="color:var(--gd)"></i></div><h5 class="text-white mb-4">${esc(title)}</h5><audio controls autoplay style="width:100%;max-width:440px"><source src="${url}"></audio></div>`;
