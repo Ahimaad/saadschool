@@ -580,10 +580,24 @@ function loadSlider(){
     {url:'https://picsum.photos/id/100/1200/400',cap:'💻 أنشطة تكنولوجية متقدمة'},
     {url:'https://picsum.photos/id/180/1200/400',cap:'🎨 إبداع بلا حدود'},
   ];
-  db.ref('gallery_section').orderByKey().limitToLast(8).once('value',snap=>{
+  // نجمع أحدث الصور من كل الأقسام
+  const sections=['gallery_section','art_section','library_section','student_files'];
+  const promises=sections.map(s=>db.ref(s).orderByKey().limitToLast(6).once('value').catch(()=>null));
+  Promise.all(promises).then(snaps=>{
     let slides=[];
-    if(snap.exists()) snap.forEach(c=>{const v=c.val();if(v.url&&isImg(v.url))slides.push({url:v.url,cap:v.title||'من معرض المدرسة'})});
-    buildSlider(slides.length>=2?slides.reverse():defaults);
+    snaps.forEach((snap,idx)=>{
+      if(!snap||!snap.exists())return;
+      snap.forEach(c=>{
+        const v=c.val();
+        if(v.url&&isImg(v.url)){
+          const labels=['المعرض','التربية الفنية','المكتبة','ملفات الطلاب'];
+          slides.push({url:v.url,cap:(v.title||'صورة')+' — '+labels[idx]});
+        }
+      });
+    });
+    // ترتيب عشوائي وأخذ أحدث 8
+    slides=slides.slice(-8).reverse();
+    buildSlider(slides.length>=2?slides:defaults);
   }).catch(()=>buildSlider(defaults));
 }
 function buildSlider(slides){
@@ -973,7 +987,7 @@ function renderFiles(section,title){
   grid.innerHTML='';
   entries.forEach(([fid,f],i)=>{
     const u=f.url||'', x=ext(u), info=fi(u);
-    const isI=isImg(u),isV=isVid(u),isA=isAud(u),isP=isPdf(u);
+    const isI=isImg(u),isV=isVid(u),isA=isAud(u),isP=isPdf(u)||f.resourceType==='gdrive'||u.includes('drive.google.com');
     const cmts=Object.values(f.comments||{});
     const cmtHtml=cmts.map(c=>`
       <div class="ci">
@@ -1009,11 +1023,16 @@ function renderFiles(section,title){
         </div>
       </div>`;
     } else if(isP){
+      // Google Drive — نعرض iframe مباشرة بدون زر
+      const pSrc = u.includes('drive.google.com') ? u :
+                   `https://docs.google.com/viewer?url=${encodeURIComponent(u)}&embedded=true`;
       thumb=`
-      <div class="fc-media" style="height:160px;background:linear-gradient(135deg,#fdecea,#fff5f5);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center"
-           onclick="toggleView('${fid}','${u}','pdf')">
-        <i class="fas fa-file-pdf fa-4x mb-2" style="color:#e74c3c"></i>
-        <span style="font-size:.78rem;font-weight:700;color:#e74c3c">اضغط لعرض PDF</span>
+      <div style="height:220px;background:#fff;border-radius:var(--r) var(--r) 0 0;overflow:hidden;position:relative">
+        <iframe src="${pSrc}" style="width:100%;height:220px;border:none;display:block;background:white" loading="lazy" allowfullscreen></iframe>
+        <button onclick="openModal('${pSrc}','${esc(f.title||'PDF')}','pdf')"
+                style="position:absolute;bottom:8px;left:8px;background:rgba(231,76,60,.9);color:white;border:none;border-radius:20px;padding:4px 12px;font-size:.72rem;font-family:var(--f);cursor:pointer;font-weight:700">
+          <i class="fas fa-expand me-1"></i>ملء الشاشة
+        </button>
       </div>`;
     } else if(isA){
       thumb=`
@@ -1050,7 +1069,7 @@ function renderFiles(section,title){
           <div class="fc-actions">
             ${isI?`<button class="fc-btn-primary" onclick="openModal('${u}','${esc(f.title||'')}','img')"><i class="fas fa-expand"></i> عرض كامل</button>`:
               isV?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','vid')"><i class="fas fa-play"></i> تشغيل</button>`:
-              isP?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','pdf')"><i class="fas fa-eye"></i> عرض PDF</button>`:
+              isP?`<button class="fc-btn-primary" onclick="openModal('${u.includes("drive.google.com")?u:`https://docs.google.com/viewer?url=${encodeURIComponent(u)}&embedded=true`}','${esc(f.title||"PDF")}','pdf')"><i class="fas fa-expand"></i> ملء الشاشة</button>`:
               isA?`<button class="fc-btn-primary" onclick="toggleView('${fid}','${u}','aud')"><i class="fas fa-headphones"></i> تشغيل</button>`:
               `<a href="${u}" target="_blank" class="fc-btn-primary"><i class="fas fa-external-link-alt"></i> فتح</a>`}
             <a href="${u}" download class="fc-btn-icon" title="تحميل"><i class="fas fa-download"></i></a>
@@ -1250,16 +1269,16 @@ function showUpload(section,title){
       <textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea>
     </div>
     <div id="mediaArea" class="mb-4">
-      <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(حد 50 MB)</span></label>
+      <label class="form-label fw-bold">اختر الملفات * <span class="text-muted fw-normal">(يمكن اختيار أكثر من ملف — حد 200 MB لكل ملف)</span></label>
       <div class="uz" id="UZ" onclick="document.getElementById('UFI').click()"
            ondragover="event.preventDefault();this.classList.add('dov')"
            ondragleave="this.classList.remove('dov')"
            ondrop="this.classList.remove('dov');handleDrop(event)">
         <i class="fas fa-cloud-upload-alt ui" id="UIK"></i>
-        <h5 class="fw-bold mb-1" id="UZT">اسحب الملف هنا أو اضغط للاختيار</h5>
-        <p class="small text-muted mb-0" id="UZS">صور JPG PNG · فيديو MP4 · صوت MP3</p>
+        <h5 class="fw-bold mb-1" id="UZT">اسحب الملفات هنا أو اضغط للاختيار</h5>
+        <p class="small text-muted mb-0" id="UZS">يمكن اختيار أكثر من ملف دفعة واحدة</p>
       </div>
-      <input type="file" id="UFI" class="d-none" accept="image/*,video/*,audio/*" onchange="pickFile(this)">
+      <input type="file" id="UFI" class="d-none" accept="image/*,video/*,audio/*" multiple onchange="pickFiles(this)">
       <div class="up" id="UPW"><div class="upb" id="UPB"></div></div>
       <p class="pt" id="UPT"></p>
       <div id="UPV"></div>
@@ -1321,11 +1340,33 @@ function previewDrive(val){
   window._driveId=id;
 }
 
-function handleDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)processFile(f)}
+function handleDrop(e){e.preventDefault();const fs=Array.from(e.dataTransfer.files);if(fs.length>1){const fakeInput={files:fs};pickFiles(fakeInput)}else if(fs[0])processFile(fs[0])}
+function pickFiles(input){
+  const files=Array.from(input.files);
+  if(!files.length)return;
+  if(files.length===1){processFile(files[0]);return;}
+  // رفع متعدد — نعرض قائمة الملفات
+  window._multiFiles=[...files];
+  let html='<div class="mt-2">';
+  files.forEach((f,i)=>{
+    const info=fi(f.name);
+    html+=`<div class="d-flex align-items-center gap-2 p-2 mb-1 border rounded-3" style="background:${info.b}" id="mf${i}">
+      <i class="fas ${info.i}" style="color:${info.c}"></i>
+      <span class="flex-grow-1 fw-bold small text-truncate" style="color:${info.c}">${esc(f.name)}</span>
+      <small class="text-muted">${fsz(f.size)}</small>
+      <span class="badge bg-secondary" id="mfs${i}">انتظار</span>
+    </div>`;
+  });
+  html+='</div>';
+  document.getElementById('UPV').innerHTML=html;
+  document.getElementById('UZT').textContent=\`✅ تم اختيار \${files.length} ملفات\`;
+  document.getElementById('UZS').textContent='اضغط رفع لرفعهم جميعاً';
+  selFile='multi';
+}
 function pickFile(i){if(i.files[0])processFile(i.files[0])}
 
 function processFile(file){
-  if(file.size>50*1024*1024){toast('حجم الملف يتجاوز 50 MB','e');return}
+  if(file.size>200*1024*1024){toast(`${file.name}: يتجاوز 200 MB`,'e');return}
   const isI=/\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
   if(isI){toast('🗜️ جاري ضغط الصورة...','i',1500);compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)});}
   else{selFile=file;previewFile(file)}
@@ -1403,6 +1444,53 @@ function doUpload(section,title){
   const btn=document.getElementById('UBT');
   const pw=document.getElementById('UPW'),pb=document.getElementById('UPB'),pt=document.getElementById('UPT');
   if(!selFile){toast('اختر ملفاً','w');return}
+  // رفع متعدد
+  if(selFile==='multi'&&window._multiFiles?.length){
+    btn.disabled=true; pw.style.display='block'; pt.style.display='block';
+    const files=window._multiFiles; let done=0;
+    const uploadOne=(file,idx)=>{
+      document.getElementById('mfs'+idx).textContent='جاري...';
+      document.getElementById('mfs'+idx).className='badge bg-warning text-dark';
+      const fname=file.name.toLowerCase();
+      const isVid=/\.(mp4|mov|avi|mkv|webm)$/.test(fname);
+      const isAud=/\.(mp3|wav|ogg|m4a)$/.test(fname);
+      const resType=isVid||isAud?'video':'image';
+      const fd=new FormData();
+      fd.append('file',file);fd.append('upload_preset',CLD_PRESET_RAW);fd.append('folder',`school/${section}`);
+      const xhr=new XMLHttpRequest();
+      xhr.upload.addEventListener('progress',e=>{
+        if(!e.lengthComputable)return;
+        const p=Math.round(e.loaded/e.total*100);
+        pb.style.width=((done/files.length)+(p/100/files.length))*100+'%';
+        pt.textContent=`⬆️ ملف ${idx+1}/${files.length} — ${p}%`;
+      });
+      xhr.addEventListener('load',()=>{
+        if(xhr.status===200){
+          const r=JSON.parse(xhr.responseText);
+          const url=(r.secure_url||'').replace('http://','https://');
+          db.ref(section).push({title:t||file.name,description:d||'',url,fileName:file.name,fileSize:file.size,resourceType:resType,uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}});
+          document.getElementById('mfs'+idx).textContent='✅';
+          document.getElementById('mfs'+idx).className='badge bg-success';
+        } else {
+          document.getElementById('mfs'+idx).textContent='❌';
+          document.getElementById('mfs'+idx).className='badge bg-danger';
+        }
+        done++;
+        if(done<files.length) uploadOne(files[done],done);
+        else{
+          pw.style.display=pt.style.display='none';
+          toast(`✅ تم رفع ${files.length} ملفات بنجاح`,'s');
+          window._multiFiles=null; selFile=null;
+          if(section==='gallery_section')setTimeout(loadSlider,1000);
+          setTimeout(()=>showFiles(section,title),1200);
+        }
+      });
+      xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`);
+      xhr.send(fd);
+    };
+    uploadOne(files[0],0);
+    return;
+  }
   btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
   pw.style.display='block';pt.style.display='block';
   const ts=Date.now();
