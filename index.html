@@ -953,7 +953,7 @@ function setF(btn,f){
 function renderFiles(section,title){
   const grid=document.getElementById('FG');if(!grid)return;
   const q=(document.getElementById('FSI')?.value||'').toLowerCase();
-  const cat=f=>{if(isImg(f))return 'img';if(isVid(f))return 'vid';if(isPdf(f))return 'pdf';if(isAud(f))return 'aud';return 'doc'};
+  const cat=f=>{if(f.resourceType==='gdrive'||f.url?.includes('drive.google.com'))return 'pdf';if(isImg(f.url||''))return 'img';if(isVid(f.url||''))return 'vid';if(isPdf(f.url||''))return 'pdf';if(isAud(f.url||''))return 'aud';return 'doc';};
   const entries=Object.entries(filesCache).filter(([,f])=>{
     const c=cat(f.url||'');
     const mf=activeFilter==='all'||c===activeFilter;
@@ -1098,24 +1098,21 @@ function toggleView(fid,url,type){
     </div>`;
 
   } else if(type==='pdf'){
+    // Google Drive URLs تحتوي على /preview — نستخدمها مباشرة
+    const isSrc = url.includes('drive.google.com') ? url : 
+                  `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     html=`<div class="fc-viewer" style="background:#2d2d2d;min-height:380px">
       ${close}
-      <!-- Google Docs Viewer — يعمل مع Cloudinary raw URLs -->
-      <iframe
-        src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"
+      <iframe src="${isSrc}"
         style="width:100%;height:380px;border:none;display:block;background:white"
-        id="PDFI${fid}"
-        loading="lazy">
+        id="PDFI${fid}" loading="lazy" allowfullscreen>
       </iframe>
       <div style="text-align:center;padding:10px;background:#2d2d2d;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
-        <button class="btn bg btn-sm rounded-pill" onclick="openModal('${url}','PDF','pdf')">
+        <button class="btn bg btn-sm rounded-pill" onclick="openModal('${isSrc}','PDF','pdf')">
           <i class="fas fa-expand me-1"></i>ملء الشاشة
         </button>
         <a href="${url}" target="_blank" rel="noopener" class="btn btn-outline-light btn-sm rounded-pill">
           <i class="fas fa-external-link-alt me-1"></i>فتح مباشر
-        </a>
-        <a href="${url}" download class="btn btn-outline-light btn-sm rounded-pill">
-          <i class="fas fa-download me-1"></i>تحميل
         </a>
       </div>
     </div>`;
@@ -1224,39 +1221,104 @@ function openModal(url,title,type){
 }
 
 /* ================================================================
-   UPLOAD
+   UPLOAD — Cloudinary للصور/الفيديو | Google Drive للـ PDF/Docs
 ================================================================ */
 function showUpload(section,title){
   document.getElementById('MC').innerHTML=`
   <div class="fi">
     <div class="d-flex align-items-center gap-3 mb-4">
-      <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showFiles('${section}','${esc(title)}')"><i class="fas fa-arrow-right me-1"></i>رجوع</button>
+      <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showFiles('${section}','${esc(title)}')">
+        <i class="fas fa-arrow-right me-1"></i>رجوع
+      </button>
       <h5 class="fw-bold mb-0">رفع ملف — ${esc(title)}</h5>
     </div>
-    <div class="mb-3"><label class="form-label fw-bold">العنوان *</label><input type="text" id="UT" class="form-control" placeholder="عنوان الملف..." maxlength="100"></div>
-    <div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label><textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea></div>
     <div class="mb-4">
-      <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(كل الأنواع — حد 50 MB)</span></label>
+      <label class="form-label fw-bold">نوع الملف</label>
+      <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-primary rounded-pill px-4" onclick="switchMode('media')" id="btnMedia">
+          <i class="fas fa-photo-video me-2"></i>صورة / فيديو / صوت
+        </button>
+        <button class="btn btn-outline-secondary rounded-pill px-4" onclick="switchMode('doc')" id="btnDoc">
+          <i class="fas fa-file-pdf me-2"></i>PDF / Word / مستند
+        </button>
+      </div>
+    </div>
+    <div class="mb-3"><label class="form-label fw-bold">العنوان *</label>
+      <input type="text" id="UT" class="form-control" placeholder="عنوان الملف..." maxlength="100">
+    </div>
+    <div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label>
+      <textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea>
+    </div>
+    <div id="mediaArea" class="mb-4">
+      <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal">(حد 50 MB)</span></label>
       <div class="uz" id="UZ" onclick="document.getElementById('UFI').click()"
            ondragover="event.preventDefault();this.classList.add('dov')"
            ondragleave="this.classList.remove('dov')"
            ondrop="this.classList.remove('dov');handleDrop(event)">
         <i class="fas fa-cloud-upload-alt ui" id="UIK"></i>
         <h5 class="fw-bold mb-1" id="UZT">اسحب الملف هنا أو اضغط للاختيار</h5>
-        <p class="small text-muted mb-0" id="UZS">PDF · Word · Excel · صور · فيديو · صوت · مضغوط</p>
+        <p class="small text-muted mb-0" id="UZS">صور JPG PNG · فيديو MP4 · صوت MP3</p>
       </div>
-      <input type="file" id="UFI" class="d-none" accept="*/*" onchange="pickFile(this)">
+      <input type="file" id="UFI" class="d-none" accept="image/*,video/*,audio/*" onchange="pickFile(this)">
       <div class="up" id="UPW"><div class="upb" id="UPB"></div></div>
       <p class="pt" id="UPT"></p>
       <div id="UPV"></div>
     </div>
+    <div id="docArea" class="mb-4" style="display:none">
+      <div class="p-4 rounded-4 mb-3" style="background:linear-gradient(135deg,#fdecea,#fff5f5);border:2px dashed #e74c3c">
+        <div class="text-center mb-3">
+          <i class="fas fa-file-pdf fa-3x mb-2 d-block" style="color:#e74c3c"></i>
+          <h6 class="fw-bold">ارفع ملفك على Google Drive أولاً</h6>
+        </div>
+        <ol class="small mb-0" style="padding-right:20px;line-height:2.2">
+          <li>افتح <a href="https://drive.google.com" target="_blank" class="fw-bold text-danger">drive.google.com</a></li>
+          <li>ارفع ملف PDF أو Word</li>
+          <li>كليك يمين ← <b>Share</b> ← <b>Anyone with the link</b></li>
+          <li>انسخ الرابط والصقه أدناه</li>
+        </ol>
+      </div>
+      <label class="form-label fw-bold">رابط Google Drive *</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text"><i class="fab fa-google-drive text-danger"></i></span>
+        <input type="url" id="driveUrl" class="form-control"
+               placeholder="https://drive.google.com/file/d/..."
+               oninput="previewDrive(this.value)">
+      </div>
+      <div id="drivePreview"></div>
+    </div>
     <div class="d-grid">
       <button class="btn bg py-3 fw-bold fs-5 rounded-3" id="UBT" onclick="doUpload('${section}','${esc(title)}')">
-        <i class="fas fa-upload me-2"></i>رفع الملف الآن
+        <i class="fas fa-upload me-2"></i>حفظ الملف
       </button>
     </div>
   </div>`;
-  selFile=null;
+  selFile=null; window._umode='media';
+}
+
+function switchMode(m){
+  window._umode=m;
+  document.getElementById('mediaArea').style.display=m==='media'?'block':'none';
+  document.getElementById('docArea').style.display=m==='doc'?'block':'none';
+  document.getElementById('btnMedia').className=`btn rounded-pill px-4 ${m==='media'?'btn-primary':'btn-outline-secondary'}`;
+  document.getElementById('btnDoc').className=`btn rounded-pill px-4 ${m==='doc'?'btn-danger':'btn-outline-secondary'}`;
+}
+
+function previewDrive(val){
+  const pv=document.getElementById('drivePreview'); if(!pv)return;
+  if(!val||!val.includes('drive.google.com')){pv.innerHTML='';return}
+  const m=val.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  if(!m){pv.innerHTML=`<div class="alert alert-warning small">رابط غير صحيح</div>`;return}
+  const id=m[1];
+  const pu=`https://drive.google.com/file/d/${id}/preview`;
+  pv.innerHTML=`
+  <div class="border rounded-3 overflow-hidden">
+    <div class="p-2 d-flex align-items-center gap-2" style="background:#f0fff4;border-bottom:1px solid #c3e6cb">
+      <i class="fas fa-check-circle text-success"></i>
+      <small class="fw-bold text-success">تم التعرف على الرابط ✅ — معاينة:</small>
+    </div>
+    <iframe src="${pu}" style="width:100%;height:280px;border:none;display:block"></iframe>
+  </div>`;
+  window._driveId=id;
 }
 
 function handleDrop(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)processFile(f)}
@@ -1265,10 +1327,8 @@ function pickFile(i){if(i.files[0])processFile(i.files[0])}
 function processFile(file){
   if(file.size>50*1024*1024){toast('حجم الملف يتجاوز 50 MB','e');return}
   const isI=/\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
-  if(isI){
-    toast('🗜️ جاري ضغط الصورة...','i',1500);
-    compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)});
-  } else {selFile=file;previewFile(file)}
+  if(isI){toast('🗜️ جاري ضغط الصورة...','i',1500);compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)});}
+  else{selFile=file;previewFile(file)}
 }
 
 function compressImg(file,mw=1280,q=.75){
@@ -1317,72 +1377,73 @@ function previewFile(file,origSize){
 function doUpload(section,title){
   const t=document.getElementById('UT')?.value?.trim();
   const d=document.getElementById('UD')?.value?.trim();
+  if(!t){toast('اكتب عنوان الملف','w');return}
+
+  /* ── Google Drive PDF ─────────────────────────────────── */
+  if(window._umode==='doc'){
+    const rawUrl=document.getElementById('driveUrl')?.value?.trim();
+    if(!rawUrl||!rawUrl.includes('drive.google.com')){toast('أدخل رابط Google Drive صحيح','w');return}
+    const m=rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    if(!m){toast('رابط Google Drive غير صحيح','e');return}
+    const id=m[1];
+    const previewUrl=`https://drive.google.com/file/d/${id}/preview`;
+    const downloadUrl=`https://drive.google.com/uc?export=download&id=${id}`;
+    db.ref(section).push({
+      title:t,description:d||'',
+      url:previewUrl,downloadUrl,
+      fileName:t,fileSize:0,
+      resourceType:'gdrive',
+      uploadedAt:new Date().toLocaleDateString('ar-EG'),
+      comments:{}
+    }).then(()=>{toast(`✅ تم إضافة "${t}"  بنجاح`,'s');setTimeout(()=>showFiles(section,title),800)});
+    return;
+  }
+
+  /* ── Cloudinary صور/فيديو/صوت ─────────────────────────── */
   const btn=document.getElementById('UBT');
   const pw=document.getElementById('UPW'),pb=document.getElementById('UPB'),pt=document.getElementById('UPT');
-  if(!t){toast('اكتب عنوان الملف','w');return}
   if(!selFile){toast('اختر ملفاً','w');return}
-  btn.disabled=true;
-  btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
+  btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...';
   pw.style.display='block';pt.style.display='block';
-
-  const ts   = Date.now();
-  const fname = selFile.name.toLowerCase();
-  const isImgFile = /\.(jpg|jpeg|png|gif|webp|svg)$/.test(fname);
-  const isVidFile = /\.(mp4|mov|avi|mkv|webm)$/.test(fname);
-  const isAudFile = /\.(mp3|wav|ogg|m4a)$/.test(fname);
-  const resType   = isImgFile ? 'image' : isVidFile ? 'video' : isAudFile ? 'video' : 'raw';
-  const uploadURL = `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;
-
-  const fd = new FormData();
-  fd.append('file',        selFile);
-  fd.append('upload_preset', CLD_PRESET_RAW);
-  fd.append('folder',      `school/${section}`);
-
-  const xhr = new XMLHttpRequest();
-  xhr.upload.addEventListener('progress', e => {
-    if(!e.lengthComputable) return;
-    const p = Math.round(e.loaded/e.total*100);
-    pb.style.width = p+'%';
-    const spd = e.loaded>0 ? fsz(Math.round(e.loaded/((Date.now()-ts)/1000)))+'/ث' : '';
-    pt.textContent = `⬆️ ${p}% — ${fsz(e.loaded)} / ${fsz(e.total)} ${spd?'| '+spd:''}`;
+  const ts=Date.now();
+  const fname=selFile.name.toLowerCase();
+  const isVid=/\.(mp4|mov|avi|mkv|webm)$/.test(fname);
+  const isAud=/\.(mp3|wav|ogg|m4a)$/.test(fname);
+  const resType=isVid||isAud?'video':'image';
+  const uploadURL=`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;
+  const fd=new FormData();
+  fd.append('file',selFile);fd.append('upload_preset',CLD_PRESET_RAW);fd.append('folder',`school/${section}`);
+  const xhr=new XMLHttpRequest();
+  xhr.upload.addEventListener('progress',e=>{
+    if(!e.lengthComputable)return;
+    const p=Math.round(e.loaded/e.total*100);pb.style.width=p+'%';
+    const spd=e.loaded>0?fsz(Math.round(e.loaded/((Date.now()-ts)/1000)))+'/ث':'';
+    pt.textContent=`⬆️ ${p}% — ${fsz(e.loaded)} / ${fsz(e.total)} ${spd?'| '+spd:''}`;
   });
   xhr.addEventListener('load',()=>{
     if(xhr.status===200){
       const r=JSON.parse(xhr.responseText);
-      // للـ PDF نستخدم secure_url مباشرة (raw resource)
-      let url=(r.secure_url||r.url||'').replace('http://','https://');
-      // تأكد أن الـ URL ينتهي بـ .pdf للملفات الـ raw
-      if(resType==='raw' && fname.endsWith('.pdf') && !url.includes('.pdf')){
-        url = url; // Cloudinary يحتفظ بالاسم الأصلي في raw
-      }
-      db.ref(section).push({
-        title:t,description:d||'',url,
-        fileName:selFile.name,fileSize:selFile.size,
-        resourceType:resType,
-        uploadedAt:new Date().toLocaleDateString('ar-EG'),
-        comments:{}
-      }).then(()=>{
-        selFile=null;pw.style.display=pt.style.display='none';
-        toast(`✅ تم رفع "${t}" بنجاح`,'s');
-        if(section==='gallery_section')setTimeout(loadSlider,1000);
-        setTimeout(()=>showFiles(section,title),800);
-      });
+      const url=(r.secure_url||r.url||'').replace('http://','https://');
+      db.ref(section).push({title:t,description:d||'',url,fileName:selFile.name,fileSize:selFile.size,resourceType:resType,uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}})
+        .then(()=>{
+          selFile=null;pw.style.display=pt.style.display='none';
+          toast(`✅ تم رفع "${t}" بنجاح`,'s');
+          if(section==='gallery_section')setTimeout(loadSlider,1000);
+          setTimeout(()=>showFiles(section,title),800);
+        });
     } else {
-      btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+      btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>حفظ الملف';
       pw.style.display=pt.style.display='none';
-      try{
-        const er=JSON.parse(xhr.responseText);
-        toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);
-      } catch(e){ toast('فشل الرفع — تحقق من إعدادات Cloudinary','e',5000); }
+      try{const er=JSON.parse(xhr.responseText);toast(`خطأ: ${er.error?.message||'فشل الرفع'}`,'e',5000);}
+      catch(e){toast('فشل الرفع — تحقق من Cloudinary','e',5000)}
     }
   });
   xhr.addEventListener('error',()=>{
-    btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>رفع الملف الآن';
+    btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>حفظ الملف';
     pw.style.display=pt.style.display='none';
     toast('تعذّر الاتصال بـ Cloudinary','e',4000)
   });
-  xhr.open('POST',uploadURL);
-  xhr.send(fd);
+  xhr.open('POST',uploadURL);xhr.send(fd);
 }
 
 /* ================================================================
