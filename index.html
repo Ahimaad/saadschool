@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
 <meta name="theme-color" content="#0a2b4e">
-<title>بوابة مدرسة سعد بن أبي وقاص - النسخة المتكاملة</title>
+<title>بوابة مدرسة سعد بن أبي وقاص - النظام المتكامل</title>
 
-<!-- Preconnect & Preload for Performance -->
+<!-- Preconnect & Preload -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
@@ -20,212 +20,256 @@
 <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
 :root{
-  --pr:#0a2b4e; --pr2:#1e4a76; --prg:rgba(10,43,78,.3);
-  --gd:#d4af37; --gdl:#f0d060; --gdg:rgba(212,175,55,.4);
-  --gl:rgba(255,255,255,.97); --bg:#eef1f7;
-  --cs:0 8px 32px rgba(10,43,78,.10); --hs:0 20px 50px rgba(10,43,78,.18);
-  --tr:all .3s cubic-bezier(.4,0,.2,1); --r:20px; --rs:12px;
+  --pr:#0a2b4e; --pr2:#1e4a76; --prg:rgba(10,43,78,.15);
+  --gd:#d4af37; --gdl:#f0d060; --gdg:rgba(212,175,55,.25);
+  --gl:rgba(255,255,255,.97); --bg:#f0f2f8;
+  --cs:0 5px 20px rgba(0,0,0,.08); --hs:0 15px 35px rgba(0,0,0,.15);
+  --tr:all .25s ease; --r:18px; --rs:12px;
 }
-body{background:var(--bg);color:#1e2a3e;min-height:100vh;background-image:radial-gradient(circle at 20% 50%,rgba(10,43,78,.04),transparent 50%),radial-gradient(circle at 80% 20%,rgba(212,175,55,.05),transparent 50%);}
-.dark{background:#0b0f1a!important;color:#dde3ee;}
-.dark .gc,.dark .fc,.dark .post-card,.dark .nc,.dark .qc,.dark .hsc,.dark .asc{background:rgba(16,22,36,.96)!important;border-color:rgba(255,255,255,.07)!important;color:#ccd6f0;}
-.dark .form-control,.dark .form-select{background:#141c2c!important;border-color:#2a3550!important;color:#dde!important}
-.dark .text-muted{color:#7a8aaa!important}
-.dark footer{background:#060912!important}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:10px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+body{background:var(--bg);color:#1a2a3a;min-height:100vh;background-image:radial-gradient(circle at 10% 30%,rgba(10,43,78,.03),transparent 60%);}
+.dark{background:#0a0e1a!important;color:#e0e5f0;}
+.dark .gc,.dark .fc,.dark .post-card,.dark .nc,.dark .qc,.dark .hsc,.dark .asc,.dark .post-creator{background:rgba(18,24,38,.96)!important;border-color:rgba(255,255,255,.08)!important;color:#d0d8ec;}
+.dark .form-control,.dark .form-select{background:#141c2c!important;border-color:#2a3550!important;color:#e0e5f0!important}
+.dark .text-muted{color:#8a9aba!important}
+.dark footer{background:#050810!important}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#e0e4ec}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:10px}
 
 /* Loader */
-#ldr{position:fixed;inset:0;z-index:9999;background:var(--pr);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .6s;gap:15px}
-#ldr.hide{opacity:0;visibility:hidden;pointer-events:none}
-.ll{width:80px;height:80px;border-radius:50%;border:3px solid var(--gd);background:white;padding:6px;animation:plg 1.2s infinite;object-fit:cover}
-@keyframes plg{0%,100%{transform:scale(1);box-shadow:0 0 0 0 var(--gdg)}50%{transform:scale(1.05);box-shadow:0 0 0 15px transparent}}
-.ld span{width:8px;height:8px;border-radius:50%;background:var(--gd);display:inline-block;margin:0 3px;animation:bd 1.2s infinite}
-.ld span:nth-child(2){animation-delay:.2s}.ld span:nth-child(3){animation-delay:.4s}
-@keyframes bd{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+#loader{position:fixed;inset:0;z-index:10000;background:var(--pr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .5s}
+#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.loader-logo{width:85px;height:85px;border-radius:50%;border:3px solid var(--gd);background:white;padding:8px;animation:pulse 1.2s infinite;object-fit:cover}
+@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 var(--gdg)}50%{transform:scale(1.05);box-shadow:0 0 0 20px transparent}}
+.loader-dots{display:flex;gap:8px}.loader-dots span{width:10px;height:10px;border-radius:50%;background:var(--gd);animation:bounce 1.2s infinite}
+.loader-dots span:nth-child(2){animation-delay:.2s}.loader-dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
 
 /* Header */
-header{background:linear-gradient(135deg,var(--pr),#0e3a65);border-bottom:4px solid var(--gd);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3)}
-.slogo{width:70px;height:70px;border-radius:50%;border:3px solid var(--gd);background:white;padding:4px;transition:var(--tr);cursor:pointer}
-.stl{font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.4)}
-.hbg{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;display:inline-block;font-size:.7rem}
-.od{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:od 2s infinite;margin-left:5px}
-@keyframes od{0%,100%{opacity:1}50%{opacity:.3}}
+header{background:linear-gradient(135deg,var(--pr),#0d3a60);border-bottom:3px solid var(--gd);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 5px 20px rgba(0,0,0,.25)}
+.logo{width:65px;height:65px;border-radius:50%;border:2px solid var(--gd);background:white;padding:4px;transition:var(--tr);cursor:pointer;object-fit:cover}
+.logo:hover{transform:rotate(360deg) scale(1.05)}
+.school-title{font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.4)}
+.badge-admin{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;font-size:.7rem;display:inline-block}
+.online-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:blink 2s infinite;margin-left:5px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* Ticker */
-.tk{background:linear-gradient(90deg,var(--pr),#0e3a65);color:white;padding:8px 0;border-bottom:2px solid var(--gd);white-space:nowrap;overflow:hidden;position:relative}
-.tw{display:inline-block;animation:ts 40s linear infinite}
-@keyframes ts{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.ti{display:inline-block;padding:0 25px}
-.ti i{color:var(--gdl);margin-left:6px}
+/* News Ticker - LTR with modern style */
+.news-ticker{background:linear-gradient(90deg,var(--pr),#0d3a60,var(--pr));color:white;padding:8px 0;border-bottom:2px solid var(--gd);position:relative;overflow:hidden}
+.ticker-wrapper{display:flex;align-items:center;background:rgba(0,0,0,.2);border-radius:30px;padding:4px 15px;direction:ltr}
+.ticker-icon{background:var(--gd);color:var(--pr);border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;margin-left:12px;flex-shrink:0}
+.ticker-content{flex:1;overflow:hidden;white-space:nowrap}
+.ticker-scroll{display:inline-block;animation:tickerScroll 35s linear infinite;padding-right:100%}
+.ticker-scroll:hover{animation-play-state:paused}
+.ticker-item{display:inline-block;margin:0 30px}
+.ticker-item i{margin-left:8px;color:var(--gdl)}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.ticker-controls{display:flex;gap:5px;margin-right:12px}
+.ticker-controls button{background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;transition:var(--tr)}
+.ticker-controls button:hover{background:var(--gd);color:var(--pr)}
 
-/* Cards & Layout */
-.gc{background:var(--gl);backdrop-filter:blur(12px);border-radius:var(--r);padding:20px;box-shadow:var(--cs);border:1px solid rgba(255,255,255,.4);transition:var(--tr)}
-.gc:hover{box-shadow:var(--hs)}
-.smi{background:#fff;border:none;border-radius:var(--rs);padding:12px;margin-bottom:10px;width:100%;text-align:right;font-weight:700;transition:var(--tr);cursor:pointer;border-right:4px solid var(--gd);display:flex;align-items:center;gap:10px;color:var(--pr);box-shadow:0 2px 6px rgba(0,0,0,.05)}
-.smi:hover,.smi.active{background:var(--pr);color:var(--gd);transform:translateX(-5px)}
-.smi i{width:25px}
-.mb2{margin-right:auto;background:var(--gd);color:var(--pr);padding:2px 8px;border-radius:30px;font-size:.65rem;font-weight:800}
-.sw-wrap{border-radius:var(--r);overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.2);border:3px solid white;margin-bottom:20px}
-.hs{height:250px}
-.hs .swiper-slide img{width:100%;height:100%;object-fit:cover}
-.sc2{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;padding:15px;font-weight:700}
-.swiper-pagination-bullet-active{background:var(--gd)!important}
-.sc{display:flex;justify-content:space-between;padding:10px;background:#f4f7ff;border-radius:var(--rs);margin-bottom:8px}
-.qc{border-radius:var(--rs);padding:18px 8px;text-align:center;cursor:pointer;transition:var(--tr);background:white;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.qc:hover{transform:translateY(-5px);box-shadow:var(--hs)}
-.qc i{font-size:1.8rem;margin-bottom:8px;display:block}
-.rsb{background:rgba(255,255,255,.1);border-radius:12px;padding:8px;text-align:center}
-.si2{background:rgba(255,255,255,.08);padding:8px 12px;border-radius:12px;margin:6px 0;display:flex;justify-content:space-between;align-items:center}
-.fc{background:white;border-radius:var(--rs);overflow:hidden;box-shadow:var(--cs);transition:var(--tr);height:100%;display:flex;flex-direction:column}
-.fc:hover{transform:translateY(-4px);box-shadow:var(--hs)}
-.fc-media{position:relative;height:180px;overflow:hidden;background:#f0f2f5}
-.fc-media img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
-.fc-media:hover img{transform:scale(1.05)}
-.fc-media-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s}
-.fc-media:hover .fc-media-overlay{background:rgba(0,0,0,.3)}
-.fc-play-btn{width:45px;height:45px;border-radius:50%;background:rgba(212,175,55,.9);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:all .3s}
-.fc-media:hover .fc-play-btn{opacity:1;transform:scale(1)}
-.fc-body{padding:14px;flex:1;display:flex;flex-direction:column}
-.fc-title{font-weight:800;margin-bottom:4px}
-.fc-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.fc-btn-primary{background:var(--pr);color:white;border:none;border-radius:30px;padding:6px 12px;font-size:.75rem;font-weight:700;cursor:pointer;transition:var(--tr);flex:1;text-align:center}
-.fc-btn-primary:hover{background:var(--pr2)}
-.fc-btn-icon{width:32px;height:32px;border-radius:50%;border:1px solid #ddd;background:white;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);color:#666}
-.fc-btn-icon:hover{background:var(--pr);color:white;border-color:var(--pr)}
-.fc-viewer{background:#000;width:100%;margin-top:12px;border-radius:12px;overflow:hidden}
-.fc-viewer video,.fc-viewer audio{width:100%;max-height:280px}
-.fc-viewer-close{position:absolute;top:5px;left:5px;background:rgba(0,0,0,.6);color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer}
-.fib{font-size:.6rem;padding:2px 8px;border-radius:20px;background:#eef2ff}
-.up{height:6px;background:#e0e4ec;border-radius:5px;display:none;margin-top:10px}
-.upb{height:100%;border-radius:5px;width:0%;background:var(--gd);transition:.3s}
-.uz{border:2px dashed #ccc;border-radius:var(--r);padding:30px;text-align:center;cursor:pointer;transition:var(--tr);background:#f9fbfe}
-.uz:hover{border-color:var(--gd);background:#fffbf0}
-.ci{background:#f4f7ff;padding:8px;border-radius:10px;margin-bottom:5px;border-right:3px solid var(--gd);font-size:.8rem}
-.sfb{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:15px;align-items:center}
-.si{flex:1;position:relative}
-.si input{width:100%;padding:8px 30px 8px 10px;border-radius:30px;border:1px solid #ddd;font-family:inherit}
-.si i{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:#aaa}
-.fb{border:1px solid #ddd;border-radius:30px;padding:4px 12px;background:white;font-size:.75rem;font-weight:700;cursor:pointer}
-.fb.active{background:var(--pr);color:var(--gd);border-color:var(--pr)}
-.tc{position:fixed;top:80px;left:20px;z-index:1000;display:flex;flex-direction:column;gap:8px}
-.ti2{background:var(--pr);color:white;padding:10px 18px;border-radius:12px;font-size:.8rem;font-weight:600;box-shadow:0 4px 15px rgba(0,0,0,.2);border-right:4px solid var(--gd);animation:tin .3s ease}
-@keyframes tin{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
-.fab-th,.fab-st{position:fixed;bottom:25px;left:25px;width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.2);transition:var(--tr)}
-.fab-th{background:var(--gd);color:var(--pr);font-size:1.2rem}
-.fab-st{background:var(--pr);color:white;bottom:85px;opacity:0;pointer-events:none}
-.fab-st.show{opacity:1;pointer-events:auto}
-.mn{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--pr);z-index:200;padding:5px 0;border-top:2px solid var(--gd)}
-.mni{flex:1;display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.7);background:none;border:none;font-size:.6rem;font-weight:700}
-.mni i{font-size:1.1rem;margin-bottom:2px}
-.mni.active{color:var(--gd)}
-.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;opacity:0;pointer-events:none;transition:.3s}
-.drawer-overlay.open{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:-270px;width:270px;height:100%;background:var(--pr);z-index:401;transition:right .3s;padding:20px;overflow-y:auto}
-.drawer.open{right:0}
-.drawer-item{display:flex;align-items:center;gap:10px;color:white;background:none;border:none;padding:12px;width:100%;text-align:right;font-weight:700;border-radius:12px;margin-bottom:5px;cursor:pointer}
-.drawer-item:hover,.drawer-item.active{background:rgba(255,255,255,.1);color:var(--gd)}
-.menu-fab{display:none;position:fixed;top:70px;right:15px;width:42px;height:42px;background:var(--gd);border:none;border-radius:50%;z-index:300;cursor:pointer;box-shadow:0 2px 10px var(--gdg)}
+/* Glass Card */
+.glass-card{background:var(--gl);backdrop-filter:blur(12px);border-radius:var(--r);padding:20px;box-shadow:var(--cs);border:1px solid rgba(255,255,255,.5);transition:var(--tr)}
+.glass-card:hover{box-shadow:var(--hs)}
 
-/* Posts Styles */
-.post-card{background:white;border-radius:var(--r);padding:20px;margin-bottom:20px;box-shadow:var(--cs);transition:var(--tr)}
+/* Side Menu */
+.side-menu-btn{background:white;border:none;border-radius:var(--rs);padding:12px 15px;margin-bottom:8px;width:100%;text-align:right;font-weight:700;transition:var(--tr);cursor:pointer;border-right:4px solid var(--gd);display:flex;align-items:center;gap:12px;color:var(--pr);box-shadow:0 2px 6px rgba(0,0,0,.05)}
+.side-menu-btn:hover,.side-menu-btn.active{background:var(--pr);color:var(--gd);transform:translateX(-4px)}
+.side-menu-btn i{width:26px}.menu-badge{margin-right:auto;background:var(--gd);color:var(--pr);padding:2px 8px;border-radius:30px;font-size:.6rem;font-weight:800}
+
+/* Post Creator - Like Facebook */
+.post-creator{background:white;border-radius:var(--r);padding:20px;margin-bottom:20px;box-shadow:var(--cs)}
+.post-creator-header{display:flex;gap:12px;align-items:center;margin-bottom:15px}
+.post-creator-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:1.3rem}
+.post-creator-input{flex:1;background:#f0f2f5;border:none;border-radius:30px;padding:12px 18px;font-weight:500;cursor:pointer;transition:var(--tr)}
+.post-creator-input:hover{background:#e4e6e9}
+.post-creator-actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #e0e4ec}
+.post-action-type{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:30px;background:none;border:none;font-weight:600;font-size:.85rem;cursor:pointer;transition:var(--tr);color:#666}
+.post-action-type:hover{background:#f0f2f5}
+.post-action-type.active{background:var(--pr);color:white}
+.tab-selector{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.tab-badge{padding:6px 12px;border-radius:30px;background:#f0f2f5;font-size:.75rem;font-weight:600;cursor:pointer;transition:var(--tr)}
+.tab-badge:hover,.tab-badge.active{background:var(--pr);color:white}
+.media-preview-area{background:#f0f2f5;border-radius:12px;margin-top:12px;padding:10px;position:relative;min-height:100px}
+.media-preview-remove{position:absolute;top:-8px;left:-8px;background:#dc3545;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;z-index:10}
+
+/* Post Card */
+.post-card{background:white;border-radius:var(--r);padding:18px;margin-bottom:18px;box-shadow:var(--cs);transition:var(--tr)}
 .post-card:hover{box-shadow:var(--hs);transform:translateY(-2px)}
-.post-header{display:flex;align-items:center;gap:12px;margin-bottom:15px}
-.post-avatar{width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:1.2rem}
-.post-author{font-weight:800;color:var(--pr)}
+.post-header{display:flex;gap:12px;margin-bottom:14px}
+.post-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:1.1rem}
+.post-author-info{flex:1}.post-author-name{font-weight:800;color:var(--pr);margin-bottom:2px}
+.post-tab-badge{font-size:.65rem;background:#e8ecf4;padding:2px 8px;border-radius:20px;margin-right:8px}
 .post-date{font-size:.7rem;color:#999}
 .post-content{line-height:1.6;margin-bottom:12px}
-.post-media{margin:12px 0;border-radius:12px;overflow:hidden}
-.post-media img,.post-media video{width:100%;max-height:350px;object-fit:cover}
-.youtube-embed{position:relative;padding-bottom:56.25%;height:0}
-.youtube-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%}
-.post-actions{display:flex;gap:20px;padding-top:12px;border-top:1px solid #eee}
-.post-action-btn{background:none;border:none;cursor:pointer;font-size:.8rem;color:#666;display:flex;align-items:center;gap:6px;transition:var(--tr)}
-.post-action-btn:hover{color:var(--pr)}
+.post-media{margin:12px 0;border-radius:14px;overflow:hidden;background:#f0f2f5}
+.post-media img{width:100%;max-height:450px;object-fit:contain}
+.post-media video{width:100%;max-height:400px}
+.link-embed{position:relative;padding-bottom:56.25%;height:0}
+.link-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
+.post-stats{display:flex;gap:20px;padding:10px 0;border-top:1px solid #e0e4ec;border-bottom:1px solid #e0e4ec;margin:10px 0}
+.post-stats span{cursor:pointer;font-size:.85rem;color:#666}
+.post-actions{display:flex;gap:15px;padding-top:8px}
+.post-action-btn{background:none;border:none;padding:8px 12px;border-radius:30px;cursor:pointer;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:var(--tr);color:#666}
+.post-action-btn:hover{background:#f0f2f5}
 .post-action-btn.liked{color:#e74c3c}
-.post-comments{padding-top:12px;margin-top:12px;border-top:1px solid #eee}
-.post-comment{background:#f8f9fa;border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:.8rem}
-.stat-edit{cursor:pointer;transition:.2s}
-.stat-edit:hover{opacity:.7;transform:scale(1.05)}
-.json-upload-area{border:2px dashed var(--gd);border-radius:var(--r);padding:30px;text-align:center;cursor:pointer;background:#f9fbfe}
-.json-upload-area:hover{background:#fef9e6}
-.results-manager{background:linear-gradient(135deg,#f8f9ff,#fff);border-radius:var(--r);padding:20px;margin-bottom:20px}
+.comments-section{padding-top:12px;margin-top:12px;border-top:1px solid #e0e4ec}
+.comment-item{background:#f8f9fa;border-radius:10px;padding:8px 12px;margin-bottom:8px;border-right:3px solid var(--gd)}
+.comment-name{font-weight:700;font-size:.8rem}
+.comment-text{font-size:.8rem;margin-top:3px}
+.comment-date{font-size:.65rem;color:#999;text-align:left}
+
+/* File Cards */
+.file-card{background:white;border-radius:var(--rs);overflow:hidden;box-shadow:var(--cs);transition:var(--tr);height:100%;display:flex;flex-direction:column}
+.file-card:hover{transform:translateY(-3px);box-shadow:var(--hs)}
+.file-media{position:relative;height:180px;overflow:hidden;background:#f0f2f5;cursor:pointer}
+.file-media img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.file-media:hover img{transform:scale(1.05)}
+.file-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s}
+.file-media:hover .file-overlay{background:rgba(0,0,0,.3)}
+.file-play-btn{width:45px;height:45px;border-radius:50%;background:rgba(212,175,55,.9);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:all .3s}
+.file-media:hover .file-play-btn{opacity:1;transform:scale(1)}
+.file-body{padding:14px;flex:1}
+.file-title{font-weight:800;margin-bottom:5px}
+.file-meta{font-size:.7rem;color:#999;margin-bottom:8px}
+.file-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.file-btn{background:var(--pr);color:white;border:none;border-radius:30px;padding:6px 12px;font-size:.7rem;font-weight:600;cursor:pointer;transition:var(--tr);flex:1;text-align:center}
+.file-btn:hover{background:var(--pr2)}
+.file-icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid #ddd;background:white;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#666}
+.file-icon-btn:hover{background:var(--pr);color:white;border-color:var(--pr)}
+
+/* Upload Area */
+.upload-area{border:2px dashed #ccc;border-radius:var(--r);padding:25px;text-align:center;cursor:pointer;transition:var(--tr);background:#fafbfe}
+.upload-area:hover,.upload-area.drag-over{border-color:var(--gd);background:#fffbf0}
+.upload-area i{font-size:2.8rem;color:var(--gd);margin-bottom:10px}
+.upload-progress{height:5px;background:#e0e4ec;border-radius:5px;margin-top:12px;display:none}
+.upload-progress-bar{height:100%;border-radius:5px;width:0%;background:linear-gradient(90deg,var(--pr),var(--gd));transition:width .3s}
+.file-list-item{background:#f8f9fa;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.file-list-item .remove-file{color:#dc3545;cursor:pointer;margin-right:auto}
+.json-upload-area{border:2px dashed var(--gd);border-radius:var(--r);padding:25px;text-align:center;cursor:pointer;background:#fef9e6}
+.results-table{width:100%;border-collapse:collapse;margin-top:15px}
+.results-table th,.results-table td{padding:10px;border-bottom:1px solid #e0e4ec;text-align:right}
+
+/* Results Card */
+.result-card{background:linear-gradient(135deg,var(--pr),#1a4070);color:white;border-radius:var(--r);padding:25px;border:2px solid var(--gd)}
+.subject-row{background:rgba(255,255,255,.1);padding:10px 15px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
+.stat-box{background:rgba(255,255,255,.1);border-radius:12px;padding:10px;text-align:center}
+
+/* Floating Buttons */
+.fab-theme{position:fixed;bottom:25px;left:25px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gd),#c9a227);color:var(--pr);border:none;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.2);font-size:1.2rem}
+.fab-scroll{position:fixed;bottom:85px;left:25px;width:44px;height:44px;border-radius:50%;background:var(--pr);color:white;border:none;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:var(--tr)}
+.fab-scroll.show{opacity:1;pointer-events:auto}
+
+/* Mobile Navigation */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--pr);z-index:200;padding:5px 0;border-top:2px solid var(--gd)}
+.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.7);background:none;border:none;font-size:.55rem;font-weight:700;padding:5px}
+.mobile-nav-item i{font-size:1.1rem;margin-bottom:2px}
+.mobile-nav-item.active{color:var(--gd)}
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;opacity:0;pointer-events:none;transition:.3s}
+.drawer-overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:-280px;width:280px;height:100%;background:var(--pr);z-index:401;transition:right .3s;padding:20px;overflow-y:auto}
+.drawer.open{right:0}
+.drawer-item{display:flex;align-items:center;gap:12px;color:white;background:none;border:none;padding:12px;width:100%;text-align:right;font-weight:700;border-radius:12px;margin-bottom:5px;cursor:pointer}
+.drawer-item:hover,.drawer-item.active{background:rgba(255,255,255,.1);color:var(--gd)}
+.menu-fab{display:none;position:fixed;top:70px;right:15px;width:42px;height:42px;background:var(--gd);border:none;border-radius:50%;z-index:300;cursor:pointer}
+
+/* Admin Badge */
+.admin-badge{background:linear-gradient(90deg,#dc3545,#c0392b);color:white;padding:5px 12px;border-radius:10px;font-size:.7rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;animation:pulseRed 2s infinite}
+@keyframes pulseRed{0%,100%{box-shadow:0 0 0 0 rgba(220,53,69,.4)}50%{box-shadow:0 0 0 8px rgba(220,53,69,0)}}
+.stat-edit{cursor:pointer;transition:.2s}.stat-edit:hover{opacity:.7;transform:scale(1.05)}
 
 @media(max-width:768px){
-  .mn{display:flex}
+  .mobile-nav{display:flex}
   .menu-fab{display:flex}
   body{padding-bottom:65px}
-  .hide-mob{display:none!important}
-  .hs{height:180px!important}
-  .fab-th{width:40px;height:40px;bottom:75px;left:12px}
-  .fab-st{bottom:125px;left:12px;width:38px;height:38px}
-  .gc{padding:14px}
+  .hide-mobile{display:none!important}
+  .ticker-wrapper{padding:2px 10px}
+  .ticker-icon{width:26px;height:26px;font-size:.7rem}
+  .ticker-controls button{width:24px;height:24px}
+  .fab-theme{width:40px;height:40px;bottom:75px;left:12px}
+  .fab-scroll{bottom:125px;left:12px;width:38px;height:38px}
+  .glass-card{padding:14px}
 }
 </style>
 </head>
 <body>
 
-<div id="pdfCard" style="position:fixed;left:-9999px;top:0;width:794px;background:white;direction:rtl;z-index:-1"></div>
-<div class="tc" id="TC"></div>
-<div id="ldr"><img src="logo.jpg" class="ll" onerror="this.src='https://placehold.co/80x80/white/0a2b4e?text=S'" alt="logo"><div class="ld"><span></span><span></span><span></span></div><p style="color:#fff">جاري التحميل...</p></div>
+<!-- Loader -->
+<div id="loader"><img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/85x85/white/0a2b4e?text=S'" alt="logo"><div class="loader-dots"><span></span><span></span><span></span></div><p style="color:white">جاري تحميل البوابة...</p></div>
 
-<button class="fab-th" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-<button class="fab-st" id="STB" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+<!-- PDF Export Container -->
+<div id="pdfExport" style="position:fixed;left:-9999px;top:0;width:800px;background:white;direction:rtl;z-index:-1"></div>
 
+<!-- Toast -->
+<div id="toastContainer" style="position:fixed;top:80px;left:20px;z-index:9000;display:flex;flex-direction:column;gap:8px"></div>
+
+<!-- FABs -->
+<button class="fab-theme" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+<button class="fab-scroll" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
+
+<!-- Header -->
 <header><div class="container"><div class="row align-items-center g-2">
-  <div class="col-md-auto"><img src="logo.jpg" class="slogo" onerror="this.src='https://placehold.co/70x70/white/0a2b4e?text=S'"></div>
-  <div class="col"><div class="hbg mb-1">إدارة الفشن التعليمية — بني سويف</div><h1 class="stl fs-4 mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1><p class="small mb-0" style="color:rgba(255,255,255,.6)"><span class="od"></span> النظام يعمل | بوابة الإبداع الرقمي</p></div>
+  <div class="col-md-auto"><img src="logo.jpg" class="logo" onerror="this.src='https://placehold.co/65x65/white/0a2b4e?text=S'" alt="logo"></div>
+  <div class="col"><div class="badge-admin mb-1">إدارة الفشن التعليمية — بني سويف</div><h1 class="school-title fs-4 mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1><p class="small mb-0" style="color:rgba(255,255,255,.6)"><span class="online-dot"></span> النظام يعمل | بوابة التعليم الرقمي المتكاملة</p></div>
 </div></div></header>
 
-<div id="TKC" class="tk"><div class="tw" id="TKW"><span class="ti"><i class="fas fa-star"></i> أهلاً بكم في بوابة المدرسة</span></div></div>
+<!-- News Ticker -->
+<div class="news-ticker"><div class="container"><div class="ticker-wrapper"><div class="ticker-icon"><i class="fas fa-bullhorn"></i></div><div class="ticker-content"><div class="ticker-scroll" id="tickerScroll"></div></div><div class="ticker-controls"><button onclick="pauseTicker()"><i class="fas fa-pause"></i></button><button onclick="resumeTicker()"><i class="fas fa-play"></i></button></div></div></div></div>
 
+<!-- Main Content -->
 <div class="container my-4"><div class="row g-4">
-  <div class="col-lg-4 hide-mob"><div class="gc mb-4" id="SNV">
-    <button class="smi" onclick="go('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
-    <button class="smi" onclick="go('posts')"><i class="fas fa-newspaper"></i><span>المنشورات</span><span class="mb2" id="postCount">0</span></button>
-    <button class="smi" onclick="go('students')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
-    <button class="smi" onclick="go('gallery')"><i class="fas fa-images"></i><span>المعرض الرقمي</span></button>
-    <button class="smi" onclick="go('news')"><i class="fas fa-bullhorn"></i><span>أخبار المدرسة</span></button>
-    <button class="smi" onclick="go('art')"><i class="fas fa-palette"></i><span>التربية الفنية</span></button>
-    <button class="smi" onclick="go('library')"><i class="fas fa-book"></i><span>المكتبة الرقمية</span><span class="mb2" id="LC">0</span></button>
-    <button class="smi" onclick="doAdmin()" style="border-right-color:#dc3545"><i class="fas fa-lock"></i><span id="ALB">لوحة الإدارة</span></button>
+  <!-- Sidebar Desktop -->
+  <div class="col-lg-4 hide-mobile"><div class="glass-card mb-4" id="sidebarMenu">
+    <button class="side-menu-btn" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i><span>المنشورات</span><span class="menu-badge" id="postsCount">0</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('results')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('gallery')"><i class="fas fa-images"></i><span>المعرض الرقمي</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('library')"><i class="fas fa-book-open"></i><span>المكتبة الرقمية</span><span class="menu-badge" id="libraryCount">0</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('art')"><i class="fas fa-palette"></i><span>التربية الفنية</span></button>
+    <button class="side-menu-btn" onclick="navigateTo('news')"><i class="fas fa-bullhorn"></i><span>أخبار المدرسة</span></button>
+    <button class="side-menu-btn" onclick="toggleAdmin()" style="border-right-color:#dc3545"><i class="fas fa-lock"></i><span id="adminBtnText">لوحة الإدارة</span></button>
   </div>
-  <div class="gc"><h6 class="fw-bold mb-3"><i class="fas fa-chart-bar"></i> إحصائيات المدرسة</h6>
-    <div class="sc"><span style="font-weight:600">الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="CS" onclick="editStat('studentsCount')">0</span></div>
-    <div class="sc"><span style="font-weight:600">المعلمون</span><span class="badge bg-success px-3 stat-edit" id="CT" onclick="editStat('teachersCount')">0</span></div>
-    <div class="sc"><span style="font-weight:600">الأنشطة</span><span class="badge bg-warning px-3 stat-edit" id="CA" onclick="editStat('activitiesCount')">0</span></div>
-    <div id="ABG"></div>
+  <div class="glass-card"><h6 class="fw-bold mb-3"><i class="fas fa-chart-line me-2"></i> إحصائيات المدرسة</h6>
+    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="statStudents" onclick="editStat('students')">1250</span></div>
+    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>المعلمون</span><span class="badge bg-success px-3 stat-edit" id="statTeachers" onclick="editStat('teachers')">85</span></div>
+    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3"><span>الأنشطة</span><span class="badge bg-warning px-3 stat-edit" id="statActivities" onclick="editStat('activities')">24</span></div>
+    <div id="adminStatus" class="mt-2"></div>
   </div></div>
-  <div class="col-lg-8"><div id="SWC" class="sw-wrap"><div class="swiper hs" id="HSW"><div class="swiper-wrapper" id="SWWR"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div><div class="gc" id="MC"></div></div>
+  
+  <!-- Dynamic Content Area -->
+  <div class="col-lg-8"><div class="swiper-container sw-wrap mb-3" style="border-radius:var(--r);overflow:hidden"><div class="swiper" id="mainSlider"><div class="swiper-wrapper" id="sliderWrapper"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div><div class="glass-card" id="mainContent"></div></div>
 </div></div>
 
-<button class="menu-fab" id="menuFab" onclick="openDrawer()"><i class="fas fa-bars"></i></button>
+<!-- Mobile Drawer -->
+<button class="menu-fab" onclick="openDrawer()"><i class="fas fa-bars"></i></button>
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawer"><div class="drawer-logo d-flex gap-2 align-center mb-3"><img src="logo.jpg" style="width:45px;border-radius:50%" onerror="this.src='https://placehold.co/45x45'"><span class="text-white fw-bold">القائمة</span></div>
-  <button class="drawer-item" onclick="go('home');closeDrawer()"><i class="fas fa-home"></i> الرئيسية</button>
-  <button class="drawer-item" onclick="go('posts');closeDrawer()"><i class="fas fa-newspaper"></i> المنشورات</button>
-  <button class="drawer-item" onclick="go('students');closeDrawer()"><i class="fas fa-graduation-cap"></i> النتائج</button>
-  <button class="drawer-item" onclick="go('gallery');closeDrawer()"><i class="fas fa-images"></i> المعرض</button>
-  <button class="drawer-item" onclick="go('library');closeDrawer()"><i class="fas fa-book"></i> المكتبة</button>
-  <button class="drawer-item" onclick="doAdmin();closeDrawer()"><i class="fas fa-lock"></i> <span id="drawerAdminLabel">الإدارة</span></button>
+<div class="drawer" id="drawerMenu"><div class="d-flex gap-2 mb-4 pb-2 border-bottom border-white-20"><img src="logo.jpg" style="width:45px;border-radius:50%" onerror="this.src='https://placehold.co/45x45'"><span class="text-white fw-bold">القائمة</span></div>
+  <button class="drawer-item" onclick="navigateTo('home');closeDrawer()"><i class="fas fa-home"></i> الرئيسية</button>
+  <button class="drawer-item" onclick="navigateTo('posts');closeDrawer()"><i class="fas fa-newspaper"></i> المنشورات</button>
+  <button class="drawer-item" onclick="navigateTo('results');closeDrawer()"><i class="fas fa-graduation-cap"></i> النتائج</button>
+  <button class="drawer-item" onclick="navigateTo('gallery');closeDrawer()"><i class="fas fa-images"></i> المعرض</button>
+  <button class="drawer-item" onclick="navigateTo('library');closeDrawer()"><i class="fas fa-book"></i> المكتبة</button>
+  <button class="drawer-item" onclick="toggleAdmin();closeDrawer()"><i class="fas fa-lock"></i> <span id="drawerAdminText">الإدارة</span></button>
 </div>
 
-<nav class="mn"><button class="mni" onclick="go('home')"><i class="fas fa-home"></i>الرئيسية</button><button class="mni" onclick="go('posts')"><i class="fas fa-newspaper"></i>منشورات</button><button class="mni" onclick="go('students')"><i class="fas fa-search"></i>النتائج</button><button class="mni" onclick="go('gallery')"><i class="fas fa-images"></i>المعرض</button><button class="mni" onclick="openDrawer()"><i class="fas fa-bars"></i>القائمة</button></nav>
-<footer class="py-3 mt-4 bg-dark text-white text-center small"><div class="container">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</div></footer>
+<!-- Mobile Bottom Nav -->
+<nav class="mobile-nav"><button class="mobile-nav-item" onclick="navigateTo('home')"><i class="fas fa-home"></i>الرئيسية</button><button class="mobile-nav-item" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i>منشورات</button><button class="mobile-nav-item" onclick="navigateTo('results')"><i class="fas fa-search"></i>نتائج</button><button class="mobile-nav-item" onclick="navigateTo('gallery')"><i class="fas fa-images"></i>معرض</button><button class="mobile-nav-item" onclick="openDrawer()"><i class="fas fa-bars"></i>القائمة</button></nav>
 
+<footer class="py-3 mt-4 bg-dark text-white text-center small"><div class="container">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات | جميع الحقوق محفوظة</div></footer>
+
+<!-- Firebase & Libraries -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <script>
-// Firebase Config
-const firebaseConfig = {
+// ============================================================
+// CONFIGURATION
+// ============================================================
+const FIREBASE_CONFIG = {
   apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
   authDomain: "saad-school-portal.firebaseapp.com",
   databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
@@ -233,274 +277,977 @@ const firebaseConfig = {
   messagingSenderId: "1085838136773",
   appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
 };
-firebase.initializeApp(firebaseConfig);
+
+firebase.initializeApp(FIREBASE_CONFIG);
 const db = firebase.database();
 
-// Global Vars
-const CLD_CLOUD = 'dyo4ff7ha';
-const CLD_PRESET_RAW = 'school_raw';
-const SECRET_KEY = "YWJ1c2FiZXIxMjM=";
-let isAdmin = false, swiperInst = null, activeFilter = 'all', filesCache = {};
-let statsData = { studentsCount: 1250, teachersCount: 85, activitiesCount: 24 };
-let uploadMode = 'file'; // file, youtube, vimeo
-let selectedFile = null;
+const CLOUDINARY_CLOUD = 'dyo4ff7ha';
+const CLOUDINARY_PRESET = 'school_raw';
+const ADMIN_PASSWORD = "YWJ1c2FiZXIxMjM="; // abusaber123
 
-const GL = {
+// Global variables
+let isAdmin = false;
+let currentSection = 'home';
+let swiperInstance = null;
+let postsCache = [];
+let filesCache = {};
+let activePostTab = 'all';
+let pendingFiles = [];
+let tickerAnimation = null;
+let tickerPaused = false;
+
+// Grades mapping
+const GRADES = {
   p3:'الصف الثالث الابتدائي', p4:'الصف الرابع الابتدائي', p5:'الصف الخامس الابتدائي',
   p6:'الصف السادس الابتدائي', m1:'الصف الأول الإعدادي', m2:'الصف الثاني الإعدادي',
   m3:'الصف الثالث الإعدادي', s1:'الصف الأول الثانوي', s2:'الصف الثاني الثانوي'
 };
 
-// Helper Functions
-const esc = t => { const d=document.createElement('div'); d.appendChild(document.createTextNode(t||'')); return d.innerHTML; };
-const toast = (msg, type='i', dur=3000) => {
-  const c=document.getElementById('TC'); if(!c) return;
-  const t=document.createElement('div'); t.className=`ti2 ${type}`;
-  t.innerHTML=`<i class="fas ${type==='s'?'fa-check-circle':type==='e'?'fa-times-circle':'fa-info-circle'}"></i><span>${msg}</span>`;
-  c.appendChild(t); setTimeout(()=>{t.style.animation='tout .3s forwards'; setTimeout(()=>t.remove(),300);},dur);
+// Helper functions
+const escapeHtml = (text) => { const div = document.createElement('div'); div.appendChild(document.createTextNode(text || '')); return div.innerHTML; };
+const showToast = (msg, type = 'info', duration = 3000) => {
+  const container = document.getElementById('toastContainer');
+  if(!container) return;
+  const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+  const toast = document.createElement('div');
+  toast.className = `ti2 ${type}`;
+  toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${msg}</span>`;
+  toast.style.cssText = 'background:var(--pr);color:white;padding:10px 18px;border-radius:12px;font-size:.8rem;font-weight:600;box-shadow:0 4px 15px rgba(0,0,0,.2);border-right:4px solid var(--gd);animation:tin .3s ease;margin-bottom:5px';
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.animation = 'tout .3s ease forwards'; setTimeout(() => toast.remove(), 300); }, duration);
 };
-const isImg = u => /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(u||'');
-const isVid = u => /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(u||'');
-const isPdf = u => /\.pdf(\?|$)/i.test(u||'');
-const isYouTube = u => u && (u.includes('youtube.com/watch') || u.includes('youtu.be/'));
-const isVimeo = u => u && u.includes('vimeo.com/');
-const getYouTubeId = url => { const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/); return match ? match[1] : null; };
-const getVimeoId = url => { const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/); return match ? match[1] : null; };
 
-// Stats Management
-function loadStats(){
-  db.ref('school_stats').once('value', snap => { if(snap.exists()) statsData = snap.val();
-    document.getElementById('CS').innerText = statsData.studentsCount;
-    document.getElementById('CT').innerText = statsData.teachersCount;
-    document.getElementById('CA').innerText = statsData.activitiesCount;
+const formatFileSize = (bytes) => {
+  if(!bytes) return '';
+  if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(2) + ' MB';
+};
+
+const isImageUrl = (url) => /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url || '');
+const isVideoUrl = (url) => /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url || '');
+const isPdfUrl = (url) => /\.pdf(\?|$)/i.test(url || '');
+const isYouTubeUrl = (url) => url && (url.includes('youtube.com/watch') || url.includes('youtu.be/'));
+const isVimeoUrl = (url) => url && url.includes('vimeo.com/');
+const isGoogleDriveUrl = (url) => url && (url.includes('drive.google.com') || url.includes('docs.google.com'));
+
+const getYouTubeId = (url) => { const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/); return match ? match[1] : null; };
+const getVimeoId = (url) => { const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/); return match ? match[1] : null; };
+const getGoogleDriveId = (url) => { const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/); return match ? match[1] : null; };
+
+const getEmbedHtml = (url) => {
+  if(isYouTubeUrl(url)){ const id = getYouTubeId(url); if(id) return `<div class="link-embed"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`; }
+  if(isVimeoUrl(url)){ const id = getVimeoId(url); if(id) return `<div class="link-embed"><iframe src="https://player.vimeo.com/video/${id}" allowfullscreen></iframe></div>`; }
+  if(isGoogleDriveUrl(url)){ const id = getGoogleDriveId(url); if(id) return `<div class="link-embed"><iframe src="https://drive.google.com/file/d/${id}/preview" allowfullscreen></iframe></div>`; }
+  if(isImageUrl(url)) return `<img src="${url}" loading="lazy" style="max-width:100%;border-radius:12px">`;
+  if(isVideoUrl(url)) return `<video controls src="${url}" style="max-width:100%;border-radius:12px"></video>`;
+  if(isPdfUrl(url)) return `<div class="link-embed"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"></iframe></div>`;
+  return `<a href="${url}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fas fa-external-link-alt"></i> فتح الرابط</a>`;
+};
+
+// ============================================================
+// SLIDER MANAGEMENT (Linked to latest media from all tabs)
+// ============================================================
+async function updateSliderFromLatestMedia() {
+  const sections = ['posts', 'gallery_section', 'library_section', 'art_section'];
+  let allMedia = [];
+  
+  for(const section of sections){
+    const snapshot = await db.ref(section).orderByChild('timestamp').limitToLast(10).once('value');
+    if(snapshot.exists()){
+      snapshot.forEach(child => {
+        const data = child.val();
+        let mediaUrl = data.mediaUrl || data.url;
+        if(mediaUrl && (isImageUrl(mediaUrl) || isVideoUrl(mediaUrl))){
+          allMedia.push({ url: mediaUrl, caption: data.title || data.content?.substring(0,50) || 'محتوى جديد', timestamp: data.timestamp || 0 });
+        }
+      });
+    }
+  }
+  
+  allMedia.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+  const topMedia = allMedia.slice(0, 8);
+  
+  if(topMedia.length === 0){
+    topMedia.push({ url: 'https://picsum.photos/id/20/1200/400', caption: 'مرحباً في بوابة المدرسة الرقمية', timestamp: Date.now() });
+    topMedia.push({ url: 'https://picsum.photos/id/100/1200/400', caption: 'نظام تعليمي متكامل', timestamp: Date.now() });
+  }
+  
+  const wrapper = document.getElementById('sliderWrapper');
+  if(wrapper){
+    wrapper.innerHTML = topMedia.map(m => `
+      <div class="swiper-slide" style="position:relative">
+        <img src="${m.url}" style="width:100%;height:250px;object-fit:cover" loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
+        <div class="sc2" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;padding:15px;font-weight:700">${escapeHtml(m.caption)}</div>
+      </div>
+    `).join('');
+  }
+  
+  if(swiperInstance) swiperInstance.destroy();
+  swiperInstance = new Swiper('#mainSlider', {
+    loop: topMedia.length > 1,
+    autoplay: { delay: 5000, disableOnInteraction: false },
+    effect: 'fade',
+    pagination: { el: '.swiper-pagination', clickable: true },
+    navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' }
   });
 }
-function editStat(stat){
-  if(!isAdmin){ toast('متاح للإدارة فقط','w'); return; }
-  Swal.fire({title:'تعديل الإحصائية',input:'number',inputValue:statsData[stat],showCancelButton:true,confirmButtonText:'حفظ'}).then(res=>{
-    if(res.isConfirmed && res.value){
-      statsData[stat] = parseInt(res.value);
-      db.ref('school_stats').set(statsData);
-      document.getElementById(stat==='studentsCount'?'CS':stat==='teachersCount'?'CT':'CA').innerText = statsData[stat];
-      toast('تم التحديث','s');
+
+// ============================================================
+// NEWS TICKER MANAGEMENT
+// ============================================================
+let tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة الآن', 'نظام المنشورات الجديد تم تفعيله'];
+function loadTicker(){
+  db.ref('ticker_items').once('value', snapshot => {
+    if(snapshot.exists()){
+      const items = [];
+      snapshot.forEach(child => items.push(child.val().text));
+      if(items.length) tickerItems = items;
+    }
+    renderTicker();
+  });
+}
+function renderTicker(){
+  const container = document.getElementById('tickerScroll');
+  if(!container) return;
+  const html = tickerItems.map(item => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(item)}</span>`).join('');
+  container.innerHTML = html + html;
+}
+function pauseTicker(){ const scroll = document.querySelector('.ticker-scroll'); if(scroll) scroll.style.animationPlayState = 'paused'; tickerPaused = true; }
+function resumeTicker(){ const scroll = document.querySelector('.ticker-scroll'); if(scroll) scroll.style.animationPlayState = 'running'; tickerPaused = false; }
+function addTickerItem(text){ db.ref('ticker_items').push({ text: text }).then(() => loadTicker()); }
+function updateTickerItem(id, text){ db.ref(`ticker_items/${id}`).update({ text: text }).then(() => loadTicker()); }
+function deleteTickerItem(id){ db.ref(`ticker_items/${id}`).remove().then(() => loadTicker()); }
+
+// ============================================================
+// POSTS SYSTEM (Facebook-like with tab selection)
+// ============================================================
+function showPostCreator(){
+  if(!isAdmin) return '';
+  return `
+    <div class="post-creator">
+      <div class="post-creator-header">
+        <div class="post-creator-avatar"><i class="fas fa-user-shield"></i></div>
+        <div class="post-creator-input" onclick="openPostModal()">ما الذي تريد نشره؟</div>
+      </div>
+      <div class="post-creator-actions">
+        <button class="post-action-type" onclick="openPostModal('text')"><i class="fas fa-pen-fancy"></i> نص</button>
+        <button class="post-action-type" onclick="openPostModal('media')"><i class="fas fa-image"></i> صورة/فيديو</button>
+        <button class="post-action-type" onclick="openPostModal('link')"><i class="fas fa-link"></i> رابط</button>
+        <button class="post-action-type" onclick="openPostModal('file')"><i class="fas fa-file"></i> ملف</button>
+      </div>
+    </div>
+  `;
+}
+
+function openPostModal(type = 'text'){
+  Swal.fire({
+    title: 'إنشاء منشور جديد',
+    html: `
+      <textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="3" style="text-align:right"></textarea>
+      <div class="mt-2" id="postMediaArea" style="display:${type === 'text' ? 'none' : 'block'}">
+        <input type="url" id="postMediaUrl" class="form-control mb-2" placeholder="رابط الوسائط (YouTube, Google Drive, صورة, فيديو...)">
+        <div id="postFileArea" style="display:${type === 'file' ? 'block' : 'none'}">
+          <div class="upload-area" onclick="document.getElementById('postFileInput').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>اختر ملفاً للرفع</p>
+            <small class="text-muted">حد أقصى 200MB لأي نوع ملف</small>
+          </div>
+          <input type="file" id="postFileInput" style="display:none" onchange="handlePostFileSelect(this)">
+          <div id="postFilePreview"></div>
+        </div>
+      </div>
+      <div class="mt-2">
+        <label class="fw-bold small">نشر في:</label>
+        <select id="postTab" class="form-select mt-1">
+          <option value="general">عام</option>
+          <option value="gallery_section">المعرض الرقمي</option>
+          <option value="library_section">المكتبة الرقمية</option>
+          <option value="art_section">التربية الفنية</option>
+        </select>
+      </div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'نشر',
+    cancelButtonText: 'إلغاء',
+    preConfirm: () => {
+      const content = document.getElementById('postContent').value.trim();
+      if(!content && !window.selectedPostFile && !document.getElementById('postMediaUrl')?.value.trim()){
+        Swal.showValidationMessage('يرجى إدخال محتوى أو اختيار ملف/رابط');
+        return false;
+      }
+      return {
+        content: content,
+        mediaUrl: document.getElementById('postMediaUrl')?.value.trim(),
+        tab: document.getElementById('postTab')?.value,
+        file: window.selectedPostFile
+      };
+    }
+  }).then(async (result) => {
+    if(result.isConfirmed){
+      const { content, mediaUrl, tab, file } = result.value;
+      let finalUrl = mediaUrl;
+      let fileData = null;
+      
+      if(file){
+        showToast('جاري رفع الملف...', 'info');
+        const uploaded = await uploadFileToCloudinary(file);
+        if(uploaded) finalUrl = uploaded;
+        else { showToast('فشل رفع الملف', 'error'); return; }
+      }
+      
+      const postData = {
+        content: content,
+        mediaUrl: finalUrl || null,
+        author: 'إدارة المدرسة',
+        timestamp: Date.now(),
+        date: new Date().toLocaleDateString('ar-EG'),
+        time: new Date().toLocaleTimeString('ar-EG'),
+        tab: tab || 'general',
+        likes: {},
+        comments: [],
+        fileSize: file?.size || null,
+        fileName: file?.name || null
+      };
+      
+      if(tab && tab !== 'general'){
+        await db.ref(tab).push({
+          title: content.substring(0,50),
+          description: content,
+          url: finalUrl,
+          timestamp: Date.now(),
+          uploadedAt: new Date().toLocaleDateString('ar-EG'),
+          type: file ? (isVideoUrl(finalUrl) ? 'video' : 'image') : 'link'
+        });
+      }
+      
+      await db.ref('posts').push(postData);
+      showToast('تم نشر المنشور بنجاح', 'success');
+      window.selectedPostFile = null;
+      if(currentSection === 'posts') loadPosts();
+      updateSliderFromLatestMedia();
     }
   });
 }
 
-// Posts System
-function showPosts(){
-  hideHero();
-  document.getElementById('MC').innerHTML = `<div class="fi"><div class="d-flex justify-content-between align-items-center mb-3"><h4 class="fw-bold mb-0"><i class="fas fa-newspaper"></i> المنشورات</h4>${isAdmin ? '<button class="btn bg btn-sm" onclick="showCreatePost()"><i class="fas fa-plus"></i> جديد</button>' : ''}</div><div id="postsList"></div></div>`;
-  loadPosts();
+let selectedPostFile = null;
+function handlePostFileSelect(input){
+  const file = input.files[0];
+  if(!file) return;
+  if(file.size > 200 * 1024 * 1024){
+    showToast('حجم الملف يتجاوز 200MB', 'error');
+    return;
+  }
+  selectedPostFile = file;
+  document.getElementById('postFilePreview').innerHTML = `<div class="alert alert-success mt-2">✅ تم اختيار: ${file.name} (${formatFileSize(file.size)})</div>`;
 }
+
+async function uploadFileToCloudinary(file){
+  return new Promise((resolve, reject) => {
+    const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
+    const resourceType = isVideo ? 'video' : 'image';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', 'school_posts');
+    
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      if(xhr.status === 200){
+        const res = JSON.parse(xhr.responseText);
+        resolve(res.secure_url);
+      } else reject(null);
+    };
+    xhr.onerror = () => reject(null);
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`);
+    xhr.send(fd);
+  });
+}
+
 function loadPosts(){
   const container = document.getElementById('postsList');
   if(!container) return;
   container.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary"></div></div>';
-  db.ref('posts').orderByChild('timestamp').once('value', snap => {
+  
+  db.ref('posts').orderByChild('timestamp').once('value', snapshot => {
     let posts = [];
-    if(snap.exists()) snap.forEach(c => posts.push({ id:c.key, ...c.val() }));
-    posts.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-    if(!posts.length){ container.innerHTML = '<div class="text-center p-5"><div class="esi">📝</div><p>لا توجد منشورات</p></div>'; return; }
-    container.innerHTML = posts.map(p => renderPostCard(p)).join('');
-    posts.forEach(p => { document.getElementById(`likeBtn-${p.id}`)?.addEventListener('click', ()=>likePost(p.id)); });
-    document.getElementById('postCount') && (document.getElementById('postCount').innerText = posts.length);
+    if(snapshot.exists()) snapshot.forEach(child => posts.push({ id: child.key, ...child.val() }));
+    posts.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+    postsCache = posts;
+    document.getElementById('postsCount') && (document.getElementById('postsCount').innerText = posts.length);
+    
+    if(posts.length === 0){
+      container.innerHTML = '<div class="text-center p-5"><div class="esi">📝</div><p>لا توجد منشورات بعد</p></div>';
+      return;
+    }
+    
+    container.innerHTML = posts.map(post => renderPostCard(post)).join('');
+    posts.forEach(post => {
+      const likeBtn = document.getElementById(`likeBtn-${post.id}`);
+      if(likeBtn) likeBtn.onclick = () => likePost(post.id);
+    });
   });
 }
-function renderPostCard(p){
-  let mediaHtml = '';
-  if(p.mediaUrl){
-    if(isImg(p.mediaUrl)) mediaHtml = `<div class="post-media"><img src="${p.mediaUrl}" loading="lazy"></div>`;
-    else if(isVid(p.mediaUrl)) mediaHtml = `<div class="post-media"><video controls src="${p.mediaUrl}"></video></div>`;
-    else if(isYouTube(p.mediaUrl)){ const id = getYouTubeId(p.mediaUrl); if(id) mediaHtml = `<div class="youtube-embed"><iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe></div>`; }
-    else if(isVimeo(p.mediaUrl)){ const id = getVimeoId(p.mediaUrl); if(id) mediaHtml = `<div class="youtube-embed"><iframe src="https://player.vimeo.com/video/${id}" frameborder="0" allowfullscreen></iframe></div>`; }
-  }
-  const visitorId = sessionStorage.getItem('visitorId') || 'guest';
-  const isLiked = p.likes && p.likes[visitorId];
-  const likesCount = p.likes ? Object.keys(p.likes).length : 0;
-  const commentsCount = p.comments ? p.comments.length : 0;
-  const commentsHtml = (p.comments || []).map(c => `<div class="post-comment"><strong>${esc(c.name)}</strong><p class="mb-0 small">${esc(c.text)}</p><small class="text-muted">${c.date||''}</small></div>`).join('');
-  return `<div class="post-card" data-aos="fade-up"><div class="post-header"><div class="post-avatar"><i class="fas fa-user"></i></div><div><div class="post-author">${esc(p.author||'إدارة المدرسة')}</div><div class="post-date">${p.date||new Date(p.timestamp).toLocaleDateString('ar-EG')}</div></div></div><div class="post-content">${esc(p.content)}</div>${mediaHtml}<div class="post-actions"><button class="post-action-btn ${isLiked ? 'liked' : ''}" id="likeBtn-${p.id}"><i class="fas fa-thumbs-up"></i> <span>${likesCount}</span></button><button class="post-action-btn" onclick="toggleComments('${p.id}')"><i class="fas fa-comment"></i> ${commentsCount}</button>${isAdmin ? `<button class="post-action-btn text-danger" onclick="deletePost('${p.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}</div><div id="comments-${p.id}" style="display:none" class="post-comments"><div class="mb-2">${commentsHtml}</div><div class="input-group input-group-sm"><input type="text" id="commentInput-${p.id}" class="form-control" placeholder="أضف تعليق..."><button class="btn bg btn-sm" onclick="addComment('${p.id}')"><i class="fas fa-paper-plane"></i></button></div></div></div>`;
-}
-function toggleComments(id){ const sec = document.getElementById(`comments-${id}`); if(sec) sec.style.display = sec.style.display === 'none' ? 'block' : 'none'; }
-function likePost(id){
-  const visitorId = sessionStorage.getItem('visitorId') || 'guest_' + Date.now();
-  if(!sessionStorage.getItem('visitorId')) sessionStorage.setItem('visitorId', visitorId);
-  const likeRef = db.ref(`posts/${id}/likes/${visitorId}`);
-  likeRef.once('value', snap => { if(snap.exists()) likeRef.remove(); else likeRef.set(true); loadPosts(); });
-}
-function addComment(id){
-  const input = document.getElementById(`commentInput-${id}`); const text = input?.value?.trim();
-  if(!text) return;
-  db.ref(`posts/${id}/comments`).push({ name: isAdmin ? 'الإدارة' : 'زائر', text: text, date: new Date().toLocaleTimeString('ar-EG') }).then(() => { if(input) input.value = ''; loadPosts(); });
-}
-function showCreatePost(){
-  Swal.fire({ title: 'منشور جديد', html: `<textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="4"></textarea><input type="url" id="postMedia" class="form-control mt-2" placeholder="رابط وسائط (صورة/فيديو/يوتيوب)">`, showCancelButton: true, confirmButtonText: 'نشر', preConfirm: () => ({ content: document.getElementById('postContent').value.trim(), mediaUrl: document.getElementById('postMedia').value.trim() }) }).then(res => {
-    if(res.isConfirmed && res.value.content){
-      db.ref('posts').push({ content: res.value.content, mediaUrl: res.value.mediaUrl || null, author: isAdmin ? 'إدارة المدرسة' : 'معلم', timestamp: Date.now(), date: new Date().toLocaleDateString('ar-EG'), likes: {}, comments: [] }).then(() => { toast('تم النشر','s'); showPosts(); });
-    } else toast('يرجى كتابة المحتوى','w');
-  });
-}
-function deletePost(id){ Swal.fire({title:'حذف المنشور?',icon:'warning',showCancelButton:true,confirmButtonText:'حذف'}).then(res=>{ if(res.isConfirmed) db.ref(`posts/${id}`).remove().then(()=>{ toast('تم الحذف','i'); showPosts(); }); }); }
 
-// Students & Results Management
-function showStudents(){
-  hideHero();
-  document.getElementById('MC').innerHTML = `<div class="fi"><div class="d-flex justify-content-between mb-3"><h4><i class="fas fa-user-graduate"></i> شئون الطلاب</h4>${isAdmin ? '<button class="btn bg btn-sm" onclick="showResultsManager()"><i class="fas fa-chart-line"></i> إدارة النتائج</button>' : ''}</div><div class="p-3 rounded-4 mb-3 bg-light"><div class="row g-2"><div class="col-md-6"><select id="GS" class="form-select">${Object.entries(GL).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></div><div class="col-md-6"><input type="text" id="SI" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')doSearch()"></div></div></div><button class="btn btn-primary w-100 mb-3" onclick="doSearch()"><i class="fas fa-search"></i> استعلام</button><div id="RD"></div></div>`;
+function renderPostCard(post){
+  const visitorId = sessionStorage.getItem('visitorId') || 'guest';
+  const isLiked = post.likes && post.likes[visitorId];
+  const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+  const commentsCount = post.comments ? post.comments.length : 0;
+  
+  let mediaHtml = '';
+  if(post.mediaUrl) mediaHtml = `<div class="post-media">${getEmbedHtml(post.mediaUrl)}</div>`;
+  if(post.fileName) mediaHtml += `<div class="small text-muted mt-1"><i class="fas fa-paperclip"></i> ${escapeHtml(post.fileName)} (${formatFileSize(post.fileSize)})</div>`;
+  
+  const tabNames = { general: 'عام', gallery_section: 'المعرض', library_section: 'المكتبة', art_section: 'التربية الفنية' };
+  const commentsHtml = (post.comments || []).map(c => `
+    <div class="comment-item">
+      <div class="d-flex justify-content-between">
+        <span class="comment-name">${escapeHtml(c.name)}</span>
+        ${isAdmin ? `<button class="btn btn-sm btn-link text-danger p-0" onclick="deleteComment('${post.id}','${c.id}')"><i class="fas fa-trash-alt"></i></button>` : ''}
+      </div>
+      <div class="comment-text">${escapeHtml(c.text)}</div>
+      <div class="comment-date">${c.date || ''}</div>
+    </div>
+  `).join('');
+  
+  return `
+    <div class="post-card" data-aos="fade-up">
+      <div class="post-header">
+        <div class="post-avatar"><i class="fas fa-school"></i></div>
+        <div class="post-author-info">
+          <div class="post-author-name">${escapeHtml(post.author || 'إدارة المدرسة')} <span class="post-tab-badge">${tabNames[post.tab] || 'عام'}</span></div>
+          <div class="post-date">${post.date} • ${post.time || ''}</div>
+        </div>
+      </div>
+      <div class="post-content">${escapeHtml(post.content)}</div>
+      ${mediaHtml}
+      <div class="post-stats">
+        <span onclick="document.getElementById('likesList-${post.id}').style.display='block'"><i class="fas fa-thumbs-up"></i> ${likesCount}</span>
+        <span onclick="document.getElementById('comments-${post.id}').style.display='block'"><i class="fas fa-comment"></i> ${commentsCount} تعليق</span>
+      </div>
+      <div class="post-actions">
+        <button class="post-action-btn ${isLiked ? 'liked' : ''}" id="likeBtn-${post.id}"><i class="fas fa-thumbs-up"></i> إعجاب</button>
+        <button class="post-action-btn" onclick="toggleComments('${post.id}')"><i class="fas fa-comment"></i> تعليق</button>
+        ${isAdmin ? `<button class="post-action-btn text-danger" onclick="deletePost('${post.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
+      </div>
+      <div id="comments-${post.id}" style="display:none" class="comments-section">
+        <div class="mb-2">${commentsHtml}</div>
+        <div class="input-group input-group-sm mt-2">
+          <input type="text" id="commentInput-${post.id}" class="form-control" placeholder="اكتب تعليقك..." maxlength="300">
+          <button class="btn btn-primary btn-sm" onclick="addComment('${post.id}')"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  `;
 }
-function doSearch(){
-  const grade = document.getElementById('GS')?.value, seat = document.getElementById('SI')?.value?.trim();
-  if(!seat){ toast('أدخل رقم الجلوس','w'); return; }
-  const rd = document.getElementById('RD'); rd.innerHTML = '<div class="text-center p-5"><div class="spinner-border"></div></div>';
-  db.ref(`results/${grade}/${seat}`).once('value', snap => {
-    if(!snap.exists()){ rd.innerHTML = `<div class="alert alert-danger">رقم الجلوس ${seat} غير مسجل</div>`; return; }
-    const d = snap.val(); let subHtml = '';
-    if(d.subjects) Object.entries(d.subjects).forEach(([sub,score]) => { subHtml += `<div class="si2"><span>${esc(sub)}</span><span class="fw-bold">${score}</span></div>`; });
-    rd.innerHTML = `<div class="rc p-4" style="background:linear-gradient(135deg,var(--pr),#1a4070);color:white;border-radius:var(--r)"><div class="text-center"><i class="fas fa-graduation-cap fa-3x mb-2"></i><h3>${esc(d.name)}</h3><span class="badge bg-warning text-dark">${GL[grade]}</span><div>رقم الجلوس: ${seat}</div></div><div class="my-3">${subHtml}</div><div class="row text-center"><div class="col-4"><div class="rsb">المجموع<br><strong>${d.total}</strong></div></div><div class="col-4"><div class="rsb">النسبة<br><strong>${d.percentage}%</strong></div></div><div class="col-4"><div class="rsb">التقدير<br><strong>${d.grade}</strong></div></div></div><button class="btn bg w-100 mt-3" onclick="exportStudentPDF(${JSON.stringify({name:d.name,grade,seat,subjects:d.subjects,total:d.total,percentage:d.percentage,gradeLabel:d.grade}).replace(/"/g,'&quot;')})"><i class="fas fa-file-pdf"></i> تحميل PDF</button></div>`;
+
+function toggleComments(postId){
+  const section = document.getElementById(`comments-${postId}`);
+  if(section) section.style.display = section.style.display === 'none' ? 'block' : 'none';
+}
+
+async function likePost(postId){
+  const visitorId = sessionStorage.getItem('visitorId') || 'user_' + Date.now();
+  if(!sessionStorage.getItem('visitorId')) sessionStorage.setItem('visitorId', visitorId);
+  const likeRef = db.ref(`posts/${postId}/likes/${visitorId}`);
+  const snapshot = await likeRef.once('value');
+  if(snapshot.exists()) await likeRef.remove();
+  else await likeRef.set(true);
+  loadPosts();
+}
+
+async function addComment(postId){
+  const input = document.getElementById(`commentInput-${postId}`);
+  const text = input?.value?.trim();
+  if(!text) return;
+  const commentRef = db.ref(`posts/${postId}/comments`).push();
+  await commentRef.set({
+    id: commentRef.key,
+    name: isAdmin ? 'إدارة المدرسة' : 'زائر',
+    text: text,
+    date: new Date().toLocaleString('ar-EG')
   });
+  if(input) input.value = '';
+  loadPosts();
 }
-function exportStudentPDF(data){
-  if(typeof data === 'string') data = JSON.parse(data);
-  toast('جاري إنشاء PDF...','i');
-  let subRows = '';
-  if(data.subjects) Object.entries(data.subjects).forEach(([sub,score]) => subRows += `<tr><td>${sub}</td><td>${score}</td></tr>`);
-  const card = document.getElementById('pdfCard'); card.innerHTML = `<div style="padding:20px"><h3>مدرسة سعد بن أبي وقاص</h3><h4>نتيجة الطالب</h4><p>الاسم: ${data.name}</p><p>الصف: ${GL[data.grade]}</p><p>رقم الجلوس: ${data.seat}</p><table border="1" cellpadding="5" style="width:100%"><tr><th>المادة</th><th>الدرجة</th></tr>${subRows}<tr><th>المجموع</th><th>${data.total}</th></tr><tr><th>النسبة</th><th>${data.percentage}%</th></tr><tr><th>التقدير</th><th>${data.gradeLabel}</th></tr></table></div>`;
-  html2canvas(card, {scale:2}).then(canvas => { const pdf = new jspdf.jsPDF(); const img = canvas.toDataURL('image/png'); pdf.addImage(img, 'PNG', 0, 0, 210, 297); pdf.save(`نتيجة_${data.name}.pdf`); toast('تم التحميل','s'); });
+
+async function deletePost(postId){
+  const result = await Swal.fire({ title: 'حذف المنشور؟', text: 'لا يمكن التراجع', icon: 'warning', showCancelButton: true, confirmButtonText: 'حذف' });
+  if(result.isConfirmed){
+    await db.ref(`posts/${postId}`).remove();
+    showToast('تم حذف المنشور', 'success');
+    loadPosts();
+    updateSliderFromLatestMedia();
+  }
 }
-function showResultsManager(){
-  hideHero();
-  document.getElementById('MC').innerHTML = `<div class="fi"><button class="btn btn-outline-secondary btn-sm mb-3" onclick="showStudents()"><i class="fas fa-arrow-right"></i> رجوع</button><div class="results-manager"><h5><i class="fas fa-upload"></i> رفع نتائج JSON</h5><div class="json-upload-area mt-3" onclick="document.getElementById('jsonFile').click()"><i class="fas fa-cloud-upload-alt fa-3x"></i><p>اضغط لرفع ملف JSON</p><small>يحتوي على نتائج الطلاب حسب الصف</small></div><input type="file" id="jsonFile" accept=".json" style="display:none" onchange="uploadJSON(this)"></div><div id="resultsList" class="mt-4"></div></div>`;
-  loadResultsList();
+
+async function deleteComment(postId, commentId){
+  const commentsRef = db.ref(`posts/${postId}/comments`);
+  const snapshot = await commentsRef.once('value');
+  snapshot.forEach(child => { if(child.val().id === commentId) child.ref.remove(); });
+  showToast('تم حذف التعليق', 'info');
+  loadPosts();
 }
-function uploadJSON(input){
-  const file = input.files[0]; if(!file) return;
+
+// ============================================================
+// RESULTS MANAGEMENT with JSON upload
+// ============================================================
+function showResultsSection(){
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `
+    <div class="fi">
+      <h4 class="fw-bold mb-3"><i class="fas fa-chart-line text-primary"></i> شئون الطلاب والنتائج</h4>
+      <div class="bg-light p-3 rounded-4 mb-3">
+        <div class="row g-2">
+          <div class="col-md-6"><select id="gradeSelect" class="form-select">${Object.entries(GRADES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></div>
+          <div class="col-md-6"><input type="text" id="seatInput" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')searchResult()"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary w-100 mb-3 py-2" onclick="searchResult()"><i class="fas fa-search"></i> استعلام عن النتيجة</button>
+      <div id="resultDisplay"></div>
+      ${isAdmin ? `
+        <div class="mt-4 pt-3 border-top">
+          <h5 class="fw-bold"><i class="fas fa-database"></i> إدارة النتائج</h5>
+          <div class="json-upload-area mt-2" onclick="document.getElementById('jsonUpload').click()">
+            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+            <p>رفع ملف JSON للنتائج</p>
+            <small class="text-muted">حدد الصف أولاً ثم ارفع الملف</small>
+          </div>
+          <input type="file" id="jsonUpload" accept=".json" style="display:none" onchange="uploadResultsJSON(this)">
+          <div id="resultsList" class="mt-3"></div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+  if(isAdmin) loadResultsList();
+}
+
+async function searchResult(){
+  const grade = document.getElementById('gradeSelect')?.value;
+  const seat = document.getElementById('seatInput')?.value?.trim();
+  const display = document.getElementById('resultDisplay');
+  if(!seat){ showToast('أدخل رقم الجلوس', 'warning'); return; }
+  display.innerHTML = '<div class="text-center p-5"><div class="spinner-border"></div></div>';
+  
+  const snapshot = await db.ref(`results/${grade}/${seat}`).once('value');
+  if(!snapshot.exists()){
+    display.innerHTML = `<div class="alert alert-danger text-center p-4"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس ${seat} غير مسجل</div>`;
+    return;
+  }
+  
+  const data = snapshot.val();
+  let subjectsHtml = '';
+  if(data.subjects){
+    Object.entries(data.subjects).forEach(([sub, score]) => {
+      subjectsHtml += `<div class="subject-row"><span><i class="fas fa-book me-2"></i>${escapeHtml(sub)}</span><span class="fw-bold">${score}</span></div>`;
+    });
+  }
+  
+  display.innerHTML = `
+    <div class="result-card">
+      <div class="text-center mb-3"><i class="fas fa-graduation-cap fa-3x"></i><h3 class="mt-2">${escapeHtml(data.name)}</h3><span class="badge bg-warning text-dark px-3 py-2">${GRADES[grade]}</span><div class="mt-1">رقم الجلوس: ${seat}</div></div>
+      ${subjectsHtml}
+      <div class="row g-2 mt-3 text-center">
+        <div class="col-4"><div class="stat-box"><small>المجموع</small><div class="h5 mb-0 fw-bold">${data.total || '-'}</div></div></div>
+        <div class="col-4"><div class="stat-box"><small>النسبة</small><div class="h5 mb-0 fw-bold">${data.percentage || '-'}%</div></div></div>
+        <div class="col-4"><div class="stat-box"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${data.grade || '-'}</div></div></div>
+      </div>
+      <button class="btn btn-light w-100 mt-3" onclick="exportResultPDF(${JSON.stringify({name:data.name,grade,seat,subjects:data.subjects,total:data.total,percentage:data.percentage,gradeLabel:data.grade}).replace(/"/g,'&quot;')})"><i class="fas fa-file-pdf me-2"></i>تحميل PDF</button>
+    </div>
+  `;
+}
+
+async function uploadResultsJSON(input){
+  const file = input.files[0];
+  if(!file) return;
+  const grade = document.getElementById('gradeSelect')?.value;
+  if(!grade){ showToast('اختر الصف أولاً', 'warning'); return; }
+  
   const reader = new FileReader();
-  reader.onload = e => {
+  reader.onload = async (e) => {
     try{
       const data = JSON.parse(e.target.result);
-      Swal.fire({title:'تأكيد الرفع',text:`سيتم استبدال النتائج الحالية لـ ${Object.keys(data).length} صف`,icon:'question',showCancelButton:true}).then(res => {
-        if(res.isConfirmed){
-          const updates = {};
-          for(const [grade, students] of Object.entries(data)) for(const [seat, info] of Object.entries(students)) updates[`results/${grade}/${seat}`] = info;
-          db.ref().update(updates).then(()=>{ toast('تم رفع النتائج','s'); loadResultsList(); });
-        }
-      });
-    }catch(err){ toast('ملف غير صالح','e'); }
+      const updates = {};
+      for(const [seat, student] of Object.entries(data)){
+        updates[`results/${grade}/${seat}`] = student;
+      }
+      await db.ref().update(updates);
+      showToast(`تم رفع نتائج ${GRADES[grade]} بنجاح`, 'success');
+      loadResultsList();
+    }catch(err){ showToast('ملف JSON غير صالح', 'error'); }
   };
   reader.readAsText(file);
+  input.value = '';
 }
-function loadResultsList(){
-  const container = document.getElementById('resultsList');
-  db.ref('results').once('value', snap => {
-    if(!snap.exists()){ container.innerHTML = '<p class="text-muted">لا توجد نتائج</p>'; return; }
-    let html = '<div class="list-group">';
-    snap.forEach(grade => { html += `<div class="list-group-item d-flex justify-content-between"><span>${GL[grade.key]||grade.key}</span><span class="badge bg-primary">${grade.numChildren()} طالب</span>${isAdmin ? '<button class="btn btn-sm btn-outline-danger" onclick="deleteGradeResults(\''+grade.key+'\')"><i class="fas fa-trash"></i></button>' : ''}</div>`; });
-    html += '</div>'; container.innerHTML = html;
-  });
-}
-function deleteGradeResults(grade){ Swal.fire({title:'حذف النتائج؟',text:`حذف نتائج ${GL[grade]}`,icon:'warning',showCancelButton:true}).then(res=>{ if(res.isConfirmed) db.ref(`results/${grade}`).remove().then(()=>{ toast('تم الحذف','i'); loadResultsList(); }); }); }
 
-// Files Gallery System (with YouTube/Vimeo support and size limits)
-function showFiles(section, title){
-  hideHero(); activeFilter='all'; filesCache={};
-  document.getElementById('MC').innerHTML = `<div class="fi"><div class="d-flex justify-content-between"><h4>${title}</h4>${isAdmin ? `<button class="btn bg btn-sm" onclick="showUpload('${section}','${title}')"><i class="fas fa-upload"></i> رفع</button>` : ''}</div><div class="sfb mt-2"><div class="si"><i class="fas fa-search"></i><input type="text" id="FSI" placeholder="بحث..." oninput="renderFiles('${section}')"></div><div id="FBG"><button class="fb active" onclick="setFilter(this,'all')">الكل</button><button class="fb" onclick="setFilter(this,'img')">صور</button><button class="fb" onclick="setFilter(this,'vid')">فيديو</button><button class="fb" onclick="setFilter(this,'youtube')"><i class="fab fa-youtube"></i> يوتيوب</button><button class="fb" onclick="setFilter(this,'pdf')">PDF</button></div><span id="FCB">0 ملف</span></div><div id="FG" class="row g-3"></div></div>`;
-  db.ref(section).orderByChild('timestamp').once('value', snap => { snap.forEach(c => filesCache[c.key]=c.val()); renderFiles(section); });
+async function loadResultsList(){
+  const container = document.getElementById('resultsList');
+  if(!container) return;
+  const snapshot = await db.ref('results').once('value');
+  if(!snapshot.exists()){ container.innerHTML = '<p class="text-muted text-center mt-3">لا توجد نتائج محفوظة</p>'; return; }
+  let html = '<div class="list-group mt-2">';
+  snapshot.forEach(grade => {
+    const gradeName = GRADES[grade.key] || grade.key;
+    html += `<div class="list-group-item d-flex justify-content-between align-items-center"><span><i class="fas fa-users me-2"></i>${gradeName}</span><span class="badge bg-primary">${grade.numChildren()} طالب</span><button class="btn btn-sm btn-outline-danger" onclick="deleteGradeResults('${grade.key}')"><i class="fas fa-trash"></i></button></div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
 }
-function setFilter(btn, f){ activeFilter=f; document.querySelectorAll('#FBG .fb').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderFiles(); }
-function renderFiles(section){
-  const grid = document.getElementById('FG'); if(!grid) return;
-  const q = (document.getElementById('FSI')?.value||'').toLowerCase();
-  const typeCheck = f => { if(f.isYouTube || isYouTube(f.url)) return 'youtube'; if(isImg(f.url)) return 'img'; if(isVid(f.url)) return 'vid'; if(isPdf(f.url)) return 'pdf'; return 'doc'; };
-  let items = Object.entries(filesCache).filter(([,f])=>(activeFilter==='all'||typeCheck(f)===activeFilter) && (!q||f.title?.toLowerCase().includes(q)));
-  items.sort((a,b)=> (b[1].timestamp||0) - (a[1].timestamp||0));
-  document.getElementById('FCB').innerText = `${items.length} ملف`;
-  if(!items.length){ grid.innerHTML = '<div class="col-12 text-center p-5"><div class="esi">📂</div><p>لا توجد ملفات</p></div>'; return; }
-  grid.innerHTML = items.map(([id,f])=>{
-    const url = f.url; const isYt = f.isYouTube || isYouTube(url); const ytId = isYt ? getYouTubeId(url) : null;
-    let media = '';
-    if(isYt && ytId) media = `<div class="fc-media" style="cursor:pointer" onclick="openMediaModal('https://www.youtube.com/embed/${ytId}','${f.title}','youtube')"><img src="https://img.youtube.com/vi/${ytId}/mqdefault.jpg"><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fab fa-youtube fa-2x"></i></div></div></div>`;
-    else if(isImg(url)) media = `<div class="fc-media" onclick="openMediaModal('${url}','${f.title}','img')"><img src="${url}" loading="lazy"><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-search-plus"></i></div></div></div>`;
-    else if(isVid(url)) media = `<div class="fc-media" onclick="openMediaModal('${url}','${f.title}','vid')"><video src="${url}" style="height:100%;width:100%;object-fit:cover"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;
-    else media = `<div class="fc-icon-wrap" style="height:150px;display:flex;align-items:center;justify-content:center"><i class="fas fa-file-pdf fa-4x text-danger"></i></div>`;
-    return `<div class="col-md-6"><div class="fc">${media}<div class="fc-body"><div class="fc-title">${esc(f.title)}</div><div class="fc-meta small text-muted">${f.uploadedAt||''}</div><div class="fc-actions">${isYt ? `<button class="fc-btn-primary" onclick="openMediaModal('https://www.youtube.com/embed/${ytId}','${f.title}','youtube')"><i class="fab fa-youtube"></i> تشغيل</button>` : isImg(url) ? `<button class="fc-btn-primary" onclick="openMediaModal('${url}','${f.title}','img')">عرض</button>` : isVid(url) ? `<button class="fc-btn-primary" onclick="openMediaModal('${url}','${f.title}','vid')">تشغيل</button>` : `<a href="${url}" target="_blank" class="fc-btn-primary">فتح</a>`}<a href="${url}" download class="fc-btn-icon"><i class="fas fa-download"></i></a>${isAdmin ? `<button class="fc-btn-icon text-danger" onclick="deleteFile('${section}','${id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div></div></div>`;
-  }).join('');
-}
-function openMediaModal(src, title, type){
-  let body = '';
-  if(type === 'youtube') body = `<div class="youtube-embed"><iframe src="${src}?autoplay=1" frameborder="0" allowfullscreen></iframe></div>`;
-  else if(type === 'img') body = `<img src="${src}" style="max-width:100%;max-height:80vh">`;
-  else if(type === 'vid') body = `<video controls autoplay src="${src}" style="max-width:100%;max-height:80vh"></video>`;
-  Swal.fire({ html: body, showConfirmButton: false, showCloseButton: true, width: '90%', padding: 0 });
-}
-function deleteFile(section, id){ Swal.fire({title:'حذف?',icon:'warning',showCancelButton:true}).then(res=>{ if(res.isConfirmed) db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i')); }); }
-function showUpload(section, title){
-  document.getElementById('MC').innerHTML = `<div class="fi"><button class="btn btn-outline-secondary btn-sm mb-3" onclick="showFiles('${section}','${title}')"><i class="fas fa-arrow-right"></i> رجوع</button><h5>رفع ملف جديد</h5><input type="text" id="UT" class="form-control mb-2" placeholder="العنوان"><textarea id="UD" class="form-control mb-2" rows="2" placeholder="وصف"></textarea><div class="btn-group mb-3"><button class="btn btn-sm btn-primary" onclick="setUploadMode('file')">📁 رفع ملف</button><button class="btn btn-sm btn-outline-danger" onclick="setUploadMode('youtube')"><i class="fab fa-youtube"></i> يوتيوب</button></div><div id="fileArea"><div class="uz" onclick="document.getElementById('ufile').click()"><i class="fas fa-cloud-upload-alt fa-3x"></i><p>اختر ملف (حد أقصى 10MB للصور/مستندات، 200MB للفيديو)</p></div><input type="file" id="ufile" style="display:none" onchange="handleFileSelect(this)"></div><div id="linkArea" style="display:none"><input type="url" id="videoLink" class="form-control" placeholder="رابط يوتيوب أو فيميو"></div><div class="up mt-2" id="upBar"><div class="upb" id="upFill"></div></div><button class="btn bg w-100 mt-3" onclick="processUpload('${section}','${title}')"><i class="fas fa-upload"></i> رفع</button></div>`;
-  setUploadMode('file'); window.selectedFile = null;
-}
-function setUploadMode(mode){ window.uploadMode = mode; document.getElementById('fileArea').style.display = mode==='file'?'block':'none'; document.getElementById('linkArea').style.display = mode==='file'?'none':'block'; }
-function handleFileSelect(input){ const file = input.files[0]; if(!file) return;
-  const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
-  const maxSize = isVideo ? 200 * 1024 * 1024 : 10 * 1024 * 1024;
-  if(file.size > maxSize){ toast(`حجم الملف يتجاوز ${maxSize/(1024*1024)}MB`,'e'); return; }
-  window.selectedFile = file; toast(`تم اختيار: ${file.name}`,'s');
-}
-async function processUpload(section, title){
-  const titleText = document.getElementById('UT')?.value.trim();
-  if(!titleText){ toast('أدخل عنواناً','w'); return; }
-  const desc = document.getElementById('UD')?.value.trim() || '';
-  if(window.uploadMode === 'file'){
-    if(!window.selectedFile){ toast('اختر ملفاً','w'); return; }
-    const file = window.selectedFile; const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
-    const resourceType = isVideo ? 'video' : 'image';
-    const btn = event.target; btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-    document.getElementById('upBar').style.display = 'block';
-    const fd = new FormData(); fd.append('file', file); fd.append('upload_preset', CLD_PRESET_RAW); fd.append('folder', `school/${section}`);
-    const xhr = new XMLHttpRequest();
-    xhr.upload.onprogress = e => { if(e.lengthComputable) document.getElementById('upFill').style.width = (e.loaded/e.total*100)+'%'; };
-    xhr.onload = () => { if(xhr.status===200){ const res = JSON.parse(xhr.responseText); const url = res.secure_url;
-      db.ref(section).push({ title:titleText, description:desc, url:url, timestamp:Date.now(), uploadedAt:new Date().toLocaleDateString('ar-EG'), comments:{} }).then(()=>{ toast('تم الرفع','s'); showFiles(section,title); });
-    } else { toast('فشل الرفع','e'); btn.disabled=false; btn.innerHTML='<i class="fas fa-upload"></i> رفع'; } };
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resourceType}/upload`);
-    xhr.send(fd);
-  } else {
-    const link = document.getElementById('videoLink')?.value.trim();
-    if(!link || (!isYouTube(link) && !isVimeo(link))){ toast('رابط يوتيوب أو فيميو غير صالح','w'); return; }
-    db.ref(section).push({ title:titleText, description:desc, url:link, isYouTube:isYouTube(link), isVimeo:isVimeo(link), timestamp:Date.now(), uploadedAt:new Date().toLocaleDateString('ar-EG') }).then(()=>{ toast('تم إضافة الرابط','s'); showFiles(section,title); });
+
+async function deleteGradeResults(grade){
+  const result = await Swal.fire({ title: 'حذف النتائج؟', text: `حذف نتائج ${GRADES[grade] || grade}`, icon: 'warning', showCancelButton: true });
+  if(result.isConfirmed){
+    await db.ref(`results/${grade}`).remove();
+    showToast('تم حذف النتائج', 'success');
+    loadResultsList();
   }
 }
 
-// News, Ticker, Home
-function showNews(){
-  hideHero();
-  document.getElementById('MC').innerHTML = `<div class="fi"><h4><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4><div id="newsList"></div></div>`;
-  db.ref('school_news').orderByChild('timestamp').once('value', snap => { let news=[]; snap.forEach(c=>news.unshift(c.val())); document.getElementById('newsList').innerHTML = news.map(n=>`<div class="nc p-3 mb-2 rounded-3 bg-white shadow-sm"><h6>${n.title}</h6><p>${n.body}</p><small>${n.dateStr}</small></div>`).join(''); });
+function exportResultPDF(data){
+  if(typeof data === 'string') data = JSON.parse(data);
+  showToast('جاري إنشاء PDF...', 'info');
+  let subjectsRows = '';
+  if(data.subjects) Object.entries(data.subjects).forEach(([sub,score]) => subjectsRows += `<tr><td>${sub}</td><td>${score}</td></tr>`);
+  
+  const container = document.getElementById('pdfExport');
+  container.innerHTML = `
+    <div style="padding:30px;font-family:Cairo">
+      <div style="text-align:center;margin-bottom:20px"><img src="logo.jpg" style="width:80px"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>نتيجة الطالب</p></div>
+      <table style="width:100%;border:1px solid #ddd;border-collapse:collapse">
+        <tr><td style="padding:10px;border:1px solid #ddd"><strong>الاسم</strong></td><td style="padding:10px;border:1px solid #ddd">${data.name}</td></tr>
+        <tr><td style="padding:10px;border:1px solid #ddd"><strong>الصف</strong></td><td style="padding:10px;border:1px solid #ddd">${GRADES[data.grade]}</td></tr>
+        <tr><td style="padding:10px;border:1px solid #ddd"><strong>رقم الجلوس</strong></td><td style="padding:10px;border:1px solid #ddd">${data.seat}</td></tr>
+      </table>
+      <h3 class="mt-3">الدرجات</h3>
+      <table style="width:100%;border:1px solid #ddd;border-collapse:collapse">${subjectsRows}<tr style="background:#f0f0f0"><td><strong>المجموع</strong></td><td><strong>${data.total}</strong></td></tr><tr><td><strong>النسبة</strong></td><td><strong>${data.percentage}%</strong></td></tr><tr><td><strong>التقدير</strong></td><td><strong>${data.gradeLabel}</strong></td></tr></table>
+      <div class="mt-4 text-muted text-center">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</div>
+    </div>
+  `;
+  
+  html2canvas(container.firstElementChild, { scale: 2 }).then(canvas => {
+    const pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const imgData = canvas.toDataURL('image/jpeg', 0.9);
+    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    pdf.save(`نتيجة_${data.name}.pdf`);
+    showToast('تم تحميل PDF بنجاح', 'success');
+  });
 }
-function showHome(){ showHero(); document.getElementById('MC').innerHTML = `<div class="fi text-center"><div class="gp m-auto mb-3" style="width:80px;height:80px;background:linear-gradient(135deg,var(--pr),var(--pr2));border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-school fa-2x text-white"></i></div><h2>مرحباً في البوابة الرقمية</h2><p class="text-muted">نظام متكامل للمدرسة والنتائج والمكتبة</p><div class="row g-3 mt-3"><div class="col-4"><div class="hsc"><div class="sn text-primary">${statsData.studentsCount}</div><small>طالب</small></div></div><div class="col-4"><div class="hsc"><div class="sn text-success">${statsData.teachersCount}</div><small>معلم</small></div></div><div class="col-4"><div class="hsc"><div class="sn" style="color:var(--gd)">${statsData.activitiesCount}</div><small>نشاط</small></div></div></div><div class="row g-2 mt-4"><div class="col-6 col-md-3"><div class="qc" onclick="go('posts')"><i class="fas fa-newspaper"></i><h6>منشورات</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('students')"><i class="fas fa-search"></i><h6>نتائج</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('gallery')"><i class="fas fa-images"></i><h6>معرض</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="go('library')"><i class="fas fa-book"></i><h6>مكتبة</h6></div></div></div></div>`; }
-function loadTicker(){ db.ref('ticker_news').once('value', snap => { const wr = document.getElementById('TKW'); if(!wr) return; let items = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص']; if(snap.exists()) snap.forEach(c=>items.push(c.val().text)); wr.innerHTML = items.map(t=>`<span class="ti">⭐ ${esc(t)}</span>`).join(''); }); }
-function loadSlider(){ const slides = [{url:'https://picsum.photos/id/20/1200/400', cap:'مدرستنا.. بيئة تعليمية متميزة'},{url:'https://picsum.photos/id/100/1200/400', cap:'نحو مستقبل رقمي أفضل'}]; const wr = document.getElementById('SWWR'); if(wr) wr.innerHTML = slides.map(s=>`<div class="swiper-slide"><img src="${s.url}"><div class="sc2">${s.cap}</div></div>`).join(''); if(swiperInst) swiperInst.destroy(); swiperInst = new Swiper('#HSW', {loop:true, autoplay:{delay:4000}, pagination:{el:'.swiper-pagination'}, navigation:{nextEl:'.swiper-button-next',prevEl:'.swiper-button-prev'}}); }
 
-// Admin & Navigation
-function doAdmin(){
-  if(isAdmin){ isAdmin=false; updateAdminUI(); toast('تم تسجيل الخروج','i'); return; }
-  Swal.fire({title:'دخول الإدارة',input:'password',inputLabel:'كلمة السر',showCancelButton:true}).then(res=>{ if(res.isConfirmed && btoa(res.value)===SECRET_KEY){ isAdmin=true; updateAdminUI(); toast('تم تفعيل الإدارة','s'); } else toast('كلمة سر غير صحيحة','e'); });
+// ============================================================
+// FILES SYSTEM (Gallery, Library, Art)
+// ============================================================
+let currentFilesSection = '';
+let currentFilesFilter = 'all';
+let currentFilesSearch = '';
+
+async function showFilesSection(section, title){
+  currentFilesSection = section;
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="fw-bold mb-0"><i class="fas ${section === 'gallery_section' ? 'fa-images' : section === 'library_section' ? 'fa-book' : 'fa-palette'} me-2"></i> ${title}</h4>
+        ${isAdmin ? `<button class="btn btn-primary btn-sm" onclick="openFileUploadModal('${section}')"><i class="fas fa-upload me-1"></i> رفع ملف</button>` : ''}
+      </div>
+      <div class="d-flex gap-2 mb-3 flex-wrap">
+        <div class="flex-grow-1 position-relative"><i class="fas fa-search position-absolute" style="right:12px;top:50%;transform:translateY(-50%);color:#aaa"></i><input type="text" id="fileSearch" class="form-control" placeholder="بحث..." style="padding-right:35px" oninput="filterFiles()"></div>
+        <div class="d-flex gap-1 flex-wrap" id="fileFilters"><button class="btn btn-sm btn-outline-primary active" onclick="setFileFilter('all')">الكل</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('image')"><i class="fas fa-image"></i> صور</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('video')"><i class="fas fa-video"></i> فيديو</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('link')"><i class="fas fa-link"></i> روابط</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('pdf')"><i class="fas fa-file-pdf"></i> PDF</button></div>
+      </div>
+      <div id="filesGrid" class="row g-3"><div class="col-12 text-center p-5"><div class="spinner-border"></div></div></div>
+    </div>
+  `;
+  await loadFiles();
 }
-function updateAdminUI(){ document.getElementById('ALB').innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة'; document.getElementById('drawerAdminLabel').innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة'; document.getElementById('ABG').innerHTML = isAdmin ? '<div class="ab mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة</div>' : ''; }
-function go(page){ scrollTo({top:0}); if(page==='home') showHome(); else if(page==='posts') showPosts(); else if(page==='students') showStudents(); else if(page==='gallery') showFiles('gallery_section','📸 المعرض الرقمي'); else if(page==='news') showNews(); else if(page==='art') showFiles('art_section','🎨 التربية الفنية'); else if(page==='library') showFiles('library_section','📚 المكتبة الرقمية'); }
-function hideHero(){ document.getElementById('SWC').style.display='none'; document.getElementById('TKC').style.display='none'; }
-function showHero(){ document.getElementById('SWC').style.display=''; document.getElementById('TKC').style.display=''; }
-function toggleTheme(){ document.body.classList.toggle('dark'); localStorage.setItem('theme', document.body.classList.contains('dark')?'dark':'light'); document.querySelector('.fab-th i').className = document.body.classList.contains('dark')?'fas fa-sun':'fas fa-moon'; }
-function openDrawer(){ document.getElementById('drawer').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
-function closeDrawer(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow=''; }
 
-// Init
-window.addEventListener('load', () => {
+async function loadFiles(){
+  const snapshot = await db.ref(currentFilesSection).once('value');
+  filesCache = {};
+  if(snapshot.exists()) snapshot.forEach(child => { filesCache[child.key] = child.val(); });
+  filterFiles();
+}
+
+function filterFiles(){
+  currentFilesSearch = document.getElementById('fileSearch')?.value?.toLowerCase() || '';
+  let items = Object.entries(filesCache);
+  
+  items = items.filter(([,file]) => {
+    if(currentFilesSearch && !(file.title || '').toLowerCase().includes(currentFilesSearch) && !(file.description || '').toLowerCase().includes(currentFilesSearch)) return false;
+    if(currentFilesFilter === 'all') return true;
+    const url = file.url || '';
+    if(currentFilesFilter === 'image') return isImageUrl(url);
+    if(currentFilesFilter === 'video') return isVideoUrl(url);
+    if(currentFilesFilter === 'pdf') return isPdfUrl(url);
+    if(currentFilesFilter === 'link') return !isImageUrl(url) && !isVideoUrl(url) && !isPdfUrl(url);
+    return true;
+  });
+  
+  items.sort((a,b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+  renderFilesGrid(items);
+}
+
+function setFileFilter(filter){
+  currentFilesFilter = filter;
+  document.querySelectorAll('#fileFilters .btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  filterFiles();
+}
+
+function renderFilesGrid(items){
+  const grid = document.getElementById('filesGrid');
+  if(!grid) return;
+  if(items.length === 0){
+    grid.innerHTML = '<div class="col-12 text-center p-5"><div class="esi">📂</div><p>لا توجد ملفات</p></div>';
+    return;
+  }
+  
+  grid.innerHTML = items.map(([id, file]) => {
+    const url = file.url || '';
+    const isImg = isImageUrl(url);
+    const isVid = isVideoUrl(url);
+    const isPdf = isPdfUrl(url);
+    const isYt = isYouTubeUrl(url);
+    const isGDrive = isGoogleDriveUrl(url);
+    
+    let mediaHtml = '';
+    if(isImg){
+      mediaHtml = `<div class="file-media" onclick="previewMedia('${url}','image')"><img src="${url}" loading="lazy"><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-search-plus"></i></div></div></div>`;
+    } else if(isVid){
+      mediaHtml = `<div class="file-media" onclick="previewMedia('${url}','video')"><video src="${url}" style="width:100%;height:100%;object-fit:cover"></video><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-play"></i></div></div></div>`;
+    } else if(isYt || isGDrive){
+      mediaHtml = `<div class="file-media" style="background:#f0f2f5" onclick="previewMedia('${url}','link')"><div class="d-flex align-items-center justify-content-center h-100"><i class="fab fa-${isYt ? 'youtube' : 'google-drive'} fa-3x" style="color:var(--gd)"></i></div><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div></div>`;
+    } else {
+      mediaHtml = `<div class="file-media" style="background:#f8f9fa" onclick="previewMedia('${url}','link')"><div class="d-flex align-items-center justify-content-center h-100"><i class="fas fa-file-alt fa-3x text-muted"></i></div><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-external-link-alt"></i></div></div></div>`;
+    }
+    
+    return `
+      <div class="col-md-6">
+        <div class="file-card">
+          ${mediaHtml}
+          <div class="file-body">
+            <div class="file-title">${escapeHtml(file.title || 'بدون عنوان')}</div>
+            <div class="file-meta"><i class="fas fa-clock me-1"></i> ${file.uploadedAt || ''}</div>
+            ${file.description ? `<div class="small text-muted mb-2">${escapeHtml(file.description)}</div>` : ''}
+            <div class="file-actions">
+              <button class="file-btn" onclick="previewMedia('${url}','${isImg ? 'image' : isVid ? 'video' : 'link'}')"><i class="fas fa-eye me-1"></i> عرض</button>
+              <a href="${url}" target="_blank" class="file-btn" style="background:#28a745"><i class="fas fa-external-link-alt me-1"></i> فتح</a>
+              ${isAdmin ? `<button class="file-icon-btn text-danger" onclick="deleteFileItem('${currentFilesSection}','${id}')"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function previewMedia(url, type){
+  let html = '';
+  if(type === 'image') html = `<img src="${url}" style="max-width:100%;max-height:80vh;border-radius:8px">`;
+  else if(type === 'video') html = `<video controls autoplay src="${url}" style="max-width:100%;max-height:80vh"></video>`;
+  else html = getEmbedHtml(url);
+  
+  Swal.fire({ html: html, showConfirmButton: false, showCloseButton: true, width: '90%', padding: 0, background: '#000', backdrop: true });
+}
+
+async function deleteFileItem(section, id){
+  const result = await Swal.fire({ title: 'حذف الملف؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'حذف' });
+  if(result.isConfirmed){
+    await db.ref(`${section}/${id}`).remove();
+    showToast('تم حذف الملف', 'success');
+    loadFiles();
+    updateSliderFromLatestMedia();
+  }
+}
+
+function openFileUploadModal(section){
+  pendingFiles = [];
+  Swal.fire({
+    title: 'رفع ملفات',
+    html: `
+      <div class="upload-area" id="uploadDropZone" style="margin-bottom:15px">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <p>اسحب الملفات هنا أو اضغط للاختيار</p>
+        <small class="text-muted">حد أقصى 200MB لأي ملف - يمكن اختيار عدة ملفات</small>
+      </div>
+      <input type="file" id="uploadFileInput" multiple style="display:none" accept="*/*">
+      <div id="uploadFileList" class="mt-2"></div>
+      <input type="text" id="uploadTitle" class="form-control mt-2" placeholder="العنوان (اختياري)">
+      <textarea id="uploadDesc" class="form-control mt-2" rows="2" placeholder="وصف (اختياري)"></textarea>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'رفع',
+    cancelButtonText: 'إلغاء',
+    didOpen: () => {
+      const zone = document.getElementById('uploadDropZone');
+      const fileInput = document.getElementById('uploadFileInput');
+      zone.onclick = () => fileInput.click();
+      zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('drag-over'); };
+      zone.ondragleave = () => zone.classList.remove('drag-over');
+      zone.ondrop = (e) => { e.preventDefault(); zone.classList.remove('drag-over'); handleFilesDrop(e.dataTransfer.files); };
+      fileInput.onchange = (e) => handleFilesDrop(e.target.files);
+    },
+    preConfirm: async () => {
+      if(pendingFiles.length === 0){ Swal.showValidationMessage('اختر ملفات للرفع'); return false; }
+      return { files: [...pendingFiles], title: document.getElementById('uploadTitle')?.value.trim(), description: document.getElementById('uploadDesc')?.value.trim() };
+    }
+  }).then(async (result) => {
+    if(result.isConfirmed){
+      showToast(`جاري رفع ${result.value.files.length} ملف...`, 'info');
+      let successCount = 0;
+      for(const file of result.value.files){
+        const uploadedUrl = await uploadFileToCloudinary(file);
+        if(uploadedUrl){
+          await db.ref(section).push({
+            title: result.value.title || file.name,
+            description: result.value.description || '',
+            url: uploadedUrl,
+            fileName: file.name,
+            fileSize: file.size,
+            timestamp: Date.now(),
+            uploadedAt: new Date().toLocaleDateString('ar-EG')
+          });
+          successCount++;
+        }
+      }
+      showToast(`تم رفع ${successCount} ملف بنجاح`, 'success');
+      if(currentFilesSection === section) loadFiles();
+      updateSliderFromLatestMedia();
+    }
+  });
+}
+
+function handleFilesDrop(files){
+  const fileList = document.getElementById('uploadFileList');
+  pendingFiles = [];
+  for(const file of files){
+    if(file.size > 200 * 1024 * 1024){
+      showToast(`${file.name} يتجاوز 200MB`, 'warning');
+      continue;
+    }
+    pendingFiles.push(file);
+  }
+  if(fileList){
+    fileList.innerHTML = pendingFiles.map(f => `<div class="file-list-item"><i class="fas fa-file"></i><span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span><span class="remove-file" onclick="removePendingFile('${f.name}')"><i class="fas fa-times-circle"></i></span></div>`).join('');
+  }
+}
+
+function removePendingFile(fileName){
+  pendingFiles = pendingFiles.filter(f => f.name !== fileName);
+  document.getElementById('uploadFileList').innerHTML = pendingFiles.map(f => `<div class="file-list-item"><i class="fas fa-file"></i><span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span><span class="remove-file" onclick="removePendingFile('${f.name}')"><i class="fas fa-times-circle"></i></span></div>`).join('');
+}
+
+// ============================================================
+// STATS MANAGEMENT
+// ============================================================
+let stats = { students: 1250, teachers: 85, activities: 24 };
+
+function loadStats(){
+  db.ref('school_stats').once('value', snapshot => {
+    if(snapshot.exists()) stats = snapshot.val();
+    document.getElementById('statStudents').innerText = stats.students;
+    document.getElementById('statTeachers').innerText = stats.teachers;
+    document.getElementById('statActivities').innerText = stats.activities;
+  });
+}
+
+async function editStat(statName){
+  if(!isAdmin){ showToast('متاح للإدارة فقط', 'warning'); return; }
+  const { value: newValue } = await Swal.fire({ title: `تعديل عدد ${statName === 'students' ? 'الطلاب' : statName === 'teachers' ? 'المعلمين' : 'الأنشطة'}`, input: 'number', inputValue: stats[statName], showCancelButton: true });
+  if(newValue){
+    stats[statName] = parseInt(newValue);
+    await db.ref('school_stats').set(stats);
+    document.getElementById(`stat${statName.charAt(0).toUpperCase() + statName.slice(1)}`).innerText = stats[statName];
+    showToast('تم تحديث الإحصائية', 'success');
+  }
+}
+
+// ============================================================
+// ADMIN & NAVIGATION
+// ============================================================
+async function toggleAdmin(){
+  if(isAdmin){
+    isAdmin = false;
+    updateAdminUI();
+    showToast('تم تسجيل الخروج من لوحة الإدارة', 'info');
+    if(currentSection === 'home') showHome();
+    else if(currentSection === 'posts') loadPosts();
+    else if(currentSection === 'results') showResultsSection();
+    else if(currentSection === 'gallery') showFilesSection('gallery_section', 'المعرض الرقمي');
+    else if(currentSection === 'library') showFilesSection('library_section', 'المكتبة الرقمية');
+    else if(currentSection === 'art') showFilesSection('art_section', 'التربية الفنية');
+    return;
+  }
+  
+  const { value: password } = await Swal.fire({ title: '🔐 دخول الإدارة', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true, confirmButtonText: 'دخول' });
+  if(password && btoa(password) === ADMIN_PASSWORD){
+    isAdmin = true;
+    updateAdminUI();
+    showToast('مرحباً! تم تفعيل وضع الإدارة', 'success');
+    showAdminDashboard();
+  } else if(password){
+    showToast('كلمة السر غير صحيحة', 'error');
+  }
+}
+
+function updateAdminUI(){
+  const adminBtn = document.getElementById('adminBtnText');
+  const drawerAdmin = document.getElementById('drawerAdminText');
+  const adminStatus = document.getElementById('adminStatus');
+  if(adminBtn) adminBtn.innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة';
+  if(drawerAdmin) drawerAdmin.innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة';
+  if(adminStatus) adminStatus.innerHTML = isAdmin ? '<div class="admin-badge mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة مفعل</div>' : '';
+}
+
+function showAdminDashboard(){
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `
+    <div class="fi">
+      <h4 class="fw-bold mb-3"><i class="fas fa-cog text-primary"></i> لوحة تحكم الإدارة</h4>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x mb-2"></i><h6 class="mb-0">إدارة شريط الأخبار</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x mb-2"></i><h6 class="mb-0">منشور جديد</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x mb-2"></i><h6 class="mb-0">إدارة النتائج</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openFileUploadModal('gallery_section')"><i class="fas fa-upload fa-2x mb-2"></i><h6 class="mb-0">رفع للمعرض</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openFileUploadModal('library_section')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">رفع للمكتبة</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x mb-2"></i><h6 class="mb-0">تعديل الإحصائيات</h6></div></div>
+      </div>
+    </div>
+  `;
+}
+
+function showTickerManager(){
+  Swal.fire({
+    title: 'إدارة شريط الأخبار',
+    html: `<div id="tickerItemsList" class="mb-3"></div><div class="input-group"><input type="text" id="newTickerText" class="form-control" placeholder="خبر جديد"><button class="btn btn-primary" onclick="addNewTicker()"><i class="fas fa-plus"></i> إضافة</button></div>`,
+    showConfirmButton: false,
+    showCloseButton: true,
+    didOpen: () => loadTickerItemsList()
+  });
+}
+
+async function loadTickerItemsList(){
+  const container = document.getElementById('tickerItemsList');
+  if(!container) return;
+  const snapshot = await db.ref('ticker_items').once('value');
+  let items = [];
+  if(snapshot.exists()) snapshot.forEach(child => items.push({ id: child.key, text: child.val().text }));
+  if(items.length === 0){ container.innerHTML = '<p class="text-muted">لا توجد أخبار</p>'; return; }
+  container.innerHTML = items.map(item => `
+    <div class="d-flex gap-2 mb-2 align-items-center">
+      <input type="text" class="form-control form-control-sm" id="ticker_${item.id}" value="${escapeHtml(item.text)}">
+      <button class="btn btn-sm btn-warning" onclick="updateTickerItemAdmin('${item.id}')"><i class="fas fa-save"></i></button>
+      <button class="btn btn-sm btn-danger" onclick="deleteTickerItemAdmin('${item.id}')"><i class="fas fa-trash"></i></button>
+    </div>
+  `).join('');
+}
+
+async function addNewTicker(){
+  const text = document.getElementById('newTickerText')?.value.trim();
+  if(!text) return;
+  await db.ref('ticker_items').push({ text: text });
+  document.getElementById('newTickerText').value = '';
+  loadTickerItemsList();
+  loadTicker();
+  showToast('تم إضافة الخبر', 'success');
+}
+
+async function updateTickerItemAdmin(id){
+  const newText = document.getElementById(`ticker_${id}`)?.value.trim();
+  if(!newText) return;
+  await db.ref(`ticker_items/${id}`).update({ text: newText });
+  loadTicker();
+  showToast('تم التحديث', 'success');
+}
+
+async function deleteTickerItemAdmin(id){
+  await db.ref(`ticker_items/${id}`).remove();
+  loadTickerItemsList();
+  loadTicker();
+  showToast('تم الحذف', 'success');
+}
+
+function showNewsSection(){
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `<div class="fi"><h4 class="fw-bold mb-3"><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4><div id="newsList"></div></div>`;
+  db.ref('school_news').orderByChild('timestamp').once('value', snapshot => {
+    let news = [];
+    if(snapshot.exists()) snapshot.forEach(child => news.unshift(child.val()));
+    document.getElementById('newsList').innerHTML = news.map(n => `<div class="nc p-3 bg-white rounded-3 shadow-sm mb-2"><h6>${escapeHtml(n.title)}</h6><p class="mb-1">${escapeHtml(n.body)}</p><small class="text-muted">${n.dateStr || ''}</small></div>`).join('');
+  });
+}
+
+function showHome(){
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `
+    <div class="fi text-center">
+      <div class="mx-auto mb-3" style="width:80px;height:80px;background:linear-gradient(135deg,var(--pr),var(--pr2));border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-school fa-2x text-white"></i></div>
+      <h2 class="fw-bold">مرحباً في البوابة الرقمية</h2>
+      <p class="text-muted">نظام متكامل لإدارة المدرسة والنتائج والمكتبة الرقمية</p>
+      <div class="row g-3 mt-3">
+        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2 text-primary mb-0">${stats.students}</div><small>طالب</small></div></div>
+        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2 text-success mb-0">${stats.teachers}</div><small>معلم</small></div></div>
+        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2" style="color:var(--gd)">${stats.activities}</div><small>نشاط</small></div></div>
+      </div>
+      <div class="row g-2 mt-4">
+        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('posts')"><i class="fas fa-newspaper fa-2x mb-2"></i><h6 class="mb-0">المنشورات</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('results')"><i class="fas fa-search fa-2x mb-2"></i><h6 class="mb-0">النتائج</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('gallery')"><i class="fas fa-images fa-2x mb-2"></i><h6 class="mb-0">المعرض</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('library')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">المكتبة</h6></div></div>
+      </div>
+    </div>
+  `;
+}
+
+function showPostsSection(){
+  const container = document.getElementById('mainContent');
+  container.innerHTML = `
+    <div class="fi">
+      ${showPostCreator()}
+      <div id="postsList"></div>
+    </div>
+  `;
+  loadPosts();
+}
+
+async function navigateTo(section){
+  currentSection = section;
+  document.querySelectorAll('.side-menu-btn, .mobile-nav-item, .drawer-item').forEach(btn => btn.classList.remove('active'));
+  if(section === 'home'){ showHome(); }
+  else if(section === 'posts'){ showPostsSection(); }
+  else if(section === 'results'){ showResultsSection(); }
+  else if(section === 'gallery'){ showFilesSection('gallery_section', '📸 المعرض الرقمي'); }
+  else if(section === 'library'){ showFilesSection('library_section', '📚 المكتبة الرقمية'); }
+  else if(section === 'art'){ showFilesSection('art_section', '🎨 معرض التربية الفنية'); }
+  else if(section === 'news'){ showNewsSection(); }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleTheme(){
+  document.body.classList.toggle('dark');
+  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  const icon = document.querySelector('.fab-theme i');
+  if(icon) icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+}
+
+function openDrawer(){ document.getElementById('drawerMenu').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeDrawer(){ document.getElementById('drawerMenu').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+window.addEventListener('load', async () => {
   if(localStorage.getItem('theme') === 'dark') toggleTheme();
-  loadStats(); loadTicker(); loadSlider(); 
-  setTimeout(() => document.getElementById('ldr')?.classList.add('hide'), 800);
+  loadStats();
+  loadTicker();
+  await updateSliderFromLatestMedia();
+  setTimeout(() => document.getElementById('loader')?.classList.add('hide'), 800);
   showHome();
-  window.addEventListener('scroll', () => document.getElementById('STB')?.classList.toggle('show', window.scrollY > 200));
-  // Visitor ID for likes
+  window.addEventListener('scroll', () => {
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    if(scrollBtn) scrollBtn.classList.toggle('show', window.scrollY > 200);
+  });
   if(!sessionStorage.getItem('visitorId')) sessionStorage.setItem('visitorId', 'user_' + Date.now());
+  
+  setInterval(() => updateSliderFromLatestMedia(), 30000);
 });
 </script>
 </body>
