@@ -6,23 +6,17 @@
 <meta name="theme-color" content="#0a2b4e">
 <title>بوابة مدرسة سعد بن أبي وقاص - النظام المتكامل</title>
 
-<!-- Preconnect for faster loading -->
+<!-- Preconnect -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://www.gstatic.com">
-<link rel="preconnect" href="https://firebase.google.com">
 
-<!-- Bootstrap CSS -->
+<!-- Styles -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<!-- Swiper JS CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-<!-- AOS CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 
 <style>
 * {
@@ -64,7 +58,8 @@ body.dark .post-card,
 body.dark .file-card,
 body.dark .post-creator,
 body.dark .qc,
-body.dark .hsc {
+body.dark .hsc,
+body.dark .news-card {
   background: rgba(18, 24, 38, 0.96) !important;
   border-color: rgba(255, 255, 255, 0.08) !important;
   color: #d0d8ec !important;
@@ -85,7 +80,6 @@ body.dark footer {
   background: #050810 !important;
 }
 
-/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -582,7 +576,7 @@ header {
   margin-top: 3px;
 }
 
-/* File Card */
+/* File Card with Thumbnail */
 .file-card {
   background: white;
   border-radius: var(--rs);
@@ -603,8 +597,11 @@ header {
   position: relative;
   height: 180px;
   overflow: hidden;
-  background: #f0f2f5;
+  background: #1a1a2e;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .file-media img {
@@ -614,7 +611,14 @@ header {
   transition: transform 0.3s;
 }
 
-.file-media:hover img {
+.file-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.file-media:hover img,
+.file-media:hover video {
   transform: scale(1.05);
 }
 
@@ -629,12 +633,12 @@ header {
 }
 
 .file-media:hover .file-overlay {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .file-play-btn {
-  width: 45px;
-  height: 45px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: rgba(212, 175, 55, 0.9);
   display: flex;
@@ -643,6 +647,8 @@ header {
   opacity: 0;
   transform: scale(0.8);
   transition: all 0.3s;
+  color: var(--pr);
+  font-size: 1.3rem;
 }
 
 .file-media:hover .file-play-btn {
@@ -711,6 +717,59 @@ header {
   border-color: var(--pr);
 }
 
+/* Video Thumbnail container */
+.video-thumb {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+.video-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-thumb .play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  background: rgba(212, 175, 55, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pr);
+  font-size: 1.3rem;
+}
+
+/* PDF Thumbnail */
+.pdf-thumb {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #fdecea, #fff5f5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdf-thumb i {
+  font-size: 3rem;
+  color: #e74c3c;
+  margin-bottom: 8px;
+}
+
+.pdf-thumb span {
+  font-size: 0.7rem;
+  color: #e74c3c;
+  font-weight: 600;
+}
+
 /* Upload Area */
 .upload-area {
   border: 2px dashed #ccc;
@@ -774,6 +833,43 @@ header {
   border-radius: 12px;
   padding: 10px;
   text-align: center;
+}
+
+/* News Card */
+.news-card {
+  background: white;
+  border-radius: var(--rs);
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: var(--cs);
+  transition: var(--tr);
+  border-right: 4px solid var(--gd);
+}
+
+.news-card:hover {
+  box-shadow: var(--hs);
+  transform: translateX(-3px);
+}
+
+.news-title {
+  font-weight: 800;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.news-date {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.news-body {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-top: 8px;
 }
 
 /* QC Card */
@@ -1016,15 +1112,6 @@ header {
 .stat-edit:hover {
   opacity: 0.7;
   transform: scale(1.05);
-}
-
-/* Utility Classes */
-.fw-800 {
-  font-weight: 800;
-}
-
-.cursor-pointer {
-  cursor: pointer;
 }
 
 /* Toast */
@@ -1333,7 +1420,7 @@ header {
 
 <script>
 // ============================================================
-// FIREBASE CONFIGURATION - Direct initialization
+// FIREBASE CONFIGURATION
 // ============================================================
 const firebaseConfig = {
   apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
@@ -1344,7 +1431,6 @@ const firebaseConfig = {
   appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
 };
 
-// Initialize Firebase
 let db = null;
 let firebaseReady = false;
 
@@ -1356,14 +1442,13 @@ function initFirebase() {
       }
       db = firebase.database();
       firebaseReady = true;
-      console.log("✅ Firebase initialized successfully");
+      console.log("✅ Firebase initialized");
       startApp();
     } else {
-      console.log("⏳ Waiting for Firebase...");
       setTimeout(initFirebase, 200);
     }
   } catch (error) {
-    console.error("❌ Firebase init error:", error);
+    console.error("Firebase error:", error);
     setTimeout(initFirebase, 500);
   }
 }
@@ -1373,13 +1458,12 @@ function initFirebase() {
 // ============================================================
 const CLOUDINARY_CLOUD = 'dyo4ff7ha';
 const CLOUDINARY_PRESET = 'school_raw';
-const ADMIN_PASSWORD = "YWJ1c2FiZXIxMjM="; // abusaber123
+const ADMIN_PASSWORD = "YWJ1c2FiZXIxMjM=";
 
 let isAdmin = false;
 let currentSection = 'home';
 let swiperInstance = null;
-let tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة الآن', 'نظام المنشورات الجديد تم تفعيله'];
-let tickerAnimation = null;
+let tickerItems = [];
 let tickerPaused = false;
 let postsCache = [];
 let filesCache = {};
@@ -1411,20 +1495,13 @@ function showToast(msg, type = 'info', duration = 3000) {
   
   const toast = document.createElement('div');
   toast.className = 'toast-message';
-  
   const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
   toast.innerHTML = `<i class="fas ${icons[type] || icons.info} me-2"></i>${msg}`;
-  
   if (type === 'error') toast.style.borderRightColor = '#dc3545';
   if (type === 'success') toast.style.borderRightColor = '#28a745';
   if (type === 'warning') toast.style.borderRightColor = '#ffc107';
-  
   container.appendChild(toast);
-  
-  setTimeout(() => {
-    toast.style.animation = 'toastOut 0.3s ease forwards';
-    setTimeout(() => toast.remove(), 300);
-  }, duration);
+  setTimeout(() => { toast.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => toast.remove(), 300); }, duration);
 }
 
 function escapeHtml(text) {
@@ -1479,6 +1556,24 @@ function getGoogleDriveId(url) {
   return match ? match[1] : null;
 }
 
+function getYouTubeThumbnail(url) {
+  const id = getYouTubeId(url);
+  return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null;
+}
+
+function getVideoThumbnail(url) {
+  if (isYouTubeUrl(url)) return getYouTubeThumbnail(url);
+  return null;
+}
+
+function getFileThumbnail(url, type) {
+  if (isImageUrl(url)) return url;
+  if (isYouTubeUrl(url)) return getYouTubeThumbnail(url);
+  if (isVideoUrl(url)) return null;
+  if (isPdfUrl(url)) return 'pdf';
+  return null;
+}
+
 function getEmbedHtml(url) {
   if (!url) return '';
   
@@ -1502,7 +1597,7 @@ function getEmbedHtml(url) {
   }
   
   if (isVideoUrl(url)) {
-    return `<video controls src="${url}" style="max-width: 100%; border-radius: 12px"></video>`;
+    return `<video controls src="${url}" style="max-width: 100%; border-radius: 12px" poster="${getVideoThumbnail(url) || ''}"></video>`;
   }
   
   if (isPdfUrl(url)) {
@@ -1510,6 +1605,47 @@ function getEmbedHtml(url) {
   }
   
   return `<a href="${url}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fas fa-external-link-alt"></i> فتح الرابط</a>`;
+}
+
+function getMediaThumbnailHtml(url, title) {
+  if (isImageUrl(url)) {
+    return `<img src="${url}" loading="lazy" alt="${escapeHtml(title)}">`;
+  }
+  
+  if (isYouTubeUrl(url)) {
+    const thumb = getYouTubeThumbnail(url);
+    return `
+      <div class="video-thumb">
+        <img src="${thumb}" loading="lazy" alt="${escapeHtml(title)}">
+        <div class="play-icon"><i class="fas fa-play"></i></div>
+      </div>
+    `;
+  }
+  
+  if (isVideoUrl(url)) {
+    return `
+      <div class="video-thumb">
+        <video src="${url}" style="width:100%;height:100%;object-fit:cover"></video>
+        <div class="play-icon"><i class="fas fa-play"></i></div>
+      </div>
+    `;
+  }
+  
+  if (isPdfUrl(url)) {
+    return `
+      <div class="pdf-thumb">
+        <i class="fas fa-file-pdf"></i>
+        <span>PDF</span>
+      </div>
+    `;
+  }
+  
+  return `
+    <div class="pdf-thumb">
+      <i class="fas fa-link"></i>
+      <span>رابط</span>
+    </div>
+  `;
 }
 
 async function uploadFileToCloudinary(file) {
@@ -1552,11 +1688,12 @@ async function updateSliderFromLatestMedia() {
         snapshot.forEach(child => {
           const data = child.val();
           let mediaUrl = data.mediaUrl || data.url;
-          if (mediaUrl && (isImageUrl(mediaUrl) || isVideoUrl(mediaUrl))) {
+          if (mediaUrl && (isImageUrl(mediaUrl) || isVideoUrl(mediaUrl) || isYouTubeUrl(mediaUrl))) {
             allMedia.push({
               url: mediaUrl,
               caption: data.title || (data.content ? data.content.substring(0, 50) : 'محتوى جديد'),
-              timestamp: data.timestamp || 0
+              timestamp: data.timestamp || 0,
+              thumbnail: isYouTubeUrl(mediaUrl) ? getYouTubeThumbnail(mediaUrl) : mediaUrl
             });
           }
         });
@@ -1580,7 +1717,7 @@ async function updateSliderFromLatestMedia() {
   if (wrapper) {
     wrapper.innerHTML = topMedia.map(m => `
       <div class="swiper-slide">
-        <img src="${m.url}" loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
+        <img src="${m.thumbnail || m.url}" loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
         <div class="slide-caption">${escapeHtml(m.caption)}</div>
       </div>
     `).join('');
@@ -1605,12 +1742,15 @@ async function loadTicker() {
   try {
     const snapshot = await db.ref('ticker_items').once('value');
     if (snapshot.exists()) {
-      const items = [];
-      snapshot.forEach(child => items.push(child.val().text));
-      if (items.length) tickerItems = items;
+      tickerItems = [];
+      snapshot.forEach(child => tickerItems.push(child.val().text));
     }
   } catch (e) {
     console.warn("Error loading ticker:", e);
+  }
+  
+  if (tickerItems.length === 0) {
+    tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة الآن', 'نظام المنشورات الجديد تم تفعيله'];
   }
   
   renderTicker();
@@ -1632,13 +1772,11 @@ function renderTicker() {
 function pauseTicker() {
   const scroll = document.querySelector('.ticker-scroll');
   if (scroll) scroll.style.animationPlayState = 'paused';
-  tickerPaused = true;
 }
 
 function resumeTicker() {
   const scroll = document.querySelector('.ticker-scroll');
   if (scroll) scroll.style.animationPlayState = 'running';
-  tickerPaused = false;
 }
 
 // ============================================================
@@ -1685,9 +1823,142 @@ async function editStat(statName) {
 }
 
 // ============================================================
+// NEWS MANAGEMENT (إضافة/حذف/تعديل)
+// ============================================================
+async function showNewsSection() {
+  const container = document.getElementById('mainContent');
+  
+  container.innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="fw-bold mb-0"><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4>
+        ${isAdmin ? `
+          <button class="btn btn-primary btn-sm" onclick="openNewsModal()">
+            <i class="fas fa-plus me-1"></i> إضافة خبر
+          </button>
+        ` : ''}
+      </div>
+      <div id="newsList"></div>
+    </div>
+  `;
+  
+  await loadNewsList();
+}
+
+async function loadNewsList() {
+  const container = document.getElementById('newsList');
+  if (!container) return;
+  
+  try {
+    const snapshot = await db.ref('school_news').orderByChild('timestamp').once('value');
+    let news = [];
+    
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        news.push({ id: child.key, ...child.val() });
+      });
+      news.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    }
+    
+    if (news.length === 0) {
+      container.innerHTML = '<div class="text-center p-5"><div class="esi">📰</div><p>لا توجد أخبار</p></div>';
+      return;
+    }
+    
+    container.innerHTML = news.map(item => `
+      <div class="news-card">
+        <div class="news-title">
+          <span>${escapeHtml(item.title)}</span>
+          <div class="d-flex gap-2">
+            <span class="news-date"><i class="fas fa-calendar-alt me-1"></i> ${item.dateStr || ''}</span>
+            ${isAdmin ? `
+              <button class="btn btn-sm btn-warning" onclick="editNews('${item.id}', '${escapeHtml(item.title)}', '${escapeHtml(item.body)}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-sm btn-danger" onclick="deleteNewsItem('${item.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            ` : ''}
+          </div>
+        </div>
+        <div class="news-body">${escapeHtml(item.body)}</div>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error("Error loading news:", e);
+    container.innerHTML = '<div class="alert alert-danger">حدث خطأ في تحميل الأخبار</div>';
+  }
+}
+
+function openNewsModal(newsId = null, oldTitle = '', oldBody = '') {
+  Swal.fire({
+    title: newsId ? 'تعديل خبر' : 'إضافة خبر جديد',
+    html: `
+      <input type="text" id="newsTitle" class="swal2-input" placeholder="عنوان الخبر" value="${escapeHtml(oldTitle)}" style="width: 100%">
+      <textarea id="newsBody" class="swal2-textarea" placeholder="محتوى الخبر..." rows="4" style="width: 100%">${escapeHtml(oldBody)}</textarea>
+    `,
+    showCancelButton: true,
+    confirmButtonText: newsId ? 'تحديث' : 'إضافة',
+    cancelButtonText: 'إلغاء',
+    preConfirm: () => {
+      const title = document.getElementById('newsTitle').value.trim();
+      const body = document.getElementById('newsBody').value.trim();
+      if (!title || !body) {
+        Swal.showValidationMessage('يرجى إدخال عنوان ومحتوى الخبر');
+        return false;
+      }
+      return { title, body };
+    }
+  }).then(async (result) => {
+    if (result.isConfirmed) {
+      const { title, body } = result.value;
+      const newsData = {
+        title: title,
+        body: body,
+        dateStr: new Date().toLocaleDateString('ar-EG'),
+        timestamp: Date.now()
+      };
+      
+      if (newsId) {
+        await db.ref(`school_news/${newsId}`).update(newsData);
+        showToast('تم تحديث الخبر بنجاح', 'success');
+      } else {
+        await db.ref('school_news').push(newsData);
+        showToast('تم إضافة الخبر بنجاح', 'success');
+      }
+      
+      await loadNewsList();
+    }
+  });
+}
+
+async function editNews(id, title, body) {
+  openNewsModal(id, title, body);
+}
+
+async function deleteNewsItem(id) {
+  const result = await Swal.fire({
+    title: 'حذف الخبر؟',
+    text: 'لا يمكن التراجع عن هذا الإجراء',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'حذف',
+    cancelButtonText: 'إلغاء'
+  });
+  
+  if (result.isConfirmed) {
+    await db.ref(`school_news/${id}`).remove();
+    showToast('تم حذف الخبر', 'success');
+    await loadNewsList();
+  }
+}
+
+// ============================================================
 // POSTS SYSTEM
 // ============================================================
 function openPostModal(type = 'text') {
+  selectedPostFile = null;
+  
   Swal.fire({
     title: 'إنشاء منشور جديد',
     html: `
@@ -1707,7 +1978,7 @@ function openPostModal(type = 'text') {
       <div class="mt-2">
         <label class="fw-bold small">نشر في:</label>
         <select id="postTab" class="form-select mt-1">
-          <option value="general">عام</option>
+          <option value="general">عام (المنشورات فقط)</option>
           <option value="gallery_section">المعرض الرقمي</option>
           <option value="library_section">المكتبة الرقمية</option>
           <option value="art_section">التربية الفنية</option>
@@ -1761,9 +2032,13 @@ function openPostModal(type = 'text') {
         fileName: file?.name || null
       };
       
+      // Save to posts
+      await db.ref('posts').push(postData);
+      
+      // Save to selected tab if not general
       if (tab && tab !== 'general' && finalUrl) {
         await db.ref(tab).push({
-          title: content.substring(0, 50),
+          title: content.substring(0, 50) || 'بدون عنوان',
           description: content,
           url: finalUrl,
           timestamp: Date.now(),
@@ -1772,11 +2047,11 @@ function openPostModal(type = 'text') {
         });
       }
       
-      await db.ref('posts').push(postData);
       showToast('تم نشر المنشور بنجاح', 'success');
       selectedPostFile = null;
-      if (currentSection === 'posts') loadPosts();
-      updateSliderFromLatestMedia();
+      if (currentSection === 'posts') await loadPosts();
+      await updateSliderFromLatestMedia();
+      if (tab !== 'general' && currentSection === tab) await loadFiles();
     }
   });
 }
@@ -1868,7 +2143,7 @@ function renderPostCard(post) {
   `).join('');
   
   return `
-    <div class="post-card" data-aos="fade-up">
+    <div class="post-card">
       <div class="post-header">
         <div class="post-avatar"><i class="fas fa-school"></i></div>
         <div class="flex-grow-1">
@@ -1882,12 +2157,8 @@ function renderPostCard(post) {
       <div class="post-content">${escapeHtml(post.content)}</div>
       ${mediaHtml}
       <div class="post-stats">
-        <span onclick="document.getElementById('likesList-${post.id}')?.toggle()">
-          <i class="fas fa-thumbs-up"></i> ${likesCount}
-        </span>
-        <span onclick="toggleComments('${post.id}')">
-          <i class="fas fa-comment"></i> ${commentsCount} تعليق
-        </span>
+        <span><i class="fas fa-thumbs-up"></i> ${likesCount}</span>
+        <span onclick="toggleComments('${post.id}')"><i class="fas fa-comment"></i> ${commentsCount} تعليق</span>
       </div>
       <div class="post-actions">
         <button class="post-action-btn ${isLiked ? 'liked' : ''}" id="likeBtn-${post.id}">
@@ -1937,7 +2208,7 @@ async function likePost(postId) {
     await likeRef.set(true);
   }
   
-  loadPosts();
+  await loadPosts();
 }
 
 async function addComment(postId) {
@@ -1953,7 +2224,7 @@ async function addComment(postId) {
   });
   
   if (input) input.value = '';
-  loadPosts();
+  await loadPosts();
 }
 
 async function deletePost(postId) {
@@ -1969,8 +2240,8 @@ async function deletePost(postId) {
   if (result.isConfirmed) {
     await db.ref(`posts/${postId}`).remove();
     showToast('تم حذف المنشور', 'success');
-    loadPosts();
-    updateSliderFromLatestMedia();
+    await loadPosts();
+    await updateSliderFromLatestMedia();
   }
 }
 
@@ -1985,11 +2256,11 @@ async function deleteComment(postId, commentId) {
   });
   
   showToast('تم حذف التعليق', 'info');
-  loadPosts();
+  await loadPosts();
 }
 
 // ============================================================
-// FILES SYSTEM
+// FILES SYSTEM with Thumbnails
 // ============================================================
 async function showFilesSection(section, title) {
   currentFilesSection = section;
@@ -2061,9 +2332,9 @@ function filterFiles() {
     const url = file.url || '';
     if (currentFilesFilter === 'all') return true;
     if (currentFilesFilter === 'image') return isImageUrl(url);
-    if (currentFilesFilter === 'video') return isVideoUrl(url);
+    if (currentFilesFilter === 'video') return isVideoUrl(url) || isYouTubeUrl(url);
     if (currentFilesFilter === 'pdf') return isPdfUrl(url);
-    if (currentFilesFilter === 'link') return !isImageUrl(url) && !isVideoUrl(url) && !isPdfUrl(url);
+    if (currentFilesFilter === 'link') return !isImageUrl(url) && !isVideoUrl(url) && !isPdfUrl(url) && !isYouTubeUrl(url);
     return true;
   });
   
@@ -2090,56 +2361,22 @@ function renderFilesGrid(items) {
   
   grid.innerHTML = items.map(([id, file]) => {
     const url = file.url || '';
-    const isImg = isImageUrl(url);
-    const isVid = isVideoUrl(url);
-    const isYt = isYouTubeUrl(url);
-    const isGDrive = isGoogleDriveUrl(url);
-    
-    let mediaHtml = '';
-    if (isImg) {
-      mediaHtml = `
-        <div class="file-media" onclick="previewMedia('${url}', 'image')">
-          <img src="${url}" loading="lazy">
-          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-search-plus"></i></div></div>
-        </div>
-      `;
-    } else if (isVid) {
-      mediaHtml = `
-        <div class="file-media" onclick="previewMedia('${url}', 'video')">
-          <video src="${url}" style="width: 100%; height: 100%; object-fit: cover"></video>
-          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-play"></i></div></div>
-        </div>
-      `;
-    } else if (isYt || isGDrive) {
-      mediaHtml = `
-        <div class="file-media" style="background: #f0f2f5" onclick="previewMedia('${url}', 'link')">
-          <div class="d-flex align-items-center justify-content-center h-100">
-            <i class="fab fa-${isYt ? 'youtube' : 'google-drive'} fa-3x" style="color: var(--gd)"></i>
-          </div>
-          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div>
-        </div>
-      `;
-    } else {
-      mediaHtml = `
-        <div class="file-media" style="background: #f8f9fa" onclick="previewMedia('${url}', 'link')">
-          <div class="d-flex align-items-center justify-content-center h-100">
-            <i class="fas fa-file-alt fa-3x text-muted"></i>
-          </div>
-          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-external-link-alt"></i></div></div>
-        </div>
-      `;
-    }
+    const thumbnailHtml = getMediaThumbnailHtml(url, file.title);
+    const mediaType = isImageUrl(url) ? 'image' : (isVideoUrl(url) || isYouTubeUrl(url)) ? 'video' : 'link';
     
     return `
       <div class="col-md-6">
         <div class="file-card">
-          ${mediaHtml}
+          <div class="file-media" onclick="previewMedia('${url.replace(/'/g, "\\'")}', '${mediaType}')">
+            ${thumbnailHtml}
+            <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div>
+          </div>
           <div class="file-body">
             <div class="file-title">${escapeHtml(file.title || 'بدون عنوان')}</div>
             <div class="file-meta"><i class="fas fa-clock me-1"></i> ${file.uploadedAt || ''}</div>
             ${file.description ? `<div class="small text-muted mb-2">${escapeHtml(file.description)}</div>` : ''}
             <div class="file-actions">
-              <button class="file-btn" onclick="previewMedia('${url}', '${isImg ? 'image' : isVid ? 'video' : 'link'}')">
+              <button class="file-btn" onclick="previewMedia('${url.replace(/'/g, "\\'")}', '${mediaType}')">
                 <i class="fas fa-eye me-1"></i> عرض
               </button>
               <a href="${url}" target="_blank" class="file-btn" style="background: #28a745">
@@ -2163,7 +2400,7 @@ function previewMedia(url, type) {
   if (type === 'image') {
     html = `<img src="${url}" style="max-width: 100%; max-height: 80vh; border-radius: 8px">`;
   } else if (type === 'video') {
-    html = `<video controls autoplay src="${url}" style="max-width: 100%; max-height: 80vh"></video>`;
+    html = `<video controls autoplay src="${url}" style="max-width: 100%; max-height: 80vh" poster="${getVideoThumbnail(url) || ''}"></video>`;
   } else {
     html = getEmbedHtml(url);
   }
@@ -2191,8 +2428,8 @@ async function deleteFileItem(section, id) {
   if (result.isConfirmed) {
     await db.ref(`${section}/${id}`).remove();
     showToast('تم حذف الملف', 'success');
-    loadFiles();
-    updateSliderFromLatestMedia();
+    await loadFiles();
+    await updateSliderFromLatestMedia();
   }
 }
 
@@ -2258,8 +2495,8 @@ function openFileUploadModal(section) {
       }
       
       showToast(`تم رفع ${successCount} ملف بنجاح`, 'success');
-      if (currentFilesSection === section) loadFiles();
-      updateSliderFromLatestMedia();
+      if (currentFilesSection === section) await loadFiles();
+      await updateSliderFromLatestMedia();
     }
   });
 }
@@ -2437,7 +2674,7 @@ async function uploadResultsJSON(input) {
       
       await db.ref().update(updates);
       showToast(`تم رفع نتائج ${GRADES[grade]} بنجاح`, 'success');
-      loadResultsList();
+      await loadResultsList();
     } catch (err) {
       showToast('ملف JSON غير صالح', 'error');
     }
@@ -2492,7 +2729,7 @@ async function deleteGradeResults(grade) {
   if (result.isConfirmed) {
     await db.ref(`results/${grade}`).remove();
     showToast('تم حذف النتائج', 'success');
-    loadResultsList();
+    await loadResultsList();
   }
 }
 
@@ -2504,7 +2741,7 @@ function exportResultPDF(data) {
   let subjectsRows = '';
   if (data.subjects) {
     Object.entries(data.subjects).forEach(([sub, score]) => {
-      subjectsRows += `<tr><td>${escapeHtml(sub)}</td><td>${score}</td></tr>`;
+      subjectsRows += `<tr><td style="padding: 8px; border: 1px solid #ddd">${escapeHtml(sub)}</td><td style="padding: 8px; border: 1px solid #ddd; text-align: center">${score}</td></tr>`;
     });
   }
   
@@ -2524,9 +2761,9 @@ function exportResultPDF(data) {
       <h3 class="mt-3">الدرجات</h3>
       <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse">
         ${subjectsRows}
-        <tr style="background: #f0f0f0"><td><strong>المجموع</strong></td><td><strong>${data.total}</strong></td></tr>
-        <tr style="background: #f0f0f0"><td><strong>النسبة</strong></td><td><strong>${data.percentage}%</strong></td></tr>
-        <tr style="background: #f0f0f0"><td><strong>التقدير</strong></td><td><strong>${data.gradeLabel}</strong></td></tr>
+        <tr style="background: #f0f0f0"><td><strong>المجموع</strong></td><td style="text-align: center"><strong>${data.total}</strong></td></tr>
+        <tr style="background: #f0f0f0"><td><strong>النسبة</strong></td><td style="text-align: center"><strong>${data.percentage}%</strong></td></tr>
+        <tr style="background: #f0f0f0"><td><strong>التقدير</strong></td><td style="text-align: center"><strong>${data.gradeLabel}</strong></td></tr>
       </table>
       <div class="mt-4 text-muted text-center">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</div>
     </div>
@@ -2542,42 +2779,6 @@ function exportResultPDF(data) {
     console.error("PDF generation error:", err);
     showToast('حدث خطأ في إنشاء PDF', 'error');
   });
-}
-
-// ============================================================
-// NEWS SECTION
-// ============================================================
-async function showNewsSection() {
-  const container = document.getElementById('mainContent');
-  
-  container.innerHTML = `
-    <div class="fi">
-      <h4 class="fw-bold mb-3"><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4>
-      <div id="newsList"></div>
-    </div>
-  `;
-  
-  try {
-    const snapshot = await db.ref('school_news').orderByChild('timestamp').once('value');
-    let news = [];
-    
-    if (snapshot.exists()) {
-      snapshot.forEach(child => news.unshift(child.val()));
-    }
-    
-    const newsHtml = news.length > 0 ? news.map(n => `
-      <div class="glass-card mb-2">
-        <h6>${escapeHtml(n.title)}</h6>
-        <p class="mb-1">${escapeHtml(n.body)}</p>
-        <small class="text-muted">${n.dateStr || ''}</small>
-      </div>
-    `).join('') : '<div class="text-center p-5"><p class="text-muted">لا توجد أخبار</p></div>';
-    
-    document.getElementById('newsList').innerHTML = newsHtml;
-  } catch (e) {
-    console.error("Error loading news:", e);
-    document.getElementById('newsList').innerHTML = '<div class="alert alert-danger">حدث خطأ في تحميل الأخبار</div>';
-  }
 }
 
 // ============================================================
@@ -2649,9 +2850,11 @@ function showAdminDashboard() {
       <div class="row g-3 mb-4">
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x mb-2"></i><h6 class="mb-0">إدارة شريط الأخبار</h6></div></div>
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x mb-2"></i><h6 class="mb-0">منشور جديد</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="showNewsSection()"><i class="fas fa-bullhorn fa-2x mb-2"></i><h6 class="mb-0">إدارة الأخبار</h6></div></div>
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x mb-2"></i><h6 class="mb-0">إدارة النتائج</h6></div></div>
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openFileUploadModal('gallery_section')"><i class="fas fa-upload fa-2x mb-2"></i><h6 class="mb-0">رفع للمعرض</h6></div></div>
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openFileUploadModal('library_section')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">رفع للمكتبة</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openFileUploadModal('art_section')"><i class="fas fa-palette fa-2x mb-2"></i><h6 class="mb-0">رفع للفنية</h6></div></div>
         <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x mb-2"></i><h6 class="mb-0">تعديل الإحصائيات</h6></div></div>
       </div>
     </div>
@@ -2792,7 +2995,6 @@ function updateAdminUI() {
 function navigateTo(section) {
   currentSection = section;
   
-  // Update active state on sidebar buttons
   document.querySelectorAll('.side-menu-btn, .mobile-nav-item, .drawer-item').forEach(btn => {
     btn.classList.remove('active');
   });
@@ -2817,21 +3019,15 @@ function navigateTo(section) {
 }
 
 // ============================================================
-// THEME
+// THEME & DRAWER
 // ============================================================
 function toggleTheme() {
   document.body.classList.toggle('dark');
   localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
-  
   const icon = document.querySelector('.fab-theme i');
-  if (icon) {
-    icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
-  }
+  if (icon) icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
 }
 
-// ============================================================
-// DRAWER FUNCTIONS
-// ============================================================
 function openDrawer() {
   document.getElementById('drawerMenu').classList.add('open');
   document.getElementById('drawerOverlay').classList.add('open');
@@ -2850,43 +3046,33 @@ function closeDrawer() {
 function startApp() {
   console.log("🚀 Starting application...");
   
-  // Load theme
   if (localStorage.getItem('theme') === 'dark') {
     toggleTheme();
   }
   
-  // Load data
   loadStats();
   loadTicker();
   updateSliderFromLatestMedia();
   
-  // Hide loader
   setTimeout(() => {
     const loader = document.getElementById('loader');
     if (loader) loader.classList.add('hide');
   }, 1000);
   
-  // Show home page
   showHome();
   
-  // Scroll to top button
   window.addEventListener('scroll', () => {
     const scrollBtn = document.getElementById('scrollTopBtn');
-    if (scrollBtn) {
-      scrollBtn.classList.toggle('show', window.scrollY > 200);
-    }
+    if (scrollBtn) scrollBtn.classList.toggle('show', window.scrollY > 200);
   });
   
-  // Set visitor ID
   if (!sessionStorage.getItem('visitorId')) {
     sessionStorage.setItem('visitorId', 'user_' + Date.now());
   }
   
-  // Refresh slider periodically
   setInterval(() => updateSliderFromLatestMedia(), 30000);
 }
 
-// Initialize Firebase and start app
 initFirebase();
 </script>
 </body>
