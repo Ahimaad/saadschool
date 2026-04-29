@@ -5,20 +5,55 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0a2b4e">
 <title>بوابة مدرسة سعد بن أبي وقاص</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<!-- jsPDF for result export -->
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+
+<!-- ⚡ 1. Preconnect — يبدأ الاتصال مبكراً -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://www.gstatic.com">
+<link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+<link rel="dns-prefetch" href="https://drive.google.com">
+<link rel="dns-prefetch" href="https://res.cloudinary.com">
+
+<!-- ⚡ 2. Bootstrap CSS — يُحمَّل بشكل غير مُعيق -->
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
+<noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></noscript>
+
+<!-- ⚡ 3. Google Fonts — display=swap لا يعيق العرض -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap&font-display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet"></noscript>
+
+<!-- ⚡ 4. CSS ثانوي — لا يوقف التحميل أبداً -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" media="print" onload="this.media='all'">
+
+<!-- ⚡ 5. Firebase — defer لا يوقف الصفحة -->
+<script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
+<!-- ⚡ 6. مكتبات ثانوية — defer + تُحمَّل بعد الصفحة -->
+<script defer src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- PDF libs — تُحمَّل عند الطلب فقط -->
+<script>
+function loadPdfLibs(cb){
+  if(window.html2canvas&&window.jspdf){cb&&cb();return;}
+  const s1=document.createElement("script");
+  s1.src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+  s1.onload=()=>{
+    const s2=document.createElement("script");
+    s2.src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js";
+    s2.onload=cb;
+    document.head.appendChild(s2);
+  };
+  document.head.appendChild(s1);
+}
+</script>
 <style>
+/* فونت احتياطي بينما Cairo يُحمَّل */
+body{font-family:'Cairo',system-ui,-apple-system,'Segoe UI',Arial,sans-serif}
 :root{
   --pr:#0a2b4e;--pr2:#1e4a76;--prg:rgba(10,43,78,.3);
   --gd:#d4af37;--gdl:#f0d060;--gdg:rgba(212,175,55,.4);
@@ -79,7 +114,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .tk::before{left:0;background:linear-gradient(to right,#0a2b4e,transparent);content:'';position:absolute;top:0;width:80px;height:100%;z-index:2}
 .tk::after{right:0;background:linear-gradient(to left,#0a2b4e,transparent);content:'';position:absolute;top:0;width:80px;height:100%;z-index:2}
 .tw{display:inline-block;animation:ts 50s linear infinite}.tw:hover{animation-play-state:paused}
-@keyframes ts{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+@keyframes ts{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .ti{display:inline-block;padding:0 36px}.ti i{color:var(--gdl);margin-left:6px}
 
 /* GLASS CARD */
@@ -322,31 +357,51 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .gp{animation:gp 3s ease-in-out infinite}
 @keyframes gp{0%,100%{box-shadow:0 0 0 0 var(--gdg)}50%{box-shadow:0 0 20px 6px var(--gdg)}}
 
+/* DRAWER MENU — قائمة جانبية منسدلة للموبايل */
+.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:400;opacity:0;pointer-events:none;transition:opacity .3s}
+.drawer-overlay.open{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;right:-280px;width:280px;height:100%;background:var(--pr);z-index:401;transition:right .35s cubic-bezier(.4,0,.2,1);overflow-y:auto;padding:20px 14px;box-shadow:-6px 0 24px rgba(0,0,0,.3)}
+.drawer.open{right:0}
+.drawer-logo{display:flex;align-items:center;gap:10px;margin-bottom:20px;padding-bottom:16px;border-bottom:2px solid rgba(255,255,255,.15)}
+.drawer-logo img{width:46px;height:46px;border-radius:50%;border:2px solid var(--gd)}
+.drawer-logo span{color:white;font-weight:800;font-size:.88rem;line-height:1.3}
+.drawer-item{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-weight:700;font-size:.9rem;font-family:var(--f);padding:12px 14px;border-radius:12px;margin-bottom:6px;cursor:pointer;transition:var(--tr);border:none;background:transparent;width:100%;text-align:right}
+.drawer-item i{width:22px;font-size:1rem;color:var(--gd)}
+.drawer-item:hover,.drawer-item.active{background:rgba(255,255,255,.12);color:var(--gd)}
+.drawer-admin-btn{border-top:1px solid rgba(255,255,255,.15);margin-top:10px;padding-top:10px}
+/* زر فتح القائمة */
+.menu-fab{position:fixed;top:70px;right:14px;width:44px;height:44px;background:var(--gd);color:var(--pr);border:none;border-radius:50%;z-index:300;font-size:1.1rem;display:none;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 14px var(--gdg);transition:var(--tr)}
+.menu-fab:hover{transform:scale(1.1)}
+
 /* RESPONSIVE */
 @media(max-width:768px){
   .mn{display:flex}
+  .menu-fab{display:flex}
   body{padding-bottom:68px}
   .fab-th{bottom:78px;left:14px;width:44px;height:44px;font-size:1.15rem}
   .fab-st{bottom:78px;left:68px;width:38px;height:38px;font-size:.9rem}
   .hs{height:185px!important}
   .gc{padding:12px;border-radius:16px}
   .hide-mob{display:none!important}
-  /* البطاقات عمود كامل على الموبايل */
   .col-md-6{width:100%!important;flex:0 0 100%!important;max-width:100%!important}
   .sfb{gap:5px;padding:9px}
   .fb{font-size:.7rem;padding:4px 8px}
   .mmbd iframe{min-height:65vh}
-  /* نتائج الطلاب على الموبايل */
   .rc{padding:18px}
   .rsb{padding:8px 4px}
   .rsb .h5{font-size:1rem}
-  /* فيديو على الموبايل */
   .fc-viewer video{max-height:220px}
-  /* أزرار الملف */
   .fc-actions{gap:4px}
   .fc-btn-primary{font-size:.75rem;padding:6px 10px}
-  /* الهيدر */
   .stl{font-size:1.1rem!important}
+  /* أزرار الفلتر على موبايل */
+  .sfb{overflow-x:auto;flex-wrap:nowrap;padding-bottom:4px}
+  .sfb::-webkit-scrollbar{height:3px}
+  .sfb::-webkit-scrollbar-thumb{background:var(--gd);border-radius:3px}
+  /* نموذج الرفع */
+  .fi .d-flex.gap-2.flex-wrap{gap:6px!important}
+  /* الهيدر مضغوط */
+  .hdr-sub{display:none}
 }
 @media(max-width:400px){.hs{height:155px!important}}
 
@@ -357,6 +412,17 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   #pdfCard{position:absolute;left:0;top:0;width:100%}
   .fab-th,.fab-st,header,.mn,footer{display:none!important}
 }
+
+/* SKELETON LOADING */
+.skel{background:linear-gradient(90deg,#e8ecf4 25%,#f5f7fb 50%,#e8ecf4 75%);background-size:200% 100%;animation:sk 1.4s infinite;border-radius:10px}
+.dark .skel{background:linear-gradient(90deg,#1e2840 25%,#252d42 50%,#1e2840 75%);background-size:200% 100%}
+@keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
+.skel-card{background:#fff;border-radius:var(--rs);overflow:hidden;box-shadow:var(--sh);border:1px solid rgba(0,0,0,.05)}
+.dark .skel-card{background:rgba(16,22,36,.95)}
+.skel-thumb{height:180px;width:100%}
+.skel-line{height:13px;margin:8px 12px}
+.skel-short{width:60%}
+.skel-shorter{width:40%}
 </style>
 </head>
 <body>
@@ -434,11 +500,11 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
         <div class="swiper hs" id="HSW">
           <div class="swiper-wrapper" id="SWWR">
             <div class="swiper-slide" style="position:relative">
-              <img src="https://picsum.photos/id/20/1200/400" alt="">
+              <img loading="lazy" src="https://picsum.photos/id/20/1200/400" alt="">
               <div class="sc2">🏫 بيئة تعليمية محفزة ومتطورة</div>
             </div>
             <div class="swiper-slide" style="position:relative">
-              <img src="https://picsum.photos/id/100/1200/400" alt="">
+              <img loading="lazy" src="https://picsum.photos/id/100/1200/400" alt="">
               <div class="sc2">💻 أنشطة تكنولوجية متقدمة</div>
             </div>
           </div>
@@ -452,13 +518,41 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   </div>
 </div>
 
-<!-- MOBILE NAV -->
+<!-- زر فتح القائمة الجانبية (موبايل فقط) -->
+<button class="menu-fab" id="menuFab" onclick="openDrawer()" title="القائمة">
+  <i class="fas fa-bars"></i>
+</button>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER MENU -->
+<div class="drawer" id="drawer">
+  <div class="drawer-logo">
+    <img src="logo.jpg" onerror="this.src='https://placehold.co/46x46/white/0a2b4e?text=S'">
+    <span>مدرسة سعد بن أبي وقاص<br>الرسمية للغات</span>
+  </div>
+  <button class="drawer-item" onclick="go('home');closeDrawer()"><i class="fas fa-home"></i>الرئيسية</button>
+  <button class="drawer-item" onclick="go('students');closeDrawer()"><i class="fas fa-user-graduate"></i>شئون الطلاب والنتائج</button>
+  <button class="drawer-item" onclick="go('gallery');closeDrawer()"><i class="fas fa-photo-video"></i>المعرض الرقمي</button>
+  <button class="drawer-item" onclick="go('news');closeDrawer()"><i class="fas fa-newspaper"></i>ركن الأخبار</button>
+  <button class="drawer-item" onclick="go('art');closeDrawer()"><i class="fas fa-palette"></i>معرض التربية الفنية</button>
+  <button class="drawer-item" onclick="go('library');closeDrawer()"><i class="fas fa-book-reader"></i>المكتبة الرقمية</button>
+  <div class="drawer-admin-btn">
+    <button class="drawer-item" onclick="doAdmin();closeDrawer()" style="color:#ff8a80">
+      <i class="fas fa-lock" style="color:#ff8a80"></i>
+      <span id="drawerAdminLabel">لوحة الإدارة</span>
+    </button>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
 <nav class="mn">
   <button class="mni" onclick="go('home')"><i class="fas fa-home"></i>الرئيسية</button>
   <button class="mni" onclick="go('students')"><i class="fas fa-search"></i>النتائج</button>
   <button class="mni" onclick="go('gallery')"><i class="fas fa-images"></i>المعرض</button>
   <button class="mni" onclick="go('library')"><i class="fas fa-book"></i>المكتبة</button>
-  <button class="mni" onclick="doAdmin()"><i class="fas fa-lock"></i>الإدارة</button>
+  <button class="mni" onclick="openDrawer()"><i class="fas fa-ellipsis-h"></i>المزيد</button>
 </nav>
 
 <footer class="py-4 mt-5 bg-dark text-white text-center">
@@ -468,7 +562,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 /* ================================================================
    CONFIG
@@ -542,7 +636,15 @@ function toast(msg, type='i', dur=3000){
    INIT
 ================================================================ */
 window.addEventListener('load',()=>{
-  AOS.init({duration:600,once:true,offset:40});
+  // تهيئة AOS بعد التأكد من تحميله
+  const initAOS=()=>{
+    if(typeof AOS!=='undefined'){
+      AOS.init({disable:'mobile',duration:600,once:true,offset:40});
+    } else {
+      setTimeout(initAOS,100);
+    }
+  };
+  initAOS();
   window.addEventListener('scroll',()=>document.getElementById('STB')?.classList.toggle('show',scrollY>280));
   animN('CS',1250); animN('CT',85); animN('CA',24);
   db.ref('library_section').on('value',s=>{const e=document.getElementById('LC');if(e)e.textContent=s.numChildren()});
@@ -604,8 +706,8 @@ function buildSlider(slides){
   const wr=document.getElementById('SWWR');if(!wr)return;
   wr.innerHTML=slides.map(s=>`
   <div class="swiper-slide" style="position:relative">
-    <img src="${s.url}" alt="${esc(s.cap)}" style="width:100%;height:100%;object-fit:cover;display:block"
-         onerror="this.src='https://picsum.photos/id/20/1200/400'">
+    <img src="${s.url}" alt="${esc(s.cap)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"
+         loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
     <div class="sc2">${esc(s.cap)}</div>
   </div>`).join('');
   if(swiperInst){try{swiperInst.destroy(true,true)}catch(e){}}
@@ -633,9 +735,37 @@ function loadTicker(){
 /* ================================================================
    NAVIGATION
 ================================================================ */
+/* ── DRAWER ──────────────────────────────────────────────── */
+function openDrawer(){
+  document.getElementById('drawer')?.classList.add('open');
+  document.getElementById('drawerOverlay')?.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('drawer')?.classList.remove('open');
+  document.getElementById('drawerOverlay')?.classList.remove('open');
+  document.body.style.overflow='';
+}
+// إغلاق الدرج بـ Escape
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDrawer()});
+
+function renderSkeletons(n=4){
+  return Array.from({length:n},()=>`
+  <div class="col-md-6">
+    <div class="skel-card">
+      <div class="skel skel-thumb"></div>
+      <div class="p-3">
+        <div class="skel skel-line mb-2"></div>
+        <div class="skel skel-line skel-short mb-2"></div>
+        <div class="skel skel-line skel-shorter"></div>
+      </div>
+    </div>
+  </div>`).join('');
+}
+
 function go(sec){
   scrollTo({top:0,behavior:'smooth'});
-  document.querySelectorAll('.smi,.mni').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.smi,.mni,.drawer-item').forEach(b=>b.classList.remove('active'));
   if(sec==='home')    return showHome();
   if(sec==='students')return showStudents();
   if(sec==='gallery') return showFiles('gallery_section','🖼️ المعرض الرقمي');
@@ -671,7 +801,7 @@ function showHome(){
       <div class="col-6 col-md-3"><div class="qc" onclick="go('news')"><i class="fas fa-newspaper" style="color:var(--gd)"></i><h6>الأخبار</h6></div></div>
     </div>
   </div>`;
-  AOS.refresh();
+  if(typeof AOS!=="undefined")AOS.refresh();
 }
 
 /* ================================================================
@@ -794,6 +924,10 @@ function doSearch(){
 ================================================================ */
 function exportPDF(data){
   if(typeof data === 'string') data = JSON.parse(data.replace(/&quot;/g,'"'));
+  toast('⏳ جاري تحميل مكتبة PDF...','i',2000);
+  loadPdfLibs(()=>_doExportPDF(data));
+}
+function _doExportPDF(data){
   toast('⏳ جاري إنشاء PDF...','i',3000);
 
   const today = new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});
@@ -1079,7 +1213,8 @@ function renderFiles(section,title){
           ${cmts.length?`<div class="fc-comments">${cmtHtml}</div>`:''}
           <div class="mt-2">
             <div class="input-group input-group-sm">
-              <input type="text" id="CMI${fid}" class="form-control" placeholder="تعليق... (200)" maxlength="200"
+              <input type="text" id="CMI${fid}" class="form-control" placeholder="تعليق... (200 حرف)" maxlength="200"
+                     oninput="document.getElementById('CC${fid}').textContent=(200-this.value.length)+' / 200';document.getElementById('CC${fid}').style.color=this.value.length>180?'#e74c3c':this.value.length>160?'#f39c12':'#aaa'"
                      oninput="const r=200-this.value.length;const c=document.getElementById('CC${fid}');c.textContent=r+'/200';c.className='cc'+(r<20?' w':'')+(r<5?' d':'')"
                      onkeydown="if(event.key==='Enter')addCmt('${section}','${fid}')">
               <button class="btn bg btn-sm" onclick="addCmt('${section}','${fid}')"><i class="fas fa-paper-plane"></i></button>
@@ -1090,7 +1225,7 @@ function renderFiles(section,title){
       </div>
     </div>`;
   });
-  AOS.refresh();
+  if(typeof AOS!=="undefined")AOS.refresh();
 }
 
 /* ── INLINE VIEWER ── */
@@ -1155,7 +1290,7 @@ function toggleView(fid,url,type){
     html=`<div class="fc-viewer" style="background:#111;cursor:zoom-in" onclick="openModal('${url}','صورة كاملة','img')">
       ${close.replace('onclick="closeSV','onclick="event.stopPropagation();closeSV')}
       <div style="text-align:center;padding:4px 0">
-        <img src="${url}" style="max-width:100%;max-height:400px;object-fit:contain;display:inline-block;border-radius:4px">
+        <img loading="lazy" src="${url}" style="max-width:100%;max-height:400px;object-fit:contain;display:inline-block;border-radius:4px">
         <div style="color:rgba(255,255,255,.5);font-size:.72rem;padding:6px;font-family:var(--f)">
           <i class="fas fa-expand me-1"></i>اضغط لتكبير ملء الشاشة
         </div>
@@ -1182,7 +1317,7 @@ function openModal(url,title,type){
   let body='';
 
   if(type==='img'){
-    body=`<img src="${url}" alt="${esc(title)}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px">`;
+    body=`<img loading="lazy" src="${url}" alt="${esc(title)}" style="max-width:100%;max-height:88vh;object-fit:contain;border-radius:8px">`;
 
   } else if(type==='vid'){
     const e=ext(url);
@@ -1399,7 +1534,7 @@ function previewFile(file,origSize){
   const isI=/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
   const saved=origSize&&origSize!==file.size?Math.round((1-file.size/origSize)*100):0;
   let prev='';
-  if(isI){const u=URL.createObjectURL(file);prev=`<img src="${u}" style="max-height:110px;border-radius:10px;max-width:100%;margin-top:8px">`}
+  if(isI){const u=URL.createObjectURL(file);prev=`<img loading="lazy" src="${u}" style="max-height:110px;border-radius:10px;max-width:100%;margin-top:8px">`}
   document.getElementById('UPV').innerHTML=`
   <div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-2" style="background:${info.b}">
     <i class="fas ${info.i} fa-2x" style="color:${info.c}"></i>
@@ -1728,6 +1863,17 @@ function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم 
 ================================================================ */
 function shareResult(name,total){window.open(`https://wa.me/?text=${encodeURIComponent(`🎉 نتيجة الطالب/ ${name} بمدرسة سعد بن أبي وقاص: ${total} درجة.`)}`,'_blank')}
 function copyTxt(t){navigator.clipboard.writeText(t).then(()=>toast('تم النسخ ✅','s',1800)).catch(()=>toast('تعذّر النسخ','w'))}
+</script>
+<!-- ⚡ Service Worker للتخزين المؤقت -->
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    // نسجّل فقط لو على GitHub Pages (https)
+    if(location.protocol==='https:'){
+      navigator.serviceWorker.register('/sw.js').catch(()=>{});
+    }
+  });
+}
 </script>
 </body>
 </html>
