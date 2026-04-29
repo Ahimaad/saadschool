@@ -6,8 +6,6 @@
 <meta name="theme-color" content="#0a2b4e">
 <title>بوابة مدرسة سعد بن أبي وقاص</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,30 +15,27 @@
 * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
 :root {
-  --pr: #0a2b4e; --pr2: #1e4a76; --gd: #d4af37; --gdl: #f0d060;
-  --bg: #f0f2f8; --gl: rgba(255,255,255,0.97);
+  --pr: #0a2b4e; --pr2: #1e4a76; --gd: #d4af37; --bg: #f0f2f8;
   --cs: 0 5px 20px rgba(0,0,0,0.08); --hs: 0 15px 35px rgba(0,0,0,0.15);
   --r: 18px; --rs: 12px;
 }
 
 body { background: var(--bg); color: #1a2a3a; min-height: 100vh; }
 body.dark { background: #0a0e1a !important; color: #e0e5f0 !important; }
-body.dark .glass-card, body.dark .post-card, body.dark .file-card, 
-body.dark .post-creator, body.dark .qc, body.dark .news-card {
+body.dark .glass-card, body.dark .post-card, body.dark .file-card, body.dark .news-card {
   background: rgba(18, 24, 38, 0.96) !important;
   border-color: rgba(255,255,255,0.08) !important;
 }
-
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: var(--gd); border-radius: 10px; }
 
 /* Loader */
 #loader { position: fixed; inset: 0; z-index: 10000; background: var(--pr); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: 0.5s; }
 #loader.hide { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-logo { width: 85px; height: 85px; border-radius: 50%; border: 3px solid var(--gd); background: white; padding: 8px; animation: pulse 1.2s infinite; object-fit: cover; }
+.loader-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--gd); background: white; padding: 8px; animation: pulse 1.2s infinite; object-fit: cover; }
 @keyframes pulse { 0%,100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,0.4); } 50% { transform: scale(1.05); box-shadow: 0 0 0 20px transparent; } }
-.loader-dots { display: flex; gap: 10px; }
-.loader-dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--gd); animation: bounce 1.2s infinite; }
+.loader-dots { display: flex; gap: 8px; }
+.loader-dots span { width: 8px; height: 8px; border-radius: 50%; background: var(--gd); animation: bounce 1.2s infinite; }
 .loader-dots span:nth-child(2) { animation-delay: 0.2s; }
 .loader-dots span:nth-child(3) { animation-delay: 0.4s; }
 @keyframes bounce { 0%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-12px); } }
@@ -48,7 +43,6 @@ body.dark .post-creator, body.dark .qc, body.dark .news-card {
 /* Header */
 header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom: 3px solid var(--gd); padding: 12px 0; position: sticky; top: 0; z-index: 100; }
 .logo { width: 65px; height: 65px; border-radius: 50%; border: 2px solid var(--gd); background: white; padding: 4px; transition: 0.3s; cursor: pointer; object-fit: cover; }
-.logo:hover { transform: rotate(360deg) scale(1.05); }
 .school-title { font-weight: 900; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.4); }
 .badge-admin { background: var(--gd); color: var(--pr); font-weight: 800; padding: 3px 12px; border-radius: 30px; display: inline-block; font-size: 0.7rem; }
 .online-dot { width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; display: inline-block; animation: blink 2s infinite; margin-left: 5px; }
@@ -60,21 +54,16 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 .ticker-icon { background: var(--gd); color: var(--pr); border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .ticker-content { flex: 1; overflow: hidden; white-space: nowrap; }
 .ticker-scroll { display: inline-block; animation: tickerScroll 35s linear infinite; white-space: nowrap; }
-.ticker-scroll:hover { animation-play-state: paused; }
-.ticker-item { display: inline-block; margin: 0 20px; }
-.ticker-item i { margin-right: 8px; color: var(--gdl); }
+.ticker-item { display: inline-block; margin: 0 25px; }
+.ticker-item i { margin-right: 8px; color: #f0d060; }
 @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-.ticker-controls { display: flex; gap: 5px; }
-.ticker-controls button { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 50%; width: 28px; height: 28px; cursor: pointer; }
+.ticker-controls button { background: rgba(255,255,255,0.15); border: none; color: white; border-radius: 50%; width: 28px; height: 28px; margin: 0 2px; cursor: pointer; }
 
-/* Glass Card */
-.glass-card { background: var(--gl); backdrop-filter: blur(12px); border-radius: var(--r); padding: 20px; box-shadow: var(--cs); border: 1px solid rgba(255,255,255,0.5); transition: 0.3s; }
+/* Cards */
+.glass-card { background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-radius: var(--r); padding: 20px; box-shadow: var(--cs); border: 1px solid rgba(255,255,255,0.5); }
 .glass-card:hover { box-shadow: var(--hs); }
-
-/* Side Menu */
 .side-menu-btn { background: white; border: none; border-radius: var(--rs); padding: 12px 15px; margin-bottom: 8px; width: 100%; text-align: right; font-weight: 700; cursor: pointer; border-right: 4px solid var(--gd); display: flex; align-items: center; gap: 12px; transition: 0.3s; }
 .side-menu-btn:hover, .side-menu-btn.active { background: var(--pr); color: var(--gd); transform: translateX(-4px); }
-.side-menu-btn i { width: 26px; }
 .menu-badge { margin-right: auto; background: var(--gd); color: var(--pr); padding: 2px 8px; border-radius: 30px; font-size: 0.6rem; font-weight: 800; }
 
 /* Post Creator */
@@ -87,14 +76,14 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 .post-action-type:hover { background: #f0f2f5; }
 
 /* Post Card */
-.post-card { background: white; border-radius: var(--r); padding: 18px; margin-bottom: 18px; box-shadow: var(--cs); transition: 0.3s; }
+.post-card { background: white; border-radius: var(--r); padding: 18px; margin-bottom: 18px; box-shadow: var(--cs); }
 .post-card:hover { transform: translateY(-2px); box-shadow: var(--hs); }
 .post-header { display: flex; gap: 12px; margin-bottom: 14px; }
 .post-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--pr), var(--pr2)); display: flex; align-items: center; justify-content: center; color: var(--gd); }
 .post-author-name { font-weight: 800; color: var(--pr); margin-bottom: 2px; }
 .post-date { font-size: 0.7rem; color: #999; }
-.post-content { line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; word-break: break-word; }
-.post-media { margin: 12px 0; border-radius: 14px; overflow: hidden; background: #f0f2f5; }
+.post-content { line-height: 1.6; margin-bottom: 12px; white-space: pre-wrap; }
+.post-media { margin: 12px 0; border-radius: 14px; overflow: hidden; }
 .post-media img, .post-media video { width: 100%; max-height: 400px; object-fit: contain; }
 .link-embed { position: relative; padding-bottom: 56.25%; height: 0; }
 .link-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
@@ -107,38 +96,27 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 .comment-item { background: #f8f9fa; border-radius: 10px; padding: 8px 12px; margin-bottom: 8px; border-right: 3px solid var(--gd); }
 
 /* File Card */
-.file-card { background: white; border-radius: var(--rs); overflow: hidden; box-shadow: var(--cs); transition: 0.3s; height: 100%; display: flex; flex-direction: column; }
+.file-card { background: white; border-radius: var(--rs); overflow: hidden; box-shadow: var(--cs); height: 100%; display: flex; flex-direction: column; }
 .file-card:hover { transform: translateY(-3px); box-shadow: var(--hs); }
 .file-media { position: relative; height: 180px; overflow: hidden; background: #1a1a2e; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-.file-media img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
-.file-media:hover img { transform: scale(1.05); }
+.file-media img { width: 100%; height: 100%; object-fit: cover; }
 .file-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0); display: flex; align-items: center; justify-content: center; transition: 0.3s; }
 .file-media:hover .file-overlay { background: rgba(0,0,0,0.4); }
-.file-play-btn { width: 50px; height: 50px; border-radius: 50%; background: rgba(212,175,55,0.9); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: 0.3s; color: var(--pr); font-size: 1.3rem; }
+.file-play-btn { width: 45px; height: 45px; border-radius: 50%; background: rgba(212,175,55,0.9); display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.8); transition: 0.3s; color: var(--pr); font-size: 1.2rem; }
 .file-media:hover .file-play-btn { opacity: 1; transform: scale(1); }
 .file-body { padding: 14px; flex: 1; }
 .file-title { font-weight: 800; margin-bottom: 5px; }
 .file-meta { font-size: 0.7rem; color: #999; margin-bottom: 8px; }
 .file-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 .file-btn { background: var(--pr); color: white; border: none; border-radius: 30px; padding: 6px 12px; font-size: 0.7rem; font-weight: 600; cursor: pointer; flex: 1; text-align: center; }
-.file-btn:hover { background: var(--pr2); }
 .file-icon-btn { width: 32px; height: 32px; border-radius: 50%; border: 1px solid #ddd; background: white; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #666; }
 .file-icon-btn:hover { background: var(--pr); color: white; }
-
-/* Video & PDF Thumbnails */
 .video-thumb { position: relative; width: 100%; height: 100%; background: #000; }
 .video-thumb img { width: 100%; height: 100%; object-fit: cover; }
-.video-thumb .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; background: rgba(212,175,55,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--pr); font-size: 1.3rem; }
+.video-thumb .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: rgba(212,175,55,0.9); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .pdf-thumb { width: 100%; height: 100%; background: linear-gradient(135deg, #fdecea, #fff5f5); display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.pdf-thumb i { font-size: 3rem; color: #e74c3c; margin-bottom: 8px; }
-.pdf-thumb span { font-size: 0.7rem; color: #e74c3c; font-weight: 600; }
-
-/* Upload Area */
-.upload-area { border: 2px dashed #ccc; border-radius: var(--r); padding: 25px; text-align: center; cursor: pointer; transition: 0.3s; background: #fafbfe; }
-.upload-area:hover, .upload-area.drag-over { border-color: var(--gd); background: #fffbf0; }
-.upload-area i { font-size: 2.8rem; color: var(--gd); margin-bottom: 10px; }
-.file-list-item { background: #f8f9fa; border-radius: 10px; padding: 10px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
-.file-list-item .remove-file { color: #dc3545; cursor: pointer; margin-right: auto; }
+.pdf-thumb i { font-size: 2.5rem; color: #e74c3c; margin-bottom: 5px; }
+.pdf-thumb span { font-size: 0.65rem; color: #e74c3c; font-weight: 600; }
 
 /* Result Card */
 .result-card { background: linear-gradient(135deg, var(--pr), #1a4070); color: white; border-radius: var(--r); padding: 25px; border: 2px solid var(--gd); }
@@ -149,25 +127,24 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 .news-card { background: white; border-radius: var(--rs); padding: 16px; margin-bottom: 12px; box-shadow: var(--cs); border-right: 4px solid var(--gd); }
 .news-title { font-weight: 800; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
 .news-date { font-size: 0.7rem; color: #999; }
-.news-body { font-size: 0.9rem; line-height: 1.5; margin-top: 8px; }
 
-/* QC Card */
-.qc { border-radius: var(--rs); padding: 18px 8px; text-align: center; cursor: pointer; transition: 0.3s; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+/* Quick Cards */
+.qc { border-radius: var(--rs); padding: 18px 8px; text-align: center; cursor: pointer; background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
 .qc:hover { transform: translateY(-5px); box-shadow: var(--hs); }
 .qc i { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-.hsc { background: white; border-radius: var(--rs); padding: 16px 8px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.hsc { background: white; border-radius: var(--rs); padding: 16px 8px; text-align: center; }
+.stat-edit { cursor: pointer; }
+.stat-edit:hover { opacity: 0.7; }
 
-/* Swiper */
+/* Slider */
 .swiper-container { border-radius: var(--r); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 .swiper-slide img { width: 100%; height: 250px; object-fit: cover; }
 .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.7)); color: white; padding: 15px; font-weight: 700; }
 .swiper-pagination-bullet-active { background: var(--gd) !important; }
 
-/* Floating Buttons */
-.fab-theme, .fab-scroll { position: fixed; width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer; z-index: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.2); transition: 0.3s; }
-.fab-theme { bottom: 25px; left: 25px; background: linear-gradient(135deg, var(--gd), #c9a227); color: var(--pr); font-size: 1.2rem; }
-.fab-theme:hover { transform: scale(1.1); }
-.fab-scroll { bottom: 85px; left: 25px; background: var(--pr); color: white; opacity: 0; pointer-events: none; }
+/* Fab Buttons */
+.fab-theme { position: fixed; bottom: 25px; left: 25px; width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--gd), #c9a227); color: var(--pr); border: none; cursor: pointer; z-index: 500; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-size: 1.2rem; }
+.fab-scroll { position: fixed; bottom: 85px; left: 25px; width: 44px; height: 44px; border-radius: 50%; background: var(--pr); color: white; border: none; cursor: pointer; z-index: 500; opacity: 0; pointer-events: none; transition: 0.3s; }
 .fab-scroll.show { opacity: 1; pointer-events: auto; }
 
 /* Mobile */
@@ -185,11 +162,9 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 
 .admin-badge { background: linear-gradient(90deg, #dc3545, #c0392b); color: white; padding: 5px 12px; border-radius: 10px; font-size: 0.7rem; font-weight: 700; display: inline-flex; align-items: center; gap: 5px; animation: pulseRed 2s infinite; }
 @keyframes pulseRed { 0%,100% { box-shadow: 0 0 0 0 rgba(220,53,69,0.4); } 50% { box-shadow: 0 0 0 8px rgba(220,53,69,0); } }
-.stat-edit { cursor: pointer; transition: 0.2s; }
-.stat-edit:hover { opacity: 0.7; transform: scale(1.05); }
 
 #toastContainer { position: fixed; top: 80px; left: 20px; z-index: 9000; display: flex; flex-direction: column; gap: 8px; }
-.toast-message { background: var(--pr); color: white; padding: 10px 18px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; border-right: 4px solid var(--gd); animation: toastIn 0.3s ease; margin-bottom: 5px; }
+.toast-message { background: var(--pr); color: white; padding: 10px 18px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; border-right: 4px solid var(--gd); animation: toastIn 0.3s ease; }
 @keyframes toastIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
 @media (max-width: 768px) {
@@ -200,17 +175,13 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
   .fab-theme { width: 40px; height: 40px; bottom: 75px; left: 12px; }
   .fab-scroll { bottom: 125px; left: 12px; width: 38px; height: 38px; }
   .glass-card { padding: 14px; }
-  .swiper-slide img { height: 180px; }
+  .swiper-slide img { height: 160px; }
 }
 </style>
 </head>
 <body>
 
-<div id="loader">
-  <img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/85x85/white/0a2b4e?text=S'">
-  <div class="loader-dots"><span></span><span></span><span></span></div>
-  <p style="color:white">جاري تحميل البوابة...</p>
-</div>
+<div id="loader"><img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/80x80/white/0a2b4e?text=S'"><div class="loader-dots"><span></span><span></span><span></span></div><p style="color:white">جاري التحميل...</p></div>
 
 <div id="pdfExport" style="position:fixed; left:-9999px; top:0; width:800px; background:white; direction:rtl; z-index:-1"></div>
 <div id="toastContainer"></div>
@@ -236,7 +207,7 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
     <div class="ticker-wrapper">
       <div class="ticker-icon"><i class="fas fa-bullhorn"></i></div>
       <div class="ticker-content"><div class="ticker-scroll" id="tickerScroll"></div></div>
-      <div class="ticker-controls"><button onclick="pauseTicker()"><i class="fas fa-pause"></i></button><button onclick="resumeTicker()"><i class="fas fa-play"></i></button></div>
+      <div class="ticker-controls"><button onclick="toggleTicker(false)"><i class="fas fa-pause"></i></button><button onclick="toggleTicker(true)"><i class="fas fa-play"></i></button></div>
     </div>
   </div>
 </div>
@@ -247,7 +218,7 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
       <div class="glass-card mb-4">
         <button class="side-menu-btn" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
         <button class="side-menu-btn" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i><span>المنشورات</span><span class="menu-badge" id="postsCount">0</span></button>
-        <button class="side-menu-btn" onclick="navigateTo('results')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
+        <button class="side-menu-btn" onclick="navigateTo('results')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب</span></button>
         <button class="side-menu-btn" onclick="navigateTo('gallery')"><i class="fas fa-images"></i><span>المعرض الرقمي</span></button>
         <button class="side-menu-btn" onclick="navigateTo('library')"><i class="fas fa-book"></i><span>المكتبة الرقمية</span><span class="menu-badge" id="libraryCount">0</span></button>
         <button class="side-menu-btn" onclick="navigateTo('art')"><i class="fas fa-palette"></i><span>التربية الفنية</span></button>
@@ -256,9 +227,9 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
       </div>
       <div class="glass-card">
         <h6 class="fw-bold mb-3"><i class="fas fa-chart-line me-2"></i> إحصائيات المدرسة</h6>
-        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="statStudents" onclick="editStat('students')">0</span></div>
-        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>المعلمون</span><span class="badge bg-success px-3 stat-edit" id="statTeachers" onclick="editStat('teachers')">0</span></div>
-        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3"><span>الأنشطة</span><span class="badge bg-warning px-3 stat-edit" id="statActivities" onclick="editStat('activities')">0</span></div>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="statStudents">0</span></div>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>المعلمون</span><span class="badge bg-success px-3 stat-edit" id="statTeachers">0</span></div>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3"><span>الأنشطة</span><span class="badge bg-warning px-3 stat-edit" id="statActivities">0</span></div>
         <div id="adminStatus" class="mt-2"></div>
       </div>
     </div>
@@ -272,7 +243,7 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 <button class="menu-fab" onclick="openDrawer()"><i class="fas fa-bars"></i></button>
 <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 <div class="drawer" id="drawerMenu">
-  <div class="d-flex gap-2 mb-4 pb-2"><img src="logo.jpg" style="width:45px;border-radius:50%" onerror="this.src='https://placehold.co/45x45'"><span class="text-white fw-bold">القائمة</span></div>
+  <div class="d-flex gap-2 mb-4"><img src="logo.jpg" style="width:45px;border-radius:50%" onerror="this.src='https://placehold.co/45x45'"><span class="text-white fw-bold">القائمة</span></div>
   <button class="drawer-item" onclick="navigateTo('home');closeDrawer()"><i class="fas fa-home"></i> الرئيسية</button>
   <button class="drawer-item" onclick="navigateTo('posts');closeDrawer()"><i class="fas fa-newspaper"></i> المنشورات</button>
   <button class="drawer-item" onclick="navigateTo('results');closeDrawer()"><i class="fas fa-graduation-cap"></i> النتائج</button>
@@ -286,10 +257,10 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
   <button class="mobile-nav-item" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i>منشورات</button>
   <button class="mobile-nav-item" onclick="navigateTo('results')"><i class="fas fa-search"></i>نتائج</button>
   <button class="mobile-nav-item" onclick="navigateTo('gallery')"><i class="fas fa-images"></i>معرض</button>
-  <button class="mobile-nav-item" onclick="openDrawer()"><i class="fas fa-bars"></i>القائمة</button>
+  <button class="mobile-nav-item" onclick="openDrawer()"><i class="fas fa-bars"></i>المزيد</button>
 </nav>
 
-<footer class="py-3 mt-4 bg-dark text-white text-center small"><div class="container">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات | جميع الحقوق محفوظة</div></footer>
+<footer class="py-3 mt-4 bg-dark text-white text-center small"><div class="container">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</div></footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -300,7 +271,7 @@ header { background: linear-gradient(135deg, var(--pr), #0d3a60); border-bottom:
 
 <script>
 // ============================================================
-// FIREBASE
+// FIREBASE INITIALIZATION - CORRECTED
 // ============================================================
 const firebaseConfig = {
   apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
@@ -313,17 +284,9 @@ const firebaseConfig = {
 
 let db = null;
 let isAdmin = false;
-let currentSection = 'home';
-let swiperInst = null;
-let tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة', 'نظام المنشورات الجديد تم تفعيله'];
-let statsData = { students: 1250, teachers: 85, activities: 24 };
-
-// Grades
-const GRADES = {
-  p3: 'الصف الثالث الابتدائي', p4: 'الصف الرابع الابتدائي', p5: 'الصف الخامس الابتدائي',
-  p6: 'الصف السادس الابتدائي', m1: 'الصف الأول الإعدادي', m2: 'الصف الثاني الإعدادي',
-  m3: 'الصف الثالث الإعدادي', s1: 'الصف الأول الثانوي', s2: 'الصف الثاني الثانوي'
-};
+let currentPage = 'home';
+let swiper = null;
+let tickerAnimationRunning = true;
 
 // Helper functions
 function showToast(msg, type = 'info') {
@@ -333,10 +296,8 @@ function showToast(msg, type = 'info') {
   toast.className = 'toast-message';
   const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
   toast.innerHTML = `<i class="fas ${icons[type]} me-2"></i>${msg}`;
-  if (type === 'error') toast.style.borderRightColor = '#dc3545';
-  if (type === 'success') toast.style.borderRightColor = '#28a745';
   container.appendChild(toast);
-  setTimeout(() => { toast.remove(); }, 3000);
+  setTimeout(() => toast.remove(), 3000);
 }
 
 function escapeHtml(text) {
@@ -346,57 +307,63 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-function isImageUrl(url) { return /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url || ''); }
-function isVideoUrl(url) { return /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url || ''); }
-function isPdfUrl(url) { return /\.pdf(\?|$)/i.test(url || ''); }
-function isYouTubeUrl(url) { return url && (url.includes('youtube.com/watch') || url.includes('youtu.be/')); }
+function isImage(url) { return /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url || ''); }
+function isVideo(url) { return /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url || ''); }
+function isPdf(url) { return /\.pdf(\?|$)/i.test(url || ''); }
+function isYouTube(url) { return url && (url.includes('youtube.com/watch') || url.includes('youtu.be/')); }
 function getYouTubeId(url) { const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/); return m ? m[1] : null; }
-function getYouTubeThumbnail(url) { const id = getYouTubeId(url); return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null; }
+function getYouTubeThumb(url) { const id = getYouTubeId(url); return id ? `https://img.youtube.com/vi/${id}/mqdefault.jpg` : null; }
 
 function getEmbedHtml(url) {
   if (!url) return '';
-  if (isYouTubeUrl(url)) { const id = getYouTubeId(url); if (id) return `<div class="link-embed"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`; }
-  if (isImageUrl(url)) return `<img src="${url}" style="max-width:100%; border-radius:12px">`;
-  if (isVideoUrl(url)) return `<video controls src="${url}" style="max-width:100%"></video>`;
-  if (isPdfUrl(url)) return `<div class="link-embed"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"></iframe></div>`;
+  if (isYouTube(url)) { const id = getYouTubeId(url); if (id) return `<div class="link-embed"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`; }
+  if (isImage(url)) return `<img src="${url}" style="max-width:100%; border-radius:12px">`;
+  if (isVideo(url)) return `<video controls src="${url}" style="max-width:100%"></video>`;
+  if (isPdf(url)) return `<div class="link-embed"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"></iframe></div>`;
   return `<a href="${url}" target="_blank" class="btn btn-outline-primary btn-sm">فتح الرابط</a>`;
 }
 
-function getThumbnailHtml(url, title) {
-  if (isImageUrl(url)) return `<img src="${url}" loading="lazy">`;
-  if (isYouTubeUrl(url)) {
-    const thumb = getYouTubeThumbnail(url);
-    return `<div class="video-thumb"><img src="${thumb}"><div class="play-icon"><i class="fas fa-play"></i></div></div>`;
-  }
-  if (isVideoUrl(url)) return `<div class="video-thumb"><video src="${url}" style="width:100%;height:100%;object-fit:cover"></video><div class="play-icon"><i class="fas fa-play"></i></div></div>`;
-  if (isPdfUrl(url)) return `<div class="pdf-thumb"><i class="fas fa-file-pdf"></i><span>PDF</span></div>`;
+function getThumbHtml(url) {
+  if (isImage(url)) return `<img src="${url}">`;
+  if (isYouTube(url)) { const thumb = getYouTubeThumb(url); return `<div class="video-thumb"><img src="${thumb}"><div class="play-icon"><i class="fas fa-play"></i></div></div>`; }
+  if (isVideo(url)) return `<div class="video-thumb"><video src="${url}" style="width:100%;height:100%;object-fit:cover"></video><div class="play-icon"><i class="fas fa-play"></i></div></div>`;
+  if (isPdf(url)) return `<div class="pdf-thumb"><i class="fas fa-file-pdf"></i><span>PDF</span></div>`;
   return `<div class="pdf-thumb"><i class="fas fa-link"></i><span>رابط</span></div>`;
 }
 
-// Initialize Firebase
-function initFirebase() {
-  if (typeof firebase !== 'undefined') {
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    db = firebase.database();
-    startApp();
-  } else {
-    setTimeout(initFirebase, 200);
-  }
+// ============================================================
+// TICKER - LTR (Fixed)
+// ============================================================
+async function loadTicker() {
+  if (!db) return;
+  try {
+    const snap = await db.ref('ticker_items').once('value');
+    if (snap.exists()) {
+      const items = [];
+      snap.forEach(c => items.push(c.val().text));
+      if (items.length) document.getElementById('tickerScroll').innerHTML = items.map(t => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(t)}</span>`).join('') + items.map(t => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(t)}</span>`).join('');
+    }
+  } catch(e) { console.warn(e); }
+}
+function toggleTicker(play) {
+  const el = document.querySelector('.ticker-scroll');
+  if (el) el.style.animationPlayState = play ? 'running' : 'paused';
 }
 
 // ============================================================
-// STATS
+// STATS (Fixed)
 // ============================================================
+let stats = { students: 1250, teachers: 85, activities: 24 };
 async function loadStats() {
   if (!db) return;
   try {
     const snap = await db.ref('school_stats').once('value');
-    if (snap.exists()) statsData = snap.val();
-    else await db.ref('school_stats').set(statsData);
-  } catch(e) { console.warn(e); }
-  document.getElementById('statStudents').innerText = statsData.students;
-  document.getElementById('statTeachers').innerText = statsData.teachers;
-  document.getElementById('statActivities').innerText = statsData.activities;
+    if (snap.exists()) stats = snap.val();
+    else await db.ref('school_stats').set(stats);
+  } catch(e) {}
+  document.getElementById('statStudents').innerText = stats.students;
+  document.getElementById('statTeachers').innerText = stats.teachers;
+  document.getElementById('statActivities').innerText = stats.activities;
 }
 
 async function editStat(statName) {
@@ -405,73 +372,37 @@ async function editStat(statName) {
   const { value } = await Swal.fire({
     title: `تعديل عدد ${labels[statName]}`,
     input: 'number',
-    inputValue: statsData[statName],
+    inputValue: stats[statName],
     showCancelButton: true,
     confirmButtonText: 'حفظ'
   });
-  if (value && parseInt(value) !== statsData[statName]) {
-    statsData[statName] = parseInt(value);
-    await db.ref('school_stats').set(statsData);
-    document.getElementById(`stat${statName.charAt(0).toUpperCase() + statName.slice(1)}`).innerText = statsData[statName];
-    showToast(`تم تحديث ${labels[statName]} إلى ${value}`, 'success');
-    if (currentSection === 'home') showHome();
+  if (value && parseInt(value) !== stats[statName]) {
+    stats[statName] = parseInt(value);
+    await db.ref('school_stats').set(stats);
+    document.getElementById(`stat${statName.charAt(0).toUpperCase() + statName.slice(1)}`).innerText = stats[statName];
+    showToast(`تم تحديث ${labels[statName]}`, 'success');
+    if (currentPage === 'home') showHome();
   }
 }
-
-// ============================================================
-// TICKER (LTR) - Fixed
-// ============================================================
-async function loadTicker() {
-  if (!db) return;
-  try {
-    const snap = await db.ref('ticker_items').once('value');
-    if (snap.exists()) {
-      tickerItems = [];
-      snap.forEach(c => tickerItems.push(c.val().text));
-    }
-  } catch(e) {}
-  if (tickerItems.length === 0) tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة', 'نظام المنشورات الجديد تم تفعيله'];
-  const container = document.getElementById('tickerScroll');
-  if (container) container.innerHTML = tickerItems.map(t => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(t)}</span>`).join('') + tickerItems.map(t => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(t)}</span>`).join('');
-}
-function pauseTicker() { const el = document.querySelector('.ticker-scroll'); if (el) el.style.animationPlayState = 'paused'; }
-function resumeTicker() { const el = document.querySelector('.ticker-scroll'); if (el) el.style.animationPlayState = 'running'; }
 
 // ============================================================
 // SLIDER
 // ============================================================
 async function updateSlider() {
-  if (!db) return;
-  const sections = ['posts', 'gallery_section', 'library_section', 'art_section'];
-  let media = [];
-  for (const sec of sections) {
-    try {
-      const snap = await db.ref(sec).orderByChild('timestamp').limitToLast(10).once('value');
-      if (snap.exists()) snap.forEach(c => {
-        const data = c.val();
-        let url = data.mediaUrl || data.url;
-        if (url && (isImageUrl(url) || isVideoUrl(url) || isYouTubeUrl(url))) {
-          media.push({ url, caption: data.title || (data.content ? data.content.substring(0,50) : 'محتوى'), timestamp: data.timestamp || 0 });
-        }
-      });
-    } catch(e) {}
-  }
-  media.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-  const top = media.slice(0,6);
-  if (top.length === 0) top.push({ url: 'https://picsum.photos/id/20/1200/400', caption: 'مرحباً في بوابتنا الرقمية' });
   const wrapper = document.getElementById('sliderWrapper');
-  if (wrapper) {
-    wrapper.innerHTML = top.map(m => `<div class="swiper-slide"><img src="${isYouTubeUrl(m.url) ? getYouTubeThumbnail(m.url) : m.url}" loading="lazy"><div class="slide-caption">${escapeHtml(m.caption)}</div></div>`).join('');
-  }
-  if (swiperInst) swiperInst.destroy();
-  swiperInst = new Swiper('#mainSlider', { loop: true, autoplay: { delay: 5000 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } });
+  if (!wrapper) return;
+  const defaultSlides = [
+    { url: 'https://picsum.photos/id/20/1200/400', caption: 'مرحباً في بوابة مدرسة سعد بن أبي وقاص' },
+    { url: 'https://picsum.photos/id/100/1200/400', caption: 'نظام تعليمي رقمي متكامل' }
+  ];
+  wrapper.innerHTML = defaultSlides.map(s => `<div class="swiper-slide"><img src="${s.url}" loading="lazy"><div class="slide-caption">${s.caption}</div></div>`).join('');
+  if (swiper) swiper.destroy();
+  swiper = new Swiper('#mainSlider', { loop: true, autoplay: { delay: 5000 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } });
 }
 
 // ============================================================
-// POSTS
+// POSTS (Fixed - Working)
 // ============================================================
-let selectedPostFile = null;
-
 async function loadPosts() {
   const container = document.getElementById('postsList');
   if (!container) return;
@@ -482,9 +413,8 @@ async function loadPosts() {
     if (snap.exists()) snap.forEach(c => posts.push({ id: c.key, ...c.val() }));
     posts.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
     document.getElementById('postsCount').innerText = posts.length;
-    if (posts.length === 0) { container.innerHTML = '<div class="text-center p-5"><div class="esi">📝</div><p>لا توجد منشورات</p></div>'; return; }
-    container.innerHTML = posts.map(post => renderPost(post)).join('');
-    posts.forEach(p => { document.getElementById(`likeBtn-${p.id}`)?.addEventListener('click', () => likePost(p.id)); });
+    if (posts.length === 0) { container.innerHTML = '<div class="text-center p-5"><div class="esi">📝</div><p>لا توجد منشورات</p><button class="btn btn-primary mt-3" onclick="openPostModal()">أضف أول منشور</button></div>'; return; }
+    container.innerHTML = posts.map(p => renderPost(p)).join('');
   } catch(e) { container.innerHTML = '<div class="alert alert-danger">خطأ في التحميل</div>'; }
 }
 
@@ -495,47 +425,53 @@ function renderPost(p) {
   const commentCount = p.comments ? p.comments.length : 0;
   let mediaHtml = p.mediaUrl ? `<div class="post-media">${getEmbedHtml(p.mediaUrl)}</div>` : '';
   const commentsHtml = (p.comments || []).map(c => `<div class="comment-item"><div class="d-flex justify-content-between"><b>${escapeHtml(c.name)}</b>${isAdmin ? `<button class="btn btn-sm text-danger p-0" onclick="deleteComment('${p.id}','${c.id}')"><i class="fas fa-trash"></i></button>` : ''}</div><div>${escapeHtml(c.text)}</div><small>${c.date||''}</small></div>`).join('');
-  const tabNames = { general: 'عام', gallery_section: 'المعرض', library_section: 'المكتبة', art_section: 'التربية الفنية' };
   return `
     <div class="post-card">
-      <div class="post-header"><div class="post-avatar"><i class="fas fa-school"></i></div><div><div class="post-author-name">${escapeHtml(p.author||'الإدارة')}<span class="post-tab-badge">${tabNames[p.tab]||'عام'}</span></div><div class="post-date">${p.date||''}</div></div></div>
-      <div class="post-content">${escapeHtml(p.content)}</div>
-      ${mediaHtml}
+      <div class="post-header"><div class="post-avatar"><i class="fas fa-school"></i></div><div><div class="post-author-name">${escapeHtml(p.author||'إدارة المدرسة')}</div><div class="post-date">${p.date||''} ${p.time||''}</div></div></div>
+      <div class="post-content">${escapeHtml(p.content)}</div>${mediaHtml}
       <div class="post-stats"><span><i class="fas fa-thumbs-up"></i> ${likeCount}</span><span onclick="toggleComments('${p.id}')"><i class="fas fa-comment"></i> ${commentCount}</span></div>
-      <div class="post-actions"><button class="post-action-btn ${liked ? 'liked' : ''}" id="likeBtn-${p.id}"><i class="fas fa-thumbs-up"></i> إعجاب</button><button class="post-action-btn" onclick="toggleComments('${p.id}')"><i class="fas fa-comment"></i> تعليق</button>${isAdmin ? `<button class="post-action-btn text-danger" onclick="deletePost('${p.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}</div>
-      <div id="comments-${p.id}" style="display:none" class="comments-section"><div>${commentsHtml}</div><div class="input-group mt-2"><input type="text" id="commentInput-${p.id}" class="form-control" placeholder="تعليق..."><button class="btn btn-primary btn-sm" onclick="addComment('${p.id}')"><i class="fas fa-paper-plane"></i></button></div></div>
+      <div class="post-actions"><button class="post-action-btn ${liked ? 'liked' : ''}" id="likeBtn-${p.id}" onclick="likePost('${p.id}')"><i class="fas fa-thumbs-up"></i> إعجاب</button><button class="post-action-btn" onclick="toggleComments('${p.id}')"><i class="fas fa-comment"></i> تعليق</button>${isAdmin ? `<button class="post-action-btn text-danger" onclick="deletePost('${p.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}</div>
+      <div id="comments-${p.id}" style="display:none" class="comments-section"><div>${commentsHtml}</div><div class="input-group mt-2"><input type="text" id="commentInput-${p.id}" class="form-control" placeholder="اكتب تعليق..."><button class="btn btn-primary btn-sm" onclick="addComment('${p.id}')"><i class="fas fa-paper-plane"></i></button></div></div>
     </div>
   `;
 }
 
 function toggleComments(id) { const el = document.getElementById(`comments-${id}`); if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none'; }
-async function likePost(id) { const vid = sessionStorage.getItem('vid') || 'user_' + Date.now(); if (!sessionStorage.getItem('vid')) sessionStorage.setItem('vid', vid); const ref = db.ref(`posts/${id}/likes/${vid}`); const snap = await ref.once('value'); if (snap.exists()) await ref.remove(); else await ref.set(true); loadPosts(); }
-async function addComment(id) { const inp = document.getElementById(`commentInput-${id}`); const txt = inp?.value?.trim(); if (!txt) return; await db.ref(`posts/${id}/comments`).push({ id: Date.now().toString(), name: isAdmin ? 'الإدارة' : 'زائر', text: txt, date: new Date().toLocaleString() }); inp.value = ''; loadPosts(); }
-async function deletePost(id) { const res = await Swal.fire({ title: 'حذف المنشور؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`posts/${id}`).remove(); loadPosts(); updateSlider(); } }
-async function deleteComment(pid, cid) { const snap = await db.ref(`posts/${pid}/comments`).once('value'); snap.forEach(c => { if (c.val().id === cid) c.ref.remove(); }); loadPosts(); }
+async function likePost(id) { const vid = sessionStorage.getItem('vid') || 'user_' + Date.now(); if (!sessionStorage.getItem('vid')) sessionStorage.setItem('vid', vid); const ref = db.ref(`posts/${id}/likes/${vid}`); const snap = await ref.once('value'); snap.exists() ? await ref.remove() : await ref.set(true); loadPosts(); }
+async function addComment(id) { const inp = document.getElementById(`commentInput-${id}`); const txt = inp?.value?.trim(); if (!txt) return; await db.ref(`posts/${id}/comments`).push({ id: Date.now().toString(), name: isAdmin ? 'إدارة المدرسة' : 'زائر', text: txt, date: new Date().toLocaleString() }); inp.value = ''; loadPosts(); showToast('تم إضافة التعليق', 'success'); }
+async function deletePost(id) { const res = await Swal.fire({ title: 'حذف المنشور؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`posts/${id}`).remove(); loadPosts(); showToast('تم الحذف', 'success'); } }
+async function deleteComment(pid, cid) { const snap = await db.ref(`posts/${pid}/comments`).once('value'); snap.forEach(c => { if (c.val().id === cid) c.ref.remove(); }); loadPosts(); showToast('تم حذف التعليق', 'info'); }
 
 function openPostModal() {
-  selectedPostFile = null;
   Swal.fire({
     title: 'منشور جديد',
-    html: `<textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="3"></textarea><input type="url" id="postMediaUrl" class="form-control mt-2" placeholder="رابط وسائط (صورة/فيديو/يوتيوب)"><div class="mt-2"><select id="postTab" class="form-select"><option value="general">عام</option><option value="gallery_section">المعرض الرقمي</option><option value="library_section">المكتبة الرقمية</option><option value="art_section">التربية الفنية</option></select></div>`,
-    showCancelButton: true, confirmButtonText: 'نشر',
-    preConfirm: () => ({ content: document.getElementById('postContent').value.trim(), mediaUrl: document.getElementById('postMediaUrl').value.trim(), tab: document.getElementById('postTab').value })
+    html: `<textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="4"></textarea><input type="url" id="postMediaUrl" class="form-control mt-2" placeholder="رابط وسائط (اختياري)">`,
+    showCancelButton: true,
+    confirmButtonText: 'نشر',
+    preConfirm: () => ({ content: document.getElementById('postContent').value.trim(), mediaUrl: document.getElementById('postMediaUrl').value.trim() })
   }).then(async res => {
     if (res.isConfirmed && res.value.content) {
-      await db.ref('posts').push({ content: res.value.content, mediaUrl: res.value.mediaUrl || null, author: isAdmin ? 'إدارة المدرسة' : 'معلم', timestamp: Date.now(), date: new Date().toLocaleDateString(), tab: res.value.tab, likes: {}, comments: [] });
-      showToast('تم النشر', 'success');
-      loadPosts(); updateSlider();
-    } else showToast('أدخل محتوى', 'warning');
+      await db.ref('posts').push({
+        content: res.value.content,
+        mediaUrl: res.value.mediaUrl || null,
+        author: isAdmin ? 'إدارة المدرسة' : 'معلم',
+        timestamp: Date.now(),
+        date: new Date().toLocaleDateString('ar-EG'),
+        time: new Date().toLocaleTimeString('ar-EG'),
+        likes: {},
+        comments: []
+      });
+      showToast('تم نشر المنشور', 'success');
+      loadPosts();
+    } else if (!res.value.content) showToast('أدخل محتوى المنشور', 'warning');
   });
 }
 
 // ============================================================
-// NEWS (Fixed)
+// NEWS (Fixed - Working)
 // ============================================================
 async function showNewsSection() {
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `<div class="fi"><div class="d-flex justify-content-between mb-3"><h4><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4>${isAdmin ? '<button class="btn btn-primary btn-sm" onclick="openNewsModal()"><i class="fas fa-plus"></i> إضافة خبر</button>' : ''}</div><div id="newsList"></div></div>`;
+  document.getElementById('mainContent').innerHTML = `<div class="fi"><div class="d-flex justify-content-between mb-3"><h4><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4>${isAdmin ? '<button class="btn btn-primary btn-sm" onclick="openNewsModal()"><i class="fas fa-plus"></i> إضافة خبر</button>' : ''}</div><div id="newsList"></div></div>`;
   await loadNewsList();
 }
 async function loadNewsList() {
@@ -548,19 +484,23 @@ async function loadNewsList() {
     news.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
     if (news.length === 0) { container.innerHTML = '<div class="text-center p-5">لا توجد أخبار</div>'; return; }
     container.innerHTML = news.map(n => `
-      <div class="news-card"><div class="news-title"><span>${escapeHtml(n.title)}</span><div class="d-flex gap-2"><small>${n.dateStr||''}</small>${isAdmin ? `<button class="btn btn-sm btn-warning" onclick="editNewsItem('${n.id}','${escapeHtml(n.title)}','${escapeHtml(n.body)}')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteNewsItem('${n.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div><div class="news-body">${escapeHtml(n.body)}</div></div>
+      <div class="news-card">
+        <div class="news-title"><span>${escapeHtml(n.title)}</span><div><small class="news-date">${n.dateStr||''}</small>${isAdmin ? `<button class="btn btn-sm btn-warning ms-1" onclick="editNewsItem('${n.id}','${escapeHtml(n.title)}','${escapeHtml(n.body)}')"><i class="fas fa-edit"></i></button><button class="btn btn-sm btn-danger" onclick="deleteNewsItem('${n.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div>
+        <div class="news-body">${escapeHtml(n.body)}</div>
+      </div>
     `).join('');
   } catch(e) { console.error(e); }
 }
 function openNewsModal(id = null, oldTitle = '', oldBody = '') {
   Swal.fire({
     title: id ? 'تعديل خبر' : 'إضافة خبر',
-    html: `<input id="newsTitle" class="swal2-input" placeholder="العنوان" value="${oldTitle}"><textarea id="newsBody" class="swal2-textarea" placeholder="المحتوى">${oldBody}</textarea>`,
-    showCancelButton: true, confirmButtonText: id ? 'تحديث' : 'إضافة',
+    html: `<input id="newsTitle" class="swal2-input" placeholder="العنوان" value="${escapeHtml(oldTitle)}"><textarea id="newsBody" class="swal2-textarea" placeholder="المحتوى">${escapeHtml(oldBody)}</textarea>`,
+    showCancelButton: true,
+    confirmButtonText: id ? 'تحديث' : 'إضافة',
     preConfirm: () => ({ title: document.getElementById('newsTitle').value.trim(), body: document.getElementById('newsBody').value.trim() })
   }).then(async res => {
     if (res.isConfirmed && res.value.title && res.value.body) {
-      const data = { title: res.value.title, body: res.value.body, dateStr: new Date().toLocaleDateString(), timestamp: Date.now() };
+      const data = { title: res.value.title, body: res.value.body, dateStr: new Date().toLocaleDateString('ar-EG'), timestamp: Date.now() };
       if (id) await db.ref(`school_news/${id}`).update(data);
       else await db.ref('school_news').push(data);
       showToast(id ? 'تم التحديث' : 'تم الإضافة', 'success');
@@ -574,66 +514,64 @@ async function deleteNewsItem(id) { const res = await Swal.fire({ title: 'حذف
 // ============================================================
 // FILES (Gallery, Library, Art)
 // ============================================================
-let currentFiles = [];
+let currentFilesList = [];
 let currentFileSection = '';
+let currentFileFilter = 'all';
 
 async function showFilesSection(section, title) {
   currentFileSection = section;
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `
-    <div class="fi"><div class="d-flex justify-content-between mb-3"><h4>${title}</h4>${isAdmin ? '<button class="btn btn-primary btn-sm" onclick="openFileUpload()"><i class="fas fa-upload"></i> رفع</button>' : ''}</div><div class="d-flex gap-2 mb-3"><input type="text" id="fileSearch" class="form-control" placeholder="بحث..." oninput="filterFiles()"><div class="d-flex gap-1" id="fileFilters"><button class="btn btn-sm btn-outline-primary active" onclick="setFileFilter(\'all\')">الكل</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'image\')">صور</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'video\')">فيديو</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'pdf\')">PDF</button></div></div><div id="filesGrid" class="row g-3"></div></div>
+  document.getElementById('mainContent').innerHTML = `
+    <div class="fi"><div class="d-flex justify-content-between mb-3"><h4>${title}</h4>${isAdmin ? '<button class="btn btn-primary btn-sm" onclick="alert(\"سيتم إضافة رفع الملفات قريباً\")"><i class="fas fa-upload"></i> رفع</button>' : ''}</div><div class="d-flex gap-2 mb-3"><input type="text" id="fileSearch" class="form-control" placeholder="بحث..." oninput="filterFilesList()"><div class="d-flex gap-1"><button class="btn btn-sm btn-outline-primary active" onclick="setFileFilter(\'all\')">الكل</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'image\')">صور</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'video\')">فيديو</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter(\'pdf\')">PDF</button></div></div><div id="filesGrid" class="row g-3"></div></div>
   `;
-  await loadFiles();
+  await loadFilesList();
   if (section === 'library_section') updateLibraryCount();
 }
-async function loadFiles() {
+async function loadFilesList() {
   try {
     const snap = await db.ref(currentFileSection).once('value');
-    currentFiles = [];
-    if (snap.exists()) snap.forEach(c => currentFiles.push({ id: c.key, ...c.val() }));
-    currentFiles.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
-    filterFiles();
+    currentFilesList = [];
+    if (snap.exists()) snap.forEach(c => currentFilesList.push({ id: c.key, ...c.val() }));
+    currentFilesList.sort((a,b) => (b.timestamp||0) - (a.timestamp||0));
+    filterFilesList();
   } catch(e) { console.error(e); }
 }
-function filterFiles() {
-  let filter = currentFileFilter || 'all';
+function filterFilesList() {
   let search = document.getElementById('fileSearch')?.value.toLowerCase() || '';
-  let filtered = currentFiles.filter(f => {
-    if (search && !(f.title || '').toLowerCase().includes(search) && !(f.description || '').toLowerCase().includes(search)) return false;
-    if (filter === 'image') return isImageUrl(f.url);
-    if (filter === 'video') return isVideoUrl(f.url) || isYouTubeUrl(f.url);
-    if (filter === 'pdf') return isPdfUrl(f.url);
+  let filtered = currentFilesList.filter(f => {
+    if (search && !(f.title || '').toLowerCase().includes(search)) return false;
+    if (currentFileFilter === 'image') return isImage(f.url);
+    if (currentFileFilter === 'video') return isVideo(f.url) || isYouTube(f.url);
+    if (currentFileFilter === 'pdf') return isPdf(f.url);
     return true;
   });
   renderFilesGrid(filtered);
 }
-let currentFileFilter = 'all';
-function setFileFilter(f) {
-  currentFileFilter = f;
-  document.querySelectorAll('#fileFilters .btn').forEach(btn => btn.classList.remove('active'));
+function setFileFilter(filter) {
+  currentFileFilter = filter;
+  document.querySelectorAll('#filesGrid .btn-outline-primary').forEach(btn => btn.classList.remove('active'));
   event.target.classList.add('active');
-  filterFiles();
+  filterFilesList();
 }
 function renderFilesGrid(files) {
   const grid = document.getElementById('filesGrid');
   if (!grid) return;
   if (files.length === 0) { grid.innerHTML = '<div class="col-12 text-center p-5">لا توجد ملفات</div>'; return; }
   grid.innerHTML = files.map(f => `
-    <div class="col-md-6"><div class="file-card"><div class="file-media" onclick="previewFile('${f.url.replace(/'/g, "\\'")}')">${getThumbnailHtml(f.url, f.title)}<div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div></div><div class="file-body"><div class="file-title">${escapeHtml(f.title||'بدون عنوان')}</div><div class="file-meta">${f.uploadedAt||''}</div><div class="file-actions"><button class="file-btn" onclick="previewFile('${f.url.replace(/'/g, "\\'")}')">عرض</button><a href="${f.url}" target="_blank" class="file-btn" style="background:#28a745">فتح</a>${isAdmin ? `<button class="file-icon-btn text-danger" onclick="deleteFile('${f.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div></div></div>
+    <div class="col-md-6"><div class="file-card"><div class="file-media" onclick="previewFileItem('${f.url.replace(/'/g, "\\'")}')">${getThumbHtml(f.url)}<div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div></div><div class="file-body"><div class="file-title">${escapeHtml(f.title||'بدون عنوان')}</div><div class="file-meta">${f.uploadedAt||''}</div><div class="file-actions"><button class="file-btn" onclick="previewFileItem('${f.url.replace(/'/g, "\\'")}')">عرض</button><a href="${f.url}" target="_blank" class="file-btn" style="background:#28a745">فتح</a>${isAdmin ? `<button class="file-icon-btn text-danger" onclick="deleteFileItem('${f.id}')"><i class="fas fa-trash"></i></button>` : ''}</div></div></div></div>
   `).join('');
 }
-function previewFile(url) { Swal.fire({ html: getEmbedHtml(url), showConfirmButton: false, showCloseButton: true, width: '90%' }); }
-async function deleteFile(id) { const res = await Swal.fire({ title: 'حذف الملف؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`${currentFileSection}/${id}`).remove(); loadFiles(); updateSlider(); } }
+function previewFileItem(url) { Swal.fire({ html: getEmbedHtml(url), showConfirmButton: false, showCloseButton: true, width: '90%' }); }
+async function deleteFileItem(id) { const res = await Swal.fire({ title: 'حذف الملف؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`${currentFileSection}/${id}`).remove(); loadFilesList(); showToast('تم الحذف', 'success'); } }
 async function updateLibraryCount() { const snap = await db.ref('library_section').once('value'); document.getElementById('libraryCount').innerText = snap.numChildren(); }
-function openFileUpload() { alert('سيتم إضافة رفع الملفات قريباً'); }
 
 // ============================================================
 // RESULTS
 // ============================================================
+const GRADES = { p3: 'الصف الثالث الابتدائي', p4: 'الصف الرابع الابتدائي', p5: 'الصف الخامس الابتدائي', p6: 'الصف السادس الابتدائي', m1: 'الصف الأول الإعدادي', m2: 'الصف الثاني الإعدادي', m3: 'الصف الثالث الإعدادي', s1: 'الصف الأول الثانوي', s2: 'الصف الثاني الثانوي' };
+
 function showResultsSection() {
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `
-    <div class="fi"><h4>شئون الطلاب والنتائج</h4><div class="bg-light p-3 rounded-4 mb-3"><div class="row g-2"><div class="col-md-6"><select id="gradeSelect" class="form-select">${Object.entries(GRADES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></div><div class="col-md-6"><input type="text" id="seatInput" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')searchResult()"></div></div></div><button class="btn btn-primary w-100 mb-3" onclick="searchResult()">استعلام</button><div id="resultDisplay"></div>${isAdmin ? `<div class="mt-4"><h5>إدارة النتائج</h5><div class="upload-area" onclick="document.getElementById('jsonFile').click()">رفع JSON</div><input type="file" id="jsonFile" accept=".json" style="display:none" onchange="uploadJSON(this)"><div id="resultsList" class="mt-3"></div></div>` : ''}</div>
+  document.getElementById('mainContent').innerHTML = `
+    <div class="fi"><h4>شئون الطلاب والنتائج</h4><div class="bg-light p-3 rounded-4 mb-3"><div class="row g-2"><div class="col-md-6"><select id="gradeSelect" class="form-select">${Object.entries(GRADES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></div><div class="col-md-6"><input type="text" id="seatInput" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')searchResult()"></div></div></div><button class="btn btn-primary w-100 mb-3" onclick="searchResult()">استعلام</button><div id="resultDisplay"></div>${isAdmin ? `<div class="mt-4"><h5>إدارة النتائج</h5><div class="upload-area" onclick="document.getElementById('jsonFile').click()">رفع ملف JSON للنتائج</div><input type="file" id="jsonFile" accept=".json" style="display:none" onchange="uploadJSON(this)"><div id="resultsList" class="mt-3"></div></div>` : ''}</div>
   `;
   if (isAdmin) loadResultsList();
 }
@@ -665,7 +603,7 @@ async function uploadJSON(input) {
       await db.ref().update(updates);
       showToast(`تم رفع نتائج ${GRADES[grade]}`, 'success');
       loadResultsList();
-    } catch(err) { showToast('ملف غير صالح', 'error'); }
+    } catch(err) { showToast('ملف JSON غير صالح', 'error'); }
   };
   reader.readAsText(file);
 }
@@ -675,77 +613,81 @@ async function loadResultsList() {
   const snap = await db.ref('results').once('value');
   if (!snap.exists()) { container.innerHTML = '<p class="text-muted">لا توجد نتائج</p>'; return; }
   let html = '<div class="list-group">';
-  snap.forEach(g => { html += `<div class="list-group-item d-flex justify-content-between"><span>${GRADES[g.key]||g.key}</span><span class="badge bg-primary">${g.numChildren()}</span><button class="btn btn-sm btn-outline-danger" onclick="deleteGrade('${g.key}')"><i class="fas fa-trash"></i></button></div>`; });
+  snap.forEach(g => { html += `<div class="list-group-item d-flex justify-content-between"><span>${GRADES[g.key]||g.key}</span><span class="badge bg-primary">${g.numChildren()}</span><button class="btn btn-sm btn-outline-danger" onclick="deleteGradeResults('${g.key}')"><i class="fas fa-trash"></i></button></div>`; });
   html += '</div>';
   container.innerHTML = html;
 }
-async function deleteGrade(grade) { const res = await Swal.fire({ title: 'حذف النتائج؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`results/${grade}`).remove(); loadResultsList(); showToast('تم الحذف', 'success'); } }
+async function deleteGradeResults(grade) { const res = await Swal.fire({ title: 'حذف النتائج؟', icon: 'warning', showCancelButton: true }); if (res.isConfirmed) { await db.ref(`results/${grade}`).remove(); loadResultsList(); showToast('تم الحذف', 'success'); } }
 
 // ============================================================
-// ADMIN & NAVIGATION
+// HOME, POSTS PAGE, ADMIN
 // ============================================================
-async function toggleAdmin() {
-  if (isAdmin) {
-    isAdmin = false;
-    updateAdminUI();
-    showToast('تم تسجيل الخروج', 'info');
-    navigateTo(currentSection === 'admin' ? 'home' : currentSection);
-    return;
-  }
-  const { value } = await Swal.fire({ title: 'دخول الإدارة', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true });
-  if (value && btoa(value) === "YWJ1c2FiZXIxMjM=") {
-    isAdmin = true;
-    updateAdminUI();
-    showToast('تم تفعيل الإدارة', 'success');
-    showAdminDashboard();
-    currentSection = 'admin';
-  } else if (value) showToast('كلمة سر خاطئة', 'error');
+function showHome() {
+  document.getElementById('mainContent').innerHTML = `
+    <div class="fi text-center"><div style="width:80px;height:80px;background:linear-gradient(135deg,var(--pr),var(--pr2));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px"><i class="fas fa-school fa-2x text-white"></i></div>
+    <h2 class="fw-bold">مرحباً في البوابة الرقمية</h2><p class="text-muted">نظام متكامل لإدارة المدرسة والنتائج والمكتبة الرقمية</p>
+    <div class="row g-3 mt-3"><div class="col-4"><div class="hsc"><div class="h2 text-primary">${stats.students}</div><small>طالب</small></div></div><div class="col-4"><div class="hsc"><div class="h2 text-success">${stats.teachers}</div><small>معلم</small></div></div><div class="col-4"><div class="hsc"><div class="h2" style="color:var(--gd)">${stats.activities}</div><small>نشاط</small></div></div></div>
+    <div class="row g-2 mt-4"><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('posts')"><i class="fas fa-newspaper fa-2x"></i><h6>المنشورات</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('results')"><i class="fas fa-search fa-2x"></i><h6>النتائج</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('gallery')"><i class="fas fa-images fa-2x"></i><h6>المعرض</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('library')"><i class="fas fa-book fa-2x"></i><h6>المكتبة</h6></div></div></div></div>
+  `;
 }
-function updateAdminUI() {
-  document.getElementById('adminBtnText').innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة';
-  document.getElementById('drawerAdminText').innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة';
-  document.getElementById('adminStatus').innerHTML = isAdmin ? '<div class="admin-badge mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة مفعل</div>' : '';
+function showPostsPage() {
+  document.getElementById('mainContent').innerHTML = `<div class="fi">${isAdmin ? `<div class="post-creator"><div class="post-creator-header"><div class="post-creator-avatar"><i class="fas fa-user-shield"></i></div><div class="post-creator-input" onclick="openPostModal()">ما الذي تريد نشره؟</div></div></div>` : ''}<div id="postsList"></div></div>`;
+  loadPosts();
 }
 function showAdminDashboard() {
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `<div class="fi"><h4>لوحة التحكم</h4><div class="row g-3"><div class="col-6 col-md-4"><div class="qc" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x"></i><h6>شريط الأخبار</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x"></i><h6>منشور جديد</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="showNewsSection()"><i class="fas fa-bullhorn fa-2x"></i><h6>إدارة الأخبار</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x"></i><h6>النتائج</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x"></i><h6>الإحصائيات</h6></div></div></div></div>`;
+  document.getElementById('mainContent').innerHTML = `
+    <div class="fi"><h4 class="fw-bold mb-3"><i class="fas fa-cog"></i> لوحة تحكم الإدارة</h4><div class="row g-3"><div class="col-6 col-md-4"><div class="qc" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x"></i><h6>شريط الأخبار</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x"></i><h6>منشور جديد</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="showNewsSection()"><i class="fas fa-bullhorn fa-2x"></i><h6>إدارة الأخبار</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x"></i><h6>النتائج</h6></div></div><div class="col-6 col-md-4"><div class="qc" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x"></i><h6>الإحصائيات</h6></div></div></div></div>
+  `;
 }
 async function showTickerManager() {
   const snap = await db.ref('ticker_items').once('value');
   let items = [];
   if (snap.exists()) snap.forEach(c => items.push({ id: c.key, text: c.val().text }));
   let html = '<div id="tickerList">';
-  items.forEach(i => { html += `<div class="d-flex gap-2 mb-2"><input class="form-control form-control-sm" id="tick_${i.id}" value="${escapeHtml(i.text)}"><button class="btn btn-sm btn-warning" onclick="updateTicker('${i.id}')">حفظ</button><button class="btn btn-sm btn-danger" onclick="removeTicker('${i.id}')">حذف</button></div>`; });
-  html += '</div><div class="input-group mt-2"><input id="newTicker" class="form-control" placeholder="خبر جديد"><button class="btn btn-primary" onclick="addTicker()">إضافة</button></div>';
+  items.forEach(i => { html += `<div class="d-flex gap-2 mb-2"><input class="form-control form-control-sm" id="tick_${i.id}" value="${escapeHtml(i.text)}"><button class="btn btn-sm btn-warning" onclick="updateTickerItem('${i.id}')">حفظ</button><button class="btn btn-sm btn-danger" onclick="deleteTickerItem('${i.id}')">حذف</button></div>`; });
+  html += '</div><div class="input-group mt-2"><input id="newTicker" class="form-control" placeholder="خبر جديد"><button class="btn btn-primary" onclick="addTickerItem()">إضافة</button></div>';
   Swal.fire({ title: 'إدارة شريط الأخبار', html: html, showConfirmButton: false });
 }
-async function addTicker() { const txt = document.getElementById('newTicker')?.value.trim(); if (txt) { await db.ref('ticker_items').push({ text: txt }); loadTicker(); showToast('تم الإضافة', 'success'); showTickerManager(); } }
-async function updateTicker(id) { const newText = document.getElementById(`tick_${id}`)?.value.trim(); if (newText) { await db.ref(`ticker_items/${id}`).update({ text: newText }); loadTicker(); showToast('تم التحديث', 'success'); showTickerManager(); } }
-async function removeTicker(id) { await db.ref(`ticker_items/${id}`).remove(); loadTicker(); showToast('تم الحذف', 'success'); showTickerManager(); }
+async function addTickerItem() { const txt = document.getElementById('newTicker')?.value.trim(); if (txt) { await db.ref('ticker_items').push({ text: txt }); loadTicker(); showToast('تم الإضافة', 'success'); showTickerManager(); } }
+async function updateTickerItem(id) { const newText = document.getElementById(`tick_${id}`)?.value.trim(); if (newText) { await db.ref(`ticker_items/${id}`).update({ text: newText }); loadTicker(); showToast('تم التحديث', 'success'); showTickerManager(); } }
+async function deleteTickerItem(id) { await db.ref(`ticker_items/${id}`).remove(); loadTicker(); showToast('تم الحذف', 'success'); showTickerManager(); }
 
-function showHome() {
-  document.getElementById('mainContent').innerHTML = `
-    <div class="fi text-center"><div style="width:80px;height:80px;background:linear-gradient(135deg,var(--pr),var(--pr2));border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px"><i class="fas fa-school fa-2x text-white"></i></div>
-    <h2>مرحباً في البوابة الرقمية</h2><p class="text-muted">نظام متكامل للمدرسة والنتائج والمكتبة</p>
-    <div class="row g-3 mt-3"><div class="col-4"><div class="hsc"><div class="h2 text-primary">${statsData.students}</div><small>طالب</small></div></div><div class="col-4"><div class="hsc"><div class="h2 text-success">${statsData.teachers}</div><small>معلم</small></div></div><div class="col-4"><div class="hsc"><div class="h2" style="color:var(--gd)">${statsData.activities}</div><small>نشاط</small></div></div></div>
-    <div class="row g-2 mt-4"><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('posts')"><i class="fas fa-newspaper fa-2x"></i><h6>المنشورات</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('results')"><i class="fas fa-search fa-2x"></i><h6>النتائج</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('gallery')"><i class="fas fa-images fa-2x"></i><h6>المعرض</h6></div></div><div class="col-6 col-md-3"><div class="qc" onclick="navigateTo('library')"><i class="fas fa-book fa-2x"></i><h6>المكتبة</h6></div></div></div></div>
-  `;
-}
-function showPostsSection() {
-  document.getElementById('mainContent').innerHTML = `<div class="fi">${isAdmin ? `<div class="post-creator"><div class="post-creator-header"><div class="post-creator-avatar"><i class="fas fa-user-shield"></i></div><div class="post-creator-input" onclick="openPostModal()">ما الذي تريد نشره؟</div></div><div class="post-creator-actions"><button class="post-action-type" onclick="openPostModal()"><i class="fas fa-pen-fancy"></i> نص</button><button class="post-action-type" onclick="openPostModal()"><i class="fas fa-image"></i> صورة/فيديو</button><button class="post-action-type" onclick="openPostModal()"><i class="fas fa-link"></i> رابط</button></div></div>` : ''}<div id="postsList"></div></div>`;
-  loadPosts();
-}
-function navigateTo(section) {
-  currentSection = section;
+// ============================================================
+// NAVIGATION & ADMIN
+// ============================================================
+function navigateTo(page) {
+  currentPage = page;
   document.querySelectorAll('.side-menu-btn, .mobile-nav-item, .drawer-item').forEach(btn => btn.classList.remove('active'));
-  if (section === 'home') showHome();
-  else if (section === 'posts') showPostsSection();
-  else if (section === 'results') showResultsSection();
-  else if (section === 'gallery') showFilesSection('gallery_section', '📸 المعرض الرقمي');
-  else if (section === 'library') showFilesSection('library_section', '📚 المكتبة الرقمية');
-  else if (section === 'art') showFilesSection('art_section', '🎨 التربية الفنية');
-  else if (section === 'news') showNewsSection();
+  if (page === 'home') showHome();
+  else if (page === 'posts') showPostsPage();
+  else if (page === 'results') showResultsSection();
+  else if (page === 'gallery') showFilesSection('gallery_section', '📸 المعرض الرقمي');
+  else if (page === 'library') showFilesSection('library_section', '📚 المكتبة الرقمية');
+  else if (page === 'art') showFilesSection('art_section', '🎨 التربية الفنية');
+  else if (page === 'news') showNewsSection();
   window.scrollTo({ top: 0 });
+}
+async function toggleAdmin() {
+  if (isAdmin) {
+    isAdmin = false;
+    updateAdminUI();
+    showToast('تم تسجيل الخروج', 'info');
+    navigateTo('home');
+    return;
+  }
+  const { value } = await Swal.fire({ title: 'دخول الإدارة', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true, confirmButtonText: 'دخول' });
+  if (value && btoa(value) === "YWJ1c2FiZXIxMjM=") {
+    isAdmin = true;
+    updateAdminUI();
+    showToast('تم تفعيل الإدارة', 'success');
+    showAdminDashboard();
+    currentPage = 'admin';
+  } else if (value) showToast('كلمة سر خاطئة', 'error');
+}
+function updateAdminUI() {
+  document.getElementById('adminBtnText').innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة';
+  document.getElementById('drawerAdminText').innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة';
+  document.getElementById('adminStatus').innerHTML = isAdmin ? '<div class="admin-badge mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة مفعل</div>' : '';
 }
 function toggleTheme() {
   document.body.classList.toggle('dark');
@@ -755,17 +697,28 @@ function toggleTheme() {
 function openDrawer() { document.getElementById('drawerMenu').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
 function closeDrawer() { document.getElementById('drawerMenu').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
 
-// Start
+// ============================================================
+// START APP
+// ============================================================
 function startApp() {
   if (localStorage.getItem('theme') === 'dark') toggleTheme();
-  loadStats(); loadTicker(); updateSlider();
+  loadStats();
+  loadTicker();
+  updateSlider();
   setTimeout(() => document.getElementById('loader')?.classList.add('hide'), 1000);
   showHome();
   window.addEventListener('scroll', () => document.getElementById('scrollTopBtn')?.classList.toggle('show', window.scrollY > 200));
   if (!sessionStorage.getItem('vid')) sessionStorage.setItem('vid', 'user_' + Date.now());
-  setInterval(updateSlider, 30000);
 }
-initFirebase();
+
+// Initialize Firebase
+if (typeof firebase !== 'undefined') {
+  if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+  db = firebase.database();
+  startApp();
+} else {
+  setTimeout(() => location.reload(), 500);
+}
 </script>
 </body>
 </html>
