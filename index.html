@@ -2,262 +2,1328 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes">
 <meta name="theme-color" content="#0a2b4e">
 <title>بوابة مدرسة سعد بن أبي وقاص - النظام المتكامل</title>
 
-<!-- Preconnect & Preload -->
+<!-- Preconnect for faster loading -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="preconnect" href="https://www.gstatic.com">
+<link rel="preconnect" href="https://firebase.google.com">
 
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style" onload="this.rel='stylesheet'">
-<noscript><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"></noscript>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Swiper JS CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<!-- AOS CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 
 <style>
-:root{
-  --pr:#0a2b4e; --pr2:#1e4a76; --prg:rgba(10,43,78,.15);
-  --gd:#d4af37; --gdl:#f0d060; --gdg:rgba(212,175,55,.25);
-  --gl:rgba(255,255,255,.97); --bg:#f0f2f8;
-  --cs:0 5px 20px rgba(0,0,0,.08); --hs:0 15px 35px rgba(0,0,0,.15);
-  --tr:all .25s ease; --r:18px; --rs:12px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Cairo', sans-serif;
 }
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
-body{background:var(--bg);color:#1a2a3a;min-height:100vh;background-image:radial-gradient(circle at 10% 30%,rgba(10,43,78,.03),transparent 60%);}
-.dark{background:#0a0e1a!important;color:#e0e5f0;}
-.dark .gc,.dark .fc,.dark .post-card,.dark .nc,.dark .qc,.dark .hsc,.dark .asc,.dark .post-creator{background:rgba(18,24,38,.96)!important;border-color:rgba(255,255,255,.08)!important;color:#d0d8ec;}
-.dark .form-control,.dark .form-select{background:#141c2c!important;border-color:#2a3550!important;color:#e0e5f0!important}
-.dark .text-muted{color:#8a9aba!important}
-.dark footer{background:#050810!important}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#e0e4ec}::-webkit-scrollbar-thumb{background:var(--gd);border-radius:10px}
+
+:root {
+  --pr: #0a2b4e;
+  --pr2: #1e4a76;
+  --prg: rgba(10, 43, 78, 0.15);
+  --gd: #d4af37;
+  --gdl: #f0d060;
+  --gdg: rgba(212, 175, 55, 0.25);
+  --gl: rgba(255, 255, 255, 0.97);
+  --bg: #f0f2f8;
+  --cs: 0 5px 20px rgba(0, 0, 0, 0.08);
+  --hs: 0 15px 35px rgba(0, 0, 0, 0.15);
+  --tr: all 0.25s ease;
+  --r: 18px;
+  --rs: 12px;
+}
+
+body {
+  background: var(--bg);
+  color: #1a2a3a;
+  min-height: 100vh;
+}
+
+body.dark {
+  background: #0a0e1a !important;
+  color: #e0e5f0 !important;
+}
+
+body.dark .glass-card,
+body.dark .post-card,
+body.dark .file-card,
+body.dark .post-creator,
+body.dark .qc,
+body.dark .hsc {
+  background: rgba(18, 24, 38, 0.96) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #d0d8ec !important;
+}
+
+body.dark .form-control,
+body.dark .form-select {
+  background: #141c2c !important;
+  border-color: #2a3550 !important;
+  color: #e0e5f0 !important;
+}
+
+body.dark .text-muted {
+  color: #8a9aba !important;
+}
+
+body.dark footer {
+  background: #050810 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e0e4ec;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gd);
+  border-radius: 10px;
+}
 
 /* Loader */
-#loader{position:fixed;inset:0;z-index:10000;background:var(--pr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .5s}
-#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
-.loader-logo{width:85px;height:85px;border-radius:50%;border:3px solid var(--gd);background:white;padding:8px;animation:pulse 1.2s infinite;object-fit:cover}
-@keyframes pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 var(--gdg)}50%{transform:scale(1.05);box-shadow:0 0 0 20px transparent}}
-.loader-dots{display:flex;gap:8px}.loader-dots span{width:10px;height:10px;border-radius:50%;background:var(--gd);animation:bounce 1.2s infinite}
-.loader-dots span:nth-child(2){animation-delay:.2s}.loader-dots span:nth-child(3){animation-delay:.4s}
-@keyframes bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-12px)}}
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: var(--pr);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  transition: opacity 0.5s, visibility 0.5s;
+}
+
+#loader.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-logo {
+  width: 85px;
+  height: 85px;
+  border-radius: 50%;
+  border: 3px solid var(--gd);
+  background: white;
+  padding: 8px;
+  animation: pulse 1.2s infinite;
+  object-fit: cover;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 var(--gdg); }
+  50% { transform: scale(1.05); box-shadow: 0 0 0 20px transparent; }
+}
+
+.loader-dots {
+  display: flex;
+  gap: 10px;
+}
+
+.loader-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gd);
+  animation: bounce 1.2s infinite;
+}
+
+.loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes bounce {
+  0%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-12px); }
+}
 
 /* Header */
-header{background:linear-gradient(135deg,var(--pr),#0d3a60);border-bottom:3px solid var(--gd);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 5px 20px rgba(0,0,0,.25)}
-.logo{width:65px;height:65px;border-radius:50%;border:2px solid var(--gd);background:white;padding:4px;transition:var(--tr);cursor:pointer;object-fit:cover}
-.logo:hover{transform:rotate(360deg) scale(1.05)}
-.school-title{font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.4)}
-.badge-admin{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;font-size:.7rem;display:inline-block}
-.online-dot{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:blink 2s infinite;margin-left:5px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+header {
+  background: linear-gradient(135deg, var(--pr), #0d3a60);
+  border-bottom: 3px solid var(--gd);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
+}
 
-/* News Ticker - LTR with modern style */
-.news-ticker{background:linear-gradient(90deg,var(--pr),#0d3a60,var(--pr));color:white;padding:8px 0;border-bottom:2px solid var(--gd);position:relative;overflow:hidden}
-.ticker-wrapper{display:flex;align-items:center;background:rgba(0,0,0,.2);border-radius:30px;padding:4px 15px;direction:ltr}
-.ticker-icon{background:var(--gd);color:var(--pr);border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;margin-left:12px;flex-shrink:0}
-.ticker-content{flex:1;overflow:hidden;white-space:nowrap}
-.ticker-scroll{display:inline-block;animation:tickerScroll 35s linear infinite;padding-right:100%}
-.ticker-scroll:hover{animation-play-state:paused}
-.ticker-item{display:inline-block;margin:0 30px}
-.ticker-item i{margin-left:8px;color:var(--gdl)}
-@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
-.ticker-controls{display:flex;gap:5px;margin-right:12px}
-.ticker-controls button{background:rgba(255,255,255,.15);border:none;color:white;border-radius:50%;width:28px;height:28px;cursor:pointer;transition:var(--tr)}
-.ticker-controls button:hover{background:var(--gd);color:var(--pr)}
+.logo {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  border: 2px solid var(--gd);
+  background: white;
+  padding: 4px;
+  transition: var(--tr);
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.logo:hover {
+  transform: rotate(360deg) scale(1.05);
+}
+
+.school-title {
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
+.badge-admin {
+  background: var(--gd);
+  color: var(--pr);
+  font-weight: 800;
+  padding: 3px 12px;
+  border-radius: 30px;
+  display: inline-block;
+  font-size: 0.7rem;
+}
+
+.online-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2ecc71;
+  display: inline-block;
+  animation: blink 2s infinite;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* News Ticker */
+.news-ticker {
+  background: linear-gradient(90deg, var(--pr), #0d3a60, var(--pr));
+  color: white;
+  padding: 8px 0;
+  border-bottom: 2px solid var(--gd);
+  position: relative;
+  overflow: hidden;
+}
+
+.ticker-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  direction: ltr;
+}
+
+.ticker-icon {
+  background: var(--gd);
+  color: var(--pr);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ticker-content {
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.ticker-scroll {
+  display: inline-block;
+  animation: tickerScroll 35s linear infinite;
+  padding-right: 100%;
+}
+
+.ticker-scroll:hover {
+  animation-play-state: paused;
+}
+
+.ticker-item {
+  display: inline-block;
+  margin: 0 30px;
+}
+
+.ticker-item i {
+  margin-left: 8px;
+  color: var(--gdl);
+}
+
+@keyframes tickerScroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.ticker-controls {
+  display: flex;
+  gap: 5px;
+}
+
+.ticker-controls button {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: var(--tr);
+}
+
+.ticker-controls button:hover {
+  background: var(--gd);
+  color: var(--pr);
+}
 
 /* Glass Card */
-.glass-card{background:var(--gl);backdrop-filter:blur(12px);border-radius:var(--r);padding:20px;box-shadow:var(--cs);border:1px solid rgba(255,255,255,.5);transition:var(--tr)}
-.glass-card:hover{box-shadow:var(--hs)}
+.glass-card {
+  background: var(--gl);
+  backdrop-filter: blur(12px);
+  border-radius: var(--r);
+  padding: 20px;
+  box-shadow: var(--cs);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: var(--tr);
+}
+
+.glass-card:hover {
+  box-shadow: var(--hs);
+}
 
 /* Side Menu */
-.side-menu-btn{background:white;border:none;border-radius:var(--rs);padding:12px 15px;margin-bottom:8px;width:100%;text-align:right;font-weight:700;transition:var(--tr);cursor:pointer;border-right:4px solid var(--gd);display:flex;align-items:center;gap:12px;color:var(--pr);box-shadow:0 2px 6px rgba(0,0,0,.05)}
-.side-menu-btn:hover,.side-menu-btn.active{background:var(--pr);color:var(--gd);transform:translateX(-4px)}
-.side-menu-btn i{width:26px}.menu-badge{margin-right:auto;background:var(--gd);color:var(--pr);padding:2px 8px;border-radius:30px;font-size:.6rem;font-weight:800}
+.side-menu-btn {
+  background: white;
+  border: none;
+  border-radius: var(--rs);
+  padding: 12px 15px;
+  margin-bottom: 8px;
+  width: 100%;
+  text-align: right;
+  font-weight: 700;
+  transition: var(--tr);
+  cursor: pointer;
+  border-right: 4px solid var(--gd);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--pr);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
 
-/* Post Creator - Like Facebook */
-.post-creator{background:white;border-radius:var(--r);padding:20px;margin-bottom:20px;box-shadow:var(--cs)}
-.post-creator-header{display:flex;gap:12px;align-items:center;margin-bottom:15px}
-.post-creator-avatar{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:1.3rem}
-.post-creator-input{flex:1;background:#f0f2f5;border:none;border-radius:30px;padding:12px 18px;font-weight:500;cursor:pointer;transition:var(--tr)}
-.post-creator-input:hover{background:#e4e6e9}
-.post-creator-actions{display:flex;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #e0e4ec}
-.post-action-type{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:8px;border-radius:30px;background:none;border:none;font-weight:600;font-size:.85rem;cursor:pointer;transition:var(--tr);color:#666}
-.post-action-type:hover{background:#f0f2f5}
-.post-action-type.active{background:var(--pr);color:white}
-.tab-selector{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.tab-badge{padding:6px 12px;border-radius:30px;background:#f0f2f5;font-size:.75rem;font-weight:600;cursor:pointer;transition:var(--tr)}
-.tab-badge:hover,.tab-badge.active{background:var(--pr);color:white}
-.media-preview-area{background:#f0f2f5;border-radius:12px;margin-top:12px;padding:10px;position:relative;min-height:100px}
-.media-preview-remove{position:absolute;top:-8px;left:-8px;background:#dc3545;color:white;border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;z-index:10}
+.side-menu-btn:hover,
+.side-menu-btn.active {
+  background: var(--pr);
+  color: var(--gd);
+  transform: translateX(-4px);
+}
+
+.side-menu-btn i {
+  width: 26px;
+}
+
+.menu-badge {
+  margin-right: auto;
+  background: var(--gd);
+  color: var(--pr);
+  padding: 2px 8px;
+  border-radius: 30px;
+  font-size: 0.6rem;
+  font-weight: 800;
+}
+
+/* Post Creator */
+.post-creator {
+  background: white;
+  border-radius: var(--r);
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: var(--cs);
+}
+
+.post-creator-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.post-creator-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pr), var(--pr2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gd);
+  font-size: 1.3rem;
+}
+
+.post-creator-input {
+  flex: 1;
+  background: #f0f2f5;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--tr);
+}
+
+.post-creator-input:hover {
+  background: #e4e6e9;
+}
+
+.post-creator-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e0e4ec;
+}
+
+.post-action-type {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 30px;
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--tr);
+  color: #666;
+}
+
+.post-action-type:hover {
+  background: #f0f2f5;
+}
 
 /* Post Card */
-.post-card{background:white;border-radius:var(--r);padding:18px;margin-bottom:18px;box-shadow:var(--cs);transition:var(--tr)}
-.post-card:hover{box-shadow:var(--hs);transform:translateY(-2px)}
-.post-header{display:flex;gap:12px;margin-bottom:14px}
-.post-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--pr),var(--pr2));display:flex;align-items:center;justify-content:center;color:var(--gd);font-size:1.1rem}
-.post-author-info{flex:1}.post-author-name{font-weight:800;color:var(--pr);margin-bottom:2px}
-.post-tab-badge{font-size:.65rem;background:#e8ecf4;padding:2px 8px;border-radius:20px;margin-right:8px}
-.post-date{font-size:.7rem;color:#999}
-.post-content{line-height:1.6;margin-bottom:12px}
-.post-media{margin:12px 0;border-radius:14px;overflow:hidden;background:#f0f2f5}
-.post-media img{width:100%;max-height:450px;object-fit:contain}
-.post-media video{width:100%;max-height:400px}
-.link-embed{position:relative;padding-bottom:56.25%;height:0}
-.link-embed iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
-.post-stats{display:flex;gap:20px;padding:10px 0;border-top:1px solid #e0e4ec;border-bottom:1px solid #e0e4ec;margin:10px 0}
-.post-stats span{cursor:pointer;font-size:.85rem;color:#666}
-.post-actions{display:flex;gap:15px;padding-top:8px}
-.post-action-btn{background:none;border:none;padding:8px 12px;border-radius:30px;cursor:pointer;font-size:.85rem;font-weight:600;display:flex;align-items:center;gap:8px;transition:var(--tr);color:#666}
-.post-action-btn:hover{background:#f0f2f5}
-.post-action-btn.liked{color:#e74c3c}
-.comments-section{padding-top:12px;margin-top:12px;border-top:1px solid #e0e4ec}
-.comment-item{background:#f8f9fa;border-radius:10px;padding:8px 12px;margin-bottom:8px;border-right:3px solid var(--gd)}
-.comment-name{font-weight:700;font-size:.8rem}
-.comment-text{font-size:.8rem;margin-top:3px}
-.comment-date{font-size:.65rem;color:#999;text-align:left}
+.post-card {
+  background: white;
+  border-radius: var(--r);
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: var(--cs);
+  transition: var(--tr);
+}
 
-/* File Cards */
-.file-card{background:white;border-radius:var(--rs);overflow:hidden;box-shadow:var(--cs);transition:var(--tr);height:100%;display:flex;flex-direction:column}
-.file-card:hover{transform:translateY(-3px);box-shadow:var(--hs)}
-.file-media{position:relative;height:180px;overflow:hidden;background:#f0f2f5;cursor:pointer}
-.file-media img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
-.file-media:hover img{transform:scale(1.05)}
-.file-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:background .3s}
-.file-media:hover .file-overlay{background:rgba(0,0,0,.3)}
-.file-play-btn{width:45px;height:45px;border-radius:50%;background:rgba(212,175,55,.9);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:all .3s}
-.file-media:hover .file-play-btn{opacity:1;transform:scale(1)}
-.file-body{padding:14px;flex:1}
-.file-title{font-weight:800;margin-bottom:5px}
-.file-meta{font-size:.7rem;color:#999;margin-bottom:8px}
-.file-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.file-btn{background:var(--pr);color:white;border:none;border-radius:30px;padding:6px 12px;font-size:.7rem;font-weight:600;cursor:pointer;transition:var(--tr);flex:1;text-align:center}
-.file-btn:hover{background:var(--pr2)}
-.file-icon-btn{width:32px;height:32px;border-radius:50%;border:1px solid #ddd;background:white;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;color:#666}
-.file-icon-btn:hover{background:var(--pr);color:white;border-color:var(--pr)}
+.post-card:hover {
+  box-shadow: var(--hs);
+  transform: translateY(-2px);
+}
+
+.post-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.post-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--pr), var(--pr2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gd);
+  font-size: 1.1rem;
+}
+
+.post-author-name {
+  font-weight: 800;
+  color: var(--pr);
+  margin-bottom: 2px;
+}
+
+.post-tab-badge {
+  font-size: 0.65rem;
+  background: #e8ecf4;
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-right: 8px;
+}
+
+.post-date {
+  font-size: 0.7rem;
+  color: #999;
+}
+
+.post-content {
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.post-media {
+  margin: 12px 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #f0f2f5;
+}
+
+.post-media img {
+  width: 100%;
+  max-height: 450px;
+  object-fit: contain;
+}
+
+.post-media video {
+  width: 100%;
+  max-height: 400px;
+}
+
+.link-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.link-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.post-stats {
+  display: flex;
+  gap: 20px;
+  padding: 10px 0;
+  border-top: 1px solid #e0e4ec;
+  border-bottom: 1px solid #e0e4ec;
+  margin: 10px 0;
+}
+
+.post-stats span {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.post-actions {
+  display: flex;
+  gap: 15px;
+  padding-top: 8px;
+}
+
+.post-action-btn {
+  background: none;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--tr);
+  color: #666;
+}
+
+.post-action-btn:hover {
+  background: #f0f2f5;
+}
+
+.post-action-btn.liked {
+  color: #e74c3c;
+}
+
+.comments-section {
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #e0e4ec;
+}
+
+.comment-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  border-right: 3px solid var(--gd);
+}
+
+.comment-name {
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.comment-text {
+  font-size: 0.8rem;
+  margin-top: 3px;
+}
+
+/* File Card */
+.file-card {
+  background: white;
+  border-radius: var(--rs);
+  overflow: hidden;
+  box-shadow: var(--cs);
+  transition: var(--tr);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.file-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--hs);
+}
+
+.file-media {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  background: #f0f2f5;
+  cursor: pointer;
+}
+
+.file-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.file-media:hover img {
+  transform: scale(1.05);
+}
+
+.file-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.file-media:hover .file-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.file-play-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s;
+}
+
+.file-media:hover .file-play-btn {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.file-body {
+  padding: 14px;
+  flex: 1;
+}
+
+.file-title {
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.file-meta {
+  font-size: 0.7rem;
+  color: #999;
+  margin-bottom: 8px;
+}
+
+.file-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.file-btn {
+  background: var(--pr);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 6px 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--tr);
+  flex: 1;
+  text-align: center;
+  text-decoration: none;
+}
+
+.file-btn:hover {
+  background: var(--pr2);
+}
+
+.file-icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #666;
+}
+
+.file-icon-btn:hover {
+  background: var(--pr);
+  color: white;
+  border-color: var(--pr);
+}
 
 /* Upload Area */
-.upload-area{border:2px dashed #ccc;border-radius:var(--r);padding:25px;text-align:center;cursor:pointer;transition:var(--tr);background:#fafbfe}
-.upload-area:hover,.upload-area.drag-over{border-color:var(--gd);background:#fffbf0}
-.upload-area i{font-size:2.8rem;color:var(--gd);margin-bottom:10px}
-.upload-progress{height:5px;background:#e0e4ec;border-radius:5px;margin-top:12px;display:none}
-.upload-progress-bar{height:100%;border-radius:5px;width:0%;background:linear-gradient(90deg,var(--pr),var(--gd));transition:width .3s}
-.file-list-item{background:#f8f9fa;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
-.file-list-item .remove-file{color:#dc3545;cursor:pointer;margin-right:auto}
-.json-upload-area{border:2px dashed var(--gd);border-radius:var(--r);padding:25px;text-align:center;cursor:pointer;background:#fef9e6}
-.results-table{width:100%;border-collapse:collapse;margin-top:15px}
-.results-table th,.results-table td{padding:10px;border-bottom:1px solid #e0e4ec;text-align:right}
+.upload-area {
+  border: 2px dashed #ccc;
+  border-radius: var(--r);
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--tr);
+  background: #fafbfe;
+}
 
-/* Results Card */
-.result-card{background:linear-gradient(135deg,var(--pr),#1a4070);color:white;border-radius:var(--r);padding:25px;border:2px solid var(--gd)}
-.subject-row{background:rgba(255,255,255,.1);padding:10px 15px;border-radius:12px;margin:8px 0;display:flex;justify-content:space-between;align-items:center}
-.stat-box{background:rgba(255,255,255,.1);border-radius:12px;padding:10px;text-align:center}
+.upload-area:hover,
+.upload-area.drag-over {
+  border-color: var(--gd);
+  background: #fffbf0;
+}
+
+.upload-area i {
+  font-size: 2.8rem;
+  color: var(--gd);
+  margin-bottom: 10px;
+}
+
+.file-list-item {
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.file-list-item .remove-file {
+  color: #dc3545;
+  cursor: pointer;
+  margin-right: auto;
+}
+
+/* Result Card */
+.result-card {
+  background: linear-gradient(135deg, var(--pr), #1a4070);
+  color: white;
+  border-radius: var(--r);
+  padding: 25px;
+  border: 2px solid var(--gd);
+}
+
+.subject-row {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 15px;
+  border-radius: 12px;
+  margin: 8px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* QC Card */
+.qc {
+  border-radius: var(--rs);
+  padding: 18px 8px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--tr);
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.qc:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--hs);
+}
+
+.qc i {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.hsc {
+  background: white;
+  border-radius: var(--rs);
+  padding: 16px 8px;
+  text-align: center;
+  transition: var(--tr);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Swiper */
+.swiper-container {
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.swiper-slide {
+  position: relative;
+}
+
+.swiper-slide img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.slide-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  padding: 15px;
+  font-weight: 700;
+}
+
+.swiper-pagination-bullet-active {
+  background: var(--gd) !important;
+}
 
 /* Floating Buttons */
-.fab-theme{position:fixed;bottom:25px;left:25px;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--gd),#c9a227);color:var(--pr);border:none;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.2);font-size:1.2rem}
-.fab-scroll{position:fixed;bottom:85px;left:25px;width:44px;height:44px;border-radius:50%;background:var(--pr);color:white;border:none;cursor:pointer;z-index:500;box-shadow:0 4px 12px rgba(0,0,0,.2);opacity:0;pointer-events:none;transition:var(--tr)}
-.fab-scroll.show{opacity:1;pointer-events:auto}
+.fab-theme {
+  position: fixed;
+  bottom: 25px;
+  left: 25px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gd), #c9a227);
+  color: var(--pr);
+  border: none;
+  cursor: pointer;
+  z-index: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
+  transition: var(--tr);
+}
+
+.fab-theme:hover {
+  transform: scale(1.1);
+}
+
+.fab-scroll {
+  position: fixed;
+  bottom: 85px;
+  left: 25px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--pr);
+  color: white;
+  border: none;
+  cursor: pointer;
+  z-index: 500;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--tr);
+}
+
+.fab-scroll.show {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 /* Mobile Navigation */
-.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--pr);z-index:200;padding:5px 0;border-top:2px solid var(--gd)}
-.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;color:rgba(255,255,255,.7);background:none;border:none;font-size:.55rem;font-weight:700;padding:5px}
-.mobile-nav-item i{font-size:1.1rem;margin-bottom:2px}
-.mobile-nav-item.active{color:var(--gd)}
-.drawer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;opacity:0;pointer-events:none;transition:.3s}
-.drawer-overlay.open{opacity:1;pointer-events:auto}
-.drawer{position:fixed;top:0;right:-280px;width:280px;height:100%;background:var(--pr);z-index:401;transition:right .3s;padding:20px;overflow-y:auto}
-.drawer.open{right:0}
-.drawer-item{display:flex;align-items:center;gap:12px;color:white;background:none;border:none;padding:12px;width:100%;text-align:right;font-weight:700;border-radius:12px;margin-bottom:5px;cursor:pointer}
-.drawer-item:hover,.drawer-item.active{background:rgba(255,255,255,.1);color:var(--gd)}
-.menu-fab{display:none;position:fixed;top:70px;right:15px;width:42px;height:42px;background:var(--gd);border:none;border-radius:50%;z-index:300;cursor:pointer}
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--pr);
+  z-index: 200;
+  padding: 5px 0;
+  border-top: 2px solid var(--gd);
+}
+
+.mobile-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  background: none;
+  border: none;
+  font-size: 0.55rem;
+  font-weight: 700;
+  padding: 5px;
+}
+
+.mobile-nav-item i {
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+
+.mobile-nav-item.active {
+  color: var(--gd);
+}
+
+/* Drawer Menu */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 400;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+}
+
+.drawer-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100%;
+  background: var(--pr);
+  z-index: 401;
+  transition: right 0.3s;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  background: none;
+  border: none;
+  padding: 12px;
+  width: 100%;
+  text-align: right;
+  font-weight: 700;
+  border-radius: 12px;
+  margin-bottom: 5px;
+  cursor: pointer;
+}
+
+.drawer-item:hover,
+.drawer-item.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--gd);
+}
+
+.menu-fab {
+  display: none;
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  width: 42px;
+  height: 42px;
+  background: var(--gd);
+  border: none;
+  border-radius: 50%;
+  z-index: 300;
+  cursor: pointer;
+  box-shadow: 0 2px 10px var(--gdg);
+}
 
 /* Admin Badge */
-.admin-badge{background:linear-gradient(90deg,#dc3545,#c0392b);color:white;padding:5px 12px;border-radius:10px;font-size:.7rem;font-weight:700;display:inline-flex;align-items:center;gap:5px;animation:pulseRed 2s infinite}
-@keyframes pulseRed{0%,100%{box-shadow:0 0 0 0 rgba(220,53,69,.4)}50%{box-shadow:0 0 0 8px rgba(220,53,69,0)}}
-.stat-edit{cursor:pointer;transition:.2s}.stat-edit:hover{opacity:.7;transform:scale(1.05)}
+.admin-badge {
+  background: linear-gradient(90deg, #dc3545, #c0392b);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  animation: pulseRed 2s infinite;
+}
 
-@media(max-width:768px){
-  .mobile-nav{display:flex}
-  .menu-fab{display:flex}
-  body{padding-bottom:65px}
-  .hide-mobile{display:none!important}
-  .ticker-wrapper{padding:2px 10px}
-  .ticker-icon{width:26px;height:26px;font-size:.7rem}
-  .ticker-controls button{width:24px;height:24px}
-  .fab-theme{width:40px;height:40px;bottom:75px;left:12px}
-  .fab-scroll{bottom:125px;left:12px;width:38px;height:38px}
-  .glass-card{padding:14px}
+@keyframes pulseRed {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(220, 53, 69, 0.4); }
+  50% { box-shadow: 0 0 0 8px rgba(220, 53, 69, 0); }
+}
+
+.stat-edit {
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.stat-edit:hover {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+/* Utility Classes */
+.fw-800 {
+  font-weight: 800;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+/* Toast */
+#toastContainer {
+  position: fixed;
+  top: 80px;
+  left: 20px;
+  z-index: 9000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toast-message {
+  background: var(--pr);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  border-right: 4px solid var(--gd);
+  animation: toastIn 0.3s ease;
+  margin-bottom: 5px;
+}
+
+@keyframes toastIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .mobile-nav {
+    display: flex;
+  }
+
+  .menu-fab {
+    display: flex;
+  }
+
+  body {
+    padding-bottom: 65px;
+  }
+
+  .hide-mobile {
+    display: none !important;
+  }
+
+  .ticker-wrapper {
+    gap: 8px;
+  }
+
+  .ticker-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .ticker-controls button {
+    width: 24px;
+    height: 24px;
+  }
+
+  .fab-theme {
+    width: 40px;
+    height: 40px;
+    bottom: 75px;
+    left: 12px;
+    font-size: 1rem;
+  }
+
+  .fab-scroll {
+    bottom: 125px;
+    left: 12px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .glass-card {
+    padding: 14px;
+  }
+
+  .swiper-slide img {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-creator-actions {
+    flex-wrap: wrap;
+  }
+
+  .post-action-type {
+    font-size: 0.7rem;
+    padding: 6px;
+  }
+
+  .post-actions {
+    flex-wrap: wrap;
+  }
 }
 </style>
 </head>
 <body>
 
 <!-- Loader -->
-<div id="loader"><img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/85x85/white/0a2b4e?text=S'" alt="logo"><div class="loader-dots"><span></span><span></span><span></span></div><p style="color:white">جاري تحميل البوابة...</p></div>
-
-<!-- PDF Export Container -->
-<div id="pdfExport" style="position:fixed;left:-9999px;top:0;width:800px;background:white;direction:rtl;z-index:-1"></div>
-
-<!-- Toast -->
-<div id="toastContainer" style="position:fixed;top:80px;left:20px;z-index:9000;display:flex;flex-direction:column;gap:8px"></div>
-
-<!-- FABs -->
-<button class="fab-theme" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-<button class="fab-scroll" id="scrollTopBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
-
-<!-- Header -->
-<header><div class="container"><div class="row align-items-center g-2">
-  <div class="col-md-auto"><img src="logo.jpg" class="logo" onerror="this.src='https://placehold.co/65x65/white/0a2b4e?text=S'" alt="logo"></div>
-  <div class="col"><div class="badge-admin mb-1">إدارة الفشن التعليمية — بني سويف</div><h1 class="school-title fs-4 mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1><p class="small mb-0" style="color:rgba(255,255,255,.6)"><span class="online-dot"></span> النظام يعمل | بوابة التعليم الرقمي المتكاملة</p></div>
-</div></div></header>
-
-<!-- News Ticker -->
-<div class="news-ticker"><div class="container"><div class="ticker-wrapper"><div class="ticker-icon"><i class="fas fa-bullhorn"></i></div><div class="ticker-content"><div class="ticker-scroll" id="tickerScroll"></div></div><div class="ticker-controls"><button onclick="pauseTicker()"><i class="fas fa-pause"></i></button><button onclick="resumeTicker()"><i class="fas fa-play"></i></button></div></div></div></div>
-
-<!-- Main Content -->
-<div class="container my-4"><div class="row g-4">
-  <!-- Sidebar Desktop -->
-  <div class="col-lg-4 hide-mobile"><div class="glass-card mb-4" id="sidebarMenu">
-    <button class="side-menu-btn" onclick="navigateTo('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i><span>المنشورات</span><span class="menu-badge" id="postsCount">0</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('results')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('gallery')"><i class="fas fa-images"></i><span>المعرض الرقمي</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('library')"><i class="fas fa-book-open"></i><span>المكتبة الرقمية</span><span class="menu-badge" id="libraryCount">0</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('art')"><i class="fas fa-palette"></i><span>التربية الفنية</span></button>
-    <button class="side-menu-btn" onclick="navigateTo('news')"><i class="fas fa-bullhorn"></i><span>أخبار المدرسة</span></button>
-    <button class="side-menu-btn" onclick="toggleAdmin()" style="border-right-color:#dc3545"><i class="fas fa-lock"></i><span id="adminBtnText">لوحة الإدارة</span></button>
+<div id="loader">
+  <img src="logo.jpg" class="loader-logo" onerror="this.src='https://placehold.co/85x85/white/0a2b4e?text=S'" alt="logo">
+  <div class="loader-dots">
+    <span></span>
+    <span></span>
+    <span></span>
   </div>
-  <div class="glass-card"><h6 class="fw-bold mb-3"><i class="fas fa-chart-line me-2"></i> إحصائيات المدرسة</h6>
-    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="statStudents" onclick="editStat('students')">1250</span></div>
-    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2"><span>المعلمون</span><span class="badge bg-success px-3 stat-edit" id="statTeachers" onclick="editStat('teachers')">85</span></div>
-    <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3"><span>الأنشطة</span><span class="badge bg-warning px-3 stat-edit" id="statActivities" onclick="editStat('activities')">24</span></div>
-    <div id="adminStatus" class="mt-2"></div>
-  </div></div>
-  
-  <!-- Dynamic Content Area -->
-  <div class="col-lg-8"><div class="swiper-container sw-wrap mb-3" style="border-radius:var(--r);overflow:hidden"><div class="swiper" id="mainSlider"><div class="swiper-wrapper" id="sliderWrapper"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div><div class="glass-card" id="mainContent"></div></div>
-</div></div>
-
-<!-- Mobile Drawer -->
-<button class="menu-fab" onclick="openDrawer()"><i class="fas fa-bars"></i></button>
-<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
-<div class="drawer" id="drawerMenu"><div class="d-flex gap-2 mb-4 pb-2 border-bottom border-white-20"><img src="logo.jpg" style="width:45px;border-radius:50%" onerror="this.src='https://placehold.co/45x45'"><span class="text-white fw-bold">القائمة</span></div>
-  <button class="drawer-item" onclick="navigateTo('home');closeDrawer()"><i class="fas fa-home"></i> الرئيسية</button>
-  <button class="drawer-item" onclick="navigateTo('posts');closeDrawer()"><i class="fas fa-newspaper"></i> المنشورات</button>
-  <button class="drawer-item" onclick="navigateTo('results');closeDrawer()"><i class="fas fa-graduation-cap"></i> النتائج</button>
-  <button class="drawer-item" onclick="navigateTo('gallery');closeDrawer()"><i class="fas fa-images"></i> المعرض</button>
-  <button class="drawer-item" onclick="navigateTo('library');closeDrawer()"><i class="fas fa-book"></i> المكتبة</button>
-  <button class="drawer-item" onclick="toggleAdmin();closeDrawer()"><i class="fas fa-lock"></i> <span id="drawerAdminText">الإدارة</span></button>
+  <p style="color: white">جاري تحميل البوابة...</p>
 </div>
 
-<!-- Mobile Bottom Nav -->
-<nav class="mobile-nav"><button class="mobile-nav-item" onclick="navigateTo('home')"><i class="fas fa-home"></i>الرئيسية</button><button class="mobile-nav-item" onclick="navigateTo('posts')"><i class="fas fa-newspaper"></i>منشورات</button><button class="mobile-nav-item" onclick="navigateTo('results')"><i class="fas fa-search"></i>نتائج</button><button class="mobile-nav-item" onclick="navigateTo('gallery')"><i class="fas fa-images"></i>معرض</button><button class="mobile-nav-item" onclick="openDrawer()"><i class="fas fa-bars"></i>القائمة</button></nav>
+<!-- PDF Export Container -->
+<div id="pdfExport" style="position: fixed; left: -9999px; top: 0; width: 800px; background: white; direction: rtl; z-index: -1"></div>
 
-<footer class="py-3 mt-4 bg-dark text-white text-center small"><div class="container">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات | جميع الحقوق محفوظة</div></footer>
+<!-- Toast Container -->
+<div id="toastContainer"></div>
 
-<!-- Firebase & Libraries -->
+<!-- FABs -->
+<button class="fab-theme" onclick="toggleTheme()">
+  <i class="fas fa-moon"></i>
+</button>
+<button class="fab-scroll" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- Header -->
+<header>
+  <div class="container">
+    <div class="row align-items-center g-2">
+      <div class="col-md-auto">
+        <img src="logo.jpg" class="logo" onerror="this.src='https://placehold.co/65x65/white/0a2b4e?text=S'" alt="logo">
+      </div>
+      <div class="col">
+        <div class="badge-admin mb-1">إدارة الفشن التعليمية — بني سويف</div>
+        <h1 class="school-title fs-4 mb-0">مدرسة سعد بن أبي وقاص الرسمية للغات</h1>
+        <p class="small mb-0" style="color: rgba(255, 255, 255, 0.6)">
+          <span class="online-dot"></span> النظام يعمل | بوابة التعليم الرقمي المتكاملة
+        </p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- News Ticker -->
+<div class="news-ticker">
+  <div class="container">
+    <div class="ticker-wrapper">
+      <div class="ticker-icon">
+        <i class="fas fa-bullhorn"></i>
+      </div>
+      <div class="ticker-content">
+        <div class="ticker-scroll" id="tickerScroll"></div>
+      </div>
+      <div class="ticker-controls">
+        <button onclick="pauseTicker()"><i class="fas fa-pause"></i></button>
+        <button onclick="resumeTicker()"><i class="fas fa-play"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="container my-4">
+  <div class="row g-4">
+    <!-- Sidebar Desktop -->
+    <div class="col-lg-4 hide-mobile">
+      <div class="glass-card mb-4" id="sidebarMenu">
+        <button class="side-menu-btn" onclick="navigateTo('home')">
+          <i class="fas fa-home"></i><span>الرئيسية</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('posts')">
+          <i class="fas fa-newspaper"></i><span>المنشورات</span>
+          <span class="menu-badge" id="postsCount">0</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('results')">
+          <i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('gallery')">
+          <i class="fas fa-images"></i><span>المعرض الرقمي</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('library')">
+          <i class="fas fa-book-open"></i><span>المكتبة الرقمية</span>
+          <span class="menu-badge" id="libraryCount">0</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('art')">
+          <i class="fas fa-palette"></i><span>التربية الفنية</span>
+        </button>
+        <button class="side-menu-btn" onclick="navigateTo('news')">
+          <i class="fas fa-bullhorn"></i><span>أخبار المدرسة</span>
+        </button>
+        <button class="side-menu-btn" onclick="toggleAdmin()" style="border-right-color: #dc3545">
+          <i class="fas fa-lock"></i><span id="adminBtnText">لوحة الإدارة</span>
+        </button>
+      </div>
+
+      <div class="glass-card">
+        <h6 class="fw-bold mb-3"><i class="fas fa-chart-line me-2"></i> إحصائيات المدرسة</h6>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2">
+          <span>الطلاب</span>
+          <span class="badge bg-primary px-3 stat-edit" id="statStudents" onclick="editStat('students')">0</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3 mb-2">
+          <span>المعلمون</span>
+          <span class="badge bg-success px-3 stat-edit" id="statTeachers" onclick="editStat('teachers')">0</span>
+        </div>
+        <div class="d-flex justify-content-between align-items-center p-2 bg-light rounded-3">
+          <span>الأنشطة</span>
+          <span class="badge bg-warning px-3 stat-edit" id="statActivities" onclick="editStat('activities')">0</span>
+        </div>
+        <div id="adminStatus" class="mt-2"></div>
+      </div>
+    </div>
+
+    <!-- Dynamic Content Area -->
+    <div class="col-lg-8">
+      <!-- Slider -->
+      <div class="swiper-container mb-3" style="border-radius: var(--r); overflow: hidden">
+        <div class="swiper" id="mainSlider">
+          <div class="swiper-wrapper" id="sliderWrapper"></div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-next"></div>
+          <div class="swiper-button-prev"></div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="glass-card" id="mainContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile Drawer -->
+<button class="menu-fab" onclick="openDrawer()">
+  <i class="fas fa-bars"></i>
+</button>
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawerMenu">
+  <div class="d-flex gap-2 mb-4 pb-2 border-bottom border-white-20">
+    <img src="logo.jpg" style="width: 45px; border-radius: 50%" onerror="this.src='https://placehold.co/45x45'">
+    <span class="text-white fw-bold">القائمة</span>
+  </div>
+  <button class="drawer-item" onclick="navigateTo('home'); closeDrawer()">
+    <i class="fas fa-home"></i> الرئيسية
+  </button>
+  <button class="drawer-item" onclick="navigateTo('posts'); closeDrawer()">
+    <i class="fas fa-newspaper"></i> المنشورات
+  </button>
+  <button class="drawer-item" onclick="navigateTo('results'); closeDrawer()">
+    <i class="fas fa-graduation-cap"></i> النتائج
+  </button>
+  <button class="drawer-item" onclick="navigateTo('gallery'); closeDrawer()">
+    <i class="fas fa-images"></i> المعرض
+  </button>
+  <button class="drawer-item" onclick="navigateTo('library'); closeDrawer()">
+    <i class="fas fa-book"></i> المكتبة
+  </button>
+  <button class="drawer-item" onclick="toggleAdmin(); closeDrawer()">
+    <i class="fas fa-lock"></i> <span id="drawerAdminText">الإدارة</span>
+  </button>
+</div>
+
+<!-- Mobile Bottom Navigation -->
+<nav class="mobile-nav">
+  <button class="mobile-nav-item" onclick="navigateTo('home')">
+    <i class="fas fa-home"></i>الرئيسية
+  </button>
+  <button class="mobile-nav-item" onclick="navigateTo('posts')">
+    <i class="fas fa-newspaper"></i>منشورات
+  </button>
+  <button class="mobile-nav-item" onclick="navigateTo('results')">
+    <i class="fas fa-search"></i>نتائج
+  </button>
+  <button class="mobile-nav-item" onclick="navigateTo('gallery')">
+    <i class="fas fa-images"></i>معرض
+  </button>
+  <button class="mobile-nav-item" onclick="openDrawer()">
+    <i class="fas fa-bars"></i>القائمة
+  </button>
+</nav>
+
+<footer class="py-3 mt-4 bg-dark text-white text-center small">
+  <div class="container">
+    © 2026 مدرسة سعد بن أبي وقاص الرسمية للغات | جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<!-- Scripts -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -267,9 +1333,9 @@ header{background:linear-gradient(135deg,var(--pr),#0d3a60);border-bottom:3px so
 
 <script>
 // ============================================================
-// CONFIGURATION
+// FIREBASE CONFIGURATION - Direct initialization
 // ============================================================
-const FIREBASE_CONFIG = {
+const firebaseConfig = {
   apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
   authDomain: "saad-school-portal.firebaseapp.com",
   databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
@@ -278,111 +1344,249 @@ const FIREBASE_CONFIG = {
   appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
 };
 
-firebase.initializeApp(FIREBASE_CONFIG);
-const db = firebase.database();
+// Initialize Firebase
+let db = null;
+let firebaseReady = false;
 
+function initFirebase() {
+  try {
+    if (typeof firebase !== 'undefined') {
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      db = firebase.database();
+      firebaseReady = true;
+      console.log("✅ Firebase initialized successfully");
+      startApp();
+    } else {
+      console.log("⏳ Waiting for Firebase...");
+      setTimeout(initFirebase, 200);
+    }
+  } catch (error) {
+    console.error("❌ Firebase init error:", error);
+    setTimeout(initFirebase, 500);
+  }
+}
+
+// ============================================================
+// GLOBAL VARIABLES
+// ============================================================
 const CLOUDINARY_CLOUD = 'dyo4ff7ha';
 const CLOUDINARY_PRESET = 'school_raw';
 const ADMIN_PASSWORD = "YWJ1c2FiZXIxMjM="; // abusaber123
 
-// Global variables
 let isAdmin = false;
 let currentSection = 'home';
 let swiperInstance = null;
-let postsCache = [];
-let filesCache = {};
-let activePostTab = 'all';
-let pendingFiles = [];
+let tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة الآن', 'نظام المنشورات الجديد تم تفعيله'];
 let tickerAnimation = null;
 let tickerPaused = false;
+let postsCache = [];
+let filesCache = {};
+let currentFilesSection = '';
+let currentFilesFilter = 'all';
+let pendingUploadFiles = [];
+let selectedPostFile = null;
 
-// Grades mapping
 const GRADES = {
-  p3:'الصف الثالث الابتدائي', p4:'الصف الرابع الابتدائي', p5:'الصف الخامس الابتدائي',
-  p6:'الصف السادس الابتدائي', m1:'الصف الأول الإعدادي', m2:'الصف الثاني الإعدادي',
-  m3:'الصف الثالث الإعدادي', s1:'الصف الأول الثانوي', s2:'الصف الثاني الثانوي'
+  p3: 'الصف الثالث الابتدائي',
+  p4: 'الصف الرابع الابتدائي',
+  p5: 'الصف الخامس الابتدائي',
+  p6: 'الصف السادس الابتدائي',
+  m1: 'الصف الأول الإعدادي',
+  m2: 'الصف الثاني الإعدادي',
+  m3: 'الصف الثالث الإعدادي',
+  s1: 'الصف الأول الثانوي',
+  s2: 'الصف الثاني الثانوي'
 };
 
-// Helper functions
-const escapeHtml = (text) => { const div = document.createElement('div'); div.appendChild(document.createTextNode(text || '')); return div.innerHTML; };
-const showToast = (msg, type = 'info', duration = 3000) => {
-  const container = document.getElementById('toastContainer');
-  if(!container) return;
-  const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
-  const toast = document.createElement('div');
-  toast.className = `ti2 ${type}`;
-  toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i><span>${msg}</span>`;
-  toast.style.cssText = 'background:var(--pr);color:white;padding:10px 18px;border-radius:12px;font-size:.8rem;font-weight:600;box-shadow:0 4px 15px rgba(0,0,0,.2);border-right:4px solid var(--gd);animation:tin .3s ease;margin-bottom:5px';
-  container.appendChild(toast);
-  setTimeout(() => { toast.style.animation = 'tout .3s ease forwards'; setTimeout(() => toast.remove(), 300); }, duration);
-};
-
-const formatFileSize = (bytes) => {
-  if(!bytes) return '';
-  if(bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1048576).toFixed(2) + ' MB';
-};
-
-const isImageUrl = (url) => /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url || '');
-const isVideoUrl = (url) => /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url || '');
-const isPdfUrl = (url) => /\.pdf(\?|$)/i.test(url || '');
-const isYouTubeUrl = (url) => url && (url.includes('youtube.com/watch') || url.includes('youtu.be/'));
-const isVimeoUrl = (url) => url && url.includes('vimeo.com/');
-const isGoogleDriveUrl = (url) => url && (url.includes('drive.google.com') || url.includes('docs.google.com'));
-
-const getYouTubeId = (url) => { const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/); return match ? match[1] : null; };
-const getVimeoId = (url) => { const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/); return match ? match[1] : null; };
-const getGoogleDriveId = (url) => { const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/); return match ? match[1] : null; };
-
-const getEmbedHtml = (url) => {
-  if(isYouTubeUrl(url)){ const id = getYouTubeId(url); if(id) return `<div class="link-embed"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`; }
-  if(isVimeoUrl(url)){ const id = getVimeoId(url); if(id) return `<div class="link-embed"><iframe src="https://player.vimeo.com/video/${id}" allowfullscreen></iframe></div>`; }
-  if(isGoogleDriveUrl(url)){ const id = getGoogleDriveId(url); if(id) return `<div class="link-embed"><iframe src="https://drive.google.com/file/d/${id}/preview" allowfullscreen></iframe></div>`; }
-  if(isImageUrl(url)) return `<img src="${url}" loading="lazy" style="max-width:100%;border-radius:12px">`;
-  if(isVideoUrl(url)) return `<video controls src="${url}" style="max-width:100%;border-radius:12px"></video>`;
-  if(isPdfUrl(url)) return `<div class="link-embed"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"></iframe></div>`;
-  return `<a href="${url}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fas fa-external-link-alt"></i> فتح الرابط</a>`;
-};
+let stats = { students: 1250, teachers: 85, activities: 24 };
 
 // ============================================================
-// SLIDER MANAGEMENT (Linked to latest media from all tabs)
+// HELPER FUNCTIONS
+// ============================================================
+function showToast(msg, type = 'info', duration = 3000) {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = 'toast-message';
+  
+  const icons = { success: 'fa-check-circle', error: 'fa-times-circle', warning: 'fa-exclamation-triangle', info: 'fa-info-circle' };
+  toast.innerHTML = `<i class="fas ${icons[type] || icons.info} me-2"></i>${msg}`;
+  
+  if (type === 'error') toast.style.borderRightColor = '#dc3545';
+  if (type === 'success') toast.style.borderRightColor = '#28a745';
+  if (type === 'warning') toast.style.borderRightColor = '#ffc107';
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'toastOut 0.3s ease forwards';
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  const div = document.createElement('div');
+  div.appendChild(document.createTextNode(text));
+  return div.innerHTML;
+}
+
+function formatFileSize(bytes) {
+  if (!bytes) return '';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / 1048576).toFixed(2) + ' MB';
+}
+
+function isImageUrl(url) {
+  return /\.(jpg|jpeg|png|gif|webp|svg)(\?|$)/i.test(url || '');
+}
+
+function isVideoUrl(url) {
+  return /\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url || '');
+}
+
+function isPdfUrl(url) {
+  return /\.pdf(\?|$)/i.test(url || '');
+}
+
+function isYouTubeUrl(url) {
+  return url && (url.includes('youtube.com/watch') || url.includes('youtu.be/'));
+}
+
+function isVimeoUrl(url) {
+  return url && url.includes('vimeo.com/');
+}
+
+function isGoogleDriveUrl(url) {
+  return url && (url.includes('drive.google.com') || url.includes('docs.google.com'));
+}
+
+function getYouTubeId(url) {
+  const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/);
+  return match ? match[1] : null;
+}
+
+function getVimeoId(url) {
+  const match = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  return match ? match[1] : null;
+}
+
+function getGoogleDriveId(url) {
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  return match ? match[1] : null;
+}
+
+function getEmbedHtml(url) {
+  if (!url) return '';
+  
+  if (isYouTubeUrl(url)) {
+    const id = getYouTubeId(url);
+    if (id) return `<div class="link-embed"><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`;
+  }
+  
+  if (isVimeoUrl(url)) {
+    const id = getVimeoId(url);
+    if (id) return `<div class="link-embed"><iframe src="https://player.vimeo.com/video/${id}" allowfullscreen></iframe></div>`;
+  }
+  
+  if (isGoogleDriveUrl(url)) {
+    const id = getGoogleDriveId(url);
+    if (id) return `<div class="link-embed"><iframe src="https://drive.google.com/file/d/${id}/preview" allowfullscreen></iframe></div>`;
+  }
+  
+  if (isImageUrl(url)) {
+    return `<img src="${url}" loading="lazy" style="max-width: 100%; border-radius: 12px">`;
+  }
+  
+  if (isVideoUrl(url)) {
+    return `<video controls src="${url}" style="max-width: 100%; border-radius: 12px"></video>`;
+  }
+  
+  if (isPdfUrl(url)) {
+    return `<div class="link-embed"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true"></iframe></div>`;
+  }
+  
+  return `<a href="${url}" target="_blank" class="btn btn-outline-primary btn-sm"><i class="fas fa-external-link-alt"></i> فتح الرابط</a>`;
+}
+
+async function uploadFileToCloudinary(file) {
+  return new Promise((resolve, reject) => {
+    const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
+    const resourceType = isVideo ? 'video' : 'image';
+    const fd = new FormData();
+    fd.append('file', file);
+    fd.append('upload_preset', CLOUDINARY_PRESET);
+    fd.append('folder', 'school_posts');
+    
+    const xhr = new XMLHttpRequest();
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        resolve(res.secure_url);
+      } else {
+        reject(null);
+      }
+    };
+    xhr.onerror = () => reject(null);
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`);
+    xhr.send(fd);
+  });
+}
+
+// ============================================================
+// SLIDER MANAGEMENT
 // ============================================================
 async function updateSliderFromLatestMedia() {
+  if (!db) return;
+  
   const sections = ['posts', 'gallery_section', 'library_section', 'art_section'];
   let allMedia = [];
   
-  for(const section of sections){
-    const snapshot = await db.ref(section).orderByChild('timestamp').limitToLast(10).once('value');
-    if(snapshot.exists()){
-      snapshot.forEach(child => {
-        const data = child.val();
-        let mediaUrl = data.mediaUrl || data.url;
-        if(mediaUrl && (isImageUrl(mediaUrl) || isVideoUrl(mediaUrl))){
-          allMedia.push({ url: mediaUrl, caption: data.title || data.content?.substring(0,50) || 'محتوى جديد', timestamp: data.timestamp || 0 });
-        }
-      });
+  for (const section of sections) {
+    try {
+      const snapshot = await db.ref(section).orderByChild('timestamp').limitToLast(10).once('value');
+      if (snapshot.exists()) {
+        snapshot.forEach(child => {
+          const data = child.val();
+          let mediaUrl = data.mediaUrl || data.url;
+          if (mediaUrl && (isImageUrl(mediaUrl) || isVideoUrl(mediaUrl))) {
+            allMedia.push({
+              url: mediaUrl,
+              caption: data.title || (data.content ? data.content.substring(0, 50) : 'محتوى جديد'),
+              timestamp: data.timestamp || 0
+            });
+          }
+        });
+      }
+    } catch (e) {
+      console.warn("Error loading section:", section, e);
     }
   }
   
-  allMedia.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
+  allMedia.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
   const topMedia = allMedia.slice(0, 8);
   
-  if(topMedia.length === 0){
-    topMedia.push({ url: 'https://picsum.photos/id/20/1200/400', caption: 'مرحباً في بوابة المدرسة الرقمية', timestamp: Date.now() });
-    topMedia.push({ url: 'https://picsum.photos/id/100/1200/400', caption: 'نظام تعليمي متكامل', timestamp: Date.now() });
+  if (topMedia.length === 0) {
+    topMedia.push(
+      { url: 'https://picsum.photos/id/20/1200/400', caption: 'مرحباً في بوابة المدرسة الرقمية', timestamp: Date.now() },
+      { url: 'https://picsum.photos/id/100/1200/400', caption: 'نظام تعليمي متكامل', timestamp: Date.now() }
+    );
   }
   
   const wrapper = document.getElementById('sliderWrapper');
-  if(wrapper){
+  if (wrapper) {
     wrapper.innerHTML = topMedia.map(m => `
-      <div class="swiper-slide" style="position:relative">
-        <img src="${m.url}" style="width:100%;height:250px;object-fit:cover" loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
-        <div class="sc2" style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;padding:15px;font-weight:700">${escapeHtml(m.caption)}</div>
+      <div class="swiper-slide">
+        <img src="${m.url}" loading="lazy" onerror="this.src='https://picsum.photos/id/20/1200/400'">
+        <div class="slide-caption">${escapeHtml(m.caption)}</div>
       </div>
     `).join('');
   }
   
-  if(swiperInstance) swiperInstance.destroy();
+  if (swiperInstance) swiperInstance.destroy();
   swiperInstance = new Swiper('#mainSlider', {
     loop: topMedia.length > 1,
     autoplay: { delay: 5000, disableOnInteraction: false },
@@ -393,66 +1597,110 @@ async function updateSliderFromLatestMedia() {
 }
 
 // ============================================================
-// NEWS TICKER MANAGEMENT
+// TICKER MANAGEMENT
 // ============================================================
-let tickerItems = ['مرحباً بكم في بوابة مدرسة سعد بن أبي وقاص', 'نتائج الفصل الدراسي الأول متاحة الآن', 'نظام المنشورات الجديد تم تفعيله'];
-function loadTicker(){
-  db.ref('ticker_items').once('value', snapshot => {
-    if(snapshot.exists()){
+async function loadTicker() {
+  if (!db) return;
+  
+  try {
+    const snapshot = await db.ref('ticker_items').once('value');
+    if (snapshot.exists()) {
       const items = [];
       snapshot.forEach(child => items.push(child.val().text));
-      if(items.length) tickerItems = items;
+      if (items.length) tickerItems = items;
     }
-    renderTicker();
-  });
+  } catch (e) {
+    console.warn("Error loading ticker:", e);
+  }
+  
+  renderTicker();
 }
-function renderTicker(){
+
+function renderTicker() {
   const container = document.getElementById('tickerScroll');
-  if(!container) return;
-  const html = tickerItems.map(item => `<span class="ticker-item"><i class="fas fa-star-of-life"></i> ${escapeHtml(item)}</span>`).join('');
+  if (!container) return;
+  
+  const html = tickerItems.map(item => `
+    <span class="ticker-item">
+      <i class="fas fa-star-of-life"></i> ${escapeHtml(item)}
+    </span>
+  `).join('');
+  
   container.innerHTML = html + html;
 }
-function pauseTicker(){ const scroll = document.querySelector('.ticker-scroll'); if(scroll) scroll.style.animationPlayState = 'paused'; tickerPaused = true; }
-function resumeTicker(){ const scroll = document.querySelector('.ticker-scroll'); if(scroll) scroll.style.animationPlayState = 'running'; tickerPaused = false; }
-function addTickerItem(text){ db.ref('ticker_items').push({ text: text }).then(() => loadTicker()); }
-function updateTickerItem(id, text){ db.ref(`ticker_items/${id}`).update({ text: text }).then(() => loadTicker()); }
-function deleteTickerItem(id){ db.ref(`ticker_items/${id}`).remove().then(() => loadTicker()); }
 
-// ============================================================
-// POSTS SYSTEM (Facebook-like with tab selection)
-// ============================================================
-function showPostCreator(){
-  if(!isAdmin) return '';
-  return `
-    <div class="post-creator">
-      <div class="post-creator-header">
-        <div class="post-creator-avatar"><i class="fas fa-user-shield"></i></div>
-        <div class="post-creator-input" onclick="openPostModal()">ما الذي تريد نشره؟</div>
-      </div>
-      <div class="post-creator-actions">
-        <button class="post-action-type" onclick="openPostModal('text')"><i class="fas fa-pen-fancy"></i> نص</button>
-        <button class="post-action-type" onclick="openPostModal('media')"><i class="fas fa-image"></i> صورة/فيديو</button>
-        <button class="post-action-type" onclick="openPostModal('link')"><i class="fas fa-link"></i> رابط</button>
-        <button class="post-action-type" onclick="openPostModal('file')"><i class="fas fa-file"></i> ملف</button>
-      </div>
-    </div>
-  `;
+function pauseTicker() {
+  const scroll = document.querySelector('.ticker-scroll');
+  if (scroll) scroll.style.animationPlayState = 'paused';
+  tickerPaused = true;
 }
 
-function openPostModal(type = 'text'){
+function resumeTicker() {
+  const scroll = document.querySelector('.ticker-scroll');
+  if (scroll) scroll.style.animationPlayState = 'running';
+  tickerPaused = false;
+}
+
+// ============================================================
+// STATS MANAGEMENT
+// ============================================================
+async function loadStats() {
+  if (!db) return;
+  
+  try {
+    const snapshot = await db.ref('school_stats').once('value');
+    if (snapshot.exists()) {
+      stats = snapshot.val();
+    }
+  } catch (e) {
+    console.warn("Error loading stats:", e);
+  }
+  
+  document.getElementById('statStudents').innerText = stats.students;
+  document.getElementById('statTeachers').innerText = stats.teachers;
+  document.getElementById('statActivities').innerText = stats.activities;
+}
+
+async function editStat(statName) {
+  if (!isAdmin) {
+    showToast('متاح للإدارة فقط', 'warning');
+    return;
+  }
+  
+  const { value: newValue } = await Swal.fire({
+    title: `تعديل عدد ${statName === 'students' ? 'الطلاب' : statName === 'teachers' ? 'المعلمين' : 'الأنشطة'}`,
+    input: 'number',
+    inputValue: stats[statName],
+    showCancelButton: true,
+    confirmButtonText: 'حفظ',
+    cancelButtonText: 'إلغاء'
+  });
+  
+  if (newValue) {
+    stats[statName] = parseInt(newValue);
+    await db.ref('school_stats').set(stats);
+    document.getElementById(`stat${statName.charAt(0).toUpperCase() + statName.slice(1)}`).innerText = stats[statName];
+    showToast('تم تحديث الإحصائية', 'success');
+  }
+}
+
+// ============================================================
+// POSTS SYSTEM
+// ============================================================
+function openPostModal(type = 'text') {
   Swal.fire({
     title: 'إنشاء منشور جديد',
     html: `
-      <textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="3" style="text-align:right"></textarea>
-      <div class="mt-2" id="postMediaArea" style="display:${type === 'text' ? 'none' : 'block'}">
+      <textarea id="postContent" class="swal2-textarea" placeholder="محتوى المنشور..." rows="3" style="text-align: right"></textarea>
+      <div class="mt-2" id="postMediaArea" style="display: ${type === 'text' ? 'none' : 'block'}">
         <input type="url" id="postMediaUrl" class="form-control mb-2" placeholder="رابط الوسائط (YouTube, Google Drive, صورة, فيديو...)">
-        <div id="postFileArea" style="display:${type === 'file' ? 'block' : 'none'}">
+        <div id="postFileArea" style="display: ${type === 'file' ? 'block' : 'none'}">
           <div class="upload-area" onclick="document.getElementById('postFileInput').click()">
             <i class="fas fa-cloud-upload-alt"></i>
             <p>اختر ملفاً للرفع</p>
             <small class="text-muted">حد أقصى 200MB لأي نوع ملف</small>
           </div>
-          <input type="file" id="postFileInput" style="display:none" onchange="handlePostFileSelect(this)">
+          <input type="file" id="postFileInput" style="display: none" onchange="handlePostFileSelect(this)">
           <div id="postFilePreview"></div>
         </div>
       </div>
@@ -471,34 +1719,38 @@ function openPostModal(type = 'text'){
     cancelButtonText: 'إلغاء',
     preConfirm: () => {
       const content = document.getElementById('postContent').value.trim();
-      if(!content && !window.selectedPostFile && !document.getElementById('postMediaUrl')?.value.trim()){
+      const mediaUrl = document.getElementById('postMediaUrl')?.value.trim();
+      if (!content && !selectedPostFile && !mediaUrl) {
         Swal.showValidationMessage('يرجى إدخال محتوى أو اختيار ملف/رابط');
         return false;
       }
       return {
         content: content,
-        mediaUrl: document.getElementById('postMediaUrl')?.value.trim(),
+        mediaUrl: mediaUrl,
         tab: document.getElementById('postTab')?.value,
-        file: window.selectedPostFile
+        file: selectedPostFile
       };
     }
   }).then(async (result) => {
-    if(result.isConfirmed){
+    if (result.isConfirmed) {
       const { content, mediaUrl, tab, file } = result.value;
       let finalUrl = mediaUrl;
-      let fileData = null;
       
-      if(file){
+      if (file) {
         showToast('جاري رفع الملف...', 'info');
         const uploaded = await uploadFileToCloudinary(file);
-        if(uploaded) finalUrl = uploaded;
-        else { showToast('فشل رفع الملف', 'error'); return; }
+        if (uploaded) {
+          finalUrl = uploaded;
+        } else {
+          showToast('فشل رفع الملف', 'error');
+          return;
+        }
       }
       
       const postData = {
         content: content,
         mediaUrl: finalUrl || null,
-        author: 'إدارة المدرسة',
+        author: isAdmin ? 'إدارة المدرسة' : 'معلم',
         timestamp: Date.now(),
         date: new Date().toLocaleDateString('ar-EG'),
         time: new Date().toLocaleTimeString('ar-EG'),
@@ -509,9 +1761,9 @@ function openPostModal(type = 'text'){
         fileName: file?.name || null
       };
       
-      if(tab && tab !== 'general'){
+      if (tab && tab !== 'general' && finalUrl) {
         await db.ref(tab).push({
-          title: content.substring(0,50),
+          title: content.substring(0, 50),
           description: content,
           url: finalUrl,
           timestamp: Date.now(),
@@ -522,83 +1774,88 @@ function openPostModal(type = 'text'){
       
       await db.ref('posts').push(postData);
       showToast('تم نشر المنشور بنجاح', 'success');
-      window.selectedPostFile = null;
-      if(currentSection === 'posts') loadPosts();
+      selectedPostFile = null;
+      if (currentSection === 'posts') loadPosts();
       updateSliderFromLatestMedia();
     }
   });
 }
 
-let selectedPostFile = null;
-function handlePostFileSelect(input){
+function handlePostFileSelect(input) {
   const file = input.files[0];
-  if(!file) return;
-  if(file.size > 200 * 1024 * 1024){
+  if (!file) return;
+  
+  if (file.size > 200 * 1024 * 1024) {
     showToast('حجم الملف يتجاوز 200MB', 'error');
     return;
   }
+  
   selectedPostFile = file;
-  document.getElementById('postFilePreview').innerHTML = `<div class="alert alert-success mt-2">✅ تم اختيار: ${file.name} (${formatFileSize(file.size)})</div>`;
+  document.getElementById('postFilePreview').innerHTML = `
+    <div class="alert alert-success mt-2">✅ تم اختيار: ${escapeHtml(file.name)} (${formatFileSize(file.size)})</div>
+  `;
 }
 
-async function uploadFileToCloudinary(file){
-  return new Promise((resolve, reject) => {
-    const isVideo = /\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
-    const resourceType = isVideo ? 'video' : 'image';
-    const fd = new FormData();
-    fd.append('file', file);
-    fd.append('upload_preset', CLOUDINARY_PRESET);
-    fd.append('folder', 'school_posts');
-    
-    const xhr = new XMLHttpRequest();
-    xhr.onload = () => {
-      if(xhr.status === 200){
-        const res = JSON.parse(xhr.responseText);
-        resolve(res.secure_url);
-      } else reject(null);
-    };
-    xhr.onerror = () => reject(null);
-    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/${resourceType}/upload`);
-    xhr.send(fd);
-  });
-}
-
-function loadPosts(){
+async function loadPosts() {
+  if (!db) return;
+  
   const container = document.getElementById('postsList');
-  if(!container) return;
+  if (!container) return;
+  
   container.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary"></div></div>';
   
-  db.ref('posts').orderByChild('timestamp').once('value', snapshot => {
+  try {
+    const snapshot = await db.ref('posts').orderByChild('timestamp').once('value');
     let posts = [];
-    if(snapshot.exists()) snapshot.forEach(child => posts.push({ id: child.key, ...child.val() }));
-    posts.sort((a,b) => (b.timestamp || 0) - (a.timestamp || 0));
-    postsCache = posts;
-    document.getElementById('postsCount') && (document.getElementById('postsCount').innerText = posts.length);
     
-    if(posts.length === 0){
+    if (snapshot.exists()) {
+      snapshot.forEach(child => posts.push({ id: child.key, ...child.val() }));
+    }
+    
+    posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    postsCache = posts;
+    
+    const postsCountElem = document.getElementById('postsCount');
+    if (postsCountElem) postsCountElem.innerText = posts.length;
+    
+    if (posts.length === 0) {
       container.innerHTML = '<div class="text-center p-5"><div class="esi">📝</div><p>لا توجد منشورات بعد</p></div>';
       return;
     }
     
     container.innerHTML = posts.map(post => renderPostCard(post)).join('');
+    
     posts.forEach(post => {
       const likeBtn = document.getElementById(`likeBtn-${post.id}`);
-      if(likeBtn) likeBtn.onclick = () => likePost(post.id);
+      if (likeBtn) likeBtn.onclick = () => likePost(post.id);
     });
-  });
+  } catch (e) {
+    console.error("Error loading posts:", e);
+    container.innerHTML = '<div class="alert alert-danger text-center">حدث خطأ في تحميل المنشورات</div>';
+  }
 }
 
-function renderPostCard(post){
+function renderPostCard(post) {
   const visitorId = sessionStorage.getItem('visitorId') || 'guest';
   const isLiked = post.likes && post.likes[visitorId];
   const likesCount = post.likes ? Object.keys(post.likes).length : 0;
   const commentsCount = post.comments ? post.comments.length : 0;
   
   let mediaHtml = '';
-  if(post.mediaUrl) mediaHtml = `<div class="post-media">${getEmbedHtml(post.mediaUrl)}</div>`;
-  if(post.fileName) mediaHtml += `<div class="small text-muted mt-1"><i class="fas fa-paperclip"></i> ${escapeHtml(post.fileName)} (${formatFileSize(post.fileSize)})</div>`;
+  if (post.mediaUrl) {
+    mediaHtml = `<div class="post-media">${getEmbedHtml(post.mediaUrl)}</div>`;
+  }
+  if (post.fileName) {
+    mediaHtml += `<div class="small text-muted mt-1"><i class="fas fa-paperclip"></i> ${escapeHtml(post.fileName)} (${formatFileSize(post.fileSize)})</div>`;
+  }
   
-  const tabNames = { general: 'عام', gallery_section: 'المعرض', library_section: 'المكتبة', art_section: 'التربية الفنية' };
+  const tabNames = {
+    general: 'عام',
+    gallery_section: 'المعرض',
+    library_section: 'المكتبة',
+    art_section: 'التربية الفنية'
+  };
+  
   const commentsHtml = (post.comments || []).map(c => `
     <div class="comment-item">
       <div class="d-flex justify-content-between">
@@ -614,66 +1871,102 @@ function renderPostCard(post){
     <div class="post-card" data-aos="fade-up">
       <div class="post-header">
         <div class="post-avatar"><i class="fas fa-school"></i></div>
-        <div class="post-author-info">
-          <div class="post-author-name">${escapeHtml(post.author || 'إدارة المدرسة')} <span class="post-tab-badge">${tabNames[post.tab] || 'عام'}</span></div>
+        <div class="flex-grow-1">
+          <div class="post-author-name">
+            ${escapeHtml(post.author || 'إدارة المدرسة')}
+            <span class="post-tab-badge">${tabNames[post.tab] || 'عام'}</span>
+          </div>
           <div class="post-date">${post.date} • ${post.time || ''}</div>
         </div>
       </div>
       <div class="post-content">${escapeHtml(post.content)}</div>
       ${mediaHtml}
       <div class="post-stats">
-        <span onclick="document.getElementById('likesList-${post.id}').style.display='block'"><i class="fas fa-thumbs-up"></i> ${likesCount}</span>
-        <span onclick="document.getElementById('comments-${post.id}').style.display='block'"><i class="fas fa-comment"></i> ${commentsCount} تعليق</span>
+        <span onclick="document.getElementById('likesList-${post.id}')?.toggle()">
+          <i class="fas fa-thumbs-up"></i> ${likesCount}
+        </span>
+        <span onclick="toggleComments('${post.id}')">
+          <i class="fas fa-comment"></i> ${commentsCount} تعليق
+        </span>
       </div>
       <div class="post-actions">
-        <button class="post-action-btn ${isLiked ? 'liked' : ''}" id="likeBtn-${post.id}"><i class="fas fa-thumbs-up"></i> إعجاب</button>
-        <button class="post-action-btn" onclick="toggleComments('${post.id}')"><i class="fas fa-comment"></i> تعليق</button>
-        ${isAdmin ? `<button class="post-action-btn text-danger" onclick="deletePost('${post.id}')"><i class="fas fa-trash"></i> حذف</button>` : ''}
+        <button class="post-action-btn ${isLiked ? 'liked' : ''}" id="likeBtn-${post.id}">
+          <i class="fas fa-thumbs-up"></i> إعجاب
+        </button>
+        <button class="post-action-btn" onclick="toggleComments('${post.id}')">
+          <i class="fas fa-comment"></i> تعليق
+        </button>
+        ${isAdmin ? `
+          <button class="post-action-btn text-danger" onclick="deletePost('${post.id}')">
+            <i class="fas fa-trash"></i> حذف
+          </button>
+        ` : ''}
       </div>
-      <div id="comments-${post.id}" style="display:none" class="comments-section">
+      <div id="comments-${post.id}" style="display: none" class="comments-section">
         <div class="mb-2">${commentsHtml}</div>
         <div class="input-group input-group-sm mt-2">
           <input type="text" id="commentInput-${post.id}" class="form-control" placeholder="اكتب تعليقك..." maxlength="300">
-          <button class="btn btn-primary btn-sm" onclick="addComment('${post.id}')"><i class="fas fa-paper-plane"></i></button>
+          <button class="btn btn-primary btn-sm" onclick="addComment('${post.id}')">
+            <i class="fas fa-paper-plane"></i>
+          </button>
         </div>
       </div>
     </div>
   `;
 }
 
-function toggleComments(postId){
+function toggleComments(postId) {
   const section = document.getElementById(`comments-${postId}`);
-  if(section) section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  if (section) {
+    section.style.display = section.style.display === 'none' ? 'block' : 'none';
+  }
 }
 
-async function likePost(postId){
+async function likePost(postId) {
   const visitorId = sessionStorage.getItem('visitorId') || 'user_' + Date.now();
-  if(!sessionStorage.getItem('visitorId')) sessionStorage.setItem('visitorId', visitorId);
+  if (!sessionStorage.getItem('visitorId')) {
+    sessionStorage.setItem('visitorId', visitorId);
+  }
+  
   const likeRef = db.ref(`posts/${postId}/likes/${visitorId}`);
   const snapshot = await likeRef.once('value');
-  if(snapshot.exists()) await likeRef.remove();
-  else await likeRef.set(true);
+  
+  if (snapshot.exists()) {
+    await likeRef.remove();
+  } else {
+    await likeRef.set(true);
+  }
+  
   loadPosts();
 }
 
-async function addComment(postId){
+async function addComment(postId) {
   const input = document.getElementById(`commentInput-${postId}`);
   const text = input?.value?.trim();
-  if(!text) return;
-  const commentRef = db.ref(`posts/${postId}/comments`).push();
-  await commentRef.set({
-    id: commentRef.key,
+  if (!text) return;
+  
+  await db.ref(`posts/${postId}/comments`).push({
+    id: Date.now().toString(),
     name: isAdmin ? 'إدارة المدرسة' : 'زائر',
     text: text,
     date: new Date().toLocaleString('ar-EG')
   });
-  if(input) input.value = '';
+  
+  if (input) input.value = '';
   loadPosts();
 }
 
-async function deletePost(postId){
-  const result = await Swal.fire({ title: 'حذف المنشور؟', text: 'لا يمكن التراجع', icon: 'warning', showCancelButton: true, confirmButtonText: 'حذف' });
-  if(result.isConfirmed){
+async function deletePost(postId) {
+  const result = await Swal.fire({
+    title: 'حذف المنشور؟',
+    text: 'لا يمكن التراجع عن هذا الإجراء',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'حذف',
+    cancelButtonText: 'إلغاء'
+  });
+  
+  if (result.isConfirmed) {
     await db.ref(`posts/${postId}`).remove();
     showToast('تم حذف المنشور', 'success');
     loadPosts();
@@ -681,221 +1974,116 @@ async function deletePost(postId){
   }
 }
 
-async function deleteComment(postId, commentId){
+async function deleteComment(postId, commentId) {
   const commentsRef = db.ref(`posts/${postId}/comments`);
   const snapshot = await commentsRef.once('value');
-  snapshot.forEach(child => { if(child.val().id === commentId) child.ref.remove(); });
+  
+  snapshot.forEach(child => {
+    if (child.val().id === commentId) {
+      child.ref.remove();
+    }
+  });
+  
   showToast('تم حذف التعليق', 'info');
   loadPosts();
 }
 
 // ============================================================
-// RESULTS MANAGEMENT with JSON upload
+// FILES SYSTEM
 // ============================================================
-function showResultsSection(){
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `
-    <div class="fi">
-      <h4 class="fw-bold mb-3"><i class="fas fa-chart-line text-primary"></i> شئون الطلاب والنتائج</h4>
-      <div class="bg-light p-3 rounded-4 mb-3">
-        <div class="row g-2">
-          <div class="col-md-6"><select id="gradeSelect" class="form-select">${Object.entries(GRADES).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}</select></div>
-          <div class="col-md-6"><input type="text" id="seatInput" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')searchResult()"></div>
-        </div>
-      </div>
-      <button class="btn btn-primary w-100 mb-3 py-2" onclick="searchResult()"><i class="fas fa-search"></i> استعلام عن النتيجة</button>
-      <div id="resultDisplay"></div>
-      ${isAdmin ? `
-        <div class="mt-4 pt-3 border-top">
-          <h5 class="fw-bold"><i class="fas fa-database"></i> إدارة النتائج</h5>
-          <div class="json-upload-area mt-2" onclick="document.getElementById('jsonUpload').click()">
-            <i class="fas fa-cloud-upload-alt fa-2x"></i>
-            <p>رفع ملف JSON للنتائج</p>
-            <small class="text-muted">حدد الصف أولاً ثم ارفع الملف</small>
-          </div>
-          <input type="file" id="jsonUpload" accept=".json" style="display:none" onchange="uploadResultsJSON(this)">
-          <div id="resultsList" class="mt-3"></div>
-        </div>
-      ` : ''}
-    </div>
-  `;
-  if(isAdmin) loadResultsList();
-}
-
-async function searchResult(){
-  const grade = document.getElementById('gradeSelect')?.value;
-  const seat = document.getElementById('seatInput')?.value?.trim();
-  const display = document.getElementById('resultDisplay');
-  if(!seat){ showToast('أدخل رقم الجلوس', 'warning'); return; }
-  display.innerHTML = '<div class="text-center p-5"><div class="spinner-border"></div></div>';
-  
-  const snapshot = await db.ref(`results/${grade}/${seat}`).once('value');
-  if(!snapshot.exists()){
-    display.innerHTML = `<div class="alert alert-danger text-center p-4"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس ${seat} غير مسجل</div>`;
-    return;
-  }
-  
-  const data = snapshot.val();
-  let subjectsHtml = '';
-  if(data.subjects){
-    Object.entries(data.subjects).forEach(([sub, score]) => {
-      subjectsHtml += `<div class="subject-row"><span><i class="fas fa-book me-2"></i>${escapeHtml(sub)}</span><span class="fw-bold">${score}</span></div>`;
-    });
-  }
-  
-  display.innerHTML = `
-    <div class="result-card">
-      <div class="text-center mb-3"><i class="fas fa-graduation-cap fa-3x"></i><h3 class="mt-2">${escapeHtml(data.name)}</h3><span class="badge bg-warning text-dark px-3 py-2">${GRADES[grade]}</span><div class="mt-1">رقم الجلوس: ${seat}</div></div>
-      ${subjectsHtml}
-      <div class="row g-2 mt-3 text-center">
-        <div class="col-4"><div class="stat-box"><small>المجموع</small><div class="h5 mb-0 fw-bold">${data.total || '-'}</div></div></div>
-        <div class="col-4"><div class="stat-box"><small>النسبة</small><div class="h5 mb-0 fw-bold">${data.percentage || '-'}%</div></div></div>
-        <div class="col-4"><div class="stat-box"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${data.grade || '-'}</div></div></div>
-      </div>
-      <button class="btn btn-light w-100 mt-3" onclick="exportResultPDF(${JSON.stringify({name:data.name,grade,seat,subjects:data.subjects,total:data.total,percentage:data.percentage,gradeLabel:data.grade}).replace(/"/g,'&quot;')})"><i class="fas fa-file-pdf me-2"></i>تحميل PDF</button>
-    </div>
-  `;
-}
-
-async function uploadResultsJSON(input){
-  const file = input.files[0];
-  if(!file) return;
-  const grade = document.getElementById('gradeSelect')?.value;
-  if(!grade){ showToast('اختر الصف أولاً', 'warning'); return; }
-  
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try{
-      const data = JSON.parse(e.target.result);
-      const updates = {};
-      for(const [seat, student] of Object.entries(data)){
-        updates[`results/${grade}/${seat}`] = student;
-      }
-      await db.ref().update(updates);
-      showToast(`تم رفع نتائج ${GRADES[grade]} بنجاح`, 'success');
-      loadResultsList();
-    }catch(err){ showToast('ملف JSON غير صالح', 'error'); }
-  };
-  reader.readAsText(file);
-  input.value = '';
-}
-
-async function loadResultsList(){
-  const container = document.getElementById('resultsList');
-  if(!container) return;
-  const snapshot = await db.ref('results').once('value');
-  if(!snapshot.exists()){ container.innerHTML = '<p class="text-muted text-center mt-3">لا توجد نتائج محفوظة</p>'; return; }
-  let html = '<div class="list-group mt-2">';
-  snapshot.forEach(grade => {
-    const gradeName = GRADES[grade.key] || grade.key;
-    html += `<div class="list-group-item d-flex justify-content-between align-items-center"><span><i class="fas fa-users me-2"></i>${gradeName}</span><span class="badge bg-primary">${grade.numChildren()} طالب</span><button class="btn btn-sm btn-outline-danger" onclick="deleteGradeResults('${grade.key}')"><i class="fas fa-trash"></i></button></div>`;
-  });
-  html += '</div>';
-  container.innerHTML = html;
-}
-
-async function deleteGradeResults(grade){
-  const result = await Swal.fire({ title: 'حذف النتائج؟', text: `حذف نتائج ${GRADES[grade] || grade}`, icon: 'warning', showCancelButton: true });
-  if(result.isConfirmed){
-    await db.ref(`results/${grade}`).remove();
-    showToast('تم حذف النتائج', 'success');
-    loadResultsList();
-  }
-}
-
-function exportResultPDF(data){
-  if(typeof data === 'string') data = JSON.parse(data);
-  showToast('جاري إنشاء PDF...', 'info');
-  let subjectsRows = '';
-  if(data.subjects) Object.entries(data.subjects).forEach(([sub,score]) => subjectsRows += `<tr><td>${sub}</td><td>${score}</td></tr>`);
-  
-  const container = document.getElementById('pdfExport');
-  container.innerHTML = `
-    <div style="padding:30px;font-family:Cairo">
-      <div style="text-align:center;margin-bottom:20px"><img src="logo.jpg" style="width:80px"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>نتيجة الطالب</p></div>
-      <table style="width:100%;border:1px solid #ddd;border-collapse:collapse">
-        <tr><td style="padding:10px;border:1px solid #ddd"><strong>الاسم</strong></td><td style="padding:10px;border:1px solid #ddd">${data.name}</td></tr>
-        <tr><td style="padding:10px;border:1px solid #ddd"><strong>الصف</strong></td><td style="padding:10px;border:1px solid #ddd">${GRADES[data.grade]}</td></tr>
-        <tr><td style="padding:10px;border:1px solid #ddd"><strong>رقم الجلوس</strong></td><td style="padding:10px;border:1px solid #ddd">${data.seat}</td></tr>
-      </table>
-      <h3 class="mt-3">الدرجات</h3>
-      <table style="width:100%;border:1px solid #ddd;border-collapse:collapse">${subjectsRows}<tr style="background:#f0f0f0"><td><strong>المجموع</strong></td><td><strong>${data.total}</strong></td></tr><tr><td><strong>النسبة</strong></td><td><strong>${data.percentage}%</strong></td></tr><tr><td><strong>التقدير</strong></td><td><strong>${data.gradeLabel}</strong></td></tr></table>
-      <div class="mt-4 text-muted text-center">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</div>
-    </div>
-  `;
-  
-  html2canvas(container.firstElementChild, { scale: 2 }).then(canvas => {
-    const pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-    const imgData = canvas.toDataURL('image/jpeg', 0.9);
-    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
-    pdf.save(`نتيجة_${data.name}.pdf`);
-    showToast('تم تحميل PDF بنجاح', 'success');
-  });
-}
-
-// ============================================================
-// FILES SYSTEM (Gallery, Library, Art)
-// ============================================================
-let currentFilesSection = '';
-let currentFilesFilter = 'all';
-let currentFilesSearch = '';
-
-async function showFilesSection(section, title){
+async function showFilesSection(section, title) {
   currentFilesSection = section;
   const container = document.getElementById('mainContent');
+  
   container.innerHTML = `
     <div class="fi">
       <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
-        <h4 class="fw-bold mb-0"><i class="fas ${section === 'gallery_section' ? 'fa-images' : section === 'library_section' ? 'fa-book' : 'fa-palette'} me-2"></i> ${title}</h4>
-        ${isAdmin ? `<button class="btn btn-primary btn-sm" onclick="openFileUploadModal('${section}')"><i class="fas fa-upload me-1"></i> رفع ملف</button>` : ''}
+        <h4 class="fw-bold mb-0">
+          <i class="fas ${section === 'gallery_section' ? 'fa-images' : section === 'library_section' ? 'fa-book' : 'fa-palette'} me-2"></i>
+          ${title}
+        </h4>
+        ${isAdmin ? `
+          <button class="btn btn-primary btn-sm" onclick="openFileUploadModal('${section}')">
+            <i class="fas fa-upload me-1"></i> رفع ملف
+          </button>
+        ` : ''}
       </div>
       <div class="d-flex gap-2 mb-3 flex-wrap">
-        <div class="flex-grow-1 position-relative"><i class="fas fa-search position-absolute" style="right:12px;top:50%;transform:translateY(-50%);color:#aaa"></i><input type="text" id="fileSearch" class="form-control" placeholder="بحث..." style="padding-right:35px" oninput="filterFiles()"></div>
-        <div class="d-flex gap-1 flex-wrap" id="fileFilters"><button class="btn btn-sm btn-outline-primary active" onclick="setFileFilter('all')">الكل</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('image')"><i class="fas fa-image"></i> صور</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('video')"><i class="fas fa-video"></i> فيديو</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('link')"><i class="fas fa-link"></i> روابط</button><button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('pdf')"><i class="fas fa-file-pdf"></i> PDF</button></div>
+        <div class="flex-grow-1 position-relative">
+          <i class="fas fa-search position-absolute" style="right: 12px; top: 50%; transform: translateY(-50%); color: #aaa"></i>
+          <input type="text" id="fileSearch" class="form-control" placeholder="بحث..." style="padding-right: 35px" oninput="filterFiles()">
+        </div>
+        <div class="d-flex gap-1 flex-wrap" id="fileFilters">
+          <button class="btn btn-sm btn-outline-primary active" onclick="setFileFilter('all')">الكل</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('image')"><i class="fas fa-image"></i> صور</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('video')"><i class="fas fa-video"></i> فيديو</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('link')"><i class="fas fa-link"></i> روابط</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFileFilter('pdf')"><i class="fas fa-file-pdf"></i> PDF</button>
+        </div>
       </div>
-      <div id="filesGrid" class="row g-3"><div class="col-12 text-center p-5"><div class="spinner-border"></div></div></div>
+      <div id="filesGrid" class="row g-3">
+        <div class="col-12 text-center p-5"><div class="spinner-border"></div></div>
+      </div>
     </div>
   `;
+  
   await loadFiles();
 }
 
-async function loadFiles(){
-  const snapshot = await db.ref(currentFilesSection).once('value');
-  filesCache = {};
-  if(snapshot.exists()) snapshot.forEach(child => { filesCache[child.key] = child.val(); });
+async function loadFiles() {
+  if (!db) return;
+  
+  try {
+    const snapshot = await db.ref(currentFilesSection).once('value');
+    filesCache = {};
+    
+    if (snapshot.exists()) {
+      snapshot.forEach(child => {
+        filesCache[child.key] = child.val();
+      });
+    }
+  } catch (e) {
+    console.error("Error loading files:", e);
+  }
+  
   filterFiles();
 }
 
-function filterFiles(){
-  currentFilesSearch = document.getElementById('fileSearch')?.value?.toLowerCase() || '';
+function filterFiles() {
+  const searchTerm = document.getElementById('fileSearch')?.value?.toLowerCase() || '';
   let items = Object.entries(filesCache);
   
-  items = items.filter(([,file]) => {
-    if(currentFilesSearch && !(file.title || '').toLowerCase().includes(currentFilesSearch) && !(file.description || '').toLowerCase().includes(currentFilesSearch)) return false;
-    if(currentFilesFilter === 'all') return true;
+  items = items.filter(([, file]) => {
+    if (searchTerm && !(file.title || '').toLowerCase().includes(searchTerm) && !(file.description || '').toLowerCase().includes(searchTerm)) {
+      return false;
+    }
+    
     const url = file.url || '';
-    if(currentFilesFilter === 'image') return isImageUrl(url);
-    if(currentFilesFilter === 'video') return isVideoUrl(url);
-    if(currentFilesFilter === 'pdf') return isPdfUrl(url);
-    if(currentFilesFilter === 'link') return !isImageUrl(url) && !isVideoUrl(url) && !isPdfUrl(url);
+    if (currentFilesFilter === 'all') return true;
+    if (currentFilesFilter === 'image') return isImageUrl(url);
+    if (currentFilesFilter === 'video') return isVideoUrl(url);
+    if (currentFilesFilter === 'pdf') return isPdfUrl(url);
+    if (currentFilesFilter === 'link') return !isImageUrl(url) && !isVideoUrl(url) && !isPdfUrl(url);
     return true;
   });
   
-  items.sort((a,b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+  items.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
   renderFilesGrid(items);
 }
 
-function setFileFilter(filter){
+function setFileFilter(filter) {
   currentFilesFilter = filter;
-  document.querySelectorAll('#fileFilters .btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
+  const buttons = document.querySelectorAll('#fileFilters .btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  if (event?.target) event.target.classList.add('active');
   filterFiles();
 }
 
-function renderFilesGrid(items){
+function renderFilesGrid(items) {
   const grid = document.getElementById('filesGrid');
-  if(!grid) return;
-  if(items.length === 0){
+  if (!grid) return;
+  
+  if (items.length === 0) {
     grid.innerHTML = '<div class="col-12 text-center p-5"><div class="esi">📂</div><p>لا توجد ملفات</p></div>';
     return;
   }
@@ -904,19 +2092,42 @@ function renderFilesGrid(items){
     const url = file.url || '';
     const isImg = isImageUrl(url);
     const isVid = isVideoUrl(url);
-    const isPdf = isPdfUrl(url);
     const isYt = isYouTubeUrl(url);
     const isGDrive = isGoogleDriveUrl(url);
     
     let mediaHtml = '';
-    if(isImg){
-      mediaHtml = `<div class="file-media" onclick="previewMedia('${url}','image')"><img src="${url}" loading="lazy"><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-search-plus"></i></div></div></div>`;
-    } else if(isVid){
-      mediaHtml = `<div class="file-media" onclick="previewMedia('${url}','video')"><video src="${url}" style="width:100%;height:100%;object-fit:cover"></video><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-play"></i></div></div></div>`;
-    } else if(isYt || isGDrive){
-      mediaHtml = `<div class="file-media" style="background:#f0f2f5" onclick="previewMedia('${url}','link')"><div class="d-flex align-items-center justify-content-center h-100"><i class="fab fa-${isYt ? 'youtube' : 'google-drive'} fa-3x" style="color:var(--gd)"></i></div><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div></div>`;
+    if (isImg) {
+      mediaHtml = `
+        <div class="file-media" onclick="previewMedia('${url}', 'image')">
+          <img src="${url}" loading="lazy">
+          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-search-plus"></i></div></div>
+        </div>
+      `;
+    } else if (isVid) {
+      mediaHtml = `
+        <div class="file-media" onclick="previewMedia('${url}', 'video')">
+          <video src="${url}" style="width: 100%; height: 100%; object-fit: cover"></video>
+          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-play"></i></div></div>
+        </div>
+      `;
+    } else if (isYt || isGDrive) {
+      mediaHtml = `
+        <div class="file-media" style="background: #f0f2f5" onclick="previewMedia('${url}', 'link')">
+          <div class="d-flex align-items-center justify-content-center h-100">
+            <i class="fab fa-${isYt ? 'youtube' : 'google-drive'} fa-3x" style="color: var(--gd)"></i>
+          </div>
+          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-eye"></i></div></div>
+        </div>
+      `;
     } else {
-      mediaHtml = `<div class="file-media" style="background:#f8f9fa" onclick="previewMedia('${url}','link')"><div class="d-flex align-items-center justify-content-center h-100"><i class="fas fa-file-alt fa-3x text-muted"></i></div><div class="file-overlay"><div class="file-play-btn"><i class="fas fa-external-link-alt"></i></div></div></div>`;
+      mediaHtml = `
+        <div class="file-media" style="background: #f8f9fa" onclick="previewMedia('${url}', 'link')">
+          <div class="d-flex align-items-center justify-content-center h-100">
+            <i class="fas fa-file-alt fa-3x text-muted"></i>
+          </div>
+          <div class="file-overlay"><div class="file-play-btn"><i class="fas fa-external-link-alt"></i></div></div>
+        </div>
+      `;
     }
     
     return `
@@ -928,9 +2139,17 @@ function renderFilesGrid(items){
             <div class="file-meta"><i class="fas fa-clock me-1"></i> ${file.uploadedAt || ''}</div>
             ${file.description ? `<div class="small text-muted mb-2">${escapeHtml(file.description)}</div>` : ''}
             <div class="file-actions">
-              <button class="file-btn" onclick="previewMedia('${url}','${isImg ? 'image' : isVid ? 'video' : 'link'}')"><i class="fas fa-eye me-1"></i> عرض</button>
-              <a href="${url}" target="_blank" class="file-btn" style="background:#28a745"><i class="fas fa-external-link-alt me-1"></i> فتح</a>
-              ${isAdmin ? `<button class="file-icon-btn text-danger" onclick="deleteFileItem('${currentFilesSection}','${id}')"><i class="fas fa-trash"></i></button>` : ''}
+              <button class="file-btn" onclick="previewMedia('${url}', '${isImg ? 'image' : isVid ? 'video' : 'link'}')">
+                <i class="fas fa-eye me-1"></i> عرض
+              </button>
+              <a href="${url}" target="_blank" class="file-btn" style="background: #28a745">
+                <i class="fas fa-external-link-alt me-1"></i> فتح
+              </a>
+              ${isAdmin ? `
+                <button class="file-icon-btn text-danger" onclick="deleteFileItem('${currentFilesSection}', '${id}')">
+                  <i class="fas fa-trash"></i>
+                </button>
+              ` : ''}
             </div>
           </div>
         </div>
@@ -939,18 +2158,37 @@ function renderFilesGrid(items){
   }).join('');
 }
 
-function previewMedia(url, type){
+function previewMedia(url, type) {
   let html = '';
-  if(type === 'image') html = `<img src="${url}" style="max-width:100%;max-height:80vh;border-radius:8px">`;
-  else if(type === 'video') html = `<video controls autoplay src="${url}" style="max-width:100%;max-height:80vh"></video>`;
-  else html = getEmbedHtml(url);
+  if (type === 'image') {
+    html = `<img src="${url}" style="max-width: 100%; max-height: 80vh; border-radius: 8px">`;
+  } else if (type === 'video') {
+    html = `<video controls autoplay src="${url}" style="max-width: 100%; max-height: 80vh"></video>`;
+  } else {
+    html = getEmbedHtml(url);
+  }
   
-  Swal.fire({ html: html, showConfirmButton: false, showCloseButton: true, width: '90%', padding: 0, background: '#000', backdrop: true });
+  Swal.fire({
+    html: html,
+    showConfirmButton: false,
+    showCloseButton: true,
+    width: '90%',
+    padding: 0,
+    background: '#000',
+    backdrop: true
+  });
 }
 
-async function deleteFileItem(section, id){
-  const result = await Swal.fire({ title: 'حذف الملف؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'حذف' });
-  if(result.isConfirmed){
+async function deleteFileItem(section, id) {
+  const result = await Swal.fire({
+    title: 'حذف الملف؟',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'حذف',
+    cancelButtonText: 'إلغاء'
+  });
+  
+  if (result.isConfirmed) {
     await db.ref(`${section}/${id}`).remove();
     showToast('تم حذف الملف', 'success');
     loadFiles();
@@ -958,17 +2196,18 @@ async function deleteFileItem(section, id){
   }
 }
 
-function openFileUploadModal(section){
-  pendingFiles = [];
+function openFileUploadModal(section) {
+  pendingUploadFiles = [];
+  
   Swal.fire({
     title: 'رفع ملفات',
     html: `
-      <div class="upload-area" id="uploadDropZone" style="margin-bottom:15px">
+      <div class="upload-area" id="uploadDropZone" style="margin-bottom: 15px">
         <i class="fas fa-cloud-upload-alt"></i>
         <p>اسحب الملفات هنا أو اضغط للاختيار</p>
         <small class="text-muted">حد أقصى 200MB لأي ملف - يمكن اختيار عدة ملفات</small>
       </div>
-      <input type="file" id="uploadFileInput" multiple style="display:none" accept="*/*">
+      <input type="file" id="uploadFileInput" multiple style="display: none" accept="*/*">
       <div id="uploadFileList" class="mt-2"></div>
       <input type="text" id="uploadTitle" class="form-control mt-2" placeholder="العنوان (اختياري)">
       <textarea id="uploadDesc" class="form-control mt-2" rows="2" placeholder="وصف (اختياري)"></textarea>
@@ -979,23 +2218,32 @@ function openFileUploadModal(section){
     didOpen: () => {
       const zone = document.getElementById('uploadDropZone');
       const fileInput = document.getElementById('uploadFileInput');
+      
       zone.onclick = () => fileInput.click();
       zone.ondragover = (e) => { e.preventDefault(); zone.classList.add('drag-over'); };
       zone.ondragleave = () => zone.classList.remove('drag-over');
       zone.ondrop = (e) => { e.preventDefault(); zone.classList.remove('drag-over'); handleFilesDrop(e.dataTransfer.files); };
       fileInput.onchange = (e) => handleFilesDrop(e.target.files);
     },
-    preConfirm: async () => {
-      if(pendingFiles.length === 0){ Swal.showValidationMessage('اختر ملفات للرفع'); return false; }
-      return { files: [...pendingFiles], title: document.getElementById('uploadTitle')?.value.trim(), description: document.getElementById('uploadDesc')?.value.trim() };
+    preConfirm: () => {
+      if (pendingUploadFiles.length === 0) {
+        Swal.showValidationMessage('اختر ملفات للرفع');
+        return false;
+      }
+      return {
+        files: [...pendingUploadFiles],
+        title: document.getElementById('uploadTitle')?.value.trim(),
+        description: document.getElementById('uploadDesc')?.value.trim()
+      };
     }
   }).then(async (result) => {
-    if(result.isConfirmed){
+    if (result.isConfirmed) {
       showToast(`جاري رفع ${result.value.files.length} ملف...`, 'info');
       let successCount = 0;
-      for(const file of result.value.files){
+      
+      for (const file of result.value.files) {
         const uploadedUrl = await uploadFileToCloudinary(file);
-        if(uploadedUrl){
+        if (uploadedUrl) {
           await db.ref(section).push({
             title: result.value.title || file.name,
             description: result.value.description || '',
@@ -1008,247 +2256,638 @@ function openFileUploadModal(section){
           successCount++;
         }
       }
+      
       showToast(`تم رفع ${successCount} ملف بنجاح`, 'success');
-      if(currentFilesSection === section) loadFiles();
+      if (currentFilesSection === section) loadFiles();
       updateSliderFromLatestMedia();
     }
   });
 }
 
-function handleFilesDrop(files){
+function handleFilesDrop(files) {
   const fileList = document.getElementById('uploadFileList');
-  pendingFiles = [];
-  for(const file of files){
-    if(file.size > 200 * 1024 * 1024){
+  pendingUploadFiles = [];
+  
+  for (const file of files) {
+    if (file.size > 200 * 1024 * 1024) {
       showToast(`${file.name} يتجاوز 200MB`, 'warning');
       continue;
     }
-    pendingFiles.push(file);
+    pendingUploadFiles.push(file);
   }
-  if(fileList){
-    fileList.innerHTML = pendingFiles.map(f => `<div class="file-list-item"><i class="fas fa-file"></i><span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span><span class="remove-file" onclick="removePendingFile('${f.name}')"><i class="fas fa-times-circle"></i></span></div>`).join('');
+  
+  if (fileList) {
+    fileList.innerHTML = pendingUploadFiles.map(f => `
+      <div class="file-list-item">
+        <i class="fas fa-file"></i>
+        <span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span>
+        <span class="remove-file" onclick="removePendingFile('${f.name}')">
+          <i class="fas fa-times-circle"></i>
+        </span>
+      </div>
+    `).join('');
   }
 }
 
-function removePendingFile(fileName){
-  pendingFiles = pendingFiles.filter(f => f.name !== fileName);
-  document.getElementById('uploadFileList').innerHTML = pendingFiles.map(f => `<div class="file-list-item"><i class="fas fa-file"></i><span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span><span class="remove-file" onclick="removePendingFile('${f.name}')"><i class="fas fa-times-circle"></i></span></div>`).join('');
-}
-
-// ============================================================
-// STATS MANAGEMENT
-// ============================================================
-let stats = { students: 1250, teachers: 85, activities: 24 };
-
-function loadStats(){
-  db.ref('school_stats').once('value', snapshot => {
-    if(snapshot.exists()) stats = snapshot.val();
-    document.getElementById('statStudents').innerText = stats.students;
-    document.getElementById('statTeachers').innerText = stats.teachers;
-    document.getElementById('statActivities').innerText = stats.activities;
-  });
-}
-
-async function editStat(statName){
-  if(!isAdmin){ showToast('متاح للإدارة فقط', 'warning'); return; }
-  const { value: newValue } = await Swal.fire({ title: `تعديل عدد ${statName === 'students' ? 'الطلاب' : statName === 'teachers' ? 'المعلمين' : 'الأنشطة'}`, input: 'number', inputValue: stats[statName], showCancelButton: true });
-  if(newValue){
-    stats[statName] = parseInt(newValue);
-    await db.ref('school_stats').set(stats);
-    document.getElementById(`stat${statName.charAt(0).toUpperCase() + statName.slice(1)}`).innerText = stats[statName];
-    showToast('تم تحديث الإحصائية', 'success');
+function removePendingFile(fileName) {
+  pendingUploadFiles = pendingUploadFiles.filter(f => f.name !== fileName);
+  const fileList = document.getElementById('uploadFileList');
+  if (fileList) {
+    fileList.innerHTML = pendingUploadFiles.map(f => `
+      <div class="file-list-item">
+        <i class="fas fa-file"></i>
+        <span>${escapeHtml(f.name)} (${formatFileSize(f.size)})</span>
+        <span class="remove-file" onclick="removePendingFile('${f.name}')">
+          <i class="fas fa-times-circle"></i>
+        </span>
+      </div>
+    `).join('');
   }
 }
 
 // ============================================================
-// ADMIN & NAVIGATION
+// RESULTS SECTION
 // ============================================================
-async function toggleAdmin(){
-  if(isAdmin){
-    isAdmin = false;
-    updateAdminUI();
-    showToast('تم تسجيل الخروج من لوحة الإدارة', 'info');
-    if(currentSection === 'home') showHome();
-    else if(currentSection === 'posts') loadPosts();
-    else if(currentSection === 'results') showResultsSection();
-    else if(currentSection === 'gallery') showFilesSection('gallery_section', 'المعرض الرقمي');
-    else if(currentSection === 'library') showFilesSection('library_section', 'المكتبة الرقمية');
-    else if(currentSection === 'art') showFilesSection('art_section', 'التربية الفنية');
+function showResultsSection() {
+  const container = document.getElementById('mainContent');
+  
+  container.innerHTML = `
+    <div class="fi">
+      <h4 class="fw-bold mb-3"><i class="fas fa-chart-line text-primary"></i> شئون الطلاب والنتائج</h4>
+      <div class="bg-light p-3 rounded-4 mb-3">
+        <div class="row g-2">
+          <div class="col-md-6">
+            <select id="gradeSelect" class="form-select">
+              ${Object.entries(GRADES).map(([v, n]) => `<option value="${v}">${n}</option>`).join('')}
+            </select>
+          </div>
+          <div class="col-md-6">
+            <input type="text" id="seatInput" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter') searchResult()">
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary w-100 mb-3 py-2" onclick="searchResult()">
+        <i class="fas fa-search"></i> استعلام عن النتيجة
+      </button>
+      <div id="resultDisplay"></div>
+      ${isAdmin ? `
+        <div class="mt-4 pt-3 border-top">
+          <h5 class="fw-bold"><i class="fas fa-database"></i> إدارة النتائج</h5>
+          <div class="upload-area mt-2" onclick="document.getElementById('jsonUpload').click()">
+            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+            <p>رفع ملف JSON للنتائج</p>
+            <small class="text-muted">حدد الصف أولاً ثم ارفع الملف</small>
+          </div>
+          <input type="file" id="jsonUpload" accept=".json" style="display: none" onchange="uploadResultsJSON(this)">
+          <div id="resultsList" class="mt-3"></div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+  
+  if (isAdmin) loadResultsList();
+}
+
+async function searchResult() {
+  const grade = document.getElementById('gradeSelect')?.value;
+  const seat = document.getElementById('seatInput')?.value?.trim();
+  const display = document.getElementById('resultDisplay');
+  
+  if (!seat) {
+    showToast('أدخل رقم الجلوس', 'warning');
     return;
   }
   
-  const { value: password } = await Swal.fire({ title: '🔐 دخول الإدارة', input: 'password', inputLabel: 'كلمة السر', showCancelButton: true, confirmButtonText: 'دخول' });
-  if(password && btoa(password) === ADMIN_PASSWORD){
-    isAdmin = true;
-    updateAdminUI();
-    showToast('مرحباً! تم تفعيل وضع الإدارة', 'success');
-    showAdminDashboard();
-  } else if(password){
-    showToast('كلمة السر غير صحيحة', 'error');
+  display.innerHTML = '<div class="text-center p-5"><div class="spinner-border"></div></div>';
+  
+  try {
+    const snapshot = await db.ref(`results/${grade}/${seat}`).once('value');
+    
+    if (!snapshot.exists()) {
+      display.innerHTML = `<div class="alert alert-danger text-center p-4"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس ${seat} غير مسجل</div>`;
+      return;
+    }
+    
+    const data = snapshot.val();
+    let subjectsHtml = '';
+    
+    if (data.subjects) {
+      Object.entries(data.subjects).forEach(([sub, score]) => {
+        subjectsHtml += `
+          <div class="subject-row">
+            <span><i class="fas fa-book me-2"></i>${escapeHtml(sub)}</span>
+            <span class="fw-bold">${score}</span>
+          </div>
+        `;
+      });
+    }
+    
+    display.innerHTML = `
+      <div class="result-card">
+        <div class="text-center mb-3">
+          <i class="fas fa-graduation-cap fa-3x"></i>
+          <h3 class="mt-2">${escapeHtml(data.name)}</h3>
+          <span class="badge bg-warning text-dark px-3 py-2">${GRADES[grade]}</span>
+          <div class="mt-1">رقم الجلوس: ${seat}</div>
+        </div>
+        ${subjectsHtml}
+        <div class="row g-2 mt-3 text-center">
+          <div class="col-4"><div class="stat-box"><small>المجموع</small><div class="h5 mb-0 fw-bold">${data.total || '-'}</div></div></div>
+          <div class="col-4"><div class="stat-box"><small>النسبة</small><div class="h5 mb-0 fw-bold">${data.percentage || '-'}%</div></div></div>
+          <div class="col-4"><div class="stat-box"><small>التقدير</small><div class="h5 mb-0 fw-bold text-warning">${data.grade || '-'}</div></div></div>
+        </div>
+        <button class="btn btn-light w-100 mt-3" onclick="exportResultPDF(${JSON.stringify({
+          name: data.name,
+          grade: grade,
+          seat: seat,
+          subjects: data.subjects,
+          total: data.total,
+          percentage: data.percentage,
+          gradeLabel: data.grade
+        }).replace(/"/g, '&quot;')})">
+          <i class="fas fa-file-pdf me-2"></i>تحميل PDF
+        </button>
+      </div>
+    `;
+  } catch (e) {
+    console.error("Search error:", e);
+    display.innerHTML = '<div class="alert alert-danger text-center">حدث خطأ في البحث</div>';
   }
 }
 
-function updateAdminUI(){
-  const adminBtn = document.getElementById('adminBtnText');
-  const drawerAdmin = document.getElementById('drawerAdminText');
-  const adminStatus = document.getElementById('adminStatus');
-  if(adminBtn) adminBtn.innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة';
-  if(drawerAdmin) drawerAdmin.innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة';
-  if(adminStatus) adminStatus.innerHTML = isAdmin ? '<div class="admin-badge mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة مفعل</div>' : '';
+async function uploadResultsJSON(input) {
+  const file = input.files[0];
+  if (!file) return;
+  
+  const grade = document.getElementById('gradeSelect')?.value;
+  if (!grade) {
+    showToast('اختر الصف أولاً', 'warning');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const updates = {};
+      
+      for (const [seat, student] of Object.entries(data)) {
+        updates[`results/${grade}/${seat}`] = student;
+      }
+      
+      await db.ref().update(updates);
+      showToast(`تم رفع نتائج ${GRADES[grade]} بنجاح`, 'success');
+      loadResultsList();
+    } catch (err) {
+      showToast('ملف JSON غير صالح', 'error');
+    }
+  };
+  
+  reader.readAsText(file);
+  input.value = '';
 }
 
-function showAdminDashboard(){
+async function loadResultsList() {
+  const container = document.getElementById('resultsList');
+  if (!container) return;
+  
+  try {
+    const snapshot = await db.ref('results').once('value');
+    
+    if (!snapshot.exists()) {
+      container.innerHTML = '<p class="text-muted text-center mt-3">لا توجد نتائج محفوظة</p>';
+      return;
+    }
+    
+    let html = '<div class="list-group mt-2">';
+    snapshot.forEach(grade => {
+      const gradeName = GRADES[grade.key] || grade.key;
+      html += `
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-users me-2"></i>${gradeName}</span>
+          <span class="badge bg-primary">${grade.numChildren()} طالب</span>
+          <button class="btn btn-sm btn-outline-danger" onclick="deleteGradeResults('${grade.key}')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      `;
+    });
+    html += '</div>';
+    container.innerHTML = html;
+  } catch (e) {
+    console.error("Error loading results list:", e);
+  }
+}
+
+async function deleteGradeResults(grade) {
+  const result = await Swal.fire({
+    title: 'حذف النتائج؟',
+    text: `حذف نتائج ${GRADES[grade] || grade}`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'حذف',
+    cancelButtonText: 'إلغاء'
+  });
+  
+  if (result.isConfirmed) {
+    await db.ref(`results/${grade}`).remove();
+    showToast('تم حذف النتائج', 'success');
+    loadResultsList();
+  }
+}
+
+function exportResultPDF(data) {
+  if (typeof data === 'string') data = JSON.parse(data);
+  
+  showToast('جاري إنشاء PDF...', 'info');
+  
+  let subjectsRows = '';
+  if (data.subjects) {
+    Object.entries(data.subjects).forEach(([sub, score]) => {
+      subjectsRows += `<tr><td>${escapeHtml(sub)}</td><td>${score}</td></tr>`;
+    });
+  }
+  
+  const container = document.getElementById('pdfExport');
+  container.innerHTML = `
+    <div style="padding: 30px; font-family: Cairo; text-align: right">
+      <div style="text-align: center; margin-bottom: 20px">
+        <img src="logo.jpg" style="width: 80px">
+        <h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2>
+        <p>نتيجة الطالب</p>
+      </div>
+      <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse">
+        <tr><td style="padding: 10px; border: 1px solid #ddd"><strong>الاسم</strong></td><td style="padding: 10px; border: 1px solid #ddd">${escapeHtml(data.name)}</td></tr>
+        <tr><td style="padding: 10px; border: 1px solid #ddd"><strong>الصف</strong></td><td style="padding: 10px; border: 1px solid #ddd">${GRADES[data.grade]}</td></tr>
+        <tr><td style="padding: 10px; border: 1px solid #ddd"><strong>رقم الجلوس</strong></td><td style="padding: 10px; border: 1px solid #ddd">${data.seat}</td></tr>
+      </table>
+      <h3 class="mt-3">الدرجات</h3>
+      <table style="width: 100%; border: 1px solid #ddd; border-collapse: collapse">
+        ${subjectsRows}
+        <tr style="background: #f0f0f0"><td><strong>المجموع</strong></td><td><strong>${data.total}</strong></td></tr>
+        <tr style="background: #f0f0f0"><td><strong>النسبة</strong></td><td><strong>${data.percentage}%</strong></td></tr>
+        <tr style="background: #f0f0f0"><td><strong>التقدير</strong></td><td><strong>${data.gradeLabel}</strong></td></tr>
+      </table>
+      <div class="mt-4 text-muted text-center">تاريخ الإصدار: ${new Date().toLocaleDateString('ar-EG')}</div>
+    </div>
+  `;
+  
+  html2canvas(container.firstElementChild, { scale: 2 }).then(canvas => {
+    const pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const imgData = canvas.toDataURL('image/jpeg', 0.9);
+    pdf.addImage(imgData, 'JPEG', 0, 0, 210, 297);
+    pdf.save(`نتيجة_${data.name}.pdf`);
+    showToast('تم تحميل PDF بنجاح', 'success');
+  }).catch(err => {
+    console.error("PDF generation error:", err);
+    showToast('حدث خطأ في إنشاء PDF', 'error');
+  });
+}
+
+// ============================================================
+// NEWS SECTION
+// ============================================================
+async function showNewsSection() {
   const container = document.getElementById('mainContent');
+  
+  container.innerHTML = `
+    <div class="fi">
+      <h4 class="fw-bold mb-3"><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4>
+      <div id="newsList"></div>
+    </div>
+  `;
+  
+  try {
+    const snapshot = await db.ref('school_news').orderByChild('timestamp').once('value');
+    let news = [];
+    
+    if (snapshot.exists()) {
+      snapshot.forEach(child => news.unshift(child.val()));
+    }
+    
+    const newsHtml = news.length > 0 ? news.map(n => `
+      <div class="glass-card mb-2">
+        <h6>${escapeHtml(n.title)}</h6>
+        <p class="mb-1">${escapeHtml(n.body)}</p>
+        <small class="text-muted">${n.dateStr || ''}</small>
+      </div>
+    `).join('') : '<div class="text-center p-5"><p class="text-muted">لا توجد أخبار</p></div>';
+    
+    document.getElementById('newsList').innerHTML = newsHtml;
+  } catch (e) {
+    console.error("Error loading news:", e);
+    document.getElementById('newsList').innerHTML = '<div class="alert alert-danger">حدث خطأ في تحميل الأخبار</div>';
+  }
+}
+
+// ============================================================
+// HOME SECTION
+// ============================================================
+function showHome() {
+  const container = document.getElementById('mainContent');
+  
+  container.innerHTML = `
+    <div class="fi text-center">
+      <div class="mx-auto mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--pr), var(--pr2)); border-radius: 50%; display: flex; align-items: center; justify-content: center">
+        <i class="fas fa-school fa-2x text-white"></i>
+      </div>
+      <h2 class="fw-bold">مرحباً في البوابة الرقمية</h2>
+      <p class="text-muted">نظام متكامل لإدارة المدرسة والنتائج والمكتبة الرقمية</p>
+      <div class="row g-3 mt-3">
+        <div class="col-4"><div class="hsc p-3"><div class="h2 text-primary mb-0">${stats.students}</div><small>طالب</small></div></div>
+        <div class="col-4"><div class="hsc p-3"><div class="h2 text-success mb-0">${stats.teachers}</div><small>معلم</small></div></div>
+        <div class="col-4"><div class="hsc p-3"><div class="h2" style="color: var(--gd)">${stats.activities}</div><small>نشاط</small></div></div>
+      </div>
+      <div class="row g-2 mt-4">
+        <div class="col-6 col-md-3"><div class="qc p-3" onclick="navigateTo('posts')"><i class="fas fa-newspaper fa-2x mb-2"></i><h6 class="mb-0">المنشورات</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3" onclick="navigateTo('results')"><i class="fas fa-search fa-2x mb-2"></i><h6 class="mb-0">النتائج</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3" onclick="navigateTo('gallery')"><i class="fas fa-images fa-2x mb-2"></i><h6 class="mb-0">المعرض</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3" onclick="navigateTo('library')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">المكتبة</h6></div></div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================================
+// POSTS SECTION
+// ============================================================
+function showPostsSection() {
+  const container = document.getElementById('mainContent');
+  
+  container.innerHTML = `
+    <div class="fi">
+      ${isAdmin ? `
+        <div class="post-creator">
+          <div class="post-creator-header">
+            <div class="post-creator-avatar"><i class="fas fa-user-shield"></i></div>
+            <div class="post-creator-input" onclick="openPostModal('text')">ما الذي تريد نشره؟</div>
+          </div>
+          <div class="post-creator-actions">
+            <button class="post-action-type" onclick="openPostModal('text')"><i class="fas fa-pen-fancy"></i> نص</button>
+            <button class="post-action-type" onclick="openPostModal('media')"><i class="fas fa-image"></i> صورة/فيديو</button>
+            <button class="post-action-type" onclick="openPostModal('link')"><i class="fas fa-link"></i> رابط</button>
+            <button class="post-action-type" onclick="openPostModal('file')"><i class="fas fa-file"></i> ملف</button>
+          </div>
+        </div>
+      ` : ''}
+      <div id="postsList"></div>
+    </div>
+  `;
+  
+  loadPosts();
+}
+
+// ============================================================
+// ADMIN DASHBOARD
+// ============================================================
+function showAdminDashboard() {
+  const container = document.getElementById('mainContent');
+  
   container.innerHTML = `
     <div class="fi">
       <h4 class="fw-bold mb-3"><i class="fas fa-cog text-primary"></i> لوحة تحكم الإدارة</h4>
       <div class="row g-3 mb-4">
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x mb-2"></i><h6 class="mb-0">إدارة شريط الأخبار</h6></div></div>
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x mb-2"></i><h6 class="mb-0">منشور جديد</h6></div></div>
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x mb-2"></i><h6 class="mb-0">إدارة النتائج</h6></div></div>
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openFileUploadModal('gallery_section')"><i class="fas fa-upload fa-2x mb-2"></i><h6 class="mb-0">رفع للمعرض</h6></div></div>
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="openFileUploadModal('library_section')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">رفع للمكتبة</h6></div></div>
-        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor:pointer" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x mb-2"></i><h6 class="mb-0">تعديل الإحصائيات</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="showTickerManager()"><i class="fas fa-scroll fa-2x mb-2"></i><h6 class="mb-0">إدارة شريط الأخبار</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openPostModal()"><i class="fas fa-pen-fancy fa-2x mb-2"></i><h6 class="mb-0">منشور جديد</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="navigateTo('results')"><i class="fas fa-chart-line fa-2x mb-2"></i><h6 class="mb-0">إدارة النتائج</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openFileUploadModal('gallery_section')"><i class="fas fa-upload fa-2x mb-2"></i><h6 class="mb-0">رفع للمعرض</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="openFileUploadModal('library_section')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">رفع للمكتبة</h6></div></div>
+        <div class="col-6 col-md-4"><div class="qc p-3 text-center" style="cursor: pointer" onclick="editStat('students')"><i class="fas fa-chart-bar fa-2x mb-2"></i><h6 class="mb-0">تعديل الإحصائيات</h6></div></div>
       </div>
     </div>
   `;
 }
 
-function showTickerManager(){
+async function showTickerManager() {
+  await loadTickerItemsList();
+  
   Swal.fire({
     title: 'إدارة شريط الأخبار',
-    html: `<div id="tickerItemsList" class="mb-3"></div><div class="input-group"><input type="text" id="newTickerText" class="form-control" placeholder="خبر جديد"><button class="btn btn-primary" onclick="addNewTicker()"><i class="fas fa-plus"></i> إضافة</button></div>`,
+    html: `
+      <div id="tickerItemsList" class="mb-3" style="max-height: 300px; overflow-y: auto"></div>
+      <div class="input-group">
+        <input type="text" id="newTickerText" class="form-control" placeholder="خبر جديد">
+        <button class="btn btn-primary" onclick="addNewTickerItem()"><i class="fas fa-plus"></i> إضافة</button>
+      </div>
+    `,
     showConfirmButton: false,
     showCloseButton: true,
-    didOpen: () => loadTickerItemsList()
+    width: '500px'
   });
 }
 
-async function loadTickerItemsList(){
+async function loadTickerItemsList() {
   const container = document.getElementById('tickerItemsList');
-  if(!container) return;
-  const snapshot = await db.ref('ticker_items').once('value');
-  let items = [];
-  if(snapshot.exists()) snapshot.forEach(child => items.push({ id: child.key, text: child.val().text }));
-  if(items.length === 0){ container.innerHTML = '<p class="text-muted">لا توجد أخبار</p>'; return; }
-  container.innerHTML = items.map(item => `
-    <div class="d-flex gap-2 mb-2 align-items-center">
-      <input type="text" class="form-control form-control-sm" id="ticker_${item.id}" value="${escapeHtml(item.text)}">
-      <button class="btn btn-sm btn-warning" onclick="updateTickerItemAdmin('${item.id}')"><i class="fas fa-save"></i></button>
-      <button class="btn btn-sm btn-danger" onclick="deleteTickerItemAdmin('${item.id}')"><i class="fas fa-trash"></i></button>
-    </div>
-  `).join('');
+  if (!container) return;
+  
+  try {
+    const snapshot = await db.ref('ticker_items').once('value');
+    let items = [];
+    
+    if (snapshot.exists()) {
+      snapshot.forEach(child => items.push({ id: child.key, text: child.val().text }));
+    }
+    
+    if (items.length === 0) {
+      container.innerHTML = '<p class="text-muted text-center">لا توجد أخبار</p>';
+      return;
+    }
+    
+    container.innerHTML = items.map(item => `
+      <div class="d-flex gap-2 mb-2 align-items-center">
+        <input type="text" class="form-control form-control-sm" id="ticker_${item.id}" value="${escapeHtml(item.text)}">
+        <button class="btn btn-sm btn-warning" onclick="updateTickerItem('${item.id}')"><i class="fas fa-save"></i></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTickerItem('${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    `).join('');
+  } catch (e) {
+    console.error("Error loading ticker items:", e);
+  }
 }
 
-async function addNewTicker(){
+async function addNewTickerItem() {
   const text = document.getElementById('newTickerText')?.value.trim();
-  if(!text) return;
+  if (!text) return;
+  
   await db.ref('ticker_items').push({ text: text });
   document.getElementById('newTickerText').value = '';
-  loadTickerItemsList();
-  loadTicker();
+  await loadTickerItemsList();
+  await loadTicker();
   showToast('تم إضافة الخبر', 'success');
 }
 
-async function updateTickerItemAdmin(id){
+async function updateTickerItem(id) {
   const newText = document.getElementById(`ticker_${id}`)?.value.trim();
-  if(!newText) return;
+  if (!newText) return;
+  
   await db.ref(`ticker_items/${id}`).update({ text: newText });
-  loadTicker();
+  await loadTicker();
   showToast('تم التحديث', 'success');
 }
 
-async function deleteTickerItemAdmin(id){
+async function deleteTickerItem(id) {
   await db.ref(`ticker_items/${id}`).remove();
-  loadTickerItemsList();
-  loadTicker();
+  await loadTickerItemsList();
+  await loadTicker();
   showToast('تم الحذف', 'success');
 }
 
-function showNewsSection(){
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `<div class="fi"><h4 class="fw-bold mb-3"><i class="fas fa-bullhorn"></i> أخبار المدرسة</h4><div id="newsList"></div></div>`;
-  db.ref('school_news').orderByChild('timestamp').once('value', snapshot => {
-    let news = [];
-    if(snapshot.exists()) snapshot.forEach(child => news.unshift(child.val()));
-    document.getElementById('newsList').innerHTML = news.map(n => `<div class="nc p-3 bg-white rounded-3 shadow-sm mb-2"><h6>${escapeHtml(n.title)}</h6><p class="mb-1">${escapeHtml(n.body)}</p><small class="text-muted">${n.dateStr || ''}</small></div>`).join('');
+// ============================================================
+// ADMIN TOGGLE
+// ============================================================
+async function toggleAdmin() {
+  if (isAdmin) {
+    isAdmin = false;
+    updateAdminUI();
+    showToast('تم تسجيل الخروج من لوحة الإدارة', 'info');
+    
+    if (currentSection === 'home') showHome();
+    else if (currentSection === 'posts') showPostsSection();
+    else if (currentSection === 'results') showResultsSection();
+    else if (currentSection === 'gallery') showFilesSection('gallery_section', 'المعرض الرقمي');
+    else if (currentSection === 'library') showFilesSection('library_section', 'المكتبة الرقمية');
+    else if (currentSection === 'art') showFilesSection('art_section', 'التربية الفنية');
+    else if (currentSection === 'news') showNewsSection();
+    return;
+  }
+  
+  const { value: password } = await Swal.fire({
+    title: '🔐 دخول الإدارة',
+    input: 'password',
+    inputLabel: 'كلمة السر',
+    showCancelButton: true,
+    confirmButtonText: 'دخول',
+    cancelButtonText: 'إلغاء'
   });
+  
+  if (password && btoa(password) === ADMIN_PASSWORD) {
+    isAdmin = true;
+    updateAdminUI();
+    showToast('مرحباً! تم تفعيل وضع الإدارة', 'success');
+    showAdminDashboard();
+    currentSection = 'admin';
+  } else if (password) {
+    showToast('كلمة السر غير صحيحة', 'error');
+  }
 }
 
-function showHome(){
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `
-    <div class="fi text-center">
-      <div class="mx-auto mb-3" style="width:80px;height:80px;background:linear-gradient(135deg,var(--pr),var(--pr2));border-radius:50%;display:flex;align-items:center;justify-content:center"><i class="fas fa-school fa-2x text-white"></i></div>
-      <h2 class="fw-bold">مرحباً في البوابة الرقمية</h2>
-      <p class="text-muted">نظام متكامل لإدارة المدرسة والنتائج والمكتبة الرقمية</p>
-      <div class="row g-3 mt-3">
-        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2 text-primary mb-0">${stats.students}</div><small>طالب</small></div></div>
-        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2 text-success mb-0">${stats.teachers}</div><small>معلم</small></div></div>
-        <div class="col-4"><div class="hsc p-3 text-center rounded-3 bg-white shadow-sm"><div class="h2" style="color:var(--gd)">${stats.activities}</div><small>نشاط</small></div></div>
-      </div>
-      <div class="row g-2 mt-4">
-        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('posts')"><i class="fas fa-newspaper fa-2x mb-2"></i><h6 class="mb-0">المنشورات</h6></div></div>
-        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('results')"><i class="fas fa-search fa-2x mb-2"></i><h6 class="mb-0">النتائج</h6></div></div>
-        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('gallery')"><i class="fas fa-images fa-2x mb-2"></i><h6 class="mb-0">المعرض</h6></div></div>
-        <div class="col-6 col-md-3"><div class="qc p-3 text-center" onclick="navigateTo('library')"><i class="fas fa-book fa-2x mb-2"></i><h6 class="mb-0">المكتبة</h6></div></div>
-      </div>
-    </div>
-  `;
+function updateAdminUI() {
+  const adminBtn = document.getElementById('adminBtnText');
+  const drawerAdmin = document.getElementById('drawerAdminText');
+  const adminStatus = document.getElementById('adminStatus');
+  
+  if (adminBtn) adminBtn.innerText = isAdmin ? 'تسجيل خروج' : 'لوحة الإدارة';
+  if (drawerAdmin) drawerAdmin.innerText = isAdmin ? 'تسجيل خروج' : 'الإدارة';
+  
+  if (adminStatus) {
+    adminStatus.innerHTML = isAdmin 
+      ? '<div class="admin-badge mt-2"><i class="fas fa-shield-alt"></i> وضع الإدارة مفعل</div>' 
+      : '';
+  }
 }
 
-function showPostsSection(){
-  const container = document.getElementById('mainContent');
-  container.innerHTML = `
-    <div class="fi">
-      ${showPostCreator()}
-      <div id="postsList"></div>
-    </div>
-  `;
-  loadPosts();
-}
-
-async function navigateTo(section){
+// ============================================================
+// NAVIGATION
+// ============================================================
+function navigateTo(section) {
   currentSection = section;
-  document.querySelectorAll('.side-menu-btn, .mobile-nav-item, .drawer-item').forEach(btn => btn.classList.remove('active'));
-  if(section === 'home'){ showHome(); }
-  else if(section === 'posts'){ showPostsSection(); }
-  else if(section === 'results'){ showResultsSection(); }
-  else if(section === 'gallery'){ showFilesSection('gallery_section', '📸 المعرض الرقمي'); }
-  else if(section === 'library'){ showFilesSection('library_section', '📚 المكتبة الرقمية'); }
-  else if(section === 'art'){ showFilesSection('art_section', '🎨 معرض التربية الفنية'); }
-  else if(section === 'news'){ showNewsSection(); }
+  
+  // Update active state on sidebar buttons
+  document.querySelectorAll('.side-menu-btn, .mobile-nav-item, .drawer-item').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  if (section === 'home') {
+    showHome();
+  } else if (section === 'posts') {
+    showPostsSection();
+  } else if (section === 'results') {
+    showResultsSection();
+  } else if (section === 'gallery') {
+    showFilesSection('gallery_section', '📸 المعرض الرقمي');
+  } else if (section === 'library') {
+    showFilesSection('library_section', '📚 المكتبة الرقمية');
+  } else if (section === 'art') {
+    showFilesSection('art_section', '🎨 معرض التربية الفنية');
+  } else if (section === 'news') {
+    showNewsSection();
+  }
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function toggleTheme(){
+// ============================================================
+// THEME
+// ============================================================
+function toggleTheme() {
   document.body.classList.toggle('dark');
   localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+  
   const icon = document.querySelector('.fab-theme i');
-  if(icon) icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+  if (icon) {
+    icon.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon';
+  }
 }
 
-function openDrawer(){ document.getElementById('drawerMenu').classList.add('open'); document.getElementById('drawerOverlay').classList.add('open'); document.body.style.overflow = 'hidden'; }
-function closeDrawer(){ document.getElementById('drawerMenu').classList.remove('open'); document.getElementById('drawerOverlay').classList.remove('open'); document.body.style.overflow = ''; }
+// ============================================================
+// DRAWER FUNCTIONS
+// ============================================================
+function openDrawer() {
+  document.getElementById('drawerMenu').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDrawer() {
+  document.getElementById('drawerMenu').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 
 // ============================================================
-// INITIALIZATION
+// START APPLICATION
 // ============================================================
-window.addEventListener('load', async () => {
-  if(localStorage.getItem('theme') === 'dark') toggleTheme();
+function startApp() {
+  console.log("🚀 Starting application...");
+  
+  // Load theme
+  if (localStorage.getItem('theme') === 'dark') {
+    toggleTheme();
+  }
+  
+  // Load data
   loadStats();
   loadTicker();
-  await updateSliderFromLatestMedia();
-  setTimeout(() => document.getElementById('loader')?.classList.add('hide'), 800);
+  updateSliderFromLatestMedia();
+  
+  // Hide loader
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    if (loader) loader.classList.add('hide');
+  }, 1000);
+  
+  // Show home page
   showHome();
+  
+  // Scroll to top button
   window.addEventListener('scroll', () => {
     const scrollBtn = document.getElementById('scrollTopBtn');
-    if(scrollBtn) scrollBtn.classList.toggle('show', window.scrollY > 200);
+    if (scrollBtn) {
+      scrollBtn.classList.toggle('show', window.scrollY > 200);
+    }
   });
-  if(!sessionStorage.getItem('visitorId')) sessionStorage.setItem('visitorId', 'user_' + Date.now());
   
+  // Set visitor ID
+  if (!sessionStorage.getItem('visitorId')) {
+    sessionStorage.setItem('visitorId', 'user_' + Date.now());
+  }
+  
+  // Refresh slider periodically
   setInterval(() => updateSliderFromLatestMedia(), 30000);
-});
+}
+
+// Initialize Firebase and start app
+initFirebase();
 </script>
 </body>
 </html>
