@@ -87,7 +87,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .sw-wrap{border-radius:var(--r);overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.22);border:4px solid white;margin-bottom:18px}
 .hs{height:250px}
 .hs .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
-.sc2{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:white;padding:18px 16px 10px;font-weight:700;font-size:.92rem}
+.sc2{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.7));color:white;padding:18px 16px 10px;font-weight:700;font-size:.9rem;text-shadow:0 1px 2px rgba(0,0,0,.5)}
 .swiper-pagination-bullet-active{background:var(--gd)!important}
 .swiper-button-next,.swiper-button-prev{color:var(--gd)!important}
 
@@ -327,6 +327,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   .fc-actions{gap:4px}
   .fc-btn-primary{font-size:.74rem;padding:5px 9px}
   .stl{font-size:1.05rem!important}
+  .row > [class*="col-"] {margin-bottom: 0.75rem;}
 }
 @media(max-width:400px){.hs{height:150px!important}}
 
@@ -555,27 +556,26 @@ function loadPdfLibs(cb){
 function startApp(){
   if(typeof AOS!=='undefined') AOS.init({disable:'mobile',duration:600,once:true,offset:40});
   window.addEventListener('scroll',()=>document.getElementById('STB')?.classList.toggle('show',scrollY>280));
-  animN('CS',1250);animN('CT',85);animN('CA',24);
-  db.ref('library_section').on('value',s=>{const e=document.getElementById('LC');if(e)e.textContent=s.numChildren()});
-  db.ref('posts').once('value',s=>{const e=document.getElementById('PC');if(e)e.textContent=s.numChildren()});
+  
+  // Load stats from Firebase and update UI
   db.ref('school_stats').once('value',snap=>{
     if(snap.exists()){
       statsData=snap.val();
-      document.getElementById('CS').textContent=statsData.studentsCount;
-      document.getElementById('CT').textContent=statsData.teachersCount;
-      document.getElementById('CA').textContent=statsData.activitiesCount;
+    } else {
+      db.ref('school_stats').set(statsData);
     }
+    document.getElementById('CS').textContent=statsData.studentsCount;
+    document.getElementById('CT').textContent=statsData.teachersCount;
+    document.getElementById('CA').textContent=statsData.activitiesCount;
   });
+  
+  db.ref('library_section').on('value',s=>{const e=document.getElementById('LC');if(e)e.textContent=s.numChildren()});
+  db.ref('posts').once('value',s=>{const e=document.getElementById('PC');if(e)e.textContent=s.numChildren()});
+  
   loadTicker(); loadSlider();
   if(localStorage.getItem('theme')==='dark') toggleTheme();
   setTimeout(()=>document.getElementById('ldr')?.classList.add('hide'),700);
   showHome();
-}
-
-function animN(id,target){
-  const el=document.getElementById(id);if(!el)return;
-  let c=0;const step=Math.ceil(target/40);
-  const t=setInterval(()=>{c=Math.min(c+step,target);el.textContent=c.toLocaleString('ar-EG');if(c>=target)clearInterval(t)},40);
 }
 
 /* ── STATS ── */
@@ -586,10 +586,11 @@ function editStat(stat){
     if(res.isConfirmed&&res.value!==undefined){
       const v=parseInt(res.value);if(isNaN(v))return;
       statsData[stat]=v;
-      db.ref('school_stats').set(statsData);
-      const ids={studentsCount:'CS',teachersCount:'CT',activitiesCount:'CA'};
-      const el=document.getElementById(ids[stat]);if(el)el.textContent=v.toLocaleString('ar-EG');
-      toast('تم تحديث الإحصائية ✅','s');
+      db.ref('school_stats').set(statsData).then(()=>{
+        const ids={studentsCount:'CS',teachersCount:'CT',activitiesCount:'CA'};
+        const el=document.getElementById(ids[stat]);if(el)el.textContent=v.toLocaleString('ar-EG');
+        toast('تم تحديث الإحصائية ✅','s');
+      });
     }
   });
 }
@@ -646,7 +647,6 @@ function loadTicker(){
     const def=['أهلاً بكم في بوابة مدرسة سعد بن أبي وقاص','نبارك لطلابنا المتفوقين نتائجهم المتميزة','ترقبوا فعاليات أسبوع الابتكار والعلوم','مدرستنا من بين أوائل مدارس بني سويف في التحول الرقمي'];
     let items=def;
     if(snap.exists()){const a=[];snap.forEach(c=>{if(c.val().text)a.push(c.val().text)});if(a.length)items=a}
-    // duplicate for seamless scroll
     const all=[...items,...items];
     wr.innerHTML=all.map(t=>`<span class="ti"><i class="fas fa-circle-dot" style="font-size:.42rem;vertical-align:middle"></i> ${esc(t)}</span>`).join('');
   });
@@ -678,9 +678,9 @@ function showHome(){
       <p class="text-muted">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p>
     </div>
     <div class="row g-3 mb-4 stg">
-      <div class="col-4"><div class="hsc"><div class="sn text-primary">100%</div><small class="text-muted">دقة النتائج</small></div></div>
-      <div class="col-4"><div class="hsc"><div class="sn text-success">24/7</div><small class="text-muted">توافر النظام</small></div></div>
-      <div class="col-4"><div class="hsc"><div class="sn" style="color:var(--gd)">1250</div><small class="text-muted">طالب</small></div></div>
+      <div class="col-6 col-sm-4"><div class="hsc"><div class="sn text-primary">100%</div><small class="text-muted">دقة النتائج</small></div></div>
+      <div class="col-6 col-sm-4"><div class="hsc"><div class="sn text-success">24/7</div><small class="text-muted">توافر النظام</small></div></div>
+      <div class="col-6 col-sm-4"><div class="hsc"><div class="sn" style="color:var(--gd)">1250</div><small class="text-muted">طالب</small></div></div>
     </div>
     <h6 class="fw-bold mb-3 text-muted">⚡ وصول سريع</h6>
     <div class="row g-3 stg">
@@ -694,7 +694,7 @@ function showHome(){
 }
 
 /* ================================================================
-   POSTS SYSTEM — نشر كما في Facebook
+   POSTS SYSTEM — مع إضافة التعديل والمشاركة
 ================================================================ */
 function showPosts(){
   hideHero();
@@ -746,7 +746,7 @@ function renderPost(p){
         <div class="post-author">${esc(p.author||'إدارة المدرسة')}</div>
         <div class="post-date">${p.date||''}</div>
       </div>
-      ${isAdmin?`<button class="btn btn-link btn-sm text-danger ms-auto p-0" onclick="delPost('${p.id}')"><i class="fas fa-trash-alt"></i></button>`:''}
+      ${isAdmin?`<div class="ms-auto d-flex gap-1"><button class="btn btn-link btn-sm text-primary p-0" onclick="editPost('${p.id}','${esc(p.content).replace(/'/g,"\\'")}','${esc(p.mediaUrl||'')}')"><i class="fas fa-edit"></i></button><button class="btn btn-link btn-sm text-danger p-0" onclick="delPost('${p.id}')"><i class="fas fa-trash-alt"></i></button></div>`:''}
     </div>
     <div class="post-content">${esc(p.content)}</div>
     ${p.mediaUrl?getEmbedHtml(p.mediaUrl):''}
@@ -764,6 +764,26 @@ function renderPost(p){
   </div>`;
 }
 
+function editPost(id,oldContent,oldMedia){
+  Swal.fire({
+    title:'✏️ تعديل المنشور',
+    html:`
+    <textarea id="editContent" class="swal2-textarea" rows="4" style="width:100%">${oldContent}</textarea>
+    <input type="url" id="editMedia" class="swal2-input" placeholder="رابط وسائط (اختياري)" value="${oldMedia}">`,
+    showCancelButton:true,confirmButtonText:'حفظ التعديل',cancelButtonText:'إلغاء',
+    preConfirm:()=>({content:document.getElementById('editContent').value.trim(),mediaUrl:document.getElementById('editMedia').value.trim()})
+  }).then(res=>{
+    if(res.isConfirmed){
+      db.ref(`posts/${id}`).update({
+        content:res.value.content,
+        mediaUrl:res.value.mediaUrl||null,
+        updatedAt:Date.now(),
+        updatedDate:new Date().toLocaleDateString('ar-EG')
+      }).then(()=>{toast('تم تعديل المنشور ✅','s');showPosts()});
+    }
+  });
+}
+
 function toggleCmts(id){const el=document.getElementById(`CM${id}`);if(el)el.style.display=el.style.display==='none'?'block':'none'}
 
 function likePost(id){
@@ -773,10 +793,8 @@ function likePost(id){
     if(snap.exists())ref.remove();else ref.set(true);
     db.ref(`posts/${id}/likes`).once('value',s=>{
       const cnt=s.numChildren();
-      const btn=document.querySelector(`#PC${id} .pab`);
       const lbl=document.getElementById(`LK${id}`);
       if(lbl)lbl.textContent=cnt;
-      if(btn){if(snap.exists())btn.classList.remove('liked');else btn.classList.add('liked');}
     });
   });
 }
@@ -817,7 +835,7 @@ function delPost(id){
 }
 
 /* ================================================================
-   STUDENTS & RESULTS
+   STUDENTS & RESULTS (مع إمكانية رفع JSON مع اختيار الصف)
 ================================================================ */
 function showStudents(){
   hideHero();
@@ -889,7 +907,8 @@ function doSearch(){
   }).catch(()=>{rd.innerHTML=`<div class="alert alert-warning rounded-4"><i class="fas fa-wifi-slash me-2"></i>تعذّر الاتصال. تحقق من اتصالك.</div>`});
 }
 
-/* ── RESULTS MANAGER (JSON Upload) ── */
+/* ── RESULTS MANAGER (JSON Upload مع اختيار الصف) ── */
+let selectedGradeForJson = null;
 function showResultsMgr(){
   hideHero();
   document.getElementById('MC').innerHTML=`
@@ -900,16 +919,26 @@ function showResultsMgr(){
     </div>
     <div class="gc mb-4" style="background:linear-gradient(135deg,#f8f9ff,#eef2ff)">
       <h6 class="fw-bold mb-3"><i class="fas fa-cloud-upload-alt me-2 text-primary"></i> رفع ملف JSON للنتائج</h6>
-      <p class="small text-muted mb-3">ارفع ملف JSON يحتوي على نتائج الطلاب. يمكن رفع صف واحد أو كل الصفوف في ملف واحد.</p>
+      <p class="small text-muted mb-3">اختر الصف الذي تريد رفع النتائج له، ثم ارفع ملف JSON.</p>
+      <div class="row g-2 mb-3">
+        <div class="col-md-6">
+          <label class="form-label fw-bold">اختر الصف الدراسي</label>
+          <select id="jsonGradeSelect" class="form-select">
+            ${Object.entries(GL).map(([v,n])=>`<option value="${v}">${n}</option>`).join('')}
+          </select>
+        </div>
+      </div>
       <div class="json-area mb-3" onclick="document.getElementById('JFILE').click()">
         <i class="fas fa-file-code fa-3x mb-2 d-block" style="color:var(--gd)"></i>
         <h6 class="fw-bold">اضغط لاختيار ملف JSON</h6>
-        <small class="text-muted">أو اسحب الملف هنا</small>
+        <small class="text-muted">أو اسحب الملف هنا (يدعم رفع صف واحد أو جميع الصفوف)</small>
       </div>
       <input type="file" id="JFILE" accept=".json" style="display:none" onchange="uploadJSON(this)">
       <div class="alert alert-info small mb-0">
         <strong>صيغة الملف المطلوبة:</strong><br>
-        <code>{"p6":{"1001":{"name":"اسم الطالب","subjects":{"اللغة العربية":90},"total":90,"percentage":90,"grade":"امتياز"}}}</code>
+        - للصف الواحد: <code>{"1001":{"name":"اسم الطالب","subjects":{"اللغة العربية":90},"total":90,"percentage":90,"grade":"امتياز"}}</code><br>
+        - لرفع عدة صفوف: <code>{"p6":{"1001":{...}},"m1":{"1002":{...}}}</code><br>
+        إذا اخترت صفاً ورفعت ملفاً بمفتاح الصف نفسه، سيتم رفعه تحت ذلك المسار.
       </div>
     </div>
     <div id="RLIST" class="mt-3"></div>
@@ -919,27 +948,45 @@ function showResultsMgr(){
 
 function uploadJSON(input){
   const file=input.files[0];if(!file)return;
+  const selectedGrade = document.getElementById('jsonGradeSelect')?.value;
   const reader=new FileReader();
   reader.onload=e=>{
     try{
-      const data=JSON.parse(e.target.result);
-      const grades=Object.keys(data);
+      let data=JSON.parse(e.target.result);
+      let updates={};
       let studentCount=0;
-      grades.forEach(g=>{if(data[g])studentCount+=Object.keys(data[g]).length});
+      // Check if the JSON root is an object with grade keys (p3,m1,etc)
+      const gradeKeys = Object.keys(GL);
+      const hasGradeKeys = Object.keys(data).some(k => gradeKeys.includes(k));
+      if(hasGradeKeys){
+        // Multi-grade structure
+        for(const [grade, students] of Object.entries(data)){
+          if(typeof students === 'object' && students !== null){
+            for(const [seat, info] of Object.entries(students)){
+              updates[`results/${grade}/${seat}`] = info;
+              studentCount++;
+            }
+          }
+        }
+      } else {
+        // Single grade structure: assume data is an object with seat numbers as keys
+        if(!selectedGrade){ toast('الرجاء اختيار الصف أولاً','w'); return; }
+        for(const [seat, info] of Object.entries(data)){
+          updates[`results/${selectedGrade}/${seat}`] = info;
+          studentCount++;
+        }
+      }
+      if(studentCount===0){ toast('لا توجد بيانات طلاب صالحة في الملف','e'); return; }
       Swal.fire({
         title:'تأكيد رفع النتائج',
-        html:`<p>سيتم رفع نتائج <strong>${studentCount} طالب</strong> في <strong>${grades.length} صف</strong></p><p class="text-muted small">الصفوف: ${grades.map(g=>GL[g]||g).join('، ')}</p>`,
+        html:`<p>سيتم رفع نتائج <strong>${studentCount} طالب</strong></p><p class="text-muted small">المسارات: ${Object.keys(updates).map(k=>k.split('/')[1]).filter((v,i,a)=>a.indexOf(v)===i).join('، ')}</p>`,
         icon:'question',showCancelButton:true,confirmButtonText:'رفع الآن',cancelButtonText:'إلغاء'
       }).then(res=>{
         if(res.isConfirmed){
-          const updates={};
-          for(const [grade,students] of Object.entries(data))
-            for(const [seat,info] of Object.entries(students))
-              updates[`results/${grade}/${seat}`]=info;
           db.ref().update(updates).then(()=>{toast(`✅ تم رفع ${studentCount} نتيجة بنجاح`,'s');loadResultsList()});
         }
       });
-    }catch(err){toast('ملف JSON غير صالح — تحقق من التنسيق','e',5000)}
+    } catch(err){ toast('ملف JSON غير صالح — تحقق من التنسيق','e',5000); console.error(err); }
   };
   reader.readAsText(file);
 }
@@ -981,11 +1028,11 @@ function _doPDF(data){
     Object.entries(data.subjects).forEach(([sub,score])=>{
       const pct=Math.min(score,100);
       subRows+=`<tr>
-        <td>${sub}</td>
+        <td>${esc(sub)}</td>
         <td style="text-align:center;font-weight:800;font-size:1rem">${score}</td>
         <td style="text-align:center;padding:8px 14px"><div class="pdf-bar"><div class="pdf-barfill" style="width:${pct}%;background:${barC(score)}"></div></div></td>
         <td style="text-align:center"><span class="pdf-gb ${grCls(score)}">${grLbl(score)}</span></td>
-      </tr>`;
+       </tr>`;
     });
   }
   const card=document.getElementById('pdfCard');
@@ -1045,7 +1092,7 @@ function _doPDF(data){
 }
 
 /* ================================================================
-   FILES — with YouTube/external link support
+   FILES — مع تحسينات الجوال
 ================================================================ */
 function showFiles(section,title){
   hideHero();activeFilter='all';filesCache={};
@@ -1069,7 +1116,7 @@ function showFiles(section,title){
       <span class="fcb" id="FCB">0 ملف</span>
     </div>
     <div id="FG" class="row g-3">
-      ${[0,1,2,3].map(()=>`<div class="col-md-6"><div class="skc"><div class="sk" style="height:180px"></div><div class="p-3"><div class="sk" style="height:13px;margin-bottom:7px"></div><div class="sk" style="height:11px;width:60%"></div></div></div></div>`).join('')}
+      <div class="col-12 col-md-6"><div class="skc"><div class="sk" style="height:180px"></div><div class="p-3"><div class="sk" style="height:13px;margin-bottom:7px"></div><div class="sk" style="height:11px;width:60%"></div></div></div></div>
     </div>
   </div>`;
   db.ref(section).on('value',snap=>{
@@ -1084,7 +1131,7 @@ function setF(btn,f){activeFilter=f;document.querySelectorAll('#FBG .fb').forEac
 function getFileType(f){
   const u=f.url||'';
   if(isYT(u))return 'yt';
-  if(isVimeo(u))return 'yt';// treat vimeo as yt category
+  if(isVimeo(u))return 'yt';
   if(isDrive(u))return 'pdf';
   if(f.resourceType==='gdrive')return 'pdf';
   if(isImg(u))return 'img';
@@ -1103,7 +1150,6 @@ function renderFiles(section,title){
     const ms=!q||(f.title||'').toLowerCase().includes(q)||(f.description||'').toLowerCase().includes(q);
     return mf&&ms;
   });
-  // Sort newest first
   entries.sort((a,b)=>(b[1].timestamp||0)-(a[1].timestamp||0));
   const badge=document.getElementById('FCB');if(badge)badge.textContent=`${entries.length} ملف`;
   if(!entries.length){
@@ -1157,15 +1203,13 @@ function renderFiles(section,title){
         <audio controls style="width:100%;outline:none;border-radius:8px" preload="metadata"><source src="${u}"></audio>
       </div>`;
     } else {
-      // Generic link / external
-      const isYTLink=isYT(u);
-      thumb=`<div class="fc-icon-wrap" style="background:${isYTLink?'#fff5f5':'#f0f2f5'};height:150px;cursor:pointer" onclick="toggleView('${fid}','${u}','link')">
-        <i class="fas ${isYTLink?'fa-play-circle':'fa-link'} fa-4x" style="color:${isYTLink?'#ff0000':'#95a5a6'}"></i>
+      thumb=`<div class="fc-icon-wrap" style="background:#f0f2f5;height:150px;cursor:pointer" onclick="toggleView('${fid}','${u}','link')">
+        <i class="fas fa-link fa-4x" style="color:#95a5a6"></i>
       </div>`;
     }
 
     grid.innerHTML+=`
-    <div class="col-md-6" data-aos="fade-up" data-aos-delay="${i*40}">
+    <div class="col-12 col-md-6" data-aos="fade-up" data-aos-delay="${i*40}">
       <div class="fc">
         ${thumb}
         <div id="VW${fid}" style="display:none"></div>
@@ -1203,9 +1247,7 @@ function renderFiles(section,title){
   if(typeof AOS!=='undefined')AOS.refresh();
 }
 
-/* ── INLINE VIEWER ── */
 function closeSV(fid){const s=document.getElementById(`VW${fid}`);if(s){s.style.display='none';s.innerHTML=''}}
-
 function toggleView(fid,url,type){
   const slot=document.getElementById(`VW${fid}`);if(!slot)return;
   if(slot.style.display!=='none'&&slot.dataset.url===url){closeSV(fid);return}
@@ -1216,7 +1258,6 @@ function toggleView(fid,url,type){
     const e=extOf(url);
     html=`<div class="fc-viewer">${close}<video controls autoplay playsinline style="width:100%;max-height:300px;display:block;outline:none;background:#000"><source src="${url}" type="video/${e==='mov'?'mp4':e}"><source src="${url}"></video></div>`;
   } else if(type==='yt'||type==='link'){
-    // Embed YouTube/Vimeo/Drive inline
     let embedSrc='';
     if(isYT(url)){const id=getYTId(url);if(id)embedSrc=`https://www.youtube.com/embed/${id}?autoplay=1`}
     if(isVimeo(url)){const id=getVimeoId(url);if(id)embedSrc=`https://player.vimeo.com/video/${id}?autoplay=1`}
@@ -1238,8 +1279,6 @@ function toggleView(fid,url,type){
   slot.innerHTML=html;slot.style.display='block';
   setTimeout(()=>slot.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
 }
-
-/* ── FULLSCREEN MODAL ── */
 function openModal(url,title,type){
   document.getElementById('MM')?.remove();
   let body='';
@@ -1278,7 +1317,7 @@ function openModal(url,title,type){
   document.body.appendChild(m);
 }
 
-/* ── UPLOAD ── */
+/* ── UPLOAD (غير متغير) ── */
 function showUpload(section,title){
   document.getElementById('MC').innerHTML=`
   <div class="fi">
@@ -1296,10 +1335,8 @@ function showUpload(section,title){
     </div>
     <div class="mb-3"><label class="form-label fw-bold">العنوان *</label><input type="text" id="UT" class="form-control" placeholder="عنوان الملف..." maxlength="100"></div>
     <div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label><textarea id="UD" class="form-control" rows="2" maxlength="300"></textarea></div>
-    
-    <!-- MEDIA -->
     <div id="mediaArea" class="mb-4">
-      <label class="form-label fw-bold">اختر الملف * <span class="text-muted fw-normal small">(صور: حد 10 MB | فيديو: حد 200 MB)</span></label>
+      <label class="form-label fw-bold">اختر الملف *</label>
       <div class="uz" id="UZ" onclick="document.getElementById('UFI').click()"
            ondragover="event.preventDefault();this.classList.add('dov')"
            ondragleave="this.classList.remove('dov')"
@@ -1313,8 +1350,6 @@ function showUpload(section,title){
       <p class="pt" id="UPT"></p>
       <div id="UPV"></div>
     </div>
-    
-    <!-- LINK (YouTube/External) -->
     <div id="linkArea" class="mb-4" style="display:none">
       <div class="p-4 rounded-4 mb-3" style="background:linear-gradient(135deg,#fff5f5,#fff);border:2px dashed #ff0000">
         <div class="text-center mb-2"><i class="fab fa-youtube fa-3x mb-2 d-block" style="color:#ff0000"></i><h6 class="fw-bold">رابط فيديو خارجي</h6></div>
@@ -1327,8 +1362,6 @@ function showUpload(section,title){
       </div>
       <div id="linkPreview"></div>
     </div>
-    
-    <!-- DRIVE PDF -->
     <div id="docArea" class="mb-4" style="display:none">
       <div class="p-4 rounded-4 mb-3" style="background:linear-gradient(135deg,#fdecea,#fff5f5);border:2px dashed #e74c3c">
         <div class="text-center mb-2"><i class="fas fa-file-pdf fa-3x mb-2 d-block" style="color:#e74c3c"></i><h6 class="fw-bold">رابط Google Drive للـ PDF</h6></div>
@@ -1346,7 +1379,6 @@ function showUpload(section,title){
       </div>
       <div id="drivePreview"></div>
     </div>
-    
     <div class="d-grid">
       <button class="btn bg py-3 fw-bold fs-5 rounded-3" id="UBT" onclick="doUpload('${section}','${esc(title)}')">
         <i class="fas fa-upload me-2"></i>حفظ الملف
@@ -1365,7 +1397,6 @@ function switchMode(m){
   document.getElementById('btnLink').className=`btn rounded-pill px-4 ${m==='link'?'btn-danger':'btn-outline-danger'}`;
   document.getElementById('btnDoc').className=`btn rounded-pill px-4 ${m==='doc'?'btn-secondary':'btn-outline-secondary'}`;
 }
-
 function previewLink(val){
   const pv=document.getElementById('linkPreview');if(!pv)return;
   if(!val){pv.innerHTML='';return}
@@ -1379,7 +1410,6 @@ function previewLink(val){
   }
   pv.innerHTML=`<div class="alert alert-info small mt-2 p-2"><i class="fas fa-link me-1"></i>رابط مباشر سيُضاف وعرضه داخل الصفحة</div>`;
 }
-
 function previewDrive(val){
   const pv=document.getElementById('drivePreview');if(!pv)return;
   if(!val||!val.includes('drive.google.com')){pv.innerHTML='';return}
@@ -1389,7 +1419,6 @@ function previewDrive(val){
   pv.innerHTML=`<div class="border rounded-3 overflow-hidden mt-2"><div class="p-2 d-flex align-items-center gap-2" style="background:#f0fff4;border-bottom:1px solid #c3e6cb"><i class="fas fa-check-circle text-success"></i><small class="fw-bold text-success">تم التعرف على الرابط ✅ — معاينة:</small></div><iframe src="https://drive.google.com/file/d/${id}/preview" style="width:100%;height:260px;border:none;display:block"></iframe></div>`;
   window._driveId=id;
 }
-
 function handleDrop(e){e.preventDefault();const fs=Array.from(e.dataTransfer.files);if(fs.length>1)pickFiles({files:fs});else if(fs[0])processFile(fs[0])}
 function pickFiles(input){
   const files=Array.from(input.files);if(!files.length)return;
@@ -1402,16 +1431,14 @@ function pickFiles(input){
   if(upv)upv.innerHTML=html;if(uzt)uzt.textContent=`✅ تم اختيار ${files.length} ملفات`;if(uzs)uzs.textContent='اضغط رفع لرفعهم جميعاً';
   selFile='multi';
 }
-
 function processFile(file){
   const isVideo=/\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
-  const maxSize=isVideo?200*1024*1024:10*1024*1024; // 10MB for images, 200MB for video
+  const maxSize=isVideo?200*1024*1024:10*1024*1024;
   if(file.size>maxSize){toast(`${file.name}: يتجاوز ${isVideo?'200':'10'} MB`,'e');return}
   const isI=/\.(jpg|jpeg|png|gif|webp)$/i.test(file.name);
   if(isI){toast('🗜️ جاري ضغط الصورة...','i',1500);compressImg(file).then(cf=>{selFile=cf;previewFile(cf,file.size)})}
   else{selFile=file;previewFile(file)}
 }
-
 function compressImg(file,mw=1280,q=.75){
   return new Promise(res=>{
     if(!/\.(jpg|jpeg|png|webp)$/i.test(file.name)){res(file);return}
@@ -1419,7 +1446,6 @@ function compressImg(file,mw=1280,q=.75){
     r.onload=e=>{const img=new Image();img.onload=()=>{let w=img.width,h=img.height;if(w>mw){h=Math.round(h*mw/w);w=mw}const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(img,0,0,w,h);cv.toBlob(b=>{if(!b){res(file);return}res(b.size<file.size?new File([b],file.name,{type:'image/jpeg'}):file)},'image/jpeg',q)};img.src=e.target.result};r.readAsDataURL(file);
   });
 }
-
 function previewFile(file,origSize){
   const info=fi(file.name);const isI=/\.(jpg|jpeg|png|gif|webp|svg)$/i.test(file.name);
   const saved=origSize&&origSize!==file.size?Math.round((1-file.size/origSize)*100):0;
@@ -1428,13 +1454,10 @@ function previewFile(file,origSize){
   if(upv)upv.innerHTML=`<div class="d-flex align-items-center gap-3 p-3 border rounded-3 mt-2" style="background:${info.b}"><i class="fas ${info.i} fa-2x" style="color:${info.c}"></i><div class="flex-grow-1 overflow-hidden"><div class="fw-bold text-truncate" style="color:${info.c}">${esc(file.name)}</div><small class="text-muted">${fsz(file.size)}${saved>5?` <span class="badge bg-success">ضُغطت ${saved}%</span>`:''}</small></div><i class="fas fa-check-circle fa-lg text-success"></i></div>${prev}`;
   if(uzt)uzt.textContent='✅ تم اختيار الملف';if(uzs)uzs.textContent=file.name;if(uik){uik.className=`fas ${info.i} ui`;uik.style.color=info.c}
 }
-
 function doUpload(section,title){
   const t=document.getElementById('UT')?.value?.trim();
   const d=document.getElementById('UD')?.value?.trim();
   if(!t){toast('اكتب عنوان الملف','w');return}
-
-  // ── EXTERNAL LINK (YouTube / Vimeo / Direct) ──
   if(window._umode==='link'){
     const rawUrl=document.getElementById('linkUrl')?.value?.trim();
     if(!rawUrl){toast('أدخل الرابط','w');return}
@@ -1442,8 +1465,6 @@ function doUpload(section,title){
       .then(()=>{toast(`✅ تم إضافة "${t}" بنجاح`,'s');setTimeout(()=>showFiles(section,title),800)});
     return;
   }
-
-  // ── GOOGLE DRIVE PDF ──
   if(window._umode==='doc'){
     const rawUrl=document.getElementById('driveUrl')?.value?.trim();
     if(!rawUrl||!rawUrl.includes('drive.google.com')){toast('أدخل رابط Google Drive صحيح','w');return}
@@ -1453,12 +1474,8 @@ function doUpload(section,title){
       .then(()=>{toast(`✅ تم إضافة "${t}" بنجاح`,'s');setTimeout(()=>showFiles(section,title),800)});
     return;
   }
-
-  // ── CLOUDINARY MEDIA ──
   const btn=document.getElementById('UBT'),pw=document.getElementById('UPW'),pb=document.getElementById('UPB'),pt=document.getElementById('UPT');
   if(!selFile){toast('اختر ملفاً','w');return}
-
-  // Multi-file upload
   if(selFile==='multi'&&window._multiFiles?.length){
     if(btn)btn.disabled=true;if(pw)pw.style.display='block';if(pt)pt.style.display='block';
     const files=window._multiFiles;let done=0;
@@ -1483,8 +1500,6 @@ function doUpload(section,title){
     };
     uploadOne(files[0],0);return;
   }
-
-  // Single file upload
   if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...'}
   if(pw)pw.style.display='block';if(pt)pt.style.display='block';
   const ts=Date.now();
@@ -1508,15 +1523,12 @@ function doUpload(section,title){
   xhr.addEventListener('error',()=>{if(btn){btn.disabled=false;btn.innerHTML='<i class="fas fa-upload me-2"></i>حفظ الملف'}if(pw)pw.style.display='none';if(pt)pt.style.display='none';toast('تعذّر الاتصال','e',4000)});
   xhr.open('POST',uploadURL);xhr.send(fd);
 }
-
-/* ── COMMENTS ── */
 function addCmt(section,fid){
   const inp=document.getElementById(`CMI${fid}`);const txt=inp?.value?.trim();if(!txt)return;
   if(txt.length>200){toast('200 حرف كحد أقصى','w');return}
   db.ref(`${section}/${fid}/comments`).push({id:Date.now().toString(),name:isAdmin?'إدارة المدرسة':'زائر',text:txt,date:new Date().toLocaleDateString('ar-EG')})
     .then(()=>{if(inp){inp.value='';const cc=document.getElementById(`CC${fid}`);if(cc)cc.textContent='200/200'}toast('✅ تم إضافة تعليقك','s',1800)});
 }
-
 function delFile(section,id){Swal.fire({title:'حذف الملف؟',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'احذف!',cancelButtonText:'إلغاء'}).then(r=>{if(r.isConfirmed)db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i'))})}
 function delCmt(fid,cmtId,section){db.ref(`${section}/${fid}/comments`).once('value',snap=>{snap.forEach(c=>{if(c.val().id===cmtId)c.ref.remove()})});toast('تم حذف التعليق','i',1500)}
 
@@ -1532,14 +1544,12 @@ function doAdmin(){
       else{adminTries++;if(adminTries>=5){adminLock=Date.now()+120000;Swal.fire('🔒 محظور','محاولات كثيرة — انتظر دقيقتين','error')}else Swal.fire('❌ خطأ',`كلمة السر غير صحيحة — ${5-adminTries} محاولات متبقية`,'error')}
     });
 }
-
 function updAdmin(){
   const l=document.getElementById('ALB'),b=document.getElementById('ABG'),dl=document.getElementById('DAL');
   if(l)l.textContent=isAdmin?'تسجيل خروج الإدارة':'لوحة الإدارة';
   if(dl)dl.textContent=isAdmin?'تسجيل خروج الإدارة':'لوحة الإدارة';
   if(b)b.innerHTML=isAdmin?`<div class="ab mt-2"><i class="fas fa-shield-halved"></i> وضع الإدارة مفعّل</div>`:'';
 }
-
 function showAdminDash(){
   hideHero();
   document.getElementById('MC').innerHTML=`
@@ -1549,10 +1559,10 @@ function showAdminDash(){
       <span class="badge bg-danger px-3 py-2"><i class="fas fa-circle me-1" style="font-size:.45rem"></i> مباشر</span>
     </div>
     <div class="row g-3 mb-4">
-      <div class="col-6 col-md-3"><div class="asc"><div class="asn" id="AS1">…</div><small class="text-muted">ملفات المعرض</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#1abc9c"><div class="asn" style="color:#1abc9c" id="AS2">…</div><small class="text-muted">المكتبة</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#e74c3c"><div class="asn" style="color:#e74c3c" id="AS3">…</div><small class="text-muted">التربية الفنية</small></div></div>
-      <div class="col-6 col-md-3"><div class="asc" style="border-right-color:#8e44ad"><div class="asn" style="color:#8e44ad" id="AS4">…</div><small class="text-muted">الإجمالي</small></div></div>
+      <div class="col-6 col-sm-3"><div class="asc"><div class="asn" id="AS1">…</div><small class="text-muted">ملفات المعرض</small></div></div>
+      <div class="col-6 col-sm-3"><div class="asc" style="border-right-color:#1abc9c"><div class="asn" style="color:#1abc9c" id="AS2">…</div><small class="text-muted">المكتبة</small></div></div>
+      <div class="col-6 col-sm-3"><div class="asc" style="border-right-color:#e74c3c"><div class="asn" style="color:#e74c3c" id="AS3">…</div><small class="text-muted">التربية الفنية</small></div></div>
+      <div class="col-6 col-sm-3"><div class="asc" style="border-right-color:#8e44ad"><div class="asn" style="color:#8e44ad" id="AS4">…</div><small class="text-muted">الإجمالي</small></div></div>
     </div>
     <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
     <div class="row g-3 mb-4 stg">
@@ -1573,7 +1583,6 @@ function showAdminDash(){
     });
   });
 }
-
 function showTickerEd(){
   const ex=document.getElementById('AEX');if(!ex)return;
   db.ref('ticker_news').once('value',snap=>{
@@ -1585,21 +1594,41 @@ function addT(){const i=document.getElementById('NTT');const t=i?.value?.trim();
 function updT(id){const v=document.getElementById(`TI${id}`)?.value?.trim();if(!v)return;db.ref(`ticker_news/${id}`).update({text:v}).then(()=>{toast('تم التحديث','s',1500);loadTicker()})}
 function delT(id){db.ref(`ticker_news/${id}`).remove().then(()=>{document.getElementById(`TR${id}`)?.remove();toast('تم الحذف','i',1500);loadTicker()})}
 
-/* ── NEWS ── */
+/* ── NEWS (إصلاح إضافة الأخبار داخل التبويب) ── */
 function showNews(){
   hideHero();
   document.getElementById('MC').innerHTML=`
   <div class="fi">
     <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
       <h4 class="fw-bold mb-0">📰 أخبار المدرسة</h4>
-      ${isAdmin?`<button class="btn bg btn-sm" onclick="showAddNews()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>`:''}
+      ${isAdmin?`<button class="btn bg btn-sm" onclick="showAddNewsInline()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>`:''}
     </div>
-    <div id="ANF"></div>
+    <div id="ANEWSFORM" style="display:none;" class="mb-3"></div>
     <div id="NL" class="row g-3 stg"><div class="col-12 text-center p-4"><div class="spinner-border" style="color:var(--gd)"></div></div></div>
   </div>`;
   loadNews();
 }
-
+function showAddNewsInline(){
+  const container=document.getElementById('ANEWSFORM');
+  if(!container)return;
+  if(container.style.display==='block'){container.style.display='none';container.innerHTML='';return;}
+  container.style.display='block';
+  container.innerHTML=`
+    <div class="gc"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر جديد</h6>
+    <div class="row g-2">
+      <div class="col-md-6"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div>
+      <div class="col-md-6"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div>
+      <div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div>
+    </div>
+    <div class="d-flex gap-2 mt-3"><button class="btn bg btn-sm px-4" onclick="saveNewsInline()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANEWSFORM').style.display='none';document.getElementById('ANEWSFORM').innerHTML=''">إلغاء</button></div></div>`;
+}
+function saveNewsInline(){
+  const t=document.getElementById('NT')?.value?.trim(),b=document.getElementById('NB')?.value?.trim(),c=document.getElementById('NC')?.value;
+  if(!t||!b){toast('العنوان والنص مطلوبان','w');return}
+  const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
+  db.ref('school_news').push({title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()})
+    .then(()=>{toast('تم نشر الخبر ✅','s');document.getElementById('ANEWSFORM').style.display='none';document.getElementById('ANEWSFORM').innerHTML='';loadNews()});
+}
 function loadNews(){
   const nl=document.getElementById('NL');if(!nl)return;
   db.ref('school_news').orderByChild('timestamp').limitToLast(20).once('value',snap=>{
@@ -1610,20 +1639,6 @@ function loadNews(){
     nl.innerHTML=items.map(n=>`<div class="col-12"><div class="nc fi"><div class="d-flex justify-content-between align-items-start mb-1 flex-wrap gap-2"><h6 class="fw-bold mb-0">${n.icon} ${esc(n.t)}</h6><div class="d-flex gap-2 align-items-center"><span class="badge bg-primary">${esc(n.cat)}</span><small class="text-muted">${esc(n.date)}</small>${isAdmin&&n.id?`<button class="btn btn-link btn-sm text-danger p-0" onclick="delNews('${n.id}')"><i class="fas fa-trash-alt"></i></button>`:''}</div></div><p class="mb-0 small text-muted">${esc(n.d)}</p></div></div>`).join('');
   });
 }
-
-function showAddNews(){
-  const a=document.getElementById('ANF');if(!a)return;
-  a.innerHTML=`<div class="gc mb-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6><div class="row g-2"><div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div><div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div><div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div></div><div class="d-flex gap-2 mt-2"><button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button></div></div>`;
-}
-
-function saveNews(){
-  const t=document.getElementById('NT')?.value?.trim(),b=document.getElementById('NB')?.value?.trim(),c=document.getElementById('NC')?.value;
-  if(!t||!b){toast('العنوان والنص مطلوبان','w');return}
-  const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
-  db.ref('school_news').push({title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()})
-    .then(()=>{toast('تم نشر الخبر ✅','s');document.getElementById('ANF').innerHTML='';loadNews()});
-}
-
 function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم الحذف','i');loadNews()})}
 
 /* ── HELPERS ── */
