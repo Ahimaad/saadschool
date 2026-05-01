@@ -545,15 +545,29 @@ function saveStats(newStats) {
 function editStat(stat) {
   if (!isAdmin) { toast('متاح للإدارة فقط', 'w'); return; }
   const labels = { studentsCount: 'عدد الطلاب', teachersCount: 'عدد المعلمين', activitiesCount: 'عدد الأنشطة' };
+  const ids = { studentsCount: 'CS', teachersCount: 'CT', activitiesCount: 'CA' };
+  
   Swal.fire({
-    title: `تعديل — ${labels[stat]}`, input: 'number', inputValue: statsData[stat],
-    showCancelButton: true, confirmButtonText: 'حفظ', cancelButtonText: 'إلغاء',
+    title: `تعديل — ${labels[stat]}`,
+    input: 'number',
+    inputValue: statsData[stat],
+    showCancelButton: true,
+    confirmButtonText: 'حفظ',
+    cancelButtonText: 'إلغاء',
     inputAttributes: { min: '0', step: '1' }
   }).then(res => {
     if (res.isConfirmed && res.value !== undefined) {
-      const v = parseInt(res.value); if (isNaN(v)) return;
+      const v = parseInt(res.value);
+      if (isNaN(v)) return;
+      
+      // تحديث البيانات محلياً وفي Firebase
       statsData[stat] = v;
       saveStats(statsData);
+      
+      // تحديث العدد المعروض مباشرة بدون أنيميشن
+      const el = document.getElementById(ids[stat]);
+      if (el) el.textContent = v.toLocaleString('ar-EG');
+      
       toast('تم تحديث الإحصائية ✅', 's');
     }
   });
