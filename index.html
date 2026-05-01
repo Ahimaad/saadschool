@@ -40,7 +40,8 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65);border-bottom:4px so
 .post-card{background:white;border-radius:20px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
 .post-embed{border-radius:12px;overflow:hidden;margin:10px 0}
 .post-embed iframe{width:100%;aspect-ratio:16/9;border:none}
-.post-embed img{width:100%;max-height:320px;object-fit:cover}
+.post-embed img{width:100%;max-height:320px;object-fit:cover;border-radius:12px;cursor:pointer}
+.post-embed video{width:100%;max-height:320px;border-radius:12px}
 .post-actions .btn-light{background:#f0f2f5;border:none}
 .post-actions .btn-light:hover{background:#e4e6e9}
 .fc{background:#fff;border-radius:12px;overflow:hidden;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s}
@@ -258,7 +259,7 @@ function showHome() {
   `;
 }
 
-// ========== POSTS SYSTEM (LIKE FACEBOOK) ==========
+// ========== POSTS SYSTEM (ADMIN ONLY) ==========
 
 let currentPostMedia = null;
 let selectedFile = null;
@@ -270,13 +271,13 @@ function showPosts() {
       <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
         <h4 class="fw-bold mb-0"><i class="fas fa-newspaper me-2 text-primary"></i> المنشورات</h4>
       </div>
-      
+      ${isAdmin ? `
       <div class="card mb-4 shadow-sm border-0 rounded-3">
         <div class="card-body">
           <div class="d-flex gap-3">
             <div class="flex-shrink-0">
               <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
-                <i class="fas fa-user"></i>
+                <i class="fas fa-user-shield"></i>
               </div>
             </div>
             <div class="flex-grow-1">
@@ -323,6 +324,7 @@ function showPosts() {
           </div>
         </div>
       </div>
+      ` : '<div class="alert alert-info text-center mb-3"><i class="fas fa-lock"></i> المنشورات متاحة للإدارة فقط</div>'}
       
       <div id="PL"><div class="text-center p-5"><div class="spinner-border" style="color:var(--gd)"></div></div></div>
     </div>
@@ -400,6 +402,24 @@ function escapeHtml(text) {
   });
 }
 
+function getMediaHtml(url) {
+  if (!url) return '';
+  if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) {
+    const videoId = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/)?.[1];
+    if (videoId) return `<div class="post-embed mt-2"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="width:100%;height:250px;border-radius:12px"></iframe></div>`;
+  }
+  if (/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url)) {
+    return `<div class="post-embed mt-2"><img src="${url}" class="img-fluid rounded-3" style="max-height:300px;width:100%;object-fit:cover;cursor:pointer" onclick="openMediaModal('${url}','image')"></div>`;
+  }
+  if (/\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url)) {
+    return `<div class="post-embed mt-2"><video controls src="${url}" style="width:100%;max-height:300px;border-radius:12px"></video></div>`;
+  }
+  if (/\.pdf(\?|$)/i.test(url)) {
+    return `<div class="post-embed mt-2"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true" style="width:100%;height:400px;border-radius:12px"></iframe></div>`;
+  }
+  return `<div class="post-embed mt-2"><a href="${url}" target="_blank" class="btn btn-outline-primary w-100"><i class="fas fa-external-link-alt"></i> فتح الرابط</a></div>`;
+}
+
 async function uploadToCloudinary(file) {
   const formData = new FormData();
   formData.append('file', file);
@@ -419,7 +439,9 @@ async function uploadToCloudinary(file) {
   }
 }
 
-async function createNewPost() {
+function createNewPost() {
+  if (!isAdmin) { toast('هذا الإaction متاح للإدارة فقط', 'w'); return; }
+  
   const content = document.getElementById('newPostContent').value.trim();
   if (!content && !currentPostMedia) {
     toast('اكتب نص المنشور أو أضف وسائط', 'w');
@@ -432,19 +454,28 @@ async function createNewPost() {
   if (currentPostMedia) {
     if (currentPostMedia.file) {
       toast('جاري رفع الملف...', 'i', 1500);
-      mediaUrl = await uploadToCloudinary(currentPostMedia.file);
-      mediaType = currentPostMedia.type;
+      uploadToCloudinary(currentPostMedia.file).then(url => {
+        if (url) {
+          savePost(content, url, currentPostMedia.type);
+        } else {
+          toast('فشل رفع الملف', 'e');
+        }
+      });
+      return;
     } else if (currentPostMedia.url) {
       mediaUrl = currentPostMedia.url;
-      mediaType = 'link';
+      mediaType = currentPostMedia.type;
     }
   }
-  
+  savePost(content, mediaUrl, mediaType);
+}
+
+function savePost(content, mediaUrl, mediaType) {
   db.ref('posts').push({
     content: content,
     mediaUrl: mediaUrl,
     mediaType: mediaType,
-    author: isAdmin ? 'إدارة المدرسة' : 'زائر',
+    author: 'إدارة المدرسة',
     timestamp: Date.now(),
     likes: {},
     comments: []
@@ -468,7 +499,7 @@ function loadPosts() {
     const pc = document.getElementById('PC'); if (pc) pc.textContent = posts.length;
     
     if (!posts.length) {
-      pl.innerHTML = `<div class="text-center p-5"><i class="fas fa-newspaper fa-3x text-muted mb-2"></i><h6>لا توجد منشورات</h6><p class="text-muted">كن أول من ينشر!</p></div>`;
+      pl.innerHTML = `<div class="text-center p-5"><i class="fas fa-newspaper fa-3x text-muted mb-2"></i><h6>لا توجد منشورات</h6><p class="text-muted">${isAdmin ? 'كن أول من ينشر!' : 'سيتم إضافة المنشورات قريباً'}</p></div>`;
       return;
     }
     pl.innerHTML = posts.map(p => renderPost(p)).join('');
@@ -483,21 +514,7 @@ function renderPost(post) {
   const likesCount = post.likes ? Object.keys(post.likes).length : 0;
   const comments = post.comments || [];
   
-  let mediaHtml = '';
-  if (post.mediaUrl) {
-    if (post.mediaUrl.includes('youtube.com/watch') || post.mediaUrl.includes('youtu.be/')) {
-      const videoId = post.mediaUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/)?.[1];
-      if (videoId) mediaHtml = `<div class="post-embed mt-2"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="width:100%;height:250px;border-radius:12px"></iframe></div>`;
-    } else if (/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(post.mediaUrl)) {
-      mediaHtml = `<div class="post-embed mt-2"><img src="${post.mediaUrl}" class="img-fluid rounded-3" style="max-height:300px;width:100%;object-fit:cover" onclick="openModal('${post.mediaUrl}','صورة','img')"></div>`;
-    } else if (/\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(post.mediaUrl)) {
-      mediaHtml = `<div class="post-embed mt-2"><video controls src="${post.mediaUrl}" style="width:100%;max-height:300px;border-radius:12px"></video></div>`;
-    } else if (/\.pdf(\?|$)/i.test(post.mediaUrl)) {
-      mediaHtml = `<div class="post-embed mt-2"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(post.mediaUrl)}&embedded=true" style="width:100%;height:400px;border-radius:12px"></iframe></div>`;
-    } else {
-      mediaHtml = `<div class="post-embed mt-2"><a href="${post.mediaUrl}" target="_blank" class="btn btn-outline-primary w-100"><i class="fas fa-external-link-alt"></i> فتح الرابط</a></div>`;
-    }
-  }
+  let mediaHtml = getMediaHtml(post.mediaUrl);
   
   const commentsHtml = (comments || []).map(c => `
     <div class="post-comment d-flex justify-content-between align-items-start mb-2 pb-2 border-bottom">
@@ -632,6 +649,15 @@ function sharePost(postId, content) {
   window.open(`https://wa.me/?text=${encodeURIComponent(content + '\n\nمنصة مدرسة سعد بن أبي وقاص\n' + postUrl)}`, '_blank');
 }
 
+function openMediaModal(url, type) {
+  let content = '';
+  if (type === 'image') content = `<img src="${url}" style="max-width:100%;max-height:88vh">`;
+  else content = `<iframe src="${url}" style="width:100%;height:80vh" allowfullscreen></iframe>`;
+  const modal = document.createElement('div'); modal.className = 'mm fixed-top vh-100 d-flex flex-column bg-dark bg-opacity-95 z-3'; modal.id = 'MM';
+  modal.innerHTML = `<div class="d-flex justify-content-between p-2 bg-dark text-white"><span>عرض الوسائط</span><button class="btn-close btn-close-white" onclick="document.getElementById('MM').remove()"></button></div><div class="flex-grow-1 d-flex align-items-center justify-content-center p-3">${content}</div>`;
+  document.body.appendChild(modal);
+}
+
 // ========== STUDENTS & RESULTS ==========
 function showStudents() {
   hideHero();
@@ -745,7 +771,7 @@ function delGradeResults(grade) {
   });
 }
 
-// ========== FILES ==========
+// ========== FILES (Gallery, Library, Art) with Admin Only Upload ==========
 function showFiles(section, title) {
   hideHero();
   activeFilter = 'all';
@@ -754,7 +780,7 @@ function showFiles(section, title) {
     <div class="fi">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold mb-0">${title}</h4>
-        ${isAdmin ? `<button class="btn bg btn-sm px-4" onclick="showUpload('${section}','${title}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>` : ''}
+        ${isAdmin ? `<button class="btn bg btn-sm px-4" onclick="showFileUpload('${section}','${title}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>` : ''}
       </div>
       <div class="sfb d-flex gap-2 mb-3 flex-wrap">
         <input type="text" id="FSI" class="form-control w-50" placeholder="ابحث..." oninput="renderFiles('${section}')">
@@ -804,10 +830,10 @@ function renderFiles(section) {
     const url = f.url || '';
     const type = getFileType(url);
     let thumb = '';
-    if (type === 'img') thumb = `<div class="fc-media"><img src="${url}" loading="lazy"><div class="fc-media-overlay" onclick="openModal('${url}','${f.title}','img')"><div class="fc-play-btn"><i class="fas fa-expand"></i></div></div></div>`;
-    else if (type === 'vid') thumb = `<div class="fc-media" onclick="openModal('${url}','${f.title}','vid')"><video src="${url}" preload="metadata" style="width:100%;height:200px;object-fit:cover"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;
-    else if (type === 'yt') thumb = `<div class="fc-media bg-dark d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openModal('${url}','${f.title}','yt')"><i class="fab fa-youtube fa-4x text-danger"></i></div>`;
-    else if (type === 'pdf') thumb = `<div class="fc-media bg-light d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openModal('${url}','${f.title}','pdf')"><i class="fas fa-file-pdf fa-4x text-danger"></i></div>`;
+    if (type === 'img') thumb = `<div class="fc-media"><img src="${url}" loading="lazy"><div class="fc-media-overlay" onclick="openFileModal('${url}','img')"><div class="fc-play-btn"><i class="fas fa-expand"></i></div></div></div>`;
+    else if (type === 'vid') thumb = `<div class="fc-media" onclick="openFileModal('${url}','vid')"><video src="${url}" preload="metadata" style="width:100%;height:200px;object-fit:cover"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;
+    else if (type === 'yt') thumb = `<div class="fc-media bg-dark d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openFileModal('${url}','yt')"><i class="fab fa-youtube fa-4x text-danger"></i></div>`;
+    else if (type === 'pdf') thumb = `<div class="fc-media bg-light d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openFileModal('${url}','pdf')"><i class="fas fa-file-pdf fa-4x text-danger"></i></div>`;
     else thumb = `<div class="fc-media bg-light d-flex align-items-center justify-content-center" style="height:200px"><i class="fas fa-link fa-4x text-muted"></i></div>`;
     return `
       <div class="col-md-6">
@@ -817,7 +843,7 @@ function renderFiles(section) {
             <div class="fc-title">${f.title || 'بدون عنوان'}</div>
             ${f.description ? `<p class="small text-muted">${f.description}</p>` : ''}
             <div class="fc-actions">
-              <button class="fc-btn-primary" onclick="openModal('${url}','${f.title}','${type}')"><i class="fas fa-eye"></i> عرض</button>
+              <button class="fc-btn-primary" onclick="openFileModal('${url}','${type}')"><i class="fas fa-eye"></i> عرض</button>
               <a href="${url}" download class="fc-btn-icon"><i class="fas fa-download"></i></a>
               ${isAdmin ? `<button class="fc-btn-icon" onclick="delFile('${section}','${fid}')"><i class="fas fa-trash"></i></button>` : ''}
             </div>
@@ -828,7 +854,7 @@ function renderFiles(section) {
   }).join('');
 }
 
-function openModal(url, title, type) {
+function openFileModal(url, type) {
   document.getElementById('MM')?.remove();
   let content = '';
   if (type === 'img') content = `<img src="${url}" style="max-width:100%;max-height:88vh">`;
@@ -839,11 +865,11 @@ function openModal(url, title, type) {
   } else if (type === 'pdf') content = `<iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true" style="width:100%;height:80vh"></iframe>`;
   else content = `<p class="text-white">لا يمكن عرض الملف مباشرة<br><a href="${url}" target="_blank" class="btn bg mt-3">فتح الرابط</a></p>`;
   const modal = document.createElement('div'); modal.className = 'mm fixed-top vh-100 d-flex flex-column bg-dark bg-opacity-95 z-3'; modal.id = 'MM';
-  modal.innerHTML = `<div class="d-flex justify-content-between p-2 bg-dark text-white"><span>${title || 'عرض'}</span><button class="btn-close btn-close-white" onclick="document.getElementById('MM').remove()"></button></div><div class="flex-grow-1 d-flex align-items-center justify-content-center p-3">${content}</div>`;
+  modal.innerHTML = `<div class="d-flex justify-content-between p-2 bg-dark text-white"><span>عرض الملف</span><button class="btn-close btn-close-white" onclick="document.getElementById('MM').remove()"></button></div><div class="flex-grow-1 d-flex align-items-center justify-content-center p-3">${content}</div>`;
   document.body.appendChild(modal);
 }
 
-function showUpload(section, title) {
+function showFileUpload(section, title) {
   document.getElementById('MC').innerHTML = `
     <div class="fi">
       <div class="d-flex align-items-center gap-3 mb-4">
@@ -863,7 +889,7 @@ function showUpload(section, title) {
         <div id="urlPreview" class="mt-2"></div>
       </div>
       
-      <div class="d-grid"><button class="btn bg py-3 fw-bold" id="UBT" onclick="saveFile('${section}','${title}')"><i class="fas fa-save me-2"></i>حفظ الملف</button></div>
+      <div class="d-grid"><button class="btn bg py-3 fw-bold" onclick="saveFile('${section}','${title}')"><i class="fas fa-save me-2"></i>حفظ الملف</button></div>
     </div>
   `;
   document.getElementById('fileUrl').addEventListener('input', function() { previewFileUrl(this.value); });
@@ -1009,8 +1035,8 @@ function showAdminDash() {
       </div>
       <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
       <div class="row g-3 mb-4">
-        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showUpload('gallery_section','المعرض')"><i class="fas fa-plus-circle"></i><h6>رفع للمعرض</h6></div></div>
-        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showUpload('library_section','المكتبة')"><i class="fas fa-book-medical"></i><h6>رفع للمكتبة</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showFileUpload('gallery_section','المعرض')"><i class="fas fa-plus-circle"></i><h6>رفع للمعرض</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showFileUpload('library_section','المكتبة')"><i class="fas fa-book-medical"></i><h6>رفع للمكتبة</h6></div></div>
         <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showResultsMgr()"><i class="fas fa-upload"></i><h6>رفع النتائج</h6></div></div>
         <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showTickerEd()"><i class="fas fa-newspaper"></i><h6>تعديل الأخبار</h6></div></div>
       </div>
