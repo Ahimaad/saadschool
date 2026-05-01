@@ -5,82 +5,110 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0a2b4e">
 <title>بوابة مدرسة سعد بن أبي وقاص</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="preconnect" href="https://www.gstatic.com">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
-:root{--pr:#0a2b4e;--pr2:#1e4a76;--gd:#d4af37;--bg:#eef1f7}
+:root{--pr:#0a2b4e;--pr2:#1e4a76;--gd:#d4af37;--gdl:#f0d060;--bg:#eef1f7}
 body{background:var(--bg);color:#1e2a3e}
 .dark{background:#0b0f1a!important;color:#dde3ee}
-.dark .gc,.dark .post-card{background:#141c2c!important}
+.dark .gc,.dark .fc,.dark .nc,.dark .post-card,.dark .qc{background:rgba(16,22,36,.96)!important}
+.dark .bg-light{background:#1a1a2e!important}
 header{background:linear-gradient(135deg,var(--pr),#0e3a65);border-bottom:4px solid var(--gd);padding:14px 0;position:sticky;top:0;z-index:100}
 .slogo{width:72px;height:72px;border-radius:50%;border:3px solid var(--gd);background:white;padding:4px;object-fit:cover}
 .stl{font-weight:900;color:white}
 .hbg{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;display:inline-block;font-size:.72rem}
 .od{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:od 2s infinite}
 @keyframes od{0%,100%{opacity:1}50%{opacity:.3}}
-.tk{background:linear-gradient(90deg,var(--pr),#0e3a65);color:white;padding:8px 0;white-space:nowrap;overflow:hidden}
-.tw{display:inline-block;animation:ts 30s linear infinite}
+.tk{background:linear-gradient(90deg,var(--pr),#0e3a65);color:white;padding:8px 0;white-space:nowrap;overflow:hidden;position:relative}
+.tw{display:inline-block;animation:ts 50s linear infinite}
 @keyframes ts{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 .ti{display:inline-block;padding:0 30px}
-.gc{background:rgba(255,255,255,.95);border-radius:20px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.1);margin-bottom:20px}
+.gc{background:rgba(255,255,255,.97);border-radius:20px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.1);margin-bottom:20px;transition:all .3s}
 .smi{background:#fff;border:none;border-radius:12px;padding:12px;margin-bottom:8px;width:100%;text-align:right;font-weight:700;transition:all .3s;cursor:pointer;border-right:5px solid var(--gd);display:flex;align-items:center;gap:8px}
 .smi:hover{background:var(--pr);color:var(--gd)}
 .sc{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:12px;background:#f4f7ff;margin-bottom:7px}
 .qc{border-radius:12px;padding:18px 10px;text-align:center;cursor:pointer;background:white;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:all .3s}
-.qc:hover{transform:translateY(-5px);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.qc:hover{transform:translateY(-5px)}
 .qc i{font-size:1.9rem;margin-bottom:8px;display:block}
-.post-card{background:white;border-radius:20px;padding:18px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
-.post-actions{display:flex;gap:16px;padding-top:10px;border-top:1px solid #eee;margin-top:10px}
-.pab{background:none;border:none;cursor:pointer;color:#888}
-.pab.liked{color:#e74c3c}
+.post-card{background:white;border-radius:20px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.post-embed{border-radius:12px;overflow:hidden;margin:10px 0}
+.post-embed iframe{width:100%;aspect-ratio:16/9;border:none}
+.post-embed img{width:100%;max-height:320px;object-fit:cover}
+.post-actions .btn-light{background:#f0f2f5;border:none}
+.post-actions .btn-light:hover{background:#e4e6e9}
+.fc{background:#fff;border-radius:12px;overflow:hidden;margin-bottom:15px;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s}
+.fc:hover{transform:translateY(-3px)}
+.fc-media{position:relative;overflow:hidden}
+.fc-media img{width:100%;height:200px;object-fit:cover}
+.fc-media-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.fc-media:hover .fc-media-overlay{background:rgba(0,0,0,.3)}
+.fc-play-btn{width:50px;height:50px;border-radius:50%;background:rgba(212,175,55,.9);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:all .3s}
+.fc-media:hover .fc-play-btn{opacity:1;transform:scale(1)}
+.fc-body{padding:13px}
+.fc-title{font-weight:700;font-size:.95rem;margin-bottom:4px}
+.fc-actions{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}
+.fc-btn-primary{background:var(--pr);color:white;border:none;border-radius:30px;padding:6px 12px;font-size:.75rem;cursor:pointer}
+.fc-btn-icon{width:32px;height:32px;border-radius:50%;border:1px solid #ddd;background:white;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.uz{border:2px dashed #ccc;border-radius:20px;padding:30px;text-align:center;cursor:pointer;background:#f9f9ff;transition:all .3s}
+.uz:hover{border-color:var(--gd);background:#fffbf0}
+.ui{font-size:3rem;color:var(--gd);margin-bottom:10px}
+.json-area{border:2px dashed var(--gd);border-radius:20px;padding:30px;text-align:center;cursor:pointer;background:#f9fbfe}
 .fab-th{position:fixed;bottom:26px;left:26px;background:var(--gd);color:var(--pr);border:none;border-radius:50%;width:52px;height:52px;z-index:500;cursor:pointer}
 .fab-st{position:fixed;bottom:26px;left:88px;background:var(--pr);color:white;border:none;border-radius:50%;width:44px;height:44px;z-index:500;cursor:pointer;opacity:0}
 .fab-st.show{opacity:1}
-#ldr{position:fixed;inset:0;background:var(--pr);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center}
-#ldr.hide{opacity:0;visibility:hidden}
+#ldr{position:fixed;inset:0;background:var(--pr);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .5s}
+#ldr.hide{opacity:0;visibility:hidden;pointer-events:none}
 .tc{position:fixed;top:80px;left:20px;z-index:9000}
-.ti2{background:var(--pr);color:white;padding:10px 16px;border-radius:12px;margin-bottom:5px;border-right:4px solid var(--gd)}
-@media(max-width:768px){.hide-mob{display:none!important}.fab-th{bottom:76px}.fab-st{bottom:76px}}
+.ti2{background:var(--pr);color:white;padding:10px 16px;border-radius:12px;margin-bottom:5px;border-right:4px solid var(--gd);animation:slideIn .3s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-30px)}to{opacity:1;transform:translateX(0)}}
+.results-grade-row{display:flex;justify-content:space-between;align-items:center;padding:10px;border-bottom:1px solid #eee}
+@media(max-width:768px){.hide-mob{display:none!important}.fab-th{bottom:76px}.fab-st{bottom:76px}.col-md-6{width:100%!important}}
 </style>
 </head>
 <body>
-<div id="ldr"><img src="logo.jpg" style="width:80px;border-radius:50%"><p>جاري التحميل...</p></div>
+<div id="ldr"><img src="logo.jpg" style="width:80px;border-radius:50%"><p>جاري التحميل...</p><div class="spinner-border text-warning mt-2"></div></div>
 <div class="tc" id="TC"></div>
 <button class="fab-th" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-<button class="fab-st" id="STB" onclick="window.scrollTo({top:0})"><i class="fas fa-chevron-up"></i></button>
+<button class="fab-st" id="STB" onclick="window.scrollTo({top:0,behavior:'smooth'})"><i class="fas fa-chevron-up"></i></button>
 
-<header><div class="container"><div class="row align-items-center"><div class="col-md-auto"><img src="logo.jpg" class="slogo" alt="شعار"></div><div class="col"><div class="hbg">إدارة الفشن التعليمية</div><h1 class="stl">مدرسة سعد بن أبي وقاص الرسمية للغات</h1><p><span class="od"></span> النظام يعمل | بوابة الإبداع الرقمي</p></div></div></div></header>
+<header><div class="container"><div class="row align-items-center text-center text-md-end"><div class="col-md-auto"><img src="logo.jpg" class="slogo" alt="شعار"></div><div class="col"><div class="hbg mb-2">إدارة الفشن التعليمية — محافظة بني سويف</div><h1 class="stl fs-4 mb-1">مدرسة سعد بن أبي وقاص الرسمية للغات</h1><p class="mb-0" style="color:rgba(255,255,255,.6)"><span class="od"></span> النظام يعمل | بوابة الإبداع والتميز الرقمي</p></div></div></div></header>
 
-<div class="tk"><div class="tw" id="TKW"><span class="ti">أهلاً بكم في بوابة المدرسة</span><span class="ti">نبارك لطلابنا المتفوقين</span></div></div>
+<div class="tk"><div class="tw" id="TKW"><span class="ti"><i class="fas fa-star"></i> أهلاً بكم في بوابة المدرسة</span><span class="ti"><i class="fas fa-trophy"></i> نبارك لطلابنا المتفوقين</span><span class="ti"><i class="fas fa-bullhorn"></i> مدرستنا من بين أوائل مدارس بني سويف</span></div></div>
 
 <div class="container my-4"><div class="row g-4">
   <div class="col-lg-4 hide-mob">
-    <div class="gc">
-      <button class="smi" onclick="go('home')"><i class="fas fa-home"></i> الرئيسية</button>
-      <button class="smi" onclick="go('posts')"><i class="fas fa-newspaper"></i> المنشورات <span class="badge bg-warning" id="PC">0</span></button>
-      <button class="smi" onclick="go('students')"><i class="fas fa-user-graduate"></i> شئون الطلاب</button>
-      <button class="smi" onclick="go('gallery')"><i class="fas fa-images"></i> المعرض الرقمي</button>
-      <button class="smi" onclick="go('news')"><i class="fas fa-bullhorn"></i> أخبار المدرسة</button>
-      <button class="smi" onclick="doAdmin()"><i class="fas fa-lock"></i> <span id="ALB">لوحة الإدارة</span></button>
+    <div class="gc mb-4">
+      <button class="smi" onclick="go('home')"><i class="fas fa-home"></i><span>الرئيسية</span></button>
+      <button class="smi" onclick="go('posts')"><i class="fas fa-newspaper"></i><span>المنشورات</span><span class="badge bg-warning ms-2" id="PC">0</span></button>
+      <button class="smi" onclick="go('students')"><i class="fas fa-user-graduate"></i><span>شئون الطلاب والنتائج</span></button>
+      <button class="smi" onclick="go('gallery')"><i class="fas fa-photo-video"></i><span>المعرض الرقمي</span></button>
+      <button class="smi" onclick="go('news')"><i class="fas fa-bullhorn"></i><span>أخبار المدرسة</span></button>
+      <button class="smi" onclick="go('art')"><i class="fas fa-palette"></i><span>معرض التربية الفنية</span></button>
+      <button class="smi" onclick="go('library')"><i class="fas fa-book-reader"></i><span>المكتبة الرقمية</span><span class="badge bg-warning ms-2" id="LC">0</span></button>
+      <button class="smi" onclick="doAdmin()" style="border-right-color:#dc3545"><i class="fas fa-lock text-danger"></i><span id="ALB">لوحة الإدارة</span></button>
     </div>
     <div class="gc">
-      <h6><i class="fas fa-chart-bar"></i> إحصائيات المدرسة</h6>
-      <div class="sc"><span>الطلاب</span><span class="badge bg-primary stat-edit" id="CS" onclick="editStat('studentsCount')">0</span></div>
-      <div class="sc"><span>المعلمون</span><span class="badge bg-success stat-edit" id="CT" onclick="editStat('teachersCount')">0</span></div>
-      <div class="sc"><span>الأنشطة</span><span class="badge bg-warning stat-edit" id="CA" onclick="editStat('activitiesCount')">0</span></div>
-      <div id="ABG"></div>
+      <h6 class="fw-bold mb-3"><i class="fas fa-chart-bar me-2 text-primary"></i> إحصائيات المدرسة</h6>
+      <div class="sc"><span>الطلاب</span><span class="badge bg-primary px-3 stat-edit" id="CS" onclick="editStat('studentsCount')" style="cursor:pointer">0</span></div>
+      <div class="sc"><span>المعلمون</span><span class="badge bg-success px-3 stat-edit" id="CT" onclick="editStat('teachersCount')" style="cursor:pointer">0</span></div>
+      <div class="sc"><span>الأنشطة</span><span class="badge bg-warning text-dark px-3 stat-edit" id="CA" onclick="editStat('activitiesCount')" style="cursor:pointer">0</span></div>
+      <div id="ABG" class="mt-2"></div>
     </div>
   </div>
   <div class="col-lg-8">
-    <div id="SWC" class="gc"><div class="swiper hs" id="HSW"><div class="swiper-wrapper" id="SWWR"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div>
-    <div id="MC" class="gc"></div>
+    <div id="SWC" class="sw-wrap mb-4"><div class="swiper hs" id="HSW"><div class="swiper-wrapper" id="SWWR"></div><div class="swiper-pagination"></div><div class="swiper-button-next"></div><div class="swiper-button-prev"></div></div></div>
+    <div class="gc" id="MC"></div>
   </div>
 </div></div>
 
-<footer class="py-4 bg-dark text-white text-center"><p>© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</p></footer>
+<footer class="py-4 mt-5 bg-dark text-white text-center"><div class="container"><p class="mb-1 fw-bold">© 2026 مدرسة سعد بن أبي وقاص الرسمية للغات</p><p class="small mb-0" style="color:rgba(255,255,255,.4)">جميع الحقوق محفوظة — بوابة التعليم الرقمي</p></div></footer>
 
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -88,36 +116,61 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65);border-bottom:4px so
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
 // ========== CONFIG ==========
-let db = null, isAdmin = false, adminLock = 0;
-let swiperInst = null;
+let db = null, isAdmin = false, adminTries = 0, adminLock = 0;
+let swiperInst = null, activeFilter = 'all', filesCache = {};
 let statsData = { studentsCount: 1250, teachersCount: 85, activitiesCount: 24 };
+let postsListener = null;
+let statsListener = null;
 
+const CLD_CLOUD = 'dyo4ff7ha', CLD_PRESET = 'school_raw';
 const SECRET_KEY = 'YWJ1c2FiZXIxMjM=';
 
-function toast(msg, type = 'i') {
-  const c = document.getElementById('TC');
-  const t = document.createElement('div');
-  t.className = `ti2 ${type}`;
-  t.innerHTML = `<i class="fas ${type === 's' ? 'fa-check-circle' : 'fa-info-circle'}"></i> ${msg}`;
+const GL = { p6: 'الصف السادس الابتدائي', p5: 'الصف الخامس الابتدائي', p4: 'الصف الرابع الابتدائي', p3: 'الصف الثالث الابتدائي' };
+
+function toast(msg, type = 'i', dur = 3000) {
+  const icons = { s: 'fa-check-circle', e: 'fa-times-circle', w: 'fa-exclamation-triangle', i: 'fa-info-circle' };
+  const c = document.getElementById('TC'); if (!c) return;
+  const t = document.createElement('div'); t.className = `ti2 ${type}`;
+  t.innerHTML = `<i class="fas ${icons[type] || icons.i}"></i><span>${msg}</span>`;
   c.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
+  setTimeout(() => t.remove(), dur);
 }
 
-// Firebase
-firebase.initializeApp({
-  apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
-  authDomain: "saad-school-portal.firebaseapp.com",
-  databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
-  projectId: "saad-school-portal",
-  messagingSenderId: "1085838136773",
-  appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
-});
-db = firebase.database();
+function initFirebase() {
+  if (typeof firebase === 'undefined') { setTimeout(initFirebase, 150); return; }
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp({
+        apiKey: "AIzaSyC79JwFiDucsph3T8PTKntbk_VE1ANFTxg",
+        authDomain: "saad-school-portal.firebaseapp.com",
+        databaseURL: "https://saad-school-portal-default-rtdb.firebaseio.com",
+        projectId: "saad-school-portal",
+        messagingSenderId: "1085838136773",
+        appId: "1:1085838136773:web:0d200edd01bd12fb0a27ac"
+      });
+    }
+    db = firebase.database();
+    startApp();
+  } catch (e) { console.error(e); setTimeout(initFirebase, 400); }
+}
 
-// Stats
+function startApp() {
+  window.addEventListener('scroll', () => document.getElementById('STB')?.classList.toggle('show', scrollY > 280));
+  loadStats();
+  loadTicker();
+  loadSlider();
+  if (localStorage.getItem('theme') === 'dark') toggleTheme();
+  setTimeout(() => document.getElementById('ldr')?.classList.add('hide'), 700);
+  go('home');
+  db.ref('library_section').on('value', s => { const e = document.getElementById('LC'); if (e) e.textContent = s.numChildren(); });
+}
+
+// ========== STATS ==========
 function loadStats() {
-  db.ref('school_stats').on('value', (snap) => {
-    const stats = snap.val();
+  const statsRef = db.ref('school_stats');
+  if (statsListener) statsListener.off();
+  statsListener = statsRef.on('value', (snapshot) => {
+    const stats = snapshot.val();
     if (stats) {
       statsData = stats;
       document.getElementById('CS').textContent = (stats.studentsCount || 1250).toLocaleString();
@@ -125,256 +178,863 @@ function loadStats() {
       document.getElementById('CA').textContent = (stats.activitiesCount || 24).toLocaleString();
     } else {
       db.ref('school_stats').set(statsData);
+      document.getElementById('CS').textContent = (1250).toLocaleString();
+      document.getElementById('CT').textContent = (85).toLocaleString();
+      document.getElementById('CA').textContent = (24).toLocaleString();
     }
   });
 }
 
 function editStat(stat) {
   if (!isAdmin) { toast('متاح للإدارة فقط', 'w'); return; }
+  const labels = { studentsCount: 'عدد الطلاب', teachersCount: 'عدد المعلمين', activitiesCount: 'عدد الأنشطة' };
+  const ids = { studentsCount: 'CS', teachersCount: 'CT', activitiesCount: 'CA' };
   Swal.fire({
-    title: 'تعديل القيمة',
+    title: `تعديل — ${labels[stat]}`,
     input: 'number',
     inputValue: statsData[stat],
     showCancelButton: true,
     confirmButtonText: 'حفظ'
   }).then(res => {
-    if (res.isConfirmed) {
+    if (res.isConfirmed && res.value !== undefined) {
       const v = parseInt(res.value);
-      if (!isNaN(v)) {
-        statsData[stat] = v;
-        db.ref('school_stats/' + stat).set(v);
-        document.getElementById(stat === 'studentsCount' ? 'CS' : stat === 'teachersCount' ? 'CT' : 'CA').textContent = v.toLocaleString();
-        toast('تم التحديث ✅', 's');
-      }
+      if (isNaN(v)) return;
+      statsData[stat] = v;
+      db.ref('school_stats/' + stat).set(v).then(() => {
+        document.getElementById(ids[stat]).textContent = v.toLocaleString();
+        toast('تم تحديث الإحصائية ✅', 's');
+      });
     }
   });
 }
 
-// Posts
-function showPosts() {
+function toggleTheme() { document.body.classList.toggle('dark'); const i = document.querySelector('.fab-th i'); i.className = document.body.classList.contains('dark') ? 'fas fa-sun' : 'fas fa-moon'; localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light'); }
+const hideHero = () => { document.getElementById('SWC').style.display = 'none'; };
+const showHero = () => { document.getElementById('SWC').style.display = ''; };
+
+function loadSlider() {
+  const defaults = [{ url: 'https://picsum.photos/id/20/1200/400', cap: 'بيئة تعليمية محفزة' }, { url: 'https://picsum.photos/id/100/1200/400', cap: 'أنشطة تكنولوجية' }, { url: 'https://picsum.photos/id/180/1200/400', cap: 'إبداع بلا حدود' }];
+  const secs = ['gallery_section', 'art_section', 'library_section'];
+  Promise.all(secs.map(s => db.ref(s).orderByKey().limitToLast(6).once('value').catch(() => null))).then(snaps => {
+    let slides = [];
+    snaps.forEach((snap, idx) => { if (snap && snap.exists()) snap.forEach(c => { const v = c.val(); if (v.url && /\.(jpg|jpeg|png|gif|webp)/i.test(v.url)) slides.push({ url: v.url, cap: (v.title || 'صورة') }); }); });
+    buildSlider(slides.length >= 2 ? slides.slice(-8).reverse() : defaults);
+  }).catch(() => buildSlider(defaults));
+}
+function buildSlider(slides) { const wr = document.getElementById('SWWR'); if (!wr) return; wr.innerHTML = slides.map(s => `<div class="swiper-slide"><img src="${s.url}" class="w-100" style="height:250px;object-fit:cover" onerror="this.src='https://picsum.photos/id/20/1200/400'"><div class="sc2 p-2 bg-dark text-white position-absolute bottom-0 start-0 w-100">${s.cap}</div></div>`).join(''); if (swiperInst) try { swiperInst.destroy(true, true); } catch(e){} swiperInst = new Swiper('#HSW', { loop: slides.length > 1, autoplay: { delay: 4500 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } }); }
+function loadTicker() { db.ref('ticker_news').once('value', snap => { const wr = document.getElementById('TKW'); if (!wr) return; const def = ['أهلاً بكم في بوابة المدرسة', 'نبارك لطلابنا المتفوقين', 'ترقبوا فعاليات أسبوع الابتكار']; let items = def; if (snap.exists()) { const a = []; snap.forEach(c => { if (c.val().text) a.push(c.val().text); }); if (a.length) items = a; } const all = [...items, ...items]; wr.innerHTML = all.map(t => `<span class="ti"><i class="fas fa-circle-dot"></i> ${t}</span>`).join(''); }); }
+
+function go(sec) {
+  scrollTo({ top: 0, behavior: 'smooth' });
+  if (sec === 'home') return showHome();
+  if (sec === 'posts') return showPosts();
+  if (sec === 'students') return showStudents();
+  if (sec === 'gallery') return showFiles('gallery_section', 'المعرض الرقمي');
+  if (sec === 'news') return showNews();
+  if (sec === 'art') return showFiles('art_section', 'معرض التربية الفنية');
+  if (sec === 'library') return showFiles('library_section', 'المكتبة الرقمية');
+}
+
+function showHome() {
+  showHero();
   document.getElementById('MC').innerHTML = `
-    <div class="d-flex justify-content-between mb-3">
-      <h4><i class="fas fa-newspaper"></i> المنشورات</h4>
-      ${isAdmin ? '<button class="btn btn-warning" onclick="showCreatePost()">+ منشور جديد</button>' : ''}
+    <div class="fi text-center">
+      <div class="mb-3"><i class="fas fa-school fa-3x text-primary"></i></div>
+      <h2 class="fw-bold mb-2">مرحباً بك في بوابتنا الرقمية</h2>
+      <p class="text-muted">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p>
+      <div class="row g-3 my-4">
+        <div class="col-4"><div class="hsc p-3 bg-white rounded shadow-sm"><div class="sn text-primary fs-2 fw-bold">100%</div><small>دقة النتائج</small></div></div>
+        <div class="col-4"><div class="hsc p-3 bg-white rounded shadow-sm"><div class="sn text-success fs-2 fw-bold">24/7</div><small>توافر النظام</small></div></div>
+        <div class="col-4"><div class="hsc p-3 bg-white rounded shadow-sm"><div class="sn fs-2 fw-bold" style="color:var(--gd)">${statsData.studentsCount || 1250}</div><small>طالب</small></div></div>
+      </div>
+      <h6 class="fw-bold mb-3">⚡ وصول سريع</h6>
+      <div class="row g-3">
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm" onclick="go('students')"><i class="fas fa-search-plus"></i><h6 class="mt-2">النتائج</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm" onclick="go('posts')"><i class="fas fa-newspaper"></i><h6 class="mt-2">المنشورات</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm" onclick="go('gallery')"><i class="fas fa-images"></i><h6 class="mt-2">المعرض</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm" onclick="go('library')"><i class="fas fa-book-open"></i><h6 class="mt-2">المكتبة</h6></div></div>
+      </div>
     </div>
-    <div id="postsList">جاري التحميل...</div>
+  `;
+}
+
+// ========== POSTS SYSTEM (LIKE FACEBOOK) ==========
+
+let currentPostMedia = null;
+let selectedFile = null;
+
+function showPosts() {
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+        <h4 class="fw-bold mb-0"><i class="fas fa-newspaper me-2 text-primary"></i> المنشورات</h4>
+      </div>
+      
+      <div class="card mb-4 shadow-sm border-0 rounded-3">
+        <div class="card-body">
+          <div class="d-flex gap-3">
+            <div class="flex-shrink-0">
+              <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 48px; height: 48px;">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+            <div class="flex-grow-1">
+              <textarea id="newPostContent" class="form-control border-0 bg-light rounded-3" rows="2" placeholder="ماذا تريد أن تنشر؟" style="resize: none;"></textarea>
+              
+              <div id="postMediaPreview" class="mt-2" style="display: none;">
+                <div class="position-relative border rounded-3 overflow-hidden bg-light">
+                  <img id="previewImage" src="" style="max-height: 200px; width: 100%; object-fit: cover; display: none;">
+                  <video id="previewVideo" controls style="max-height: 200px; width: 100%; display: none;"></video>
+                  <div id="previewLink" class="p-2 bg-light" style="display: none;">
+                    <i class="fas fa-link"></i> <span id="linkUrlDisplay"></span>
+                  </div>
+                  <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 rounded-circle" onclick="clearPostMedia()">✕</button>
+                </div>
+              </div>
+              
+              <div class="d-flex gap-2 mt-2">
+                <button class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('postImageInput').click()">
+                  <i class="fas fa-image text-success"></i> صورة
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('postVideoInput').click()">
+                  <i class="fas fa-video text-danger"></i> فيديو
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="showLinkInput()">
+                  <i class="fas fa-link text-primary"></i> رابط
+                </button>
+                <input type="file" id="postImageInput" accept="image/*" style="display: none;" onchange="handlePostMedia(this.files[0], 'image')">
+                <input type="file" id="postVideoInput" accept="video/*" style="display: none;" onchange="handlePostMedia(this.files[0], 'video')">
+              </div>
+              
+              <div id="linkInputArea" class="mt-2" style="display: none;">
+                <div class="input-group">
+                  <input type="url" id="postLinkUrl" class="form-control" placeholder="أدخل الرابط (يوتيوب، صور، PDF...)">
+                  <button class="btn btn-primary" onclick="addLinkMedia()">إضافة</button>
+                </div>
+              </div>
+              
+              <div class="mt-3">
+                <button class="btn btn-primary w-100 rounded-pill" onclick="createNewPost()">
+                  <i class="fas fa-pen"></i> نشر
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="PL"><div class="text-center p-5"><div class="spinner-border" style="color:var(--gd)"></div></div></div>
+    </div>
   `;
   loadPosts();
 }
 
+function handlePostMedia(file, type) {
+  if (!file) return;
+  selectedFile = file;
+  currentPostMedia = { file: file, type: type, url: null };
+  
+  const previewDiv = document.getElementById('postMediaPreview');
+  const imgPreview = document.getElementById('previewImage');
+  const videoPreview = document.getElementById('previewVideo');
+  const linkPreview = document.getElementById('previewLink');
+  
+  previewDiv.style.display = 'block';
+  imgPreview.style.display = 'none';
+  videoPreview.style.display = 'none';
+  linkPreview.style.display = 'none';
+  
+  if (type === 'image') {
+    imgPreview.style.display = 'block';
+    imgPreview.src = URL.createObjectURL(file);
+  } else if (type === 'video') {
+    videoPreview.style.display = 'block';
+    videoPreview.src = URL.createObjectURL(file);
+  }
+}
+
+function showLinkInput() {
+  const linkArea = document.getElementById('linkInputArea');
+  linkArea.style.display = linkArea.style.display === 'none' ? 'block' : 'none';
+}
+
+function addLinkMedia() {
+  const url = document.getElementById('postLinkUrl').value.trim();
+  if (!url) return;
+  
+  currentPostMedia = { file: null, type: 'link', url: url };
+  
+  const previewDiv = document.getElementById('postMediaPreview');
+  const imgPreview = document.getElementById('previewImage');
+  const videoPreview = document.getElementById('previewVideo');
+  const linkPreview = document.getElementById('previewLink');
+  const linkUrlDisplay = document.getElementById('linkUrlDisplay');
+  
+  previewDiv.style.display = 'block';
+  imgPreview.style.display = 'none';
+  videoPreview.style.display = 'none';
+  linkPreview.style.display = 'block';
+  linkUrlDisplay.textContent = url;
+  
+  document.getElementById('linkInputArea').style.display = 'none';
+  document.getElementById('postLinkUrl').value = '';
+}
+
+function clearPostMedia() {
+  selectedFile = null;
+  currentPostMedia = null;
+  document.getElementById('postMediaPreview').style.display = 'none';
+  document.getElementById('previewImage').src = '';
+  document.getElementById('previewVideo').src = '';
+  document.getElementById('linkInputArea').style.display = 'none';
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', CLD_PRESET);
+  formData.append('folder', 'school/posts');
+  
+  try {
+    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/auto/upload`, {
+      method: 'POST',
+      body: formData
+    });
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error('خطأ في الرفع:', error);
+    return null;
+  }
+}
+
+async function createNewPost() {
+  const content = document.getElementById('newPostContent').value.trim();
+  if (!content && !currentPostMedia) {
+    toast('اكتب نص المنشور أو أضف وسائط', 'w');
+    return;
+  }
+  
+  let mediaUrl = null;
+  let mediaType = null;
+  
+  if (currentPostMedia) {
+    if (currentPostMedia.file) {
+      toast('جاري رفع الملف...', 'i', 1500);
+      mediaUrl = await uploadToCloudinary(currentPostMedia.file);
+      mediaType = currentPostMedia.type;
+    } else if (currentPostMedia.url) {
+      mediaUrl = currentPostMedia.url;
+      mediaType = 'link';
+    }
+  }
+  
+  db.ref('posts').push({
+    content: content,
+    mediaUrl: mediaUrl,
+    mediaType: mediaType,
+    author: isAdmin ? 'إدارة المدرسة' : 'زائر',
+    timestamp: Date.now(),
+    likes: {},
+    comments: []
+  }).then(() => {
+    toast('تم النشر ✅', 's');
+    document.getElementById('newPostContent').value = '';
+    clearPostMedia();
+    showPosts();
+  }).catch(err => toast('فشل النشر', 'e'));
+}
+
 function loadPosts() {
-  db.ref('posts').orderByChild('timestamp').on('value', (snap) => {
-    const posts = [];
-    snap.forEach(c => posts.push({ id: c.key, ...c.val() }));
+  const pl = document.getElementById('PL'); if (!pl) return;
+  if (postsListener) postsListener.off();
+  
+  postsListener = db.ref('posts').orderByChild('timestamp').on('value', (snap) => {
+    let posts = [];
+    if (snap.exists()) snap.forEach(c => posts.push({ id: c.key, ...c.val() }));
     posts.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
-    document.getElementById('PC').textContent = posts.length;
     
-    if (posts.length === 0) {
-      document.getElementById('postsList').innerHTML = '<div class="text-center text-muted">لا توجد منشورات</div>';
+    const pc = document.getElementById('PC'); if (pc) pc.textContent = posts.length;
+    
+    if (!posts.length) {
+      pl.innerHTML = `<div class="text-center p-5"><i class="fas fa-newspaper fa-3x text-muted mb-2"></i><h6>لا توجد منشورات</h6><p class="text-muted">كن أول من ينشر!</p></div>`;
       return;
     }
-    
-    const vid = sessionStorage.getItem('vid') || 'v' + Math.random();
-    sessionStorage.setItem('vid', vid);
-    
-    document.getElementById('postsList').innerHTML = posts.map(p => `
-      <div class="post-card">
-        <div class="d-flex justify-content-between">
-          <div><strong>${p.author || 'إدارة المدرسة'}</strong><br><small class="text-muted">${new Date(p.timestamp).toLocaleString()}</small></div>
-          ${isAdmin ? `<button class="btn btn-sm btn-danger" onclick="delPost('${p.id}')"><i class="fas fa-trash"></i></button>` : ''}
+    pl.innerHTML = posts.map(p => renderPost(p)).join('');
+  });
+}
+
+function renderPost(post) {
+  const userId = sessionStorage.getItem('userId') || 'user_' + Math.random().toString(36).substr(2, 8);
+  if (!sessionStorage.getItem('userId')) sessionStorage.setItem('userId', userId);
+  
+  const isLiked = post.likes && post.likes[userId];
+  const likesCount = post.likes ? Object.keys(post.likes).length : 0;
+  const comments = post.comments || [];
+  
+  let mediaHtml = '';
+  if (post.mediaUrl) {
+    if (post.mediaUrl.includes('youtube.com/watch') || post.mediaUrl.includes('youtu.be/')) {
+      const videoId = post.mediaUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/)?.[1];
+      if (videoId) mediaHtml = `<div class="post-embed mt-2"><iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen style="width:100%;height:250px;border-radius:12px"></iframe></div>`;
+    } else if (/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(post.mediaUrl)) {
+      mediaHtml = `<div class="post-embed mt-2"><img src="${post.mediaUrl}" class="img-fluid rounded-3" style="max-height:300px;width:100%;object-fit:cover" onclick="openModal('${post.mediaUrl}','صورة','img')"></div>`;
+    } else if (/\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(post.mediaUrl)) {
+      mediaHtml = `<div class="post-embed mt-2"><video controls src="${post.mediaUrl}" style="width:100%;max-height:300px;border-radius:12px"></video></div>`;
+    } else if (/\.pdf(\?|$)/i.test(post.mediaUrl)) {
+      mediaHtml = `<div class="post-embed mt-2"><iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(post.mediaUrl)}&embedded=true" style="width:100%;height:400px;border-radius:12px"></iframe></div>`;
+    } else {
+      mediaHtml = `<div class="post-embed mt-2"><a href="${post.mediaUrl}" target="_blank" class="btn btn-outline-primary w-100"><i class="fas fa-external-link-alt"></i> فتح الرابط</a></div>`;
+    }
+  }
+  
+  const commentsHtml = (comments || []).map(c => `
+    <div class="post-comment d-flex justify-content-between align-items-start mb-2 pb-2 border-bottom">
+      <div>
+        <strong class="text-primary">${escapeHtml(c.name)}</strong>
+        <p class="mb-0 small">${escapeHtml(c.text)}</p>
+        <small class="text-muted">${c.date || ''}</small>
+      </div>
+      ${isAdmin ? `<button class="btn btn-sm btn-link text-danger p-0" onclick="deleteComment('${post.id}','${c.id}')"><i class="fas fa-trash"></i></button>` : ''}
+    </div>
+  `).join('');
+  
+  return `
+    <div class="post-card mb-3 bg-white rounded-3 shadow-sm" id="post-${post.id}">
+      <div class="p-3">
+        <div class="d-flex gap-3 mb-2">
+          <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="flex-grow-1">
+            <div class="fw-bold">${escapeHtml(post.author || 'إدارة المدرسة')}</div>
+            <div class="small text-muted">${new Date(post.timestamp).toLocaleString('ar-EG')}</div>
+          </div>
+          ${isAdmin ? `<button class="btn btn-sm btn-link text-danger" onclick="deletePost('${post.id}')"><i class="fas fa-trash"></i></button>` : ''}
         </div>
-        <div class="post-content mt-2">${p.content}</div>
-        <div class="post-actions">
-          <button class="pab ${p.likes && p.likes[vid] ? 'liked' : ''}" onclick="likePost('${p.id}')">
-            <i class="fas fa-thumbs-up"></i> <span id="likes-${p.id}">${p.likes ? Object.keys(p.likes).length : 0}</span>
+        
+        <div class="post-content mb-2">${escapeHtml(post.content)}</div>
+        ${mediaHtml}
+        
+        <div class="post-stats d-flex gap-3 pt-2 border-top mt-2 small text-muted">
+          <span><i class="fas fa-thumbs-up"></i> ${likesCount}</span>
+          <span><i class="fas fa-comment"></i> ${(comments || []).length}</span>
+        </div>
+        
+        <div class="post-actions d-flex gap-2 pt-2 border-top">
+          <button class="btn btn-sm flex-grow-1 ${isLiked ? 'btn-primary' : 'btn-light'}" onclick="toggleLike('${post.id}')">
+            <i class="fas fa-thumbs-up"></i> ${isLiked ? 'تم الإعجاب' : 'أعجبني'}
           </button>
-          <button class="pab" onclick="sharePost('${p.content}')"><i class="fab fa-whatsapp"></i> مشاركة</button>
+          <button class="btn btn-sm btn-light flex-grow-1" onclick="toggleComments('${post.id}')">
+            <i class="fas fa-comment"></i> تعليق
+          </button>
+          <button class="btn btn-sm btn-light" onclick="sharePost('${post.id}','${escapeHtml(post.content || '').replace(/'/g, "\\'")}')">
+            <i class="fab fa-whatsapp"></i>
+          </button>
+        </div>
+        
+        <div id="comments-${post.id}" style="display: none;" class="mt-3 pt-2 border-top">
+          <div class="comments-list mb-2" id="comments-list-${post.id}">
+            ${commentsHtml || '<div class="text-muted small text-center">لا توجد تعليقات</div>'}
+          </div>
+          <div class="comment-input d-flex gap-2 mt-2">
+            <input type="text" id="comment-${post.id}" class="form-control form-control-sm" placeholder="اكتب تعليقاً...">
+            <button class="btn btn-primary btn-sm" onclick="addComment('${post.id}')"><i class="fas fa-paper-plane"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleLike(postId) {
+  const userId = sessionStorage.getItem('userId');
+  const likeRef = db.ref(`posts/${postId}/likes/${userId}`);
+  
+  likeRef.once('value', snap => {
+    if (snap.exists()) {
+      likeRef.remove();
+      toast('تم إلغاء الإعجاب', 'i', 1000);
+    } else {
+      likeRef.set(true);
+      toast('تم الإعجاب ✅', 's', 1000);
+    }
+  });
+}
+
+function toggleComments(postId) {
+  const commentsDiv = document.getElementById(`comments-${postId}`);
+  if (commentsDiv.style.display === 'none') {
+    commentsDiv.style.display = 'block';
+  } else {
+    commentsDiv.style.display = 'none';
+  }
+}
+
+function addComment(postId) {
+  const input = document.getElementById(`comment-${postId}`);
+  const text = input.value.trim();
+  if (!text) return;
+  
+  const comment = {
+    id: Date.now().toString(),
+    name: isAdmin ? 'إدارة المدرسة' : 'زائر',
+    text: text,
+    date: new Date().toLocaleString('ar-EG')
+  };
+  
+  db.ref(`posts/${postId}/comments`).push(comment).then(() => {
+    input.value = '';
+    toast('تم إضافة التعليق', 's', 1000);
+  });
+}
+
+function deleteComment(postId, commentId) {
+  db.ref(`posts/${postId}/comments`).once('value', snap => {
+    snap.forEach(c => {
+      if (c.val().id === commentId) {
+        c.ref.remove();
+        toast('تم حذف التعليق', 'i');
+      }
+    });
+  });
+}
+
+function deletePost(postId) {
+  Swal.fire({
+    title: 'حذف المنشور؟',
+    text: 'لا يمكن التراجع عن هذا الإجراء',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'احذف',
+    cancelButtonText: 'إلغاء',
+    confirmButtonColor: '#d33'
+  }).then(res => {
+    if (res.isConfirmed) {
+      db.ref(`posts/${postId}`).remove().then(() => toast('تم حذف المنشور', 'i'));
+    }
+  });
+}
+
+function sharePost(postId, content) {
+  const postUrl = window.location.href;
+  window.open(`https://wa.me/?text=${encodeURIComponent(content + '\n\nمنصة مدرسة سعد بن أبي وقاص\n' + postUrl)}`, '_blank');
+}
+
+// ========== STUDENTS & RESULTS ==========
+function showStudents() {
+  hideHero();
+  const opts = Object.entries(GL).map(([v, n]) => `<option value="${v}">${n}</option>`).join('');
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0"><i class="fas fa-user-graduate me-2 text-primary"></i> شئون الطلاب</h4>
+        ${isAdmin ? `<button class="btn bg btn-sm" onclick="showResultsMgr()"><i class="fas fa-upload me-2"></i>إدارة النتائج</button>` : ''}
+      </div>
+      <div id="SC"></div>
+    </div>
+  `;
+  showResultsForm();
+}
+
+function showResultsForm() {
+  const opts = Object.entries(GL).map(([v, n]) => `<option value="${v}">${n}</option>`).join('');
+  document.getElementById('SC').innerHTML = `
+    <div class="p-3 rounded-4 mb-3 bg-light">
+      <div class="row g-2">
+        <div class="col-md-6"><select id="GS" class="form-select">${opts}</select></div>
+        <div class="col-md-6"><input type="text" id="SI" class="form-control" placeholder="رقم الجلوس" onkeydown="if(event.key==='Enter')doSearch()"></div>
+      </div>
+    </div>
+    <div class="d-grid mb-3"><button class="btn btn-primary py-3 fw-bold" onclick="doSearch()"><i class="fas fa-search me-2"></i>استعلام</button></div>
+    <div id="RD"></div>
+  `;
+}
+
+function doSearch() {
+  const grade = document.getElementById('GS')?.value;
+  const seat = document.getElementById('SI')?.value?.trim();
+  const rd = document.getElementById('RD');
+  if (!seat) { toast('أدخل رقم الجلوس أولاً', 'w'); return; }
+  rd.innerHTML = `<div class="text-center p-5"><div class="spinner-border text-primary"></div></div>`;
+  db.ref(`results/${grade}/${seat}`).once('value').then(snap => {
+    if (!snap.exists()) { rd.innerHTML = `<div class="alert alert-danger text-center">رقم الجلوس ${seat} غير مسجل</div>`; return; }
+    const d = snap.val();
+    let subHtml = '';
+    if (d.subjects) Object.entries(d.subjects).forEach(([sub, score]) => { subHtml += `<div class="d-flex justify-content-between border-bottom py-2"><span>${sub}</span><span class="fw-bold">${score}</span></div>`; });
+    rd.innerHTML = `<div class="rc bg-primary text-white p-3 rounded"><h4 class="text-center">${d.name || ''}</h4>${subHtml}<hr><div class="row text-center"><div class="col-4">المجموع: ${d.total}</div><div class="col-4">النسبة: ${d.percentage}%</div><div class="col-4">التقدير: ${d.grade}</div></div><div class="d-flex gap-2 mt-3"><button class="btn btn-light" onclick="shareResult('${d.name}','${d.total}')"><i class="fab fa-whatsapp"></i> مشاركة</button></div></div>`;
+  });
+}
+
+function shareResult(name, total) {
+  window.open(`https://wa.me/?text=${encodeURIComponent(`نتيجة الطالب ${name}: ${total} درجة`)}`, '_blank');
+}
+
+function showResultsMgr() {
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showStudents()"><i class="fas fa-arrow-right me-1"></i>رجوع</button>
+        <h5 class="fw-bold mb-0">إدارة نتائج الطلاب</h5>
+      </div>
+      <div class="gc mb-4">
+        <h6 class="fw-bold mb-3"><i class="fas fa-cloud-upload-alt me-2 text-primary"></i> رفع ملف JSON للنتائج</h6>
+        <div class="json-area mb-3" onclick="document.getElementById('JFILE').click()">
+          <i class="fas fa-file-code fa-3x mb-2 d-block" style="color:var(--gd)"></i>
+          <h6 class="fw-bold">اضغط لاختيار ملف JSON</h6>
+          <small class="text-muted">يرفع نتائج الطلاب دفعة واحدة</small>
+        </div>
+        <input type="file" id="JFILE" accept=".json" style="display:none" onchange="uploadJSON(this)">
+        <div id="RLIST" class="mt-3"></div>
+      </div>
+    </div>
+  `;
+  loadResultsList();
+}
+
+function uploadJSON(input) {
+  const file = input.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      const grades = Object.keys(data);
+      let studentCount = 0;
+      grades.forEach(g => { if (data[g]) studentCount += Object.keys(data[g]).length; });
+      Swal.fire({ title: 'تأكيد رفع النتائج', html: `<p>سيتم رفع <strong>${studentCount} طالب</strong> في <strong>${grades.length} صف</strong></p>`, icon: 'question', showCancelButton: true, confirmButtonText: 'رفع الآن' }).then(res => {
+        if (res.isConfirmed) {
+          const updates = {};
+          for (const [grade, students] of Object.entries(data))
+            for (const [seat, info] of Object.entries(students))
+              updates[`results/${grade}/${seat}`] = info;
+          db.ref().update(updates).then(() => { toast(`✅ تم رفع ${studentCount} نتيجة بنجاح`, 's'); loadResultsList(); });
+        }
+      });
+    } catch(err) { toast('ملف JSON غير صالح', 'e'); }
+  };
+  reader.readAsText(file);
+}
+
+function loadResultsList() {
+  const c = document.getElementById('RLIST'); if (!c) return;
+  db.ref('results').once('value', snap => {
+    if (!snap.exists()) { c.innerHTML = '<p class="text-muted text-center">لا توجد نتائج مرفوعة حتى الآن</p>'; return; }
+    let html = '<h6 class="fw-bold mb-3">النتائج المرفوعة حالياً:</h6>';
+    snap.forEach(grade => {
+      html += `<div class="results-grade-row"><div><strong>${GL[grade.key] || grade.key}</strong></div><div><span class="badge bg-primary">${grade.numChildren()} طالب</span>${isAdmin ? `<button class="btn btn-sm btn-outline-danger ms-2" onclick="delGradeResults('${grade.key}')"><i class="fas fa-trash"></i></button>` : ''}</div></div>`;
+    });
+    c.innerHTML = html;
+  });
+}
+
+function delGradeResults(grade) {
+  Swal.fire({ title: 'حذف نتائج الصف؟', text: `سيتم حذف جميع نتائج ${GL[grade] || grade} نهائياً!`, icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'احذف' }).then(r => {
+    if (r.isConfirmed) db.ref(`results/${grade}`).remove().then(() => { toast('تم الحذف', 'i'); loadResultsList(); });
+  });
+}
+
+// ========== FILES ==========
+function showFiles(section, title) {
+  hideHero();
+  activeFilter = 'all';
+  filesCache = {};
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0">${title}</h4>
+        ${isAdmin ? `<button class="btn bg btn-sm px-4" onclick="showUpload('${section}','${title}')"><i class="fas fa-upload me-2"></i>رفع ملف</button>` : ''}
+      </div>
+      <div class="sfb d-flex gap-2 mb-3 flex-wrap">
+        <input type="text" id="FSI" class="form-control w-50" placeholder="ابحث..." oninput="renderFiles('${section}')">
+        <div class="btn-group">
+          <button class="btn btn-sm btn-outline-primary active" onclick="setFilter('all')">الكل</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFilter('img')">صور</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFilter('vid')">فيديو</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFilter('pdf')">PDF</button>
+          <button class="btn btn-sm btn-outline-primary" onclick="setFilter('yt')">يوتيوب</button>
+        </div>
+        <span class="fcb text-muted" id="FCB">0 ملف</span>
+      </div>
+      <div id="FG" class="row g-3"></div>
+    </div>
+  `;
+  db.ref(section).on('value', snap => {
+    filesCache = {};
+    if (snap.exists()) snap.forEach(c => { filesCache[c.key] = c.val(); });
+    renderFiles(section);
+  });
+}
+
+function setFilter(f) { activeFilter = f; renderFiles(); }
+
+function getFileType(url) {
+  if (!url) return 'link';
+  if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) return 'yt';
+  if (/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url)) return 'img';
+  if (/\.(mp4|mov|avi|mkv|webm)(\?|$)/i.test(url)) return 'vid';
+  if (/\.pdf(\?|$)/i.test(url)) return 'pdf';
+  return 'link';
+}
+
+function renderFiles(section) {
+  const grid = document.getElementById('FG'); if (!grid) return;
+  const q = (document.getElementById('FSI')?.value || '').toLowerCase();
+  const entries = Object.entries(filesCache).filter(([, f]) => {
+    const t = getFileType(f.url);
+    const mf = activeFilter === 'all' || t === activeFilter;
+    const ms = !q || (f.title || '').toLowerCase().includes(q);
+    return mf && ms;
+  });
+  entries.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+  document.getElementById('FCB').textContent = `${entries.length} ملف`;
+  if (!entries.length) { grid.innerHTML = `<div class="col-12 text-center p-5"><i class="fas fa-folder-open fa-3x text-muted mb-2"></i><p>لا توجد ملفات</p></div>`; return; }
+  grid.innerHTML = entries.map(([fid, f]) => {
+    const url = f.url || '';
+    const type = getFileType(url);
+    let thumb = '';
+    if (type === 'img') thumb = `<div class="fc-media"><img src="${url}" loading="lazy"><div class="fc-media-overlay" onclick="openModal('${url}','${f.title}','img')"><div class="fc-play-btn"><i class="fas fa-expand"></i></div></div></div>`;
+    else if (type === 'vid') thumb = `<div class="fc-media" onclick="openModal('${url}','${f.title}','vid')"><video src="${url}" preload="metadata" style="width:100%;height:200px;object-fit:cover"></video><div class="fc-media-overlay"><div class="fc-play-btn"><i class="fas fa-play"></i></div></div></div>`;
+    else if (type === 'yt') thumb = `<div class="fc-media bg-dark d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openModal('${url}','${f.title}','yt')"><i class="fab fa-youtube fa-4x text-danger"></i></div>`;
+    else if (type === 'pdf') thumb = `<div class="fc-media bg-light d-flex align-items-center justify-content-center" style="height:200px;cursor:pointer" onclick="openModal('${url}','${f.title}','pdf')"><i class="fas fa-file-pdf fa-4x text-danger"></i></div>`;
+    else thumb = `<div class="fc-media bg-light d-flex align-items-center justify-content-center" style="height:200px"><i class="fas fa-link fa-4x text-muted"></i></div>`;
+    return `
+      <div class="col-md-6">
+        <div class="fc">
+          ${thumb}
+          <div class="fc-body">
+            <div class="fc-title">${f.title || 'بدون عنوان'}</div>
+            ${f.description ? `<p class="small text-muted">${f.description}</p>` : ''}
+            <div class="fc-actions">
+              <button class="fc-btn-primary" onclick="openModal('${url}','${f.title}','${type}')"><i class="fas fa-eye"></i> عرض</button>
+              <a href="${url}" download class="fc-btn-icon"><i class="fas fa-download"></i></a>
+              ${isAdmin ? `<button class="fc-btn-icon" onclick="delFile('${section}','${fid}')"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openModal(url, title, type) {
+  document.getElementById('MM')?.remove();
+  let content = '';
+  if (type === 'img') content = `<img src="${url}" style="max-width:100%;max-height:88vh">`;
+  else if (type === 'vid') content = `<video controls autoplay src="${url}" style="max-width:100%;max-height:88vh"></video>`;
+  else if (type === 'yt') {
+    const id = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&?#]+)/)?.[1];
+    content = `<iframe src="https://www.youtube.com/embed/${id}" style="width:100%;height:80vh" allowfullscreen></iframe>`;
+  } else if (type === 'pdf') content = `<iframe src="https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true" style="width:100%;height:80vh"></iframe>`;
+  else content = `<p class="text-white">لا يمكن عرض الملف مباشرة<br><a href="${url}" target="_blank" class="btn bg mt-3">فتح الرابط</a></p>`;
+  const modal = document.createElement('div'); modal.className = 'mm fixed-top vh-100 d-flex flex-column bg-dark bg-opacity-95 z-3'; modal.id = 'MM';
+  modal.innerHTML = `<div class="d-flex justify-content-between p-2 bg-dark text-white"><span>${title || 'عرض'}</span><button class="btn-close btn-close-white" onclick="document.getElementById('MM').remove()"></button></div><div class="flex-grow-1 d-flex align-items-center justify-content-center p-3">${content}</div>`;
+  document.body.appendChild(modal);
+}
+
+function showUpload(section, title) {
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="showFiles('${section}','${title}')"><i class="fas fa-arrow-right me-1"></i>رجوع</button>
+        <h5 class="fw-bold mb-0">رفع ملف — ${title}</h5>
+      </div>
+      <div class="mb-3"><label class="form-label fw-bold">العنوان *</label><input type="text" id="UT" class="form-control" placeholder="عنوان الملف..."></div>
+      <div class="mb-3"><label class="form-label fw-bold">وصف (اختياري)</label><textarea id="UD" class="form-control" rows="2"></textarea></div>
+      
+      <div class="mb-4">
+        <label class="form-label fw-bold">رابط الملف *</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-link"></i></span>
+          <input type="url" id="fileUrl" class="form-control" placeholder="https://... (يوتيوب، صورة، PDF، فيديو)">
+        </div>
+        <small class="text-muted">ادعم: يوتيوب، صور، PDF، فيديو مباشر، Google Drive</small>
+        <div id="urlPreview" class="mt-2"></div>
+      </div>
+      
+      <div class="d-grid"><button class="btn bg py-3 fw-bold" id="UBT" onclick="saveFile('${section}','${title}')"><i class="fas fa-save me-2"></i>حفظ الملف</button></div>
+    </div>
+  `;
+  document.getElementById('fileUrl').addEventListener('input', function() { previewFileUrl(this.value); });
+}
+
+function previewFileUrl(url) {
+  const pv = document.getElementById('urlPreview'); if (!pv) return;
+  if (!url) { pv.innerHTML = ''; return; }
+  if (url.includes('youtube.com/watch') || url.includes('youtu.be/')) pv.innerHTML = `<div class="alert alert-success small">✅ رابط يوتيوب صالح</div>`;
+  else if (/\.(jpg|jpeg|png|gif|webp)(\?|$)/i.test(url)) pv.innerHTML = `<div class="alert alert-success small">✅ رابط صورة صالح</div>`;
+  else if (/\.pdf(\?|$)/i.test(url)) pv.innerHTML = `<div class="alert alert-success small">✅ رابط PDF صالح</div>`;
+  else pv.innerHTML = `<div class="alert alert-info small">🔗 رابط خارجي سيتم حفظه كما هو</div>`;
+}
+
+function saveFile(section, title) {
+  const t = document.getElementById('UT')?.value?.trim();
+  const d = document.getElementById('UD')?.value?.trim();
+  const url = document.getElementById('fileUrl')?.value?.trim();
+  if (!t) { toast('أدخل عنوان الملف', 'w'); return; }
+  if (!url) { toast('أدخل رابط الملف', 'w'); return; }
+  
+  db.ref(section).push({
+    title: t,
+    description: d || '',
+    url: url,
+    timestamp: Date.now()
+  }).then(() => {
+    toast(`✅ تم إضافة "${t}" بنجاح`, 's');
+    setTimeout(() => showFiles(section, title), 800);
+  });
+}
+
+function delFile(section, id) {
+  Swal.fire({ title: 'حذف الملف؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'احذف' }).then(r => {
+    if (r.isConfirmed) db.ref(`${section}/${id}`).remove().then(() => toast('تم الحذف', 'i'));
+  });
+}
+
+// ========== NEWS ==========
+function showNews() {
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold mb-0"><i class="fas fa-bullhorn me-2 text-primary"></i> أخبار المدرسة</h4>
+        ${isAdmin ? `<button class="btn bg btn-sm" onclick="showAddNews()"><i class="fas fa-plus me-2"></i>إضافة خبر</button>` : ''}
+      </div>
+      <div id="ANF"></div>
+      <div id="NL" class="row g-3"><div class="col-12 text-center p-4"><div class="spinner-border"></div></div></div>
+    </div>
+  `;
+  loadNews();
+}
+
+function loadNews() {
+  db.ref('school_news').orderByChild('timestamp').limitToLast(20).once('value', snap => {
+    const nl = document.getElementById('NL'); if (!nl) return;
+    const items = [];
+    if (snap.exists()) snap.forEach(c => items.unshift({ id: c.key, ...c.val() }));
+    if (!items.length) { nl.innerHTML = '<div class="col-12 text-center text-muted">لا توجد أخبار</div>'; return; }
+    nl.innerHTML = items.map(n => `
+      <div class="col-12">
+        <div class="nc p-3 border rounded mb-2">
+          <h6 class="fw-bold">${n.icon || '📌'} ${n.title}</h6>
+          <p class="small">${n.body}</p>
+          <small class="text-muted">${n.dateStr || ''}</small>
+          ${isAdmin ? `<button class="btn btn-link text-danger p-0 float-start" onclick="delNews('${n.id}')"><i class="fas fa-trash"></i></button>` : ''}
         </div>
       </div>
     `).join('');
   });
 }
 
-function likePost(id) {
-  const vid = sessionStorage.getItem('vid');
-  const likeRef = db.ref(`posts/${id}/likes/${vid}`);
-  likeRef.once('value', snap => {
-    if (snap.exists()) likeRef.remove();
-    else likeRef.set(true);
-  });
-}
-
-function sharePost(content) {
-  window.open(`https://wa.me/?text=${encodeURIComponent(content + '\nمنصة مدرسة سعد بن أبي وقاص')}`, '_blank');
-}
-
-function showCreatePost() {
-  Swal.fire({
-    title: 'منشور جديد',
-    input: 'textarea',
-    inputPlaceholder: 'ماذا تريد أن تنشر؟',
-    showCancelButton: true,
-    confirmButtonText: 'نشر'
-  }).then(res => {
-    if (res.isConfirmed && res.value) {
-      db.ref('posts').push({
-        content: res.value,
-        author: 'إدارة المدرسة',
-        timestamp: Date.now(),
-        likes: {},
-        comments: []
-      }).then(() => toast('تم النشر ✅', 's'));
-    }
-  });
-}
-
-function delPost(id) {
-  Swal.fire({ title: 'حذف المنشور؟', icon: 'warning', showCancelButton: true, confirmButtonText: 'احذف' }).then(res => {
-    if (res.isConfirmed) db.ref(`posts/${id}`).remove().then(() => toast('تم الحذف', 'i'));
-  });
-}
-
-// Students & Results
-function showStudents() {
-  document.getElementById('MC').innerHTML = `
-    <div class="d-flex justify-content-between mb-3">
-      <h4><i class="fas fa-user-graduate"></i> استعلام النتائج</h4>
-      ${isAdmin ? '<button class="btn btn-warning" onclick="showResultsMgr()">رفع JSON</button>' : ''}
+function showAddNews() {
+  document.getElementById('ANF').innerHTML = `
+    <div class="gc mb-3">
+      <h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6>
+      <div class="row g-2">
+        <div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *"></div>
+        <div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option></select></div>
+        <div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2"></textarea></div>
+      </div>
+      <div class="d-flex gap-2 mt-2">
+        <button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button>
+      </div>
     </div>
-    <div class="row g-2 mb-3">
-      <div class="col-md-6"><select id="gradeSelect" class="form-select"><option value="p6">الصف السادس</option><option value="p5">الصف الخامس</option></select></div>
-      <div class="col-md-6"><input type="text" id="seatNo" class="form-control" placeholder="رقم الجلوس"></div>
-    </div>
-    <button class="btn btn-primary w-100" onclick="searchResult()">استعلام</button>
-    <div id="resultDisplay" class="mt-3"></div>
   `;
 }
 
-function searchResult() {
-  const grade = document.getElementById('gradeSelect').value;
-  const seat = document.getElementById('seatNo').value;
-  if (!seat) { toast('أدخل رقم الجلوس', 'w'); return; }
-  document.getElementById('resultDisplay').innerHTML = '<div class="spinner-border"></div>';
-  db.ref(`results/${grade}/${seat}`).once('value', snap => {
-    if (!snap.exists()) { document.getElementById('resultDisplay').innerHTML = '<div class="alert alert-danger">未找到结果</div>'; return; }
-    const d = snap.val();
-    let subHtml = '';
-    if (d.subjects) Object.entries(d.subjects).forEach(([sub, score]) => subHtml += `<div class="d-flex justify-content-between border-bottom py-2"><span>${sub}</span><span class="fw-bold">${score}</span></div>`);
-    document.getElementById('resultDisplay').innerHTML = `<div class="p-3 bg-primary text-white rounded"><h4>${d.name || ''}</h4>${subHtml}<hr><div class="row"><div class="col-4">المجموع: ${d.total}</div><div class="col-4">النسبة: ${d.percentage}%</div><div class="col-4">التقدير: ${d.grade}</div></div></div>`;
-  });
+function saveNews() {
+  const t = document.getElementById('NT')?.value?.trim();
+  const b = document.getElementById('NB')?.value?.trim();
+  const c = document.getElementById('NC')?.value;
+  if (!t || !b) { toast('العنوان والنص مطلوبان', 'w'); return; }
+  const icons = { عام: '📌', تقنية: '🚀', تنبيه: '📢' };
+  db.ref('school_news').push({
+    title: t,
+    body: b,
+    cat: c,
+    icon: icons[c] || '📌',
+    dateStr: new Date().toLocaleDateString('ar-EG'),
+    timestamp: Date.now()
+  }).then(() => { toast('تم نشر الخبر ✅', 's'); document.getElementById('ANF').innerHTML = ''; loadNews(); });
 }
 
-function showResultsMgr() {
-  document.getElementById('MC').innerHTML = `
-    <div><button class="btn btn-sm btn-secondary mb-3" onclick="showStudents()">← رجوع</button></div>
-    <div class="gc"><h5>رفع نتائج JSON</h5><div class="json-area" onclick="document.getElementById('jsonFile').click()"><i class="fas fa-file-code fa-3x"></i><p>اختر ملف JSON</p></div><input type="file" id="jsonFile" accept=".json" style="display:none" onchange="uploadJSON(this)"><div id="jsonStatus"></div></div>
-  `;
-}
+function delNews(id) { db.ref(`school_news/${id}`).remove().then(() => { toast('تم الحذف', 'i'); loadNews(); }); }
 
-function uploadJSON(input) {
-  const file = input.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const data = JSON.parse(e.target.result);
-      const updates = {};
-      for (const [grade, students] of Object.entries(data))
-        for (const [seat, info] of Object.entries(students))
-          updates[`results/${grade}/${seat}`] = info;
-      db.ref().update(updates).then(() => toast('تم رفع النتائج ✅', 's'));
-    } catch(err) { toast('ملف غير صالح', 'e'); }
-  };
-  reader.readAsText(file);
-}
-
-// Gallery
-function showGallery() {
-  document.getElementById('MC').innerHTML = `<h4>المعرض الرقمي</h4><div id="galleryGrid" class="row g-3">جاري التحميل...</div>`;
-  db.ref('gallery_section').on('value', snap => {
-    const items = [];
-    snap.forEach(c => items.push(c.val()));
-    if (items.length === 0) { document.getElementById('galleryGrid').innerHTML = '<p>لا توجد صور</p>'; return; }
-    document.getElementById('galleryGrid').innerHTML = items.map(item => `<div class="col-md-4"><img src="${item.url}" class="img-fluid rounded" style="height:200px;width:100%;object-fit:cover"></div>`).join('');
-  });
-}
-
-// News
-function showNews() {
-  document.getElementById('MC').innerHTML = `<h4>أخبار المدرسة</h4><div id="newsList">جاري التحميل...</div>`;
-  db.ref('school_news').orderByChild('timestamp').limitToLast(10).on('value', snap => {
-    const news = [];
-    snap.forEach(c => news.unshift(c.val()));
-    document.getElementById('newsList').innerHTML = news.map(n => `<div class="border-bottom pb-2 mb-2"><h6>📌 ${n.title}</h6><p>${n.body}</p><small>${n.dateStr || ''}</small></div>`).join('');
-  });
-}
-
-// Navigation
-function go(page) {
-  window.scrollTo({ top: 0 });
-  if (page === 'home') {
-    document.getElementById('MC').innerHTML = `
-      <div class="text-center"><h2>مرحباً بك في بوابتنا الرقمية</h2><p>نسعى لتوفير أفضل تجربة تعليمية</p></div>
-      <div class="row g-3 mt-3"><div class="col-4"><div class="qc" onclick="go('students')"><i class="fas fa-search"></i><h6>النتائج</h6></div></div>
-      <div class="col-4"><div class="qc" onclick="go('posts')"><i class="fas fa-newspaper"></i><h6>المنشورات</h6></div></div>
-      <div class="col-4"><div class="qc" onclick="go('gallery')"><i class="fas fa-images"></i><h6>المعرض</h6></div></div></div>
-    `;
-  }
-  else if (page === 'posts') showPosts();
-  else if (page === 'students') showStudents();
-  else if (page === 'gallery') showGallery();
-  else if (page === 'news') showNews();
-}
-
-// Admin
+// ========== ADMIN ==========
 function doAdmin() {
-  if (isAdmin) { isAdmin = false; document.getElementById('ALB').innerHTML = 'لوحة الإدارة'; toast('تم الخروج', 'i'); return; }
+  if (isAdmin) { isAdmin = false; updAdmin(); toast('تم تسجيل الخروج', 'i'); return; }
+  if (adminLock > Date.now()) { toast(`انتظر ${Math.ceil((adminLock - Date.now()) / 1000)} ثانية`, 'w'); return; }
   Swal.fire({
-    title: 'دخول الإدارة',
+    title: '🔐 دخول الإدارة',
     input: 'password',
     inputLabel: 'كلمة السر',
     showCancelButton: true,
     confirmButtonText: 'دخول'
   }).then(res => {
-    if (res.isConfirmed) {
-      try { var enc = btoa(res.value); } catch(e) { enc = btoa(unescape(encodeURIComponent(res.value))); }
-      if (enc === SECRET_KEY) { isAdmin = true; document.getElementById('ALB').innerHTML = 'تسجيل الخروج'; toast('مرحباً! تم تفعيل الإدارة', 's'); } 
-      else { toast('كلمة سر خاطئة', 'e'); }
-    }
+    if (!res.isConfirmed || !res.value) return;
+    let enc = ''; try { enc = btoa(res.value); } catch(e) { enc = btoa(unescape(encodeURIComponent(res.value))); }
+    if (enc === SECRET_KEY) { isAdmin = true; adminTries = 0; updAdmin(); toast('مرحباً! تم تفعيل الإدارة ✅', 's'); setTimeout(showAdminDash, 300); }
+    else { adminTries++; if (adminTries >= 5) { adminLock = Date.now() + 120000; Swal.fire('🔒 محظور', 'محاولات كثيرة — انتظر دقيقتين', 'error'); } else Swal.fire('❌ خطأ', `كلمة السر غير صحيحة — ${5 - adminTries} محاولات متبقية`, 'error'); }
   });
 }
 
-function toggleTheme() {
-  document.body.classList.toggle('dark');
-  localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+function updAdmin() {
+  const l = document.getElementById('ALB'), b = document.getElementById('ABG'), dl = document.getElementById('DAL');
+  if (l) l.textContent = isAdmin ? 'تسجيل خروج الإدارة' : 'لوحة الإدارة';
+  if (dl) dl.textContent = isAdmin ? 'تسجيل خروج الإدارة' : 'لوحة الإدارة';
+  if (b) b.innerHTML = isAdmin ? `<div class="ab mt-2"><i class="fas fa-shield-halved"></i> وضع الإدارة مفعّل</div>` : '';
 }
 
-// Slider
-function loadSlider() {
-  const slides = ['https://picsum.photos/id/20/1200/400', 'https://picsum.photos/id/100/1200/400', 'https://picsum.photos/id/180/1200/400'];
-  document.getElementById('SWWR').innerHTML = slides.map(s => `<div class="swiper-slide"><img src="${s}" class="w-100" style="height:250px;object-fit:cover"></div>`).join('');
-  new Swiper('#HSW', { loop: true, autoplay: { delay: 4000 }, pagination: { el: '.swiper-pagination' }, navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' } });
+function showAdminDash() {
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <h4 class="fw-bold mb-3"><i class="fas fa-shield-halved me-2 text-danger"></i> لوحة تحكم الإدارة</h4>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="asc p-3 bg-white rounded shadow-sm"><div class="asn fs-2 fw-bold" id="AS1">0</div><small class="text-muted">ملفات المعرض</small></div></div>
+        <div class="col-6 col-md-3"><div class="asc p-3 bg-white rounded shadow-sm"><div class="asn fs-2 fw-bold" id="AS2">0</div><small class="text-muted">المكتبة</small></div></div>
+        <div class="col-6 col-md-3"><div class="asc p-3 bg-white rounded shadow-sm"><div class="asn fs-2 fw-bold" id="AS3">0</div><small class="text-muted">التربية الفنية</small></div></div>
+      </div>
+      <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showUpload('gallery_section','المعرض')"><i class="fas fa-plus-circle"></i><h6>رفع للمعرض</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showUpload('library_section','المكتبة')"><i class="fas fa-book-medical"></i><h6>رفع للمكتبة</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showResultsMgr()"><i class="fas fa-upload"></i><h6>رفع النتائج</h6></div></div>
+        <div class="col-6 col-md-3"><div class="qc p-3 bg-white rounded shadow-sm text-center" onclick="showTickerEd()"><i class="fas fa-newspaper"></i><h6>تعديل الأخبار</h6></div></div>
+      </div>
+      <div id="AEX"></div>
+    </div>
+  `;
+  ['gallery_section', 'library_section', 'art_section'].forEach((s, i) => {
+    db.ref(s).once('value', snap => { const ids = ['AS1', 'AS2', 'AS3']; const el = document.getElementById(ids[i]); if (el) el.textContent = snap.numChildren(); });
+  });
 }
 
-// Ticker
-function loadTicker() {
+function showTickerEd() {
+  const ex = document.getElementById('AEX'); if (!ex) return;
   db.ref('ticker_news').once('value', snap => {
-    const items = [];
-    if (snap.exists()) snap.forEach(c => items.push(c.val().text));
-    if (items.length) document.getElementById('TKW').innerHTML = items.map(t => `<span class="ti">${t}</span>`).join('');
+    let items = []; if (snap.exists()) snap.forEach(c => { if (c.val().text) items.push({ id: c.key, text: c.val().text }); });
+    ex.innerHTML = `<div class="gc mt-3"><h6 class="fw-bold mb-3"><i class="fas fa-scroll me-2 text-warning"></i> تعديل شريط الأخبار</h6><div id="TIL">${items.map(it => `<div class="d-flex gap-2 mb-2"><input class="form-control form-control-sm" value="${it.text}" id="TI${it.id}"><button class="btn btn-warning btn-sm" onclick="updT('${it.id}')"><i class="fas fa-save"></i></button><button class="btn btn-danger btn-sm" onclick="delT('${it.id}')"><i class="fas fa-trash"></i></button></div>`).join('')}</div><div class="d-flex gap-2 mt-2"><input class="form-control form-control-sm" id="NTT" placeholder="خبر جديد..."><button class="btn bg btn-sm px-4" onclick="addT()"><i class="fas fa-plus me-1"></i>إضافة</button></div></div>`;
   });
 }
 
-// Start
-window.onload = () => {
-  loadStats();
-  loadTicker();
-  loadSlider();
-  go('home');
-  setTimeout(() => document.getElementById('ldr').classList.add('hide'), 500);
-  if (localStorage.getItem('theme') === 'dark') toggleTheme();
-  window.addEventListener('scroll', () => document.getElementById('STB').classList.toggle('show', window.scrollY > 200));
-};
+function addT() { const i = document.getElementById('NTT'); const t = i?.value?.trim(); if (!t) return; db.ref('ticker_news').push({ text: t }).then(() => { if (i) i.value = ''; toast('تمت الإضافة ✅', 's'); loadTicker(); showTickerEd(); }); }
+function updT(id) { const v = document.getElementById(`TI${id}`)?.value?.trim(); if (!v) return; db.ref(`ticker_news/${id}`).update({ text: v }).then(() => { toast('تم التحديث', 's'); loadTicker(); }); }
+function delT(id) { db.ref(`ticker_news/${id}`).remove().then(() => { toast('تم الحذف', 'i'); loadTicker(); showTickerEd(); }); }
+
+initFirebase();
 </script>
 </body>
 </html>
