@@ -528,14 +528,13 @@ function loadStats() {
     const stats = snapshot.val();
     if (stats) {
       statsData = stats;
-      // تحديث النص مباشرة بدون تشغيل animN (لمنع العودة للقيم القديمة)
+      // تحديث الواجهة مباشرة
       document.getElementById('CS').textContent = (stats.studentsCount || 1250).toLocaleString('ar-EG');
       document.getElementById('CT').textContent = (stats.teachersCount || 85).toLocaleString('ar-EG');
       document.getElementById('CA').textContent = (stats.activitiesCount || 24).toLocaleString('ar-EG');
     } else {
       // حفظ القيم الافتراضية إذا لم تكن موجودة
       db.ref('school_stats').set(statsData);
-      // عرض القيم الافتراضية
       document.getElementById('CS').textContent = (1250).toLocaleString('ar-EG');
       document.getElementById('CT').textContent = (85).toLocaleString('ar-EG');
       document.getElementById('CA').textContent = (24).toLocaleString('ar-EG');
@@ -552,10 +551,14 @@ function editStat(stat) {
   const labels = { studentsCount: 'عدد الطلاب', teachersCount: 'عدد المعلمين', activitiesCount: 'عدد الأنشطة' };
   const ids = { studentsCount: 'CS', teachersCount: 'CT', activitiesCount: 'CA' };
   
+  // الحصول على القيمة الحالية من الواجهة مباشرة وليس من statsData
+  const currentElement = document.getElementById(ids[stat]);
+  const currentValue = parseInt(currentElement.textContent.replace(/[^0-9]/g, '')) || statsData[stat];
+  
   Swal.fire({
     title: `تعديل — ${labels[stat]}`,
     input: 'number',
-    inputValue: statsData[stat],
+    inputValue: currentValue,
     showCancelButton: true,
     confirmButtonText: 'حفظ',
     cancelButtonText: 'إلغاء',
@@ -565,15 +568,20 @@ function editStat(stat) {
       const v = parseInt(res.value);
       if (isNaN(v)) return;
       
-      // تحديث البيانات محلياً وفي Firebase
+      // تحديث البيانات محلياً
       statsData[stat] = v;
-      saveStats(statsData);
       
-      // تحديث العدد المعروض مباشرة بدون أنيميشن
-      const el = document.getElementById(ids[stat]);
-      if (el) el.textContent = v.toLocaleString('ar-EG');
-      
-      toast('تم تحديث الإحصائية ✅', 's');
+      // حفظ في Firebase
+      db.ref('school_stats').update(statsData).then(() => {
+        // تحديث الواجهة مباشرة
+        if (currentElement) {
+          currentElement.textContent = v.toLocaleString('ar-EG');
+        }
+        toast('تم تحديث الإحصائية ✅', 's');
+      }).catch(err => {
+        toast('حدث خطأ في الحفظ', 'e');
+        console.error(err);
+      });
     }
   });
 }
