@@ -8,6 +8,8 @@
 .env.production
 secrets.js
 config.local.js
+firebase-config.js
+cloudinary-config.js
 
 # ❌ Firebase local files
 .firebase/
@@ -15,12 +17,19 @@ firebase-debug.log
 firestore-debug.log
 database-debug.log
 ui-debug.log
+firebase.json
+.firebaserc
+
+# ❌ Cloudinary local files
+cloudinary.json
+cloudinary-keys.js
 
 # ❌ Node modules (لو استخدمت npm)
 node_modules/
 npm-debug.log
 yarn-error.log
 package-lock.json
+yarn.lock
 
 # ❌ ملفات النظام
 .DS_Store
@@ -28,27 +37,63 @@ Thumbs.db
 desktop.ini
 *.swp
 *.swo
+*.tmp
+*.temp
 
 # ❌ ملفات المحررات
-.vscode/settings.json
+.vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+*.code-workspace
 
 # ❌ ملفات البناء المؤقتة
 _site/
 dist/
 build/
-*.tmp
-*.temp
+out/
+*.cache
 
 # ❌ ملفات السجلات
 *.log
 logs/
+debug.log
 
-# ✅ ما يُرفع:
-# index.html        ← الموقع (بدون Firebase config حقيقي)
-# README.md         ← التوثيق
-# .github/          ← GitHub Actions
-# logo.jpg          ← الشعار
-# images/           ← الصور (اختياري)
+# ❌ ملفات اختبارية
+test/
+tests/
+*.test.js
+*.spec.js
+
+# ❌ ملفات مكررة أو احتياطية
+*.bak
+*.backup
+*.old
+*~
+
+# ❌ ملفات الصور المؤقتة (إذا أنشأها المستخدم)
+temp_images/
+uploads_temp/
+
+# ❌ ملفات محلية خاصة بالمدرسة
+school_data/
+local_backups/
+
+# ✅ ما يُرفع فقط:
+# index.html              ← الموقع (بدون Firebase config حقيقي)
+# README.md               ← التوثيق
+# .github/workflows/      ← مجلد GitHub Actions بأكمله
+# logo.jpg                ← شعار المدرسة
+# images/                 ← مجلد الصور (اختياري)
+# assets/                 ← مجلد الأصول (اختياري)
+
+# ============================================================
+#  🛠️ ملاحظة مهمة:
+#  لا ترفع أبداً أي ملف يحتوي على:
+#  - مفاتيح Firebase (apiKey, authDomain...)
+#  - مفاتيح Cloudinary (cloud_name, api_key, api_secret)
+#  - كلمات سر الإدارة
+#  
+#  هذه المفاتيح توضع فقط في GitHub Secrets
+#  ويتم حقنها تلقائياً أثناء النشر
+# ============================================================
