@@ -500,7 +500,10 @@ function loadPdfLibs(cb) {
 
 function startApp() {
   window.addEventListener('scroll', () => document.getElementById('STB')?.classList.toggle('show', scrollY > 280));
-  animN('CS', 1250); animN('CT', 85); animN('CA', 24);
+  // فقط عدادات أولية (مرة واحدة عند تحميل الصفحة)
+  animN('CS', 1250);
+  animN('CT', 85);
+  animN('CA', 24);
   db.ref('library_section').on('value', s => { const e = document.getElementById('LC'); if (e) e.textContent = s.numChildren(); });
   db.ref('posts').once('value', s => { const e = document.getElementById('PC'); if (e) e.textContent = s.numChildren(); });
   // تحميل الإحصائيات من Firebase
@@ -513,8 +516,8 @@ function startApp() {
 
 function animN(id, target) {
   const el = document.getElementById(id); if (!el) return;
-  let c = 0; const step = Math.ceil(target / 40);
-  const t = setInterval(() => { c = Math.min(c + step, target); el.textContent = c.toLocaleString('ar-EG'); if (c >= target) clearInterval(t); }, 40);
+  let c = 0; const step = Math.ceil(target / 30);
+  const t = setInterval(() => { c = Math.min(c + step, target); el.textContent = c.toLocaleString('ar-EG'); if (c >= target) clearInterval(t); }, 20);
 }
 
 // ========== إصلاح مشكلة الإحصائيات ==========
@@ -525,15 +528,17 @@ function loadStats() {
     const stats = snapshot.val();
     if (stats) {
       statsData = stats;
-      document.getElementById('CS').textContent = stats.studentsCount || 1250;
-      document.getElementById('CT').textContent = stats.teachersCount || 85;
-      document.getElementById('CA').textContent = stats.activitiesCount || 24;
-      animN('CS', stats.studentsCount || 1250);
-      animN('CT', stats.teachersCount || 85);
-      animN('CA', stats.activitiesCount || 24);
+      // تحديث النص مباشرة بدون تشغيل animN (لمنع العودة للقيم القديمة)
+      document.getElementById('CS').textContent = (stats.studentsCount || 1250).toLocaleString('ar-EG');
+      document.getElementById('CT').textContent = (stats.teachersCount || 85).toLocaleString('ar-EG');
+      document.getElementById('CA').textContent = (stats.activitiesCount || 24).toLocaleString('ar-EG');
     } else {
       // حفظ القيم الافتراضية إذا لم تكن موجودة
       db.ref('school_stats').set(statsData);
+      // عرض القيم الافتراضية
+      document.getElementById('CS').textContent = (1250).toLocaleString('ar-EG');
+      document.getElementById('CT').textContent = (85).toLocaleString('ar-EG');
+      document.getElementById('CA').textContent = (24).toLocaleString('ar-EG');
     }
   });
 }
@@ -1013,7 +1018,7 @@ function _doPDF(data) {
           <th style="text-align:center;width:90px">الدرجة</th>
           <th style="text-align:center;width:150px">مستوى الأداء</th>
           <th style="text-align:center;width:90px">التقدير</th>
-        </tr></thead>
+        <tr></thead>
         <tbody>${subRows}</tbody>
       </table>
       <div class="pdf-tots">
