@@ -72,7 +72,7 @@ body{background:var(--bg);color:#1e2a3e;min-height:100vh;overflow-x:hidden;
    ═══════════════════════════════════════════════════════════════ */
 header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));border-bottom:4px solid var(--gd);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .slogo{width:68px;height:68px;border-radius:50%;border:3px solid var(--gd);background:white;padding:3px;transition:transform .25s ease,box-shadow .25s ease;cursor:pointer;object-fit:cover;box-shadow:0 0 18px var(--gdg)}
-.slogo:hover{transform:scale(1.08);box-shadow:0 0 24px var(--gdg)}
+.slogo:hover{transform:scale(1.08);box-shadow:0 0 24px var(--gdg)} /* تم إزالة الدوران الثابت */
 .stl{font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.4);font-size:clamp(1rem,2.5vw,1.25rem)}
 .hbg{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;display:inline-block;font-size:.72rem}
 .od{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:od 2s infinite;margin-left:5px}
@@ -646,6 +646,8 @@ function startApp(){
       document.getElementById('CS').textContent=(statsData.studentsCount||0).toLocaleString('ar-EG');
       document.getElementById('CT').textContent=(statsData.teachersCount||0).toLocaleString('ar-EG');
       document.getElementById('CA').textContent=(statsData.activitiesCount||0).toLocaleString('ar-EG');
+      // Sync Home Stats if they exist
+      const hCS = document.getElementById('HOME_CS'); if(hCS) hCS.textContent=document.getElementById('CS').textContent;
     } else {
       db.ref('school_stats').set(statsData);
     }
@@ -695,8 +697,9 @@ function loadSlider(){
         if(!snap||!snap.exists())return;
         snap.forEach(c=>{
           const v=c.val();
-          if(v.url&&isImg(v.url)&&v.resourceType==='image'){
-            slides.push({url:v.url,cap:(v.title||'صورة')+' — '+SECTION_NAMES[secs[idx]],ts:v.timestamp||0});
+          // ✅ شرط مرن: يقبل الصورة سواء كانت مخزنة كـ 'image' أو يُستدل عليها من الرابط
+          if(v.url && (v.resourceType==='image' || isImg(v.url))){
+            slides.push({url:v.url, cap:(v.title||'صورة')+' — '+(SECTION_NAMES[secs[idx]]||''), ts:v.timestamp||0});
           }
         });
       });
@@ -787,7 +790,6 @@ function showHome(){
     document.getElementById('HOME_ST').textContent=document.getElementById('CS').textContent;
   };
   syncStats();
-  db.ref('school_stats').on('value',syncStats);
   if(typeof AOS!=='undefined')AOS.refresh();
 }
 
@@ -1132,7 +1134,6 @@ function _doPDF(data){
   if(data.subjects)Object.entries(data.subjects).forEach(([sub,score])=>{const pct=Math.min(score,100);subRows+=`<tr><td>${sub}</td><td style="text-align:center;font-weight:800;font-size:1rem">${score}</td><td style="text-align:center;padding:8px 14px"><div class="pdf-bar"><div class="pdf-barfill" style="width:${pct}%;background:${barC(score)}"></div></div></td><td style="text-align:center"><span class="pdf-gb ${grCls(score)}">${grLbl(score)}</span></td></tr>`});
   const card=document.getElementById('pdfCard');
   /* ── CERTIFICATE DESIGN AREA ── */
-  /* يمكنك تعديل تصميم الشهادة هنا دون التأثير على باقي الكود */
   card.innerHTML=`<div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl"><div class="pdf-hdr"><img src="logo.jpg" class="pdf-logo" onerror="this.style.display='none'" alt="شعار"><div class="pdf-school"><h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2><p>إدارة الفشن التعليمية — محافظة بني سويف</p></div><div style="text-align:center;background:rgba(255,255,255,.15);padding:10px 14px;border-radius:12px;min-width:110px"><div style="font-size:.68rem;opacity:.8">العام الدراسي</div><div style="font-weight:900;font-size:1.05rem">2025 / 2026</div></div></div><div class="pdf-body"><div class="pdf-info"><div class="pdf-il"><div class="pdf-il-lbl">اسم الطالب</div><div class="pdf-il-val">${esc(data.name||'')}</div></div><div class="pdf-il"><div class="pdf-il-lbl">الصف الدراسي</div><div class="pdf-il-val">${GL[data.grade]||''}</div></div><div class="pdf-il"><div class="pdf-il-lbl">رقم الجلوس</div><div class="pdf-il-val">${esc(String(data.seat||''))}</div></div><div class="pdf-il"><div class="pdf-il-lbl">تاريخ الإصدار</div><div class="pdf-il-val">${today}</div></div></div><div class="pdf-stitle"><i class="fas fa-list-check" style="color:#d4af37"></i> تفاصيل الدرجات</div><table class="pdf-tbl"><thead><tr><th>المادة الدراسية</th><th style="text-align:center;width:90px">الدرجة</th><th style="text-align:center;width:150px">مستوى الأداء</th><th style="text-align:center;width:90px">التقدير</th></tr></thead><tbody>${subRows}</tbody></table><div class="pdf-tots"><div class="pdf-tb"><div class="pdf-tn">${esc(String(data.total||0))}</div><div class="pdf-tl">المجموع الكلي</div></div><div class="pdf-tb" style="background:linear-gradient(135deg,#1d7a47,#27ae60)"><div class="pdf-tn">${esc(String(data.percentage||0))}%</div><div class="pdf-tl">النسبة المئوية</div></div><div class="pdf-tb" style="background:linear-gradient(135deg,#c9a227,#d4af37);color:#0a2b4e"><div class="pdf-tn" style="color:#0a2b4e">${esc(data.gradeLabel||'')}</div><div class="pdf-tl" style="opacity:.7">التقدير العام</div></div></div></div><div class="pdf-ftr"><div><p style="font-weight:700;color:#0a2b4e">بوابة مدرسة سعد بن أبي وقاص الرسمية</p><p>تاريخ الإصدار: ${today}</p></div><div class="pdf-sig"><div class="pdf-sln"></div><div class="pdf-slbl">توقيع مدير المدرسة</div></div><div class="pdf-sig"><div class="pdf-sln"></div><div class="pdf-slbl">ختم المدرسة</div></div></div></div>`;
   card.style.cssText='position:fixed;left:0;top:0;width:794px;background:white;direction:rtl;z-index:-1';
   html2canvas(card.firstElementChild,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff'}).then(canvas=>{
@@ -1383,10 +1384,8 @@ function delFile(section,id){Swal.fire({title:'حذف الملف؟',icon:'warnin
   // Delete from Firebase first
   db.ref(`${section}/${id}`).once('value',snap=>{
     const data=snap.val();
-    // Optionally delete from Cloudinary if public_id exists
     if(data?.public_id){
-      // Note: Cloudinary delete requires signed request with API secret (not exposed in frontend)
-      // For now, we just delete the reference from Firebase
+      // Note: Cloudinary delete requires signed request with API secret
       console.log('File reference deleted. Public ID:',data.public_id);
     }
     db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i'));
@@ -1443,11 +1442,7 @@ function loadNews(){
   });
 }
 function showAddNews(){const a=document.getElementById('ANF');if(!a)return;a.innerHTML=`<div class="gc mb-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6><div class="row g-2"><div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div><div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div><div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div></div><div class="d-flex gap-2 mt-2"><button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button></div></div>`}
-function function saveNews(){
-  const t=document.getElementById('NT')?.value?.trim(), b=document.getElementById('NB')?.value?.trim(), c=document.getElementById('NC')?.value;
-  if(!t||!b){toast('العنوان والنص مطلوبان','w');return}
-  const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
-  const newsData={title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()};
+function saveNews(){const t=document.getElementById('NT')?.value?.trim(),b=document.getElementById('NB')?.value?.trim(),c=document.getElementById('NC')?.value;if(!t||!b){toast('العنوان والنص مطلوبان','w');return}const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};const newsData={title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()};
   
   // حفظ في صفحة الأخبار أولاً
   db.ref('school_news').push(newsData).then(()=>{
@@ -1459,6 +1454,7 @@ function function saveNews(){
      loadNews();
   });
 }
+function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم الحذف','i');loadNews()})}
 
 /* ═══════════════════════════════════════════════════════════════
    🔧 Helpers
