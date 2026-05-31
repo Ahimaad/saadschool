@@ -136,9 +136,6 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 
 /* PDF Export Card */
 #pdfCard{position:fixed;left:-9999px;top:0;width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl;z-index:-1}
-/* ═══════════════════════════════════════════════════════════════
-   📄 CERTIFICATE DESIGN (Based on PDF v26)
-   ═══════════════════════════════════════════════════════════════ */
 .cert-hdr{text-align:center;padding:15px 0;border-bottom:3px solid var(--pr)}
 .cert-hdr h2{font-size:1.6rem;color:var(--pr);font-weight:900;margin:0}
 .cert-hdr p{font-size:.85rem;color:#666;margin:2px 0}
@@ -146,28 +143,43 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .cert-info-row{display:flex;justify-content:space-between;margin-bottom:20px;background:#f4f7ff;padding:12px;border-radius:10px;border:1px solid #d0d8e8}
 .cert-info-item{font-size:.95rem}
 .cert-info-item strong{color:var(--pr)}
-
-/* جدول النتائج الرسمي */
 .cert-tbl{width:100%;border-collapse:collapse;font-size:.8rem;margin-bottom:15px;border:1px solid #0a2b4e}
 .cert-tbl th{background:var(--pr);color:white;padding:8px 4px;text-align:center;border:1px solid #0a2b4e;font-size:.75rem}
 .cert-tbl td{padding:7px 4px;text-align:center;border:1px solid #0a2b4e;font-weight:700}
 .cert-tbl td:first-child{text-align:right;padding-right:8px}
 .total-row{background:#f0f2f5;font-weight:900;color:var(--pr)}
-
 .cert-status{text-align:center;margin-top:20px;font-weight:900;font-size:1.2rem;color:#1d7a47;border:2px solid #1d7a47;padding:10px;border-radius:8px;background:#eafaf1}
 .cert-footer{margin-top:25px;display:flex;justify-content:space-around;font-size:.8rem;color:#555}
 .cert-sig{text-align:center;line-height:2.2}
 .cert-sig span{display:block}
 .cert-sig .line{border-bottom:2px solid #333;width:150px;margin:5px auto}
 
-/* File Cards */
+/* File Cards - ✅ تحديث تصميم الصور */
 .fc{background:#fff;border-radius:var(--rs);overflow:hidden;box-shadow:var(--cs);transition:var(--tr);border:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column}
 .fc:hover{transform:translateY(-4px);box-shadow:var(--hs)}
 .fib{font-size:.6rem;font-weight:800;padding:2px 8px;border-radius:20px;background:#eef2ff;color:#4a60cc;display:inline-block;text-transform:uppercase}
 
-/* ✅ تحديث الصور داخل البطاقات لتظهر كاملة */
-.fc-media{position:relative;overflow:hidden;flex-shrink:0;background:#f8f9ff}
-.fc-media img{width:100%;height:220px;object-fit:contain;padding:10px;display:block;transition:transform .4s}
+/* ✅ التصميم الجديد للصور داخل البطاقات */
+.fc-media{
+  position:relative;
+  overflow:hidden;
+  flex-shrink:0;
+  background:#ffffff; /* خلفية بيضاء نظيفة */
+  border-bottom:1px solid #eee;
+  min-height:180px; /* ارتفاع أدنى للحفاظ على شكل البطاقة */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.fc-media img{
+  width:100%; /* الصورة تأخذ عرض البطاقة كاملاً */
+  height:auto; /* الارتفاع تلقائي حسب أبعاد الصورة */
+  max-height:350px; /* حد أقصى حتى لا تطول البطاقة بشكل مبالغ فيه */
+  object-fit:contain; /* تظهر الصورة كاملة بدون قص */
+  padding:8px; /* مساحة صغيرة حول الصورة */
+  display:block;
+  transition:transform .4s;
+}
 .fc-media:hover img{transform:scale(1.03)}
 
 .fc-media-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s;display:flex;align-items:center;justify-content:center}
@@ -214,7 +226,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .post-content{line-height:1.7;margin-bottom:10px;font-size:.92rem}
 .post-embed{border-radius:12px;overflow:hidden;margin:10px 0}
 .post-embed iframe{width:100%;aspect-ratio:16/9;border:none;display:block}
-.post-embed img{width:100%;max-height:320px;object-fit:cover}
+.post-embed img{width:100%;max-height:320px;object-fit:contain}
 .post-embed video{width:100%;max-height:320px}
 .post-actions{display:flex;gap:16px;padding-top:10px;border-top:1px solid #eee;margin-top:8px}
 .dark .post-actions{border-top-color:#2a3550}
@@ -1000,7 +1012,6 @@ function doSearch(){
   db.ref(`results/${grade}/${seat}`).once('value').then(snap=>{
     if(!snap.exists()){rd.innerHTML=`<div class="alert alert-danger rounded-4 p-4 text-center"><i class="fas fa-times-circle fa-2x mb-2 d-block"></i>رقم الجلوس <strong>${esc(seat)}</strong> غير مسجل.</div>`;return}
     const d=snap.val();
-    // ✅ تعديل: استخدام totalFinal بدلاً من total لعرض المجموع الحقيقي
     let subHtml='';
     if(d.subjects)Object.entries(d.subjects).forEach(([sub,score])=>{
       const pct=Math.min(score,100);
@@ -1127,12 +1138,10 @@ function exportPDF(data){
 function _doPDF(data){
   const today=new Date().toLocaleDateString('ar-EG',{year:'numeric',month:'long',day:'numeric'});
   
-  // ✅ بناء الجدول الرسمي بناءً على البيانات المتوفرة
   let subRows='';
   const maxTotal = data.totalFinal || 280;
   if(data.subjects)Object.entries(data.subjects).forEach(([sub,score])=>{
-    // تحديد الدرجة العظمى للمادة تلقائياً بناءً على المجموع الكلي إذا لم تحدد
-    const subMax = 40; // افتراضي
+    const subMax = 40; 
     subRows+=`<tr><td>${sub}</td><td>${score}</td><td>${subMax}</td></tr>`;
   });
 
@@ -1234,6 +1243,7 @@ function renderFiles(section,title){
     const type=getFileType(f);
     const isI=type==='img',isV=type==='vid',isA=type==='aud',isP=type==='pdf',isYTT=type==='yt',isL=type==='link';
     let thumb='';
+    // ✅ استخدام تصميم الصور الجديدة
     if(isI) thumb=`<div class="fc-media"><img src="${u}" loading="lazy"><div class="fc-media-overlay" onclick="openModal('${u}','${esc(f.title||'')}','img')"><div class="fc-play-btn"><i class="fas fa-expand" style="color:var(--pr)"></i></div></div></div>`;
     else if(isV) thumb=`<div class="fc-media" onclick="toggleView('${fid}','${u}','vid')"><video preload="metadata" style="width:100%;height:100%;object-fit:cover"><source src="${u}#t=0.5"></video><div class="fc-media-overlay" style="background:rgba(0,0,0,.35)"><div class="fc-play-btn"><i class="fas fa-play" style="color:var(--pr)"></i></div></div></div>`;
     else if(isYTT) {
@@ -1244,7 +1254,7 @@ function renderFiles(section,title){
             <div style="position:absolute;inset:0;background:rgba(0,0,0,.3);display:flex;align-items:center;justify-content:center"><div class="fc-play-btn" style="width:60px;height:60px;border-radius:50%;background:rgba(255,0,0,.9);display:flex;align-items:center;justify-content:center"><i class="fas fa-play text-white"></i></div></div>
         </div>`;
     }
-    else if(isP) thumb=`<div style="height:200px;background:#fff"><iframe src="${u.includes('drive.google.com')?u:`https://docs.google.com/viewer?url=${encodeURIComponent(u)}&embedded=true`}" style="width:100%;height:100%;border:none"></iframe></div>`;
+    else if(isP) thumb=`<div style="height:220px;background:#fff"><iframe src="${u.includes('drive.google.com')?u:`https://docs.google.com/viewer?url=${encodeURIComponent(u)}&embedded=true`}" style="width:100%;height:100%;border:none"></iframe></div>`;
     else if(isA) thumb=`<div style="padding:15px;background:#f8f9ff;text-align:center"><i class="fas fa-music fa-2x mb-2" style="color:#1abc9c"></i><audio controls style="width:100%"><source src="${u}"></audio></div>`;
     else thumb=`<div class="fc-icon-wrap" onclick="toggleView('${fid}','${u}','link')"><i class="fas ${isYT(u)?'fa-play-circle':'fa-link'} fa-3x" style="color:${isYT(u)?'#ff0000':'#95a5a6'}"></i></div>`;
 
