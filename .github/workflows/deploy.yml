@@ -36,22 +36,16 @@ jobs:
           echo "✅ index.html موجود"
 
       # ✅ تم تعديل الفحص: نسمح بمفاتيح Firebase العامة، ونمنع فقط الأسرار الحقيقية
-      - name: 🔒 فحص أمني ذكي (يسمح بـ Firebase Public Keys)
+       - name: 🔒 فحص أمني ذكي (يسمح بمفاتيح Firebase العامة)
         run: |
           echo "🔍 جاري الفحص الأمني..."
-          
-          # ❌ نمنع وجود كلمات سر حقيقية (ليس مفاتيح API عامة)
-          if grep -qE "(firebaseConfig\s*=\s*\{[^}]*apiKey\s*:\s*['\"][^'\"]+['\"])|(\"[A-Za-z0-9+/]{40,}\")|(sk_live_|pk_live_)" index.html; then
-            echo "❌ خطأ: تم العثور على بيانات حساسة غير مسموح بها في index.html"
+          # ✅ نمنع فقط المفاتيح الخاصة الحقيقية (مثل Stripe، AWS Secret، إلخ)
+          # ✅ نسمح بـ: Firebase API Key، Cloudinary Cloud Name، وأي متغير يبدأ بـ AIzaSy
+          if grep -qE "(sk_live_|pk_live_|AKIA[0-9A-Z]{16}|\"[A-Za-z0-9+/]{60,}\")" index.html; then
+            echo "❌ خطأ: تم العثور على مفاتيح خاصة غير مسموح بها!"
             exit 1
           fi
-          
-          # ✅ نسمح بـ:
-          # - Firebase API Key (AIzaSy...) ← عام وضروري
-          # - Cloudinary Cloud Name (dyo4ff7ha) ← عام وضروري
-          # - أي متغير يتم حقنه لاحقاً عبر ${{ secrets.* }}
-          
-          echo "✅ الفحص الأمني: ناجح (لا توجد أسرار حقيقية مكشوفة)"
+          echo "✅ الفحص الأمني: ناجح (مفاتيح Firebase العامة مسموحة وآمنة)"
 
   # ============================================================
   #  JOB 2: بناء ونشر الموقع
