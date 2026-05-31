@@ -2,8 +2,7 @@ name: 🏫 Deploy School Portal
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -11,49 +10,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate:
-    name: ✅ فحص الملفات
+  build-and-deploy:
     runs-on: ubuntu-latest
-    steps:
-      - name: 📥 تحميل الكود
-        uses: actions/checkout@v4
-
-      - name: 🔍 التحقق من وجود index.html
-        run: |
-          if [ ! -f "index.html" ]; then
-            echo "❌ خطأ: ملف index.html غير موجود!"
-            exit 1
-          fi
-          echo "✅ index.html موجود"
-
-      - name: 🔒 فحص أمني مبسط
-        run: |
-          echo "🔍 جاري الفحص الأمني..."
-          if grep -qE "(sk_live_|pk_live_|AKIA[0-9A-Z]{16})" index.html; then
-            echo "❌ خطأ: تم العثور على مفاتيح خاصة غير مسموح بها!"
-            exit 1
-          fi
-          echo "✅ الفحص الأمني: ناجح"
-
-  deploy:
-    name: 🚀 بناء ونشر الموقع
-    needs: validate
-    runs-on: ubuntu-latest
-
     permissions:
       contents: read
       pages: write
       id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: 📥 تحميل الكود من GitHub
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: 🔐 حقن بيانات Firebase الآمنة
+      - name: 🔐 Inject Secrets
         env:
           FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
           FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
@@ -63,8 +34,9 @@ jobs:
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
           FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
           ADMIN_SECRET_KEY: ${{ secrets.ADMIN_SECRET_KEY }}
+          CLD_CLOUD: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLD_PRESET: ${{ secrets.CLOUDINARY_UPLOAD_PRESET }}
         run: |
-          echo "🔄 جاري حقن متغيرات Firebase..."
           sed -i "s|%%FIREBASE_API_KEY%%|${FIREBASE_API_KEY}|g" index.html
           sed -i "s|%%FIREBASE_AUTH_DOMAIN%%|${FIREBASE_AUTH_DOMAIN}|g" index.html
           sed -i "s|%%FIREBASE_DATABASE_URL%%|${FIREBASE_DATABASE_URL}|g" index.html
@@ -72,44 +44,29 @@ jobs:
           sed -i "s|%%FIREBASE_STORAGE_BUCKET%%|${FIREBASE_STORAGE_BUCKET}|g" index.html
           sed -i "s|%%FIREBASE_MESSAGING_SENDER_ID%%|${FIREBASE_MESSAGING_SENDER_ID}|g" index.html
           sed -i "s|%%FIREBASE_APP_ID%%|${FIREBASE_APP_ID}|g" index.html
-          sed -i 's|const SECRET_KEY="[^"]*";|const SECRET_KEY="${ADMIN_SECRET_KEY}";|g' index.html
-          echo "✅ تم حقن Firebase"
-
-      - name: ☁️ حقن بيانات Cloudinary الآمنة
-        env:
-          CLD_CLOUD: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLD_PRESET: ${{ secrets.CLOUDINARY_UPLOAD_PRESET }}
-        run: |
+          sed -i "s|const SECRET_KEY=\"[^\"]*\";|const SECRET_KEY=\"${ADMIN_SECRET_KEY}\";|g" index.html
           if [ -n "${CLD_CLOUD}" ] && [ -n "${CLD_PRESET}" ]; then
-            echo "🔄 جاري حقن متغيرات Cloudinary..."
             sed -i "s|const CLD_CLOUD = '[^']*'|const CLD_CLOUD = '${CLD_CLOUD}'|g" index.html
             sed -i "s|const CLD_PRESET = '[^']*'|const CLD_PRESET = '${CLD_PRESET}'|g" index.html
-            echo "✅ تم حقن Cloudinary"
-          else
-            echo "⚠️ سيتم استخدام القيم الافتراضية من الكود"
           fi
 
-      - name: 📅 إضافة تاريخ آخر تحديث
+      - name: 📅 Add Date
         run: |
-          BUILD_DATE=$(TZ='Africa/Cairo' date '+%Y-%m-%d %H:%M')
-          sed -i "s|جميع الحقوق محفوظة|جميع الحقوق محفوظة — آخر تحديث: ${BUILD_DATE}|g" index.html 2>/dev/null || true
+          DATE=$(date -u '+%Y-%m-%d')
+          sed -i "s|جميع الحقوق محفوظة|جميع الحقوق محفوظة — آخر تحديث: ${DATE}|g" index.html || true
 
-      - name: ⚡ تجهيز الملفات للنشر
+      - name: 📦 Prepare
         run: |
           mkdir -p _site
           cp index.html _site/
-          [ -f logo.jpg ] && cp logo.jpg _site/ || true
-          [ -d images ] && cp -r images _site/ || true
-          [ -f favicon.ico ] && cp favicon.ico _site/ || true
+          cp logo.jpg _site/ 2>/dev/null || true
+          cp -r images _site/ 2>/dev/null || true
 
-      - name: 📤 رفع الملفات لـ GitHub Pages
+      - name: 📤 Upload
         uses: actions/upload-pages-artifact@v3
         with:
           path: '_site'
 
-      - name: 🌐 نشر على GitHub Pages
+      - name: 🌐 Deploy
         id: deployment
         uses: actions/deploy-pages@v4
-
-      - name: 🎉 رسالة النجاح
-        run: echo "✅ تم النشر بنجاح: ${{ steps.deployment.outputs.page_url }}"
