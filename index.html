@@ -72,7 +72,7 @@ body{background:var(--bg);color:#1e2a3e;min-height:100vh;overflow-x:hidden;
    ═══════════════════════════════════════════════════════════════ */
 header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));border-bottom:4px solid var(--gd);padding:12px 0;position:sticky;top:0;z-index:100;box-shadow:0 6px 20px rgba(0,0,0,.3)}
 .slogo{width:68px;height:68px;border-radius:50%;border:3px solid var(--gd);background:white;padding:3px;transition:transform .25s ease,box-shadow .25s ease;cursor:pointer;object-fit:cover;box-shadow:0 0 18px var(--gdg)}
-.slogo:hover{transform:scale(1.08);box-shadow:0 0 24px var(--gdg)} /* تم إزالة الدوران الثابت */
+.slogo:hover{transform:scale(1.08);box-shadow:0 0 24px var(--gdg)}
 .stl{font-weight:900;color:white;text-shadow:0 2px 5px rgba(0,0,0,.4);font-size:clamp(1rem,2.5vw,1.25rem)}
 .hbg{background:var(--gd);color:var(--pr);font-weight:800;padding:3px 12px;border-radius:30px;display:inline-block;font-size:.72rem}
 .od{width:8px;height:8px;border-radius:50%;background:#2ecc71;display:inline-block;animation:od 2s infinite;margin-left:5px}
@@ -104,10 +104,10 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
 .smi i{width:24px}
 .mb2{margin-right:auto;background:var(--gd);color:var(--pr);font-size:.62rem;font-weight:800;padding:2px 7px;border-radius:20px;position:relative;z-index:1}
 
-/* Swiper Slider */
+/* Swiper Slider - ✅ تم التعديل لظهور الصور كاملة */
 .sw-wrap{border-radius:var(--r);overflow:hidden;box-shadow:0 14px 40px rgba(0,0,0,.22);border:4px solid white;margin-bottom:18px}
 .hs{height:220px}@media(min-width:768px){.hs{height:250px}}
-.hs .swiper-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.hs .swiper-slide img{width:100%;height:100%;object-fit:contain;background:#f4f6f9;display:block} /* Contain يظهر الصورة كاملة */
 .sc2{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.65));color:white;padding:18px 16px 10px;font-weight:700;font-size:.92rem}
 .swiper-pagination-bullet-active{background:var(--gd)!important}
 .swiper-button-next,.swiper-button-prev{color:var(--gd)!important}
@@ -346,7 +346,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   body{padding-bottom:66px}
   .fab-th{bottom:76px;left:13px;width:42px;height:42px;font-size:1.1rem}
   .fab-st{bottom:76px;left:65px;width:38px;height:38px;font-size:.9rem}
-  .hs{height:180px!important}
+  .hs{height:200px!important}
   .gc{padding:12px;border-radius:16px}
   .hide-mob{display:none!important}
   .col-md-6{width:100%!important;flex:0 0 100%!important;max-width:100%!important}
@@ -364,7 +364,7 @@ header{background:linear-gradient(135deg,var(--pr),#0e3a65 60%,var(--pr2));borde
   .smi{padding:10px 12px;font-size:.85rem}
   .smi i{width:20px;font-size:.9rem}
 }
-@media(max-width:400px){.hs{height:150px!important}.stl{font-size:1rem!important}}
+@media(max-width:400px){.hs{height:180px!important}.stl{font-size:1rem!important}}
 
 /* Stats Edit */
 .stat-edit{cursor:pointer;transition:.2s}
@@ -688,7 +688,6 @@ function loadSlider(){
     {url:'https://picsum.photos/id/100/1200/400',cap:'💻 أنشطة تكنولوجية متقدمة'},
     {url:'https://picsum.photos/id/180/1200/400',cap:'🎨 إبداع بلا حدود'},
   ];
-  // Fetch latest images from the two active sections
   const secs=['activities_section','press_art_section'];
   Promise.all(secs.map(s=>db.ref(s).orderByChild('timestamp').limitToLast(8).once('value').catch(()=>null)))
     .then(snaps=>{
@@ -697,13 +696,11 @@ function loadSlider(){
         if(!snap||!snap.exists())return;
         snap.forEach(c=>{
           const v=c.val();
-          // ✅ شرط مرن: يقبل الصورة سواء كانت مخزنة كـ 'image' أو يُستدل عليها من الرابط
           if(v.url && (v.resourceType==='image' || isImg(v.url))){
             slides.push({url:v.url, cap:(v.title||'صورة')+' — '+(SECTION_NAMES[secs[idx]]||''), ts:v.timestamp||0});
           }
         });
       });
-      // Sort by timestamp desc, take last 6, reverse for swiper order
       slides.sort((a,b)=>b.ts-a.ts);
       buildSlider(slides.length>=2?slides.slice(0,6):defaults);
     }).catch(()=>buildSlider(defaults));
@@ -770,7 +767,6 @@ function showHome(){
       <h2 class="fw-bold mb-2">مرحباً بك في بوابتنا الرقمية</h2>
       <p class="text-muted">نسعى لتوفير أفضل تجربة تعليمية رقمية لطلابنا وأولياء الأمور</p>
     </div>
-    <!-- Unified Stats Display (from Firebase) -->
     <div class="row g-3 mb-4 stg">
       <div class="col-4"><div class="hsc"><div class="sn text-primary" id="HOME_CS">100%</div><small class="text-muted">دقة النتائج</small></div></div>
       <div class="col-4"><div class="hsc"><div class="sn text-success">24/7</div><small class="text-muted">توافر النظام</small></div></div>
@@ -784,7 +780,6 @@ function showHome(){
       <div class="col-6 col-md-3"><div class="qc" onclick="go('press_art')"><i class="fas fa-microphone-lines" style="color:#1abc9c"></i><h6>الصحافة</h6></div></div>
     </div>
   </div>`;
-  // Sync home stats with sidebar stats
   const syncStats=()=>{
     document.getElementById('HOME_CS').textContent=document.getElementById('CS').textContent;
     document.getElementById('HOME_ST').textContent=document.getElementById('CS').textContent;
@@ -794,7 +789,7 @@ function showHome(){
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   📝 Posts System (with Publisher Avatars)
+   📝 Posts System (with Publisher Avatars & File Upload)
    ═══════════════════════════════════════════════════════════════ */
 function showPosts(){
   hideHero();
@@ -848,7 +843,6 @@ function renderPost(p, dbSection='posts'){
   const cmtHtml=comments.map(cc=>`<div class="post-comment"><b>${esc(cc.name)}:</b> ${esc(cc.text)} <small class="text-muted ms-1">${cc.date||''}</small></div>`).join('');
   const sectionBadge=dbSection!=='posts'?`<span class="post-section-badge ${dbSection==='activities_section'?'activities':dbSection==='press_art_section'?'press_art':'general'}"><i class="fas fa-tag"></i>${SECTION_NAMES[dbSection]||dbSection}</span><br>`:'';
 
-  // Publisher data with fallbacks
   const authorName = p.author || 'الإدارة العامة';
   const authorRole = p.authorRole || '';
   const authorAvatar = p.authorAvatar || 'https://ui-avatars.com/api/?name='+encodeURIComponent(authorName)+'&background=6c757d&color=fff&size=128&bold=true';
@@ -922,6 +916,25 @@ function postCmt(id, section='posts'){
     });
 }
 
+// ✅ دالة رفع الملفات مباشرة إلى Cloudinary (تُستخدم في المنشورات)
+async function uploadPostFile(file){
+  return new Promise((resolve, reject) => {
+    const isVid=/\.(mp4|mov|avi|mkv|webm)$/i.test(file.name);
+    const resType = isVid ? 'video' : 'image';
+    const fd=new FormData();fd.append('file',file);fd.append('upload_preset',CLD_PRESET);fd.append('folder',`school/posts`);
+    const xhr=new XMLHttpRequest();
+    xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`);
+    xhr.addEventListener('load', ()=>{
+      if(xhr.status===200){
+        const r=JSON.parse(xhr.responseText);
+        resolve((r.secure_url||'').replace('http://','https://'));
+      } else reject(new Error('فشل الرفع'));
+    });
+    xhr.addEventListener('error', ()=> reject(new Error('تعذّر الاتصال')));
+    xhr.send(fd);
+  });
+}
+
 function showCreatePost(){
   const staffOpts = STAFF.map((s,i)=>`<option value='${i}'>${esc(s.name)} — ${esc(s.role)}</option>`).join('');
   const sectionOpts = `<option value="posts">📰 المنشورات العامة</option><option value="activities_section">🖼️ الأنشطة المدرسية</option><option value="press_art_section">🎨 الصحافة والإذاعة</option><option value="news_section">📢 أخبار المدرسة</option>`;
@@ -935,14 +948,45 @@ function showCreatePost(){
     </div>
     <select id="PC_section" class="swal2-select mb-2" style="width:100%;font-family:inherit">${sectionOpts}</select>
     <textarea id="PC_content" class="swal2-textarea" placeholder="ماذا تريد أن تنشر؟" rows="4" style="width:100%;resize:vertical;margin-top:0"></textarea>
-    <input type="url" id="PC_media" class="swal2-input" placeholder="رابط وسائط اختياري (يوتيوب، صورة، Google Drive...)">
-    <small style="color:#999;display:block;margin-top:4px;font-family:inherit">يدعم: يوتيوب · فيميو · Google Drive · صور مباشرة · فيديو مباشر</small>`,
+    <div class="mb-2">
+      <label class="form-label fw-bold small">رابط وسائط (يوتيوب، صورة، Drive...)</label>
+      <input type="url" id="PC_media" class="swal2-input" placeholder="https://..." style="width:100%;margin-bottom:8px">
+    </div>
+    <div class="mb-2">
+      <label class="form-label fw-bold small">أو ارفع ملفاً مباشرة (صورة/فيديو/PDF)</label>
+      <input type="file" id="PC_file" class="form-control form-control-sm" accept="image/*,video/*,audio/*,.pdf">
+      <small style="color:#888;font-size:.7rem" id="PC_file_name" class="d-block mt-1"></small>
+    </div>
+    <small style="color:#999;display:block;margin-top:4px;font-family:inherit">يدعم: يوتيوب · فيميو · Google Drive · صور/فيديو/صوت مباشرة</small>`,
     showCancelButton:true,confirmButtonText:'نشر الآن',cancelButtonText:'إلغاء',confirmButtonColor:'#0a2b4e',
-    preConfirm:()=>{
+    didOpen:()=>{
+      document.getElementById('PC_file').addEventListener('change', e=>{
+        const fn=document.getElementById('PC_file_name');
+        if(e.target.files[0]) fn.textContent=`✅ تم اختيار: ${e.target.files[0].name}`;
+        else fn.textContent='';
+      });
+    },
+    preConfirm: async () => {
       const content=document.getElementById('PC_content').value.trim();
       const idx=document.getElementById('PC_publisher')?.value;
+      const section=document.getElementById('PC_section').value;
+      const mediaUrl=document.getElementById('PC_media').value.trim();
+      const fileInput=document.getElementById('PC_file');
+
       if(!content){Swal.showValidationMessage('اكتب محتوى المنشور أولاً');return false}
-      return {content, mediaUrl:document.getElementById('PC_media').value.trim()||null, section:document.getElementById('PC_section').value, staffIdx:idx}
+
+      let finalMediaUrl = mediaUrl;
+      if(fileInput && fileInput.files[0]){
+        try {
+          Swal.showLoading();
+          finalMediaUrl = await uploadPostFile(fileInput.files[0]);
+        } catch(err) {
+          Swal.showValidationMessage('فشل رفع الملف: ' + err.message);
+          return false;
+        }
+      }
+
+      return { content, mediaUrl: finalMediaUrl, section, staffIdx: idx };
     }
   }).then(res=>{
     if(!res.isConfirmed||!res.value)return;
@@ -1333,8 +1377,6 @@ function doUpload(section,title){
   if(window._umode==='doc'){const rawUrl=document.getElementById('driveUrl')?.value?.trim();if(!rawUrl||!rawUrl.includes('drive.google.com')){toast('أدخل رابط Google Drive صحيح','w');return}const m=rawUrl.match(/\/d\/([a-zA-Z0-9_-]+)/);if(!m){toast('رابط Google Drive غير صحيح','e');return}const id=m[1];db.ref(section).push({title:t,description:d||'',url:`https://drive.google.com/file/d/${id}/preview`,downloadUrl:`https://drive.google.com/uc?export=download&id=${id}`,fileName:t,fileSize:0,resourceType:'gdrive',timestamp:Date.now(),uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}}).then(()=>{toast(`✅ تم إضافة "${t}" بنجاح`,'s');setTimeout(()=>showFiles(section,title),800)});return}
   const btn=document.getElementById('UBT'),pw=document.getElementById('UPW'),pb=document.getElementById('UPB'),pt=document.getElementById('UPT');
   if(!selFile){toast('اختر ملفاً','w');return}
-  
-  // Multi-file upload with retry logic
   if(selFile==='multi'&&window._multiFiles?.length){
     if(btn)btn.disabled=true;if(pw)pw.style.display='block';if(pt)pt.style.display='block';
     const files=window._multiFiles;let done=0;
@@ -1346,16 +1388,10 @@ function doUpload(section,title){
       xhr.addEventListener('load',()=>{
         if(xhr.status===200){
           const r=JSON.parse(xhr.responseText);const url=(r.secure_url||'').replace('http://','https://');
-          // Save with public_id for future management
           db.ref(section).push({title:t||file.name,description:d||'',url,public_id:r.public_id,fileName:file.name,fileSize:file.size,resourceType:resType,timestamp:Date.now(),uploadedAt:new Date().toLocaleDateString('ar-EG'),comments:{}});
           const mfsE=document.getElementById('mfs'+idx);if(mfsE){mfsE.textContent='✅';mfsE.className='badge bg-success'}
-        }else if(retries<2){
-          // Retry up to 2 times on failure
-          setTimeout(()=>uploadOne(file,idx,retries+1),1000*retries);
-          return;
-        }else{
-          const mfsE=document.getElementById('mfs'+idx);if(mfsE){mfsE.textContent='❌';mfsE.className='badge bg-danger'}
-        }
+        }else if(retries<2){setTimeout(()=>uploadOne(file,idx,retries+1),1000*retries);return;}
+        else{const mfsE=document.getElementById('mfs'+idx);if(mfsE){mfsE.textContent='❌';mfsE.className='badge bg-danger'}}
         done++;
         if(done<files.length)uploadOne(files[done],done);
         else{if(pw)pw.style.display='none';if(pt)pt.style.display='none';toast(`✅ تم رفع ${files.length} ملفات`,'s');window._multiFiles=null;selFile=null;if(section==='activities_section')setTimeout(loadSlider,1000);setTimeout(()=>showFiles(section,title),1200)}
@@ -1364,8 +1400,6 @@ function doUpload(section,title){
       xhr.open('POST',`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`);xhr.send(fd);
     };uploadOne(files[0],0);return;
   }
-  
-  // Single file upload with retry
   if(btn){btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>جاري الرفع...'}if(pw)pw.style.display='block';if(pt)pt.style.display='block';
   const ts=Date.now();const isVideo=/\.(mp4|mov|avi|mkv|webm)$/.test(selFile.name.toLowerCase());const resType=isVideo?'video':'image';
   const uploadURL=`https://api.cloudinary.com/v1_1/${CLD_CLOUD}/${resType}/upload`;const fd=new FormData();fd.append('file',selFile);fd.append('upload_preset',CLD_PRESET);fd.append('folder',`school/${section}`);
@@ -1381,13 +1415,9 @@ function doUpload(section,title){
 /* Comments & File Management */
 function addCmt(section,fid){const inp=document.getElementById(`CMI${fid}`);const txt=inp?.value?.trim();if(!txt)return;if(txt.length>200){toast('200 حرف كحد أقصى','w');return}db.ref(`${section}/${fid}/comments`).push({id:Date.now().toString(),name:isAdmin?'إدارة المدرسة':'زائر',text:txt,date:new Date().toLocaleDateString('ar-EG')}).then(()=>{if(inp){inp.value='';const cc=document.getElementById(`CC${fid}`);if(cc)cc.textContent='200/200'}toast('✅ تم إضافة تعليقك','s',1800)})}
 function delFile(section,id){Swal.fire({title:'حذف الملف؟',icon:'warning',showCancelButton:true,confirmButtonColor:'#d33',confirmButtonText:'احذف!',cancelButtonText:'إلغاء'}).then(r=>{if(r.isConfirmed){
-  // Delete from Firebase first
   db.ref(`${section}/${id}`).once('value',snap=>{
     const data=snap.val();
-    if(data?.public_id){
-      // Note: Cloudinary delete requires signed request with API secret
-      console.log('File reference deleted. Public ID:',data.public_id);
-    }
+    if(data?.public_id) console.log('File reference deleted. Public ID:',data.public_id);
     db.ref(`${section}/${id}`).remove().then(()=>toast('تم الحذف','i'));
   });
 }})}
@@ -1444,9 +1474,7 @@ function loadNews(){
 function showAddNews(){const a=document.getElementById('ANF');if(!a)return;a.innerHTML=`<div class="gc mb-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6><div class="row g-2"><div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div><div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div><div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div></div><div class="d-flex gap-2 mt-2"><button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button></div></div>`}
 function saveNews(){const t=document.getElementById('NT')?.value?.trim(),b=document.getElementById('NB')?.value?.trim(),c=document.getElementById('NC')?.value;if(!t||!b){toast('العنوان والنص مطلوبان','w');return}const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};const newsData={title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()};
   
-  // حفظ في صفحة الأخبار أولاً
   db.ref('school_news').push(newsData).then(()=>{
-     // إضافة تلقائية ومُختصرة للشريط الإخباري العلوي
      const tickerText = `${newsData.icon} ${t} — ${b.substring(0,90)}${b.length>90?'...':''}`;
      db.ref('ticker_news').push({text:tickerText});
      toast('تم نشر الخبر وإضافته للشريط العلوي ✅','s');
