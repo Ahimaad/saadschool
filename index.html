@@ -1443,8 +1443,22 @@ function loadNews(){
   });
 }
 function showAddNews(){const a=document.getElementById('ANF');if(!a)return;a.innerHTML=`<div class="gc mb-3 fi"><h6 class="fw-bold mb-3"><i class="fas fa-plus me-2"></i>إضافة خبر</h6><div class="row g-2"><div class="col-md-8"><input class="form-control" id="NT" placeholder="العنوان *" maxlength="100"></div><div class="col-md-4"><select class="form-select" id="NC"><option>عام</option><option>تقنية</option><option>تنبيه</option><option>نشاط</option><option>أكاديمي</option></select></div><div class="col-12"><textarea class="form-control" id="NB" placeholder="نص الخبر..." rows="2" maxlength="400"></textarea></div></div><div class="d-flex gap-2 mt-2"><button class="btn bg btn-sm px-4" onclick="saveNews()"><i class="fas fa-save me-1"></i>حفظ</button><button class="btn btn-outline-secondary btn-sm" onclick="document.getElementById('ANF').innerHTML=''">إلغاء</button></div></div>`}
-function saveNews(){const t=document.getElementById('NT')?.value?.trim(),b=document.getElementById('NB')?.value?.trim(),c=document.getElementById('NC')?.value;if(!t||!b){toast('العنوان والنص مطلوبان','w');return}const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};db.ref('school_news').push({title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()}).then(()=>{toast('تم نشر الخبر ✅','s');document.getElementById('ANF').innerHTML='';loadNews()})}
-function delNews(id){db.ref(`school_news/${id}`).remove().then(()=>{toast('تم الحذف','i');loadNews()})}
+function function saveNews(){
+  const t=document.getElementById('NT')?.value?.trim(), b=document.getElementById('NB')?.value?.trim(), c=document.getElementById('NC')?.value;
+  if(!t||!b){toast('العنوان والنص مطلوبان','w');return}
+  const icons={عام:'📌',تقنية:'🚀',تنبيه:'📢',نشاط:'🏆',أكاديمي:'📚'};
+  const newsData={title:t,body:b,cat:c,icon:icons[c]||'📌',dateStr:new Date().toLocaleDateString('ar-EG'),timestamp:Date.now()};
+  
+  // حفظ في صفحة الأخبار أولاً
+  db.ref('school_news').push(newsData).then(()=>{
+     // إضافة تلقائية ومُختصرة للشريط الإخباري العلوي
+     const tickerText = `${newsData.icon} ${t} — ${b.substring(0,90)}${b.length>90?'...':''}`;
+     db.ref('ticker_news').push({text:tickerText});
+     toast('تم نشر الخبر وإضافته للشريط العلوي ✅','s');
+     document.getElementById('ANF').innerHTML='';
+     loadNews();
+  });
+}
 
 /* ═══════════════════════════════════════════════════════════════
    🔧 Helpers
