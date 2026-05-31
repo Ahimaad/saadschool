@@ -738,7 +738,23 @@ function copyTxt(t){navigator.clipboard.writeText(t).then(()=>toast('تم الن
 function editStat(stat){if(!isAdmin){toast('متاح للإدارة فقط','w');return}Swal.fire({title:`تعديل — ${stat}`,input:'number',inputValue:statsData[stat],showCancelButton:true}).then(res=>{if(res.isConfirmed&&res.value!==undefined&&db){statsData[stat]=parseInt(res.value);db.ref('school_stats').set(statsData)}})}
 
 // 🚀 بدء التهيئة
-initFirebase();
+// 🛡️ شبكة أمان: إخفاء اللودر بعد 5 ثوانٍ بغض النظر عن الأخطاء
+setTimeout(() => {
+  const loader = document.getElementById('ldr');
+  if (loader && !loader.classList.contains('hide')) {
+    loader.classList.add('hide');
+    console.warn('⚠️ تم إخفاء شاشة التحميل تلقائياً (يُرجى فحص Console للأخطاء)');
+  }
+}, 5000);
+
+// 🚀 تهيئة Firebase مع معالجة الأخطاء
+try {
+  initFirebase();
+} catch (err) {
+  console.error('❌ خطأ في التهيئة:', err);
+  document.getElementById('ldr')?.classList.add('hide');
+  toast('⚠️ حدث خطأ أثناء التحميل، جاري فتح الموقع...', 'w', 4000);
+}
 </script>
 </body>
 </html>
