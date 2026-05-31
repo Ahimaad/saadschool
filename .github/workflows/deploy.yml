@@ -1,9 +1,3 @@
-# ============================================================
-#  🚀 GitHub Actions — نشر تلقائي مع حماية Firebase Secrets
-#  المدرسة: سعد بن أبي وقاص الرسمية للغات
-#  ☁️ مع دعم Cloudinary
-# ============================================================
-
 name: 🏫 Deploy School Portal
 
 on:
@@ -35,8 +29,6 @@ jobs:
       - name: 🔒 فحص أمني مبسط
         run: |
           echo "🔍 جاري الفحص الأمني..."
-          # ✅ نسمح بمفاتيح Firebase العامة (AIzaSy) لأنها ضرورية لعمل الموقع
-          # ✅ نمنع فقط المفاتيح الخاصة الحساسة (مثل Stripe, AWS, إلخ)
           if grep -qE "(sk_live_|pk_live_|AKIA[0-9A-Z]{16})" index.html; then
             echo "❌ خطأ: تم العثور على مفاتيح خاصة غير مسموح بها!"
             exit 1
@@ -63,14 +55,14 @@ jobs:
 
       - name: 🔐 حقن بيانات Firebase الآمنة
         env:
-          FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
-          FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}
-          FIREBASE_DATABASE_URL:        ${{ secrets.FIREBASE_DATABASE_URL }}
-          FIREBASE_PROJECT_ID:          ${{ secrets.FIREBASE_PROJECT_ID }}
-          FIREBASE_STORAGE_BUCKET:      ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+          FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
+          FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+          FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
           FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-          FIREBASE_APP_ID:              ${{ secrets.FIREBASE_APP_ID }}
-          ADMIN_SECRET_KEY:             ${{ secrets.ADMIN_SECRET_KEY }}
+          FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
+          ADMIN_SECRET_KEY: ${{ secrets.ADMIN_SECRET_KEY }}
         run: |
           echo "🔄 جاري حقن متغيرات Firebase..."
           sed -i "s|%%FIREBASE_API_KEY%%|${FIREBASE_API_KEY}|g" index.html
@@ -80,12 +72,12 @@ jobs:
           sed -i "s|%%FIREBASE_STORAGE_BUCKET%%|${FIREBASE_STORAGE_BUCKET}|g" index.html
           sed -i "s|%%FIREBASE_MESSAGING_SENDER_ID%%|${FIREBASE_MESSAGING_SENDER_ID}|g" index.html
           sed -i "s|%%FIREBASE_APP_ID%%|${FIREBASE_APP_ID}|g" index.html
-          sed -i "s|const SECRET_KEY=\"[^\"]*\";|const SECRET_KEY=\"${ADMIN_SECRET_KEY}\";|g" index.html
+          sed -i 's|const SECRET_KEY="[^"]*";|const SECRET_KEY="${ADMIN_SECRET_KEY}";|g' index.html
           echo "✅ تم حقن Firebase"
 
       - name: ☁️ حقن بيانات Cloudinary الآمنة
         env:
-          CLD_CLOUD:  ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLD_CLOUD: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
           CLD_PRESET: ${{ secrets.CLOUDINARY_UPLOAD_PRESET }}
         run: |
           if [ -n "${CLD_CLOUD}" ] && [ -n "${CLD_PRESET}" ]; then
@@ -94,7 +86,7 @@ jobs:
             sed -i "s|const CLD_PRESET = '[^']*'|const CLD_PRESET = '${CLD_PRESET}'|g" index.html
             echo "✅ تم حقن Cloudinary"
           else
-            echo "⚠️  سيتم استخدام القيم الافتراضية من الكود"
+            echo "⚠️ سيتم استخدام القيم الافتراضية من الكود"
           fi
 
       - name: 📅 إضافة تاريخ آخر تحديث
@@ -106,8 +98,8 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html _site/
-          [ -f logo.jpg ]    && cp logo.jpg _site/    || true
-          [ -d images ]      && cp -r images _site/   || true
+          [ -f logo.jpg ] && cp logo.jpg _site/ || true
+          [ -d images ] && cp -r images _site/ || true
           [ -f favicon.ico ] && cp favicon.ico _site/ || true
 
       - name: 📤 رفع الملفات لـ GitHub Pages
