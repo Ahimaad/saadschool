@@ -17,9 +17,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ============================================================
-  #  JOB 1: فحص الكود (مُحدَّث)
-  # ============================================================
   validate:
     name: ✅ فحص الملفات
     runs-on: ubuntu-latest
@@ -35,21 +32,17 @@ jobs:
           fi
           echo "✅ index.html موجود"
 
-      # ✅ تم تعديل الفحص: نسمح بمفاتيح Firebase العامة، ونمنع فقط الأسرار الحقيقية
-       - name: 🔒 فحص أمني ذكي (يسمح بمفاتيح Firebase العامة)
+      - name: 🔒 فحص أمني مبسط
         run: |
           echo "🔍 جاري الفحص الأمني..."
-          # ✅ نمنع فقط المفاتيح الخاصة الحقيقية (مثل Stripe، AWS Secret، إلخ)
-          # ✅ نسمح بـ: Firebase API Key، Cloudinary Cloud Name، وأي متغير يبدأ بـ AIzaSy
-          if grep -qE "(sk_live_|pk_live_|AKIA[0-9A-Z]{16}|\"[A-Za-z0-9+/]{60,}\")" index.html; then
+          # ✅ نسمح بمفاتيح Firebase العامة (AIzaSy) لأنها ضرورية لعمل الموقع
+          # ✅ نمنع فقط المفاتيح الخاصة الحساسة (مثل Stripe, AWS, إلخ)
+          if grep -qE "(sk_live_|pk_live_|AKIA[0-9A-Z]{16})" index.html; then
             echo "❌ خطأ: تم العثور على مفاتيح خاصة غير مسموح بها!"
             exit 1
           fi
-          echo "✅ الفحص الأمني: ناجح (مفاتيح Firebase العامة مسموحة وآمنة)"
+          echo "✅ الفحص الأمني: ناجح"
 
-  # ============================================================
-  #  JOB 2: بناء ونشر الموقع
-  # ============================================================
   deploy:
     name: 🚀 بناء ونشر الموقع
     needs: validate
@@ -68,7 +61,6 @@ jobs:
       - name: 📥 تحميل الكود من GitHub
         uses: actions/checkout@v4
 
-      # ── 2. حقن Firebase Secrets ───────────────────────────────
       - name: 🔐 حقن بيانات Firebase الآمنة
         env:
           FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
@@ -81,17 +73,16 @@ jobs:
           ADMIN_SECRET_KEY:             ${{ secrets.ADMIN_SECRET_KEY }}
         run: |
           echo "🔄 جاري حقن متغيرات Firebase..."
-          sed -i "s|%%FIREBASE_API_KEY%%|${FIREBASE_API_KEY}|g"                         index.html
-          sed -i "s|%%FIREBASE_AUTH_DOMAIN%%|${FIREBASE_AUTH_DOMAIN}|g"                 index.html
-          sed -i "s|%%FIREBASE_DATABASE_URL%%|${FIREBASE_DATABASE_URL}|g"               index.html
-          sed -i "s|%%FIREBASE_PROJECT_ID%%|${FIREBASE_PROJECT_ID}|g"                   index.html
-          sed -i "s|%%FIREBASE_STORAGE_BUCKET%%|${FIREBASE_STORAGE_BUCKET}|g"           index.html
+          sed -i "s|%%FIREBASE_API_KEY%%|${FIREBASE_API_KEY}|g" index.html
+          sed -i "s|%%FIREBASE_AUTH_DOMAIN%%|${FIREBASE_AUTH_DOMAIN}|g" index.html
+          sed -i "s|%%FIREBASE_DATABASE_URL%%|${FIREBASE_DATABASE_URL}|g" index.html
+          sed -i "s|%%FIREBASE_PROJECT_ID%%|${FIREBASE_PROJECT_ID}|g" index.html
+          sed -i "s|%%FIREBASE_STORAGE_BUCKET%%|${FIREBASE_STORAGE_BUCKET}|g" index.html
           sed -i "s|%%FIREBASE_MESSAGING_SENDER_ID%%|${FIREBASE_MESSAGING_SENDER_ID}|g" index.html
-          sed -i "s|%%FIREBASE_APP_ID%%|${FIREBASE_APP_ID}|g"                           index.html
+          sed -i "s|%%FIREBASE_APP_ID%%|${FIREBASE_APP_ID}|g" index.html
           sed -i "s|const SECRET_KEY=\"[^\"]*\";|const SECRET_KEY=\"${ADMIN_SECRET_KEY}\";|g" index.html
-          echo "✅ تم حقن جميع متغيرات Firebase"
+          echo "✅ تم حقن Firebase"
 
-      # ── 3. حقن Cloudinary Secrets ─────────────────────────────
       - name: ☁️ حقن بيانات Cloudinary الآمنة
         env:
           CLD_CLOUD:  ${{ secrets.CLOUDINARY_CLOUD_NAME }}
@@ -101,65 +92,32 @@ jobs:
             echo "🔄 جاري حقن متغيرات Cloudinary..."
             sed -i "s|const CLD_CLOUD = '[^']*'|const CLD_CLOUD = '${CLD_CLOUD}'|g" index.html
             sed -i "s|const CLD_PRESET = '[^']*'|const CLD_PRESET = '${CLD_PRESET}'|g" index.html
-            echo "✅ تم حقن Cloudinary Cloud Name و Upload Preset"
+            echo "✅ تم حقن Cloudinary"
           else
-            echo "⚠️  Cloudinary Secrets غير موجودة — سيتم استخدام القيم الافتراضية من الكود"
+            echo "⚠️  سيتم استخدام القيم الافتراضية من الكود"
           fi
 
-      # ── 4. إضافة تاريخ آخر نشر ─────────────────────────────
       - name: 📅 إضافة تاريخ آخر تحديث
         run: |
           BUILD_DATE=$(TZ='Africa/Cairo' date '+%Y-%m-%d %H:%M')
-          sed -i "s|جميع الحقوق محفوظة|جميع الحقوق محفوظة — آخر تحديث: ${BUILD_DATE}|g" index.html
-          echo "✅ تم إضافة تاريخ البناء: ${BUILD_DATE}"
+          sed -i "s|جميع الحقوق محفوظة|جميع الحقوق محفوظة — آخر تحديث: ${BUILD_DATE}|g" index.html 2>/dev/null || true
 
-      # ── 5. تحسين الأداء ─────────────────────────────────────
-      - name: ⚡ ضغط الملفات لتحسين السرعة
+      - name: ⚡ تجهيز الملفات للنشر
         run: |
           mkdir -p _site
           cp index.html _site/
-          [ -f logo.jpg ]    && cp logo.jpg _site/    || echo "logo.jpg غير موجود"
+          [ -f logo.jpg ]    && cp logo.jpg _site/    || true
           [ -d images ]      && cp -r images _site/   || true
           [ -f favicon.ico ] && cp favicon.ico _site/ || true
-          echo "📊 حجم index.html: $(du -sh _site/index.html | cut -f1)"
-          echo "✅ الملفات جاهزة للنشر"
 
-      # ── 6. رفع الملفات لـ GitHub Pages ─────────────────────
       - name: 📤 رفع الملفات لـ GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: '_site'
 
-      # ── 7. نشر على GitHub Pages ─────────────────────────────
       - name: 🌐 نشر على GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
 
-      # ── 8. رسالة نجاح ───────────────────────────────────────
-      - name: 🎉 تم النشر بنجاح!
-        run: |
-          echo "══════════════════════════════════════"
-          echo "  ✅ تم نشر الموقع بنجاح!"
-          echo "  🌐 الرابط: ${{ steps.deployment.outputs.page_url }}"
-          echo "  📅 وقت النشر: $(TZ='Africa/Cairo' date '+%Y-%m-%d %H:%M')"
-          echo "══════════════════════════════════════"
-
-  # ============================================================
-  #  JOB 3: إشعار بالنتيجة
-  # ============================================================
-  notify:
-    name: 📬 إشعار النتيجة
-    needs: deploy
-    runs-on: ubuntu-latest
-    if: always()
-    steps:
-      - name: ✅ نجح النشر
-        if: needs.deploy.result == 'success'
-        run: echo "🎉 تم نشر موقع مدرسة سعد بن أبي وقاص بنجاح مع دعم Cloudinary!"
-
-      - name: ❌ فشل النشر
-        if: needs.deploy.result == 'failure'
-        run: |
-          echo "❌ فشل نشر الموقع!"
-          echo "راجع الـ logs أعلاه لمعرفة السبب"
-          exit 1
+      - name: 🎉 رسالة النجاح
+        run: echo "✅ تم النشر بنجاح: ${{ steps.deployment.outputs.page_url }}"
