@@ -681,62 +681,208 @@ function delGradeResults(grade){Swal.fire({title:'حذف نتائج الصف؟',
    ═══════════════════════════════════════════════════════════════ */
 function exportPDF(data){if(typeof data==='string')data=JSON.parse(data);toast('⏳ جاري تهيئة الشهادة الرسمية...','i',2000);loadPdfLibs(()=>_doPDF(data));}
 function _doPDF(data){
-  const maxTotal=data.totalFinal||280;
-  const mainSubjects={
-    'اللغة العربية والخط':{max:95},'اللغة الإنجليزية':{max:80.55},'الدراسات الاجتماعية':{max:94.5},'الرياضيات':{max:60},'العلوم':{max:61.25}
+  const schoolInfo = data.school_info || {
+    name: "مدرسة سعد بن أبي وقاص الرسمية للغات",
+    department: "إدارة الفشن التعليمية",
+    year: "2025/2026",
+    ministry_logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Coat_of_arms_of_Egypt.svg/1200px-Coat_of_arms_of_Egypt.svg.png",
+    school_logo: "logo.jpg"
   };
-  let mainRows='';
-  if(data.subjects)Object.entries(data.subjects).forEach(([sub,score])=>{
-    const max=mainSubjects[sub]?.max||40;
-    mainRows+=`<tr><td>${sub}</td><td>${score}</td><td>${max}</td></tr>`;
-  });
-  mainRows+=`<tr class="subject-total"><td>المجموع</td><td><strong>${esc(String(data.total||0))}</strong></td><td><strong>${esc(String(maxTotal))}</strong></td></tr>`;
   
-  let optRows='';
-  if(data.optional)Object.entries(data.optional).forEach(([sub,score])=>{
-    const max={'التربية الدينية':40,'التربية الرياضية':20,'التربية الفنية':20,'التربية الموسيقية':20,'تكنولوجيا المعلومات والمعلوماتية':20,'اللغة الفرنسية (مستوى رفيع)':30}[sub]||20;
-    optRows+=`<tr><td>${sub}</td><td>${score}</td><td>${max}</td></tr>`;
-  });
-  
-  const card=document.getElementById('pdfCard');
-  card.innerHTML=`
-  <div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl;padding:15px">
-    <div class="cert-header">
-      <h2>مدرسة سعد بن أبي وقاص الرسمية للغات</h2>
-      <p>إدارة الفشن التعليمية — محافظة بني سويف</p>
-      <p style="font-size:.7rem;margin-top:5px">امتحان مقياس تقييم طالب الصف الأول الإعدادي — الفصل الدراسي الثاني 2025/2026</p>
+  const signatures = data.signatures || {
+    control_chief: "أ/ أحمد صابر",
+    control_staff: ["أ/ أسماء شعبان", "أ/ فاطمة مرزوق"],
+    computer_officer: "أ/ بهيجة مصطفى",
+    system_chief: "أ/ عيد عباس",
+    principal: "أ/ محمد مصطفي حسن"
+  };
+
+  // بناء جدول المواد الأساسية
+  let mainRows = '';
+  if(data.subjects) {
+    Object.values(data.subjects).forEach(sub => {
+      mainRows += `
+        <tr>
+          <td style="text-align:right;padding:6px;font-weight:600">${sub.name}</td>
+          <td>${sub.first_term || '-'}</td>
+          <td>${sub.second_term || '-'}</td>
+          <td>${sub.compensatory || '-'}</td>
+          <td>${sub.homework || '-'}</td>
+          <td>${sub.behavior || '-'}</td>
+          <td>${sub.monthly || '-'}</td>
+          <td style="font-weight:800;background:#f0f2f5">${sub.total}</td>
+          <td>${sub.max}</td>
+        </tr>
+      `;
+    });
+  }
+
+  // بناء جدول الأنشطة والمواد الاختيارية
+  let activityRows = '';
+  if(data.activities) {
+    Object.values(data.activities).forEach(act => {
+      activityRows += `
+        <tr>
+          <td style="text-align:right;padding:6px">${act.name}</td>
+          <td>${act.total || '-'}</td>
+          <td>${act.max}</td>
+          <td style="font-weight:700">${act.grade || '-'}</td>
+        </tr>
+      `;
+    });
+  }
+
+  // مواد الدور الثاني
+  let secondRoundHtml = '';
+  if(data.second_round && data.second_round.length > 0) {
+    secondRoundHtml = `
+      <div style="margin-top:15px;padding:10px;background:#fff3cd;border:2px solid #ffc107;border-radius:8px">
+        <strong style="color:#856404">📚 مواد الدور الثاني:</strong>
+        <ul style="margin:5px 0;padding-right:20px;color:#856404">
+          ${data.second_round.map(m => `<li>${m}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+
+  const card = document.getElementById('pdfCard');
+  card.innerHTML = `
+  <div style="width:794px;background:white;font-family:'Cairo',sans-serif;direction:rtl;padding:20px">
+    
+    <!-- رأس الشهادة مع الشعارات -->
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;border-bottom:3px solid #0a2b4e;padding-bottom:15px">
+      <div style="text-align:center;flex:1">
+        <img src="${schoolInfo.ministry_logo}" style="width:80px;height:80px;object-fit:contain" onerror="this.style.display='none'">
+        <div style="font-size:0.75rem;color:#666;margin-top:5px">وزارة التربية والتعليم والتعليم الفني</div>
+      </div>
+      <div style="text-align:center;flex:2">
+        <h2 style="font-size:1.3rem;color:#0a2b4e;margin:0;font-weight:900">${schoolInfo.name}</h2>
+        <p style="font-size:0.85rem;color:#666;margin:5px 0">${schoolInfo.department} — محافظة ${schoolInfo.governorate}</p>
+        <p style="font-size:0.75rem;color:#888;margin:3px 0">امتحان مقياس تقييم طالب ${schoolInfo.grade} — ${schoolInfo.semester}</p>
+        <p style="font-size:0.7rem;color:#999;margin:2px 0">${schoolInfo.year} — ${schoolInfo.regulation}</p>
+      </div>
+      <div style="text-align:center;flex:1">
+        <img src="${schoolInfo.school_logo}" style="width:80px;height:80px;object-fit:contain" onerror="this.style.display='none'">
+        <div style="font-size:0.75rem;color:#666;margin-top:5px">شعار المدرسة</div>
+      </div>
     </div>
-    <div class="cert-meta">
-      <div><strong>اسم الطالب:</strong> ${esc(data.name||'')}</div>
-      <div><strong>رقم الجلوس:</strong> ${esc(String(data.seat||''))}</div>
-      <div><strong>الصف:</strong> ${GL[data.grade]||''}</div>
+
+    <!-- بيانات الطالب -->
+    <div style="background:#f8f9fa;padding:12px;border-radius:8px;margin-bottom:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <div style="flex:1;min-width:200px"><strong style="color:#0a2b4e">اسم الطالب:</strong> ${esc(data.name||'')}</div>
+      <div style="flex:1;min-width:150px"><strong style="color:#0a2b4e">رقم الجلوس:</strong> ${esc(String(data.seat||''))}</div>
+      <div style="flex:1;min-width:150px"><strong style="color:#0a2b4e">الصف:</strong> ${schoolInfo.grade}</div>
     </div>
-    <table class="cert-table">
-      <thead><tr><th>المادة</th><th>الدرجة الفعلية</th><th>الدرجة العظمى</th></tr></thead>
-      <tbody>${mainRows}</tbody>
+
+    <!-- جدول المواد الأساسية -->
+    <table style="width:100%;border-collapse:collapse;font-size:0.7rem;margin-bottom:20px;border:2px solid #0a2b4e">
+      <thead>
+        <tr style="background:#0a2b4e;color:white">
+          <th style="padding:8px;border:1px solid #0a2b4e;text-align:right">المادة</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">اختبار الفصل الأول<br>(30)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">اختبار الفصل الثاني<br>(30)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">الاختبار التعويضي<br>(20)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">الواجبات<br>(10)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">السلوك والمواظبة<br>(10)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">الاختبارات الشهرية<br>(30)</th>
+          <th style="padding:8px;border:1px solid #0a2b4e;background:#d4af37;color:#0a2b4e">الدرجة الفعلية</th>
+          <th style="padding:8px;border:1px solid #0a2b4e">الدرجة العظمى</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${mainRows}
+        <tr style="background:#0a2b4e;color:white;font-weight:900;font-size:0.85rem">
+          <td style="padding:10px;border:1px solid #0a2b4e;text-align:right">المجموع الكلي</td>
+          <td colspan="7" style="padding:10px;border:1px solid #0a2b4e;text-align:center;font-size:1.1rem">${esc(String(data.total_actual||data.total||0))}</td>
+          <td style="padding:10px;border:1px solid #0a2b4e;text-align:center;font-size:1.1rem">${esc(String(data.total_max||280))}</td>
+        </tr>
+      </tbody>
     </table>
-    ${optRows?`<table class="cert-opt-table"><thead><tr><th>المادة الاختيارية / النشاط</th><th>الدرجة</th><th>الدرجة العظمى</th></tr></thead><tbody>${optRows}</tbody></table>`:''}
-    <div class="cert-footer-info">
-      <div class="cert-attendance"><strong>نسبة الحضور:</strong> ${data.attendance||'--'}%</div>
-      <div class="cert-status"><strong>الحالة:</strong> ${esc(data.status||'')}</div>
+
+    <!-- جدول الأنشطة والمواد الاختيارية -->
+    ${activityRows ? `
+    <div style="margin-bottom:20px">
+      <h3 style="font-size:1rem;color:#0a2b4e;margin:15px 0 10px;border-bottom:2px solid #d4af37;padding-bottom:5px">الأنشطة والمواد الاختيارية</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:0.75rem;border:2px solid #0a2b4e">
+        <thead>
+          <tr style="background:#1e4a76;color:white">
+            <th style="padding:8px;border:1px solid #0a2b4e;text-align:right">المادة / النشاط</th>
+            <th style="padding:8px;border:1px solid #0a2b4e">الدرجة</th>
+            <th style="padding:8px;border:1px solid #0a2b4e">الدرجة العظمى</th>
+            <th style="padding:8px;border:1px solid #0a2b4e">التقدير</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${activityRows}
+        </tbody>
+      </table>
     </div>
-    <div class="cert-summary">
-      <div class="cert-box"><strong>النسبة المئوية</strong><div class="val">${esc(String(data.percentage||''))}%</div></div>
-      <div class="cert-box"><strong>التقدير</strong><div class="val">${esc(data.gradeLabel||data.grade||'')}</div></div>
+    ` : ''}
+
+    <!-- معلومات إضافية -->
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;margin-bottom:20px">
+      <div style="flex:1;min-width:200px;background:#e8f5e9;padding:12px;border-radius:8px;border-right:4px solid #2ecc71">
+        <strong style="color:#155724">📊 نسبة الحضور:</strong>
+        <div style="font-size:1.3rem;font-weight:900;color:#155724;margin-top:5px">${data.attendance||'--'}%</div>
+      </div>
+      <div style="flex:1;min-width:200px;background:#e3f2fd;padding:12px;border-radius:8px;border-right:4px solid #2196f3">
+        <strong style="color:#004085">📈 النسبة المئوية:</strong>
+        <div style="font-size:1.3rem;font-weight:900;color:#004085;margin-top:5px">${esc(String(data.percentage||''))}%</div>
+      </div>
+      <div style="flex:1;min-width:200px;background:#fff3cd;padding:12px;border-radius:8px;border-right:4px solid #ffc107">
+        <strong style="color:#856404">🏆 التقدير العام:</strong>
+        <div style="font-size:1.3rem;font-weight:900;color:#856404;margin-top:5px">${esc(data.overall_grade||data.gradeLabel||data.grade||'')}</div>
+      </div>
     </div>
-    <div class="cert-signatures">
-      <div class="cert-sig"><span>مسئول الفصل</span><div class="line"></div><span class="cert-sig-name">أ/ أحمد صابر</span></div>
-      <div class="cert-sig"><span>مسئول المعمل الآلي</span><div class="line"></div><span class="cert-sig-name">أ/ بهجه مصطفى</span></div>
-      <div class="cert-sig"><span>مسئول النظام والمراقبة</span><div class="line"></div><span class="cert-sig-name">أ/ محمد أحمد</span></div>
-      <div class="cert-sig"><span>مدير المدرسة</span><div class="line"></div><span class="cert-sig-name">أ/ محمد أحمد حسن</span></div>
+
+    <!-- الحالة -->
+    <div style="background:${data.status.includes('ناجح') ? '#d4edda' : '#f8d7da'};padding:15px;border-radius:8px;border:2px solid ${data.status.includes('ناجح') ? '#28a745' : '#dc3545'};margin-bottom:15px;text-align:center">
+      <strong style="font-size:1.1rem;color:${data.status.includes('ناجح') ? '#155724' : '#721c24'}">
+        ${data.status.includes('ناجح') ? '✅' : '⚠️'} الحالة: ${esc(data.status||'')}
+      </strong>
     </div>
-    <p style="text-align:center;font-size:.7rem;color:#888;margin-top:20px">تم استخراج هذه الشهادة إلكترونياً من بوابة مدرسة سعد بن أبي وقاص الرسمية</p>
+
+    ${secondRoundHtml}
+
+    <!-- التواقيع -->
+    <div style="margin-top:30px;display:flex;justify-content:space-around;flex-wrap:wrap;gap:15px;border-top:2px solid #0a2b4e;padding-top:20px">
+      <div style="text-align:center;min-width:140px">
+        <div style="font-size:0.75rem;color:#666;margin-bottom:5px">رئيس الكنترول</div>
+        <div style="border-bottom:2px solid #333;width:140px;margin:0 auto 5px;height:30px"></div>
+        <div style="font-weight:700;color:#0a2b4e;font-size:0.85rem">${signatures.control_chief}</div>
+      </div>
+      <div style="text-align:center;min-width:140px">
+        <div style="font-size:0.75rem;color:#666;margin-bottom:5px">مسئولو الكنترول</div>
+        <div style="border-bottom:2px solid #333;width:140px;margin:0 auto 5px;height:30px"></div>
+        <div style="font-weight:700;color:#0a2b4e;font-size:0.8rem">${signatures.control_staff.join(' - ')}</div>
+      </div>
+      <div style="text-align:center;min-width:140px">
+        <div style="font-size:0.75rem;color:#666;margin-bottom:5px">مسئول الحاسب الآلي</div>
+        <div style="border-bottom:2px solid #333;width:140px;margin:0 auto 5px;height:30px"></div>
+        <div style="font-weight:700;color:#0a2b4e;font-size:0.85rem">${signatures.computer_officer}</div>
+      </div>
+      <div style="text-align:center;min-width:140px">
+        <div style="font-size:0.75rem;color:#666;margin-bottom:5px">رئيس نظام ومراقبة</div>
+        <div style="border-bottom:2px solid #333;width:140px;margin:0 auto 5px;height:30px"></div>
+        <div style="font-weight:700;color:#0a2b4e;font-size:0.85rem">${signatures.system_chief}</div>
+      </div>
+      <div style="text-align:center;min-width:140px">
+        <div style="font-size:0.75rem;color:#666;margin-bottom:5px">مدير المدرسة</div>
+        <div style="border-bottom:2px solid #333;width:140px;margin:0 auto 5px;height:30px"></div>
+        <div style="font-weight:700;color:#0a2b4e;font-size:0.85rem">${signatures.principal}</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;font-size:0.7rem;color:#888;margin-top:20px;padding-top:15px;border-top:1px solid #ddd">
+      تم استخراج هذه الشهادة إلكترونياً من بوابة ${schoolInfo.name}
+    </p>
   </div>`;
-  
+
   card.style.cssText='position:fixed;left:0;top:0;width:794px;background:white;direction:rtl;z-index:-1';
   html2canvas(card.firstElementChild,{scale:2,useCORS:true,logging:false,backgroundColor:'#ffffff'}).then(canvas=>{
-    card.style.left='-9999px';const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight();const imgH=(canvas.height*W)/canvas.width;pdf.addImage(canvas.toDataURL('image/jpeg',.95),'JPEG',0,0,W,Math.min(imgH,H));pdf.save(`شهادة_${(data.name||'').replace(/\s/g,'_')}_${data.seat||''}.pdf`);toast('✅ تم تحميل الشهادة الرسمية','s');}).catch(e=>{card.style.left='-9999px';toast('تعذّر إنشاء الشهادة','e');console.error(e)});}
-
+    card.style.left='-9999px';const {jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const W=pdf.internal.pageSize.getWidth(),H=pdf.internal.pageSize.getHeight();const imgH=(canvas.height*W)/canvas.width;pdf.addImage(canvas.toDataURL('image/jpeg',.95),'JPEG',0,0,W,Math.min(imgH,H));pdf.save(`شهادة_${(data.name||'').replace(/\s/g,'_')}_${data.seat||''}.pdf`);toast('✅ تم تحميل الشهادة الرسمية','s');
+  }).catch(e=>{card.style.left='-9999px';toast('تعذّر إنشاء الشهادة','e');console.error(e);});
+}
 /* ═══════════════════════════════════════════════════════════════
    📁 نظام الملفات والوسائط
    ═══════════════════════════════════════════════════════════════ */
