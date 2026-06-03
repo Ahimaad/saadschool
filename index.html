@@ -934,6 +934,734 @@ try { initFirebase(); } catch (err) {
   document.getElementById('ldr')?.classList.add('hide');
   if (typeof toast === 'function') toast('⚠️ حدث خطأ أثناء التحميل', 'w', 4000);
 }
+  <!-- ═══════════════════════════════════════════════════════════
+     🔐 نظام إدارة الحجب + الشهادة الجديدة
+     ═══════════════════════════════════════════════════════════ -->
+<style>
+  /* أنماط إدارة الحجب */
+  .withhold-manager{background:white;border-radius:15px;padding:20px;margin-top:20px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
+  .wh-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:2px solid #0a2b4e;margin-bottom:15px}
+  .wh-stats{display:flex;gap:15px;flex-wrap:wrap;margin-bottom:20px}
+  .wh-stat-card{flex:1;min-width:150px;padding:15px;border-radius:10px;text-align:center;color:white}
+  .wh-stat-card.total{background:linear-gradient(135deg,#667eea,#764ba2)}
+  .wh-stat-card.active{background:linear-gradient(135deg,#11998e,#38ef7d)}
+  .wh-stat-card.blocked{background:linear-gradient(135deg,#eb3349,#f45c43)}
+  .wh-student-row{display:flex;align-items:center;justify-content:space-between;padding:10px 15px;border:1px solid #eee;border-radius:8px;margin-bottom:8px;transition:all .3s}
+  .wh-student-row:hover{background:#f8f9fa;transform:translateX(5px)}
+  .wh-student-info{flex:1;display:flex;gap:15px;align-items:center}
+  .wh-student-seat{background:#0a2b4e;color:white;padding:5px 12px;border-radius:20px;font-weight:700;font-size:.85rem}
+  .wh-student-name{font-weight:600;color:#333}
+  .wh-student-status{font-size:.8rem;padding:4px 10px;border-radius:15px}
+  .wh-status-active{background:#d4edda;color:#155724}
+  .wh-status-blocked{background:#f8d7da;color:#721c24}
+  .wh-toggle{position:relative;display:inline-block;width:50px;height:26px}
+  .wh-toggle input{opacity:0;width:0;height:0}
+  .wh-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;transition:.4s;border-radius:34px}
+  .wh-slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;background-color:white;transition:.4s;border-radius:50%}
+  input:checked+.wh-slider{background-color:#e74c3c}
+  input:checked+.wh-slider:before{transform:translateX(24px)}
+  .wh-filter{display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap}
+  .wh-filter-btn{padding:8px 16px;border:none;border-radius:20px;cursor:pointer;font-weight:600;transition:all .3s;font-family:'Cairo',sans-serif}
+  .wh-filter-btn.active{background:#0a2b4e;color:white}
+  .wh-filter-btn:not(.active){background:#e9ecef;color:#666}
+  .wh-search{flex:1;min-width:200px;padding:8px 15px;border:2px solid #dee2e6;border-radius:20px;font-family:'Cairo',sans-serif}
+  .wh-search:focus{outline:none;border-color:#0a2b4e}
+  
+  /* أنماط الشهادة الجديدة */
+  .cert-new{width:100%;background:white;padding:20px;font-family:'Cairo',sans-serif;direction:rtl;color:#1a1a1a}
+  .cert-new-header{text-align:center;padding-bottom:15px;border-bottom:3px double #0a2b4e;margin-bottom:20px}
+  .cert-new-logos{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+  .cert-new-school{text-align:center;flex:1}
+  .cert-new-school h1{color:#0a2b4e;font-size:1.5rem;margin:5px 0;font-weight:900}
+  .cert-new-school p{color:#666;margin:2px 0;font-size:.9rem}
+  .cert-new-logo-img{width:80px;height:80px;object-fit:contain}
+  .cert-new-student-info{background:linear-gradient(135deg,#f8f9fa,#e9ecef);padding:15px;border-radius:10px;margin-bottom:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:15px;border-right:5px solid #d4af37}
+  .cert-new-info-item{flex:1;min-width:150px}
+  .cert-new-info-label{font-size:.8rem;color:#666;margin-bottom:3px}
+  .cert-new-info-value{font-size:1.05rem;font-weight:700;color:#0a2b4e}
+  .cert-new-table{width:100%;border-collapse:collapse;margin-bottom:20px;border:2px solid #0a2b4e}
+  .cert-new-table thead{background:#0a2b4e;color:white}
+  .cert-new-table th{padding:10px 8px;border:1px solid #0a2b4e;font-size:.9rem;font-weight:700}
+  .cert-new-table td{padding:8px;border:1px solid #0a2b4e;text-align:center;font-size:.85rem}
+  .cert-new-table td:first-child{text-align:right;font-weight:600;padding-right:10px}
+  .cert-new-table .total-row{background:#d4af37;color:#0a2b4e;font-weight:900;font-size:1rem}
+  .cert-new-table .total-row td{border-color:#0a2b4e}
+  .cert-new-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:20px 0}
+  .cert-new-summary-item{background:white;border:2px solid #e9ecef;border-radius:10px;padding:12px;text-align:center;border-top:4px solid #0a2b4e}
+  .cert-new-summary-item .label{font-size:.75rem;color:#666;margin-bottom:5px}
+  .cert-new-summary-item .value{font-size:1.3rem;font-weight:900;color:#0a2b4e}
+  .cert-new-status{padding:15px;border-radius:10px;text-align:center;margin:15px 0;font-weight:700;font-size:1.1rem}
+  .cert-new-status.pass{background:#d4edda;color:#155724;border:2px solid #28a745}
+  .cert-new-status.fail{background:#f8d7da;color:#721c24;border:2px solid #dc3545}
+  .cert-new-signatures{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:15px;margin-top:30px;padding-top:20px;border-top:2px solid #0a2b4e}
+  .cert-new-sig{text-align:center}
+  .cert-new-sig .title{font-size:.8rem;color:#666;margin-bottom:8px}
+  .cert-new-sig .line{border-bottom:1.5px solid #333;width:120px;margin:0 auto 8px;height:30px}
+  .cert-new-sig .name{font-weight:700;color:#0a2b4e;font-size:.9rem}
+  .cert-new-footer{text-align:center;margin-top:20px;padding-top:15px;border-top:1px dashed #ccc;font-size:.8rem;color:#666}
+  
+  /* رسالة الحجب */
+  .blocked-message{background:linear-gradient(135deg,#fff3cd,#ffeaa7);border:3px solid #ffc107;border-radius:15px;padding:30px;text-align:center;margin:20px 0}
+  .blocked-message i{font-size:4rem;color:#f39c12;margin-bottom:15px}
+  .blocked-message h3{color:#856404;margin-bottom:10px;font-size:1.5rem}
+  .blocked-message p{color:#856404;font-size:1.05rem;margin:5px 0}
+</style>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   🔐 دوال إدارة الحجب
+   ═══════════════════════════════════════════════════════════ */
+window._withholdCache = {};
+
+function loadWithholdStatus(grade, seat) {
+  const key = `${grade}/${seat}`;
+  return new Promise(resolve => {
+    if (window._withholdCache[key] !== undefined) {
+      resolve(window._withholdCache[key]);
+      return;
+    }
+    db.ref(`students/${key}/withhold`).once('value', snap => {
+      const val = snap.val() || false;
+      window._withholdCache[key] = val;
+      resolve(val);
+    });
+  });
+}
+
+function toggleWithhold(grade, seat, currentStatus) {
+  const newStatus = !currentStatus;
+  db.ref(`students/${grade}/${seat}/withhold`).set(newStatus)
+    .then(() => {
+      window._withholdCache[`${grade}/${seat}`] = newStatus;
+      toast(newStatus ? `تم حجب نتيجة الطالب ${seat}` : `تم تفعيل نتيجة الطالب ${seat}`, newStatus ? 'w' : 's');
+      showWithholdManager();
+    })
+    .catch(err => toast('خطأ: ' + err.message, 'e'));
+}
+
+async function showWithholdManager() {
+  if (!db || !isAdmin) {
+    toast('يجب تسجيل الدخول كمدير أولاً', 'w');
+    return;
+  }
+  
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="withhold-manager">
+      <div class="wh-header">
+        <h4 style="color:#0a2b4e;margin:0"><i class="fas fa-user-lock me-2"></i>إدارة حجب النتائج</h4>
+        <button class="btn btn-outline-secondary btn-sm" onclick="showAdminDash()">
+          <i class="fas fa-arrow-right me-1"></i>رجوع
+        </button>
+      </div>
+      
+      <div class="wh-stats" id="whStats">
+        <div class="wh-stat-card total">
+          <div style="font-size:.8rem;opacity:.9">إجمالي الطلاب</div>
+          <div style="font-size:1.8rem;font-weight:900" id="whTotal">...</div>
+        </div>
+        <div class="wh-stat-card active">
+          <div style="font-size:.8rem;opacity:.9">نتائج ظاهرة</div>
+          <div style="font-size:1.8rem;font-weight:900" id="whActive">...</div>
+        </div>
+        <div class="wh-stat-card blocked">
+          <div style="font-size:.8rem;opacity:.9">نتائج محجوبة</div>
+          <div style="font-size:1.8rem;font-weight:900" id="whBlocked">...</div>
+        </div>
+      </div>
+      
+      <div class="wh-filter">
+        <input type="text" class="wh-search" id="whSearch" placeholder="🔍 ابحث بالاسم أو رقم الجلوس..." oninput="filterWithholdList()">
+        <select class="wh-search" id="whGradeFilter" onchange="filterWithholdList()" style="flex:0 0 200px">
+          <option value="all">كل الصفوف</option>
+          <option value="m1">الصف الأول الإعدادي</option>
+          <option value="m2">الصف الثاني الإعدادي</option>
+        </select>
+        <button class="wh-filter-btn active" data-filter="all" onclick="setWhFilter(this,'all')">الكل</button>
+        <button class="wh-filter-btn" data-filter="active" onclick="setWhFilter(this,'active')">ظاهر</button>
+        <button class="wh-filter-btn" data-filter="blocked" onclick="setWhFilter(this,'blocked')">محجوب</button>
+      </div>
+      
+      <div id="whList" style="max-height:500px;overflow-y:auto">
+        <div style="text-align:center;padding:30px">
+          <div class="spinner-border text-primary"></div>
+          <p style="margin-top:10px;color:#666">جاري تحميل البيانات...</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  window._currentWhFilter = 'all';
+  await loadAllStudentsForWithhold();
+}
+
+window._allStudentsForWh = [];
+
+async function loadAllStudentsForWithhold() {
+  const list = document.getElementById('whList');
+  let total = 0, active = 0, blocked = 0;
+  let html = '';
+  
+  try {
+    for (const grade of ['m1', 'm2']) {
+      const snap = await db.ref(`students/${grade}`).once('value');
+      if (!snap.exists()) continue;
+      snap.forEach(child => {
+        const data = child.val();
+        const seat = child.key;
+        const isWithheld = data.withhold || false;
+        total++;
+        if (isWithheld) blocked++; else active++;
+        
+        window._allStudentsForWh.push({
+          grade, seat, name: data.name || 'غير محدد', 
+          withheld: isWithheld,
+          percentage: data.percentage || 0,
+          overall_grade: data.overall_grade || '-'
+        });
+      });
+    }
+    
+    document.getElementById('whTotal').textContent = total;
+    document.getElementById('whActive').textContent = active;
+    document.getElementById('whBlocked').textContent = blocked;
+    
+    renderWithholdList();
+  } catch (err) {
+    list.innerHTML = `<div class="alert alert-danger">خطأ في التحميل: ${err.message}</div>`;
+  }
+}
+
+function setWhFilter(btn, filter) {
+  document.querySelectorAll('.wh-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  window._currentWhFilter = filter;
+  renderWithholdList();
+}
+
+function filterWithholdList() {
+  renderWithholdList();
+}
+
+function renderWithholdList() {
+  const search = (document.getElementById('whSearch')?.value || '').toLowerCase();
+  const gradeFilter = document.getElementById('whGradeFilter')?.value || 'all';
+  const statusFilter = window._currentWhFilter || 'all';
+  
+  let filtered = window._allStudentsForWh.filter(s => {
+    const matchSearch = s.name.toLowerCase().includes(search) || s.seat.includes(search);
+    const matchGrade = gradeFilter === 'all' || s.grade === gradeFilter;
+    const matchStatus = statusFilter === 'all' || 
+                       (statusFilter === 'active' && !s.withheld) || 
+                       (statusFilter === 'blocked' && s.withheld);
+    return matchSearch && matchGrade && matchStatus;
+  });
+  
+  if (filtered.length === 0) {
+    document.getElementById('whList').innerHTML = '<div style="text-align:center;padding:20px;color:#666">لا توجد نتائج</div>';
+    return;
+  }
+  
+  let html = filtered.map(s => `
+    <div class="wh-student-row">
+      <div class="wh-student-info">
+        <span class="wh-student-seat">#${s.seat}</span>
+        <span class="wh-student-name">${s.name}</span>
+        <span style="font-size:.75rem;color:#999">${GL[s.grade] || s.grade}</span>
+        <span class="wh-student-status ${s.withheld ? 'wh-status-blocked' : 'wh-status-active'}">
+          ${s.withheld ? '🔒 محجوب' : '✅ ظاهر'}
+        </span>
+      </div>
+      <label class="wh-toggle">
+        <input type="checkbox" ${s.withheld ? 'checked' : ''} 
+               onchange="toggleWithhold('${s.grade}','${s.seat}',${s.withheld})">
+        <span class="wh-slider"></span>
+      </label>
+    </div>
+  `).join('');
+  
+  document.getElementById('whList').innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   📄 تحديث دالة البحث لتشمل الحجب
+   ═══════════════════════════════════════════════════════════ */
+const _originalDoSearch = window.doSearch || doSearch;
+
+async function doSearch() {
+  const grade = document.getElementById('GS')?.value;
+  const seat = document.getElementById('SI')?.value?.trim();
+  const rd = document.getElementById('RD');
+  
+  if (!seat) { toast('أدخل رقم الجلوس أولاً', 'w'); return; }
+  
+  rd.innerHTML = `<div class="text-center p-5"><div class="spinner-border text-primary" style="width:3rem;height:3rem"></div><p class="mt-3 text-muted fw-bold">جاري استخراج النتيجة...</p></div>`;
+  
+  if (!db) {
+    rd.innerHTML = `<div class="alert alert-warning">قاعدة البيانات غير متصلة</div>`;
+    return;
+  }
+  
+  try {
+    const snap = await db.ref(`students/${grade}/${seat}`).once('value');
+    
+    if (!snap.exists()) {
+      rd.innerHTML = `<div class="alert alert-danger rounded-4 p-4 text-center">
+        <i class="fas fa-times-circle fa-2x mb-2 d-block"></i>
+        رقم الجلوس <strong>${esc(seat)}</strong> غير مسجل.
+      </div>`;
+      return;
+    }
+    
+    const d = snap.val();
+    
+    // 🔒 التحقق من حالة الحجب
+    if (d.withhold) {
+      rd.innerHTML = `
+        <div class="blocked-message">
+          <i class="fas fa-lock"></i>
+          <h3>⚠️ النتيجة محجوبة مؤقتاً</h3>
+          <p><strong>اسم الطالب:</strong> ${esc(d.name || '')}</p>
+          <p><strong>الصف:</strong> ${GL[grade] || grade}</p>
+          <p style="margin-top:15px;font-size:.95rem">
+            يرجى التوجه إلى <strong>شئون الطلاب</strong> لسداد المصروفات المستحقة،
+            <br>وبعدها ستظهر نتيجتك فوراً.
+          </p>
+        </div>
+        <div class="text-center">
+          <button class="btn btn-outline-secondary" onclick="showResultsForm()">
+            <i class="fas fa-redo me-1"></i>بحث جديد
+          </button>
+        </div>
+      `;
+      return;
+    }
+    
+    // ✅ عرض النتيجة الطبيعية
+    window._pdfData = {
+      name: d.name, seat: d.seat, grade: grade,
+      subjects: d.subjects,
+      activities: d.activities,
+      total_actual: d.total_actual || d.total,
+      total_max: d.total_max || 280,
+      percentage: d.percentage,
+      overall_grade: d.overall_grade || d.gradeLabel || d.grade,
+      attendance: d.attendance,
+      status: d.status,
+      second_round: d.second_round || []
+    };
+    
+    // عرض المواد الأساسية
+    let subHtml = '';
+    if (d.subjects) {
+      Object.values(d.subjects).forEach(sub => {
+        const pct = Math.min(100, (sub.score / sub.max) * 100);
+        subHtml += `<div class="si2">
+          <span><i class="fas fa-book me-2 opacity-75"></i>${esc(sub.name)}</span>
+          <div class="d-flex align-items-center gap-2">
+            <div style="width:80px;height:5px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden">
+              <div style="width:${pct}%;height:100%;background:${barC(pct)};border-radius:3px"></div>
+            </div>
+            <span class="fw-bold">${esc(String(sub.score))}/${esc(String(sub.max))}</span>
+            <span class="badge" style="background:rgba(255,255,255,.2);font-size:.65rem">${esc(sub.grade || '')}</span>
+          </div>
+        </div>`;
+      });
+    }
+    
+    // عرض الأنشطة
+    let actHtml = '';
+    if (d.activities) {
+      actHtml = '<h6 class="text-white mt-3 mb-2"><i class="fas fa-palette me-2"></i>الأنشطة والمواد الاختيارية</h6>';
+      Object.values(d.activities).forEach(act => {
+        actHtml += `<div class="si2" style="background:rgba(255,255,255,.15)">
+          <span><i class="fas fa-star me-2"></i>${esc(act.name)}</span>
+          <span class="fw-bold">${esc(String(act.score))}/${esc(String(act.max))} — <small>${esc(act.grade || '')}</small></span>
+        </div>`;
+      });
+    }
+    
+    const statusClass = d.status && d.status.includes('ناجح') ? 'alert-success' : 'alert-warning';
+    const statusIcon = d.status && d.status.includes('ناجح') ? '✅' : '⚠️';
+    
+    let secondHtml = '';
+    if (d.second_round && d.second_round.length > 0) {
+      secondHtml = `<div class="alert alert-warning mt-3">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        <strong>مواد الدور الثاني:</strong>
+        <ul class="mb-0 mt-2">${d.second_round.map(m => `<li>${esc(m)}</li>`).join('')}</ul>
+      </div>`;
+    }
+    
+    rd.innerHTML = `
+      <div class="rc shadow-lg fi">
+        <div class="text-center mb-4">
+          <div class="d-inline-block p-3 rounded-circle mb-3" style="background:rgba(255,255,255,.15)">
+            <i class="fas fa-graduation-cap fa-3x"></i>
+          </div>
+          <h3 class="fw-bold">${esc(d.name || '')}</h3>
+          <span class="badge px-3 py-2" style="background:var(--gd);color:var(--pr);font-size:.92rem">${GL[grade] || ''}</span>
+          <div class="mt-2"><small style="color:rgba(255,255,255,.6)">رقم الجلوس: ${esc(seat)}</small></div>
+        </div>
+        <div class="mb-4">${subHtml}${actHtml}</div>
+        <div class="row g-2 text-center mb-4">
+          <div class="col-4"><div class="rsb"><small>المجموع</small>
+            <div class="h5 mb-0 fw-bold">${esc(String(d.total_actual || d.total || '-'))}/${esc(String(d.total_max || 280))}</div>
+          </div></div>
+          <div class="col-4"><div class="rsb"><small>النسبة</small>
+            <div class="h5 mb-0 fw-bold">${esc(String(d.percentage || '-'))}%</div>
+          </div></div>
+          <div class="col-4"><div class="rsb"><small>التقدير</small>
+            <div class="h5 mb-0 fw-bold text-warning">${esc(d.overall_grade || d.gradeLabel || d.grade || '-')}</div>
+          </div></div>
+        </div>
+        ${d.attendance ? `<div class="alert alert-light text-center mb-3">
+          <i class="fas fa-calendar-check me-2"></i><strong>نسبة الحضور:</strong> ${esc(d.attendance)}%
+        </div>` : ''}
+        <div class="alert ${statusClass} text-center mb-3">
+          <strong>${statusIcon} ${esc(d.status || '')}</strong>
+        </div>
+        ${secondHtml}
+        <div class="d-flex gap-2 flex-wrap">
+          <button class="btn bg flex-grow-1" onclick="exportPDF(window._pdfData)">
+            <i class="fas fa-file-pdf me-2"></i>تحميل/طباعة الشهادة
+          </button>
+          <button class="btn btn-outline-light" onclick="shareRes('${esc(d.name || '')}','${esc(String(d.total_actual || d.total || ''))}')">
+            <i class="fab fa-whatsapp me-1"></i>واتساب
+          </button>
+          <button class="btn btn-outline-light" onclick="showResultsForm()">
+            <i class="fas fa-redo"></i>بحث جديد
+          </button>
+        </div>
+      </div>
+    `;
+  } catch (err) {
+    rd.innerHTML = `<div class="alert alert-warning rounded-4">
+      <i class="fas fa-wifi-slash me-2"></i>تعذّر الاتصال: ${err.message}
+    </div>`;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   🎨 الشهادة الجديدة المحسّنة
+   ═══════════════════════════════════════════════════════════ */
+function _doPDF(data) {
+  const schoolInfo = {
+    name: "مدرسة سعد بن أبي وقاص الرسمية للغات",
+    department: "إدارة الفشن التعليمية",
+    governorate: "بني سويف",
+    year: "2025/2026",
+    semester: "الفصل الدراسي الثاني",
+    ministryLogo: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Coat_of_arms_of_Egypt.svg/200px-Coat_of_arms_of_Egypt.svg.png",
+    schoolLogo: "logo.jpg"
+  };
+  
+  const signatures = {
+    control_chief: "أ/ أحمد صابر",
+    control_staff: ["أ/ أسماء شعبان", "أ/ فاطمة مرزوق"],
+    computer_officer: "أ/ بهيجة مصطفى",
+    system_chief: "أ/ عيد عباس",
+    principal: "أ/ محمد مصطفي حسن"
+  };
+  
+  // بناء جدول المواد الأساسية
+  let mainRows = '';
+  if (data.subjects) {
+    Object.values(data.subjects).forEach(sub => {
+      mainRows += `<tr>
+        <td>${esc(sub.name)}</td>
+        <td>${esc(String(sub.score))}</td>
+        <td>${esc(String(sub.max))}</td>
+        <td style="font-weight:700">${esc(sub.grade || '')}</td>
+      </tr>`;
+    });
+  }
+  
+  // بناء جدول الأنشطة
+  let actRows = '';
+  if (data.activities) {
+    Object.values(data.activities).forEach(act => {
+      actRows += `<tr>
+        <td>${esc(act.name)}</td>
+        <td>${esc(String(act.score))}</td>
+        <td>${esc(String(act.max))}</td>
+        <td style="font-weight:700">${esc(act.grade || '')}</td>
+      </tr>`;
+    });
+  }
+  
+  const isPassed = data.status && data.status.includes('ناجح');
+  const statusColor = isPassed ? '#28a745' : '#dc3545';
+  const statusBg = isPassed ? '#d4edda' : '#f8d7da';
+  const statusText = isPassed ? '#155724' : '#721c24';
+  
+  // مواد الدور الثاني
+  let secondRoundHtml = '';
+  if (data.second_round && data.second_round.length > 0) {
+    secondRoundHtml = `
+      <div style="margin-top:15px;padding:12px;background:#fff3cd;border:2px solid #ffc107;border-radius:8px">
+        <strong style="color:#856404;font-size:.9rem">⚠️ مواد الدور الثاني:</strong>
+        <ul style="margin:8px 0 0;padding-right:25px;color:#856404;font-size:.85rem">
+          ${data.second_round.map(m => `<li>${esc(m)}</li>`).join('')}
+        </ul>
+      </div>
+    `;
+  }
+  
+  const card = document.getElementById('pdfCard');
+  card.innerHTML = `
+    <div class="cert-new">
+      <!-- الرأس -->
+      <div class="cert-new-header">
+        <div class="cert-new-logos">
+          <img src="${schoolInfo.ministryLogo}" class="cert-new-logo-img" onerror="this.style.display='none'">
+          <div class="cert-new-school">
+            <h1>🏫 ${schoolInfo.name}</h1>
+            <p>${schoolInfo.department} — محافظة ${schoolInfo.governorate}</p>
+            <p style="font-weight:700;color:#0a2b4e;margin-top:8px">${schoolInfo.semester} — ${schoolInfo.year}</p>
+          </div>
+          <img src="${schoolInfo.schoolLogo}" class="cert-new-logo-img" onerror="this.style.display='none'">
+        </div>
+      </div>
+      
+      <!-- بيانات الطالب -->
+      <div class="cert-new-student-info">
+        <div class="cert-new-info-item">
+          <div class="cert-new-info-label">👤 اسم الطالب</div>
+          <div class="cert-new-info-value">${esc(data.name || '')}</div>
+        </div>
+        <div class="cert-new-info-item">
+          <div class="cert-new-info-label">🔢 رقم الجلوس</div>
+          <div class="cert-new-info-value">${esc(String(data.seat || ''))}</div>
+        </div>
+        <div class="cert-new-info-item">
+          <div class="cert-new-info-label">🎓 الصف</div>
+          <div class="cert-new-info-value">${GL[data.grade] || ''}</div>
+        </div>
+      </div>
+      
+      <!-- جدول المواد الأساسية -->
+      <h3 style="color:#0a2b4e;margin:20px 0 10px;padding-bottom:8px;border-bottom:2px solid #d4af37">
+        📚 المواد الأساسية
+      </h3>
+      <table class="cert-new-table">
+        <thead>
+          <tr>
+            <th>المادة</th>
+            <th>الدرجة</th>
+            <th>الدرجة العظمى</th>
+            <th>التقدير</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${mainRows}
+          <tr class="total-row">
+            <td>المجموع الكلي</td>
+            <td colspan="2" style="text-align:center">${esc(String(data.total_actual || 0))} / ${esc(String(data.total_max || 280))}</td>
+            <td>${esc(data.overall_grade || '')}</td>
+          </tr>
+        </tbody>
+      </table>
+      
+      <!-- جدول الأنشطة -->
+      ${actRows ? `
+        <h3 style="color:#0a2b4e;margin:20px 0 10px;padding-bottom:8px;border-bottom:2px solid #d4af37">
+          🎯 الأنشطة والمواد الاختيارية
+        </h3>
+        <table class="cert-new-table">
+          <thead>
+            <tr>
+              <th>المادة / النشاط</th>
+              <th>الدرجة</th>
+              <th>الدرجة العظمى</th>
+              <th>التقدير</th>
+            </tr>
+          </thead>
+          <tbody>${actRows}</tbody>
+        </table>
+      ` : ''}
+      
+      <!-- ملخص النتيجة -->
+      <div class="cert-new-summary">
+        <div class="cert-new-summary-item" style="border-top-color:#2ecc71">
+          <div class="label">📊 نسبة الحضور</div>
+          <div class="value">${esc(String(data.attendance || '--'))}%</div>
+        </div>
+        <div class="cert-new-summary-item" style="border-top-color:#2196f3">
+          <div class="label">📈 النسبة المئوية</div>
+          <div class="value">${esc(String(data.percentage || ''))}%</div>
+        </div>
+        <div class="cert-new-summary-item" style="border-top-color:#d4af37">
+          <div class="label">🏆 التقدير العام</div>
+          <div class="value">${esc(data.overall_grade || '')}</div>
+        </div>
+      </div>
+      
+      <!-- الحالة -->
+      <div class="cert-new-status ${isPassed ? 'pass' : 'fail'}">
+        ${isPassed ? '✅' : '⚠️'} الحالة: ${esc(data.status || '')}
+      </div>
+      
+      ${secondRoundHtml}
+      
+      <!-- التواقيع -->
+      <div class="cert-new-signatures">
+        <div class="cert-new-sig">
+          <div class="title">رئيس الكنترول</div>
+          <div class="line"></div>
+          <div class="name">${signatures.control_chief}</div>
+        </div>
+        <div class="cert-new-sig">
+          <div class="title">مسئولو الكنترول</div>
+          <div class="line"></div>
+          <div class="name" style="font-size:.8rem">${signatures.control_staff.join(' - ')}</div>
+        </div>
+        <div class="cert-new-sig">
+          <div class="title">مسئول الحاسب الآلي</div>
+          <div class="line"></div>
+          <div class="name">${signatures.computer_officer}</div>
+        </div>
+        <div class="cert-new-sig">
+          <div class="title">رئيس نظام ومراقبة</div>
+          <div class="line"></div>
+          <div class="name">${signatures.system_chief}</div>
+        </div>
+        <div class="cert-new-sig">
+          <div class="title">مدير المدرسة</div>
+          <div class="line"></div>
+          <div class="name">${signatures.principal}</div>
+        </div>
+      </div>
+      
+      <!-- التذييل -->
+      <div class="cert-new-footer">
+        تم استخراج هذه الشهادة إلكترونياً من بوابة ${schoolInfo.name}
+      </div>
+    </div>
+  `;
+  
+  // تحويل الشهادة إلى PDF
+  card.style.cssText = 'position:fixed;left:0;top:0;width:794px;background:white;direction:rtl;z-index:-1';
+  
+  if (typeof html2canvas !== 'undefined' && typeof window.jspdf !== 'undefined') {
+    html2canvas(card.firstElementChild, {
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#ffffff'
+    }).then(canvas => {
+      card.style.left = '-9999px';
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+      const W = pdf.internal.pageSize.getWidth();
+      const H = pdf.internal.pageSize.getHeight();
+      const imgH = (canvas.height * W) / canvas.width;
+      pdf.addImage(canvas.toDataURL('image/jpeg', .95), 'JPEG', 0, 0, W, Math.min(imgH, H));
+      pdf.save(`شهادة_${(data.name || '').replace(/\s/g, '_')}_${data.seat || ''}.pdf`);
+      toast('✅ تم تحميل الشهادة الرسمية', 's');
+    }).catch(e => {
+      card.style.left = '-9999px';
+      toast('تعذّر إنشاء الشهادة', 'e');
+      console.error(e);
+    });
+  } else {
+    card.style.left = '-9999px';
+    toast('مكتبات PDF غير محمّلة', 'e');
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   🔧 إضافة زر إدارة الحجب في لوحة الإدارة
+   ═══════════════════════════════════════════════════════════ */
+const _originalShowAdminDash = window.showAdminDash || showAdminDash;
+
+function showAdminDash() {
+  hideHero();
+  document.getElementById('MC').innerHTML = `
+    <div class="fi">
+      <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+        <h4 class="fw-bold mb-0">
+          <i class="fas fa-shield-halved me-2 text-danger"></i> لوحة تحكم الإدارة
+        </h4>
+        <span class="badge bg-danger px-3 py-2">
+          <i class="fas fa-circle me-1" style="font-size:.45rem"></i> مباشر
+        </span>
+      </div>
+      
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+          <div class="asc">
+            <div class="asn" id="AS1">…</div>
+            <small class="text-muted">الأنشطة</small>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="asc" style="border-right-color:#1abc9c">
+            <div class="asn" style="color:#1abc9c" id="AS2">…</div>
+            <small class="text-muted">الصحافة</small>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="asc" style="border-right-color:#e74c3c">
+            <div class="asn" style="color:#e74c3c" id="AS3">…</div>
+            <small class="text-muted">المنشورات</small>
+          </div>
+        </div>
+      </div>
+      
+      <h6 class="fw-bold mb-3">⚡ إجراءات سريعة</h6>
+      <div class="row g-3 mb-4 stg">
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="showWithholdManager()" style="background:#fff3cd;border:2px solid #ffc107">
+            <i class="fas fa-user-lock" style="color:#f39c12;font-size:2rem"></i>
+            <h6 style="color:#856404;margin-top:8px">إدارة الحجب</h6>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="showUpload('activities_section','الأنشطة المدرسية')">
+            <i class="fas fa-plus-circle" style="color:var(--pr)"></i>
+            <h6>رفع للأنشطة</h6>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="showUpload('press_art_section','الصحافة والإذاعة')">
+            <i class="fas fa-microphone-lines" style="color:#1abc9c"></i>
+            <h6>رفع للصحافة</h6>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="showTickerEd()">
+            <i class="fas fa-newspaper" style="color:var(--gd)"></i>
+            <h6>تعديل الأخبار</h6>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="go('posts')">
+            <i class="fas fa-newspaper" style="color:#2980b9"></i>
+            <h6>المنشورات</h6>
+          </div>
+        </div>
+        <div class="col-6 col-md-3">
+          <div class="qc" onclick="showResultsMgr()">
+            <i class="fas fa-upload" style="color:#8e44ad"></i>
+            <h6>رفع النتائج JSON</h6>
+          </div>
+        </div>
+      </div>
+      
+      <div id="AEX"></div>
+    </div>
+  `;
+  
+  ['activities_section', 'press_art_section', 'posts'].forEach((s, idx) => {
+    if (!db) return;
+    db.ref(s).once('value', snap => {
+      const ids = ['AS1', 'AS2', 'AS3'];
+      const el = document.getElementById(ids[idx]);
+      if (el) el.textContent = snap.numChildren();
+    });
+  });
+}
 </script>
 </body>
 </html>
