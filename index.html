@@ -2413,6 +2413,11 @@
 
     // ===== Initialize App =====
     window.addEventListener('load', initFirebase);
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initFirebase);
+} else {
+  initFirebase();
+}
   </script>
 </body>
 </html>
